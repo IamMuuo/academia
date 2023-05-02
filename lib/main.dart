@@ -1,4 +1,5 @@
 import 'package:academia/pages/intro_page.dart';
+import 'package:academia/themes/theme.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,9 +11,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Academia',
-      home: IntroPage(),
+      home: const IntroPage(),
+      theme: lightModeTheme,
     );
   }
 }

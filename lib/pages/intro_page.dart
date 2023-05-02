@@ -1,5 +1,5 @@
+import 'package:academia/pages/login_page.dart';
 import 'package:flutter/material.dart';
-import 'home_page.dart';
 
 class IntroPage extends StatelessWidget {
   const IntroPage({super.key});
@@ -7,7 +7,6 @@ class IntroPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -23,11 +22,12 @@ class IntroPage extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.all(16),
               child: Text(
-              "The app you've all been waiting for",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
+                "Your school life partner awaits",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 50,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
@@ -35,38 +35,37 @@ class IntroPage extends StatelessWidget {
             // subtitle
             const Padding(
               padding: EdgeInsets.all(16),
-              child:  Text(
+              child: Text(
                 'Academia is for you by you',
                 textAlign: TextAlign.center,
               ),
             ),
 
-
-            GestureDetector(
-              onTap:()=> Navigator.pushReplacement(context, MaterialPageRoute
-              (builder: (context){
-                  return const HomePage();
-                })),
-
-              child: Container( 
-              decoration: BoxDecoration( 
-                color: Colors.brown[900],
-                borderRadius: BorderRadius.circular(12),
-
+            ElevatedButton(
+              onPressed: () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return const LoginPage();
+                }),
               ),
-              width: 120,
-              padding: const EdgeInsets.all(22),
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                minimumSize: const Size(327, 60),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+              ),
               child: const Text(
                 'Get Started',
                 style: TextStyle(
-                    color:Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-            ),
           ],
-
         ),
       ),
     );
