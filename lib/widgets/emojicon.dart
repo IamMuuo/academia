@@ -13,7 +13,7 @@ class _EmojiconState extends State<Emojicon> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.brown[400],
+        color: Colors.blue[400],
         borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
