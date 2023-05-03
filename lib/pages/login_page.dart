@@ -1,3 +1,4 @@
+import 'package:academia/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -122,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () => Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) {
-                    return const LoginPage();
+                    return const HomePage();
                   }),
                 ),
                 style: ElevatedButton.styleFrom(
