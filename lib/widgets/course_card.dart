@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class CourseCard extends StatefulWidget {
-  const CourseCard({super.key});
-
+  const CourseCard({
+    super.key,
+    /*
+    required this.courseName,
+    this.icon,
+    this.courseTime,
+    */
+  });
+  // final icon;
+  // final String? courseName;
+  // final String? courseTime;
+  //
   @override
   State<CourseCard> createState() => _CourseCardState();
 }
@@ -10,47 +21,59 @@ class CourseCard extends StatefulWidget {
 class _CourseCardState extends State<CourseCard> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(16),
+    return Padding(
+      padding: EdgeInsets.only(bottom: 12),
+      child: Container(
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
         ),
-      ),
-      child: Row(
-        children: [
-          const Icon(
-            Icons.favorite,
-            color: Colors.grey,
-            size: 30,
-          ),
-          const SizedBox(
-            width: 12,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Icon
-              // Course name
-              Text(
-                'ENG 098',
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 16,
-                  color: Colors.grey[700],
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                IconButton(
+                  padding: EdgeInsets.all(12),
+                  enableFeedback: true,
+                  onPressed: () {},
+                  icon: Icon(
+                    CupertinoIcons.heart_fill,
+                  ),
                 ),
-              ),
-              Text(
-                'Next class @ 10am BCC 3',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.grey[600],
+                SizedBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Title
+                    Text(
+                      'ACS 211',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    // subtitle
+                    Text(
+                      'Today at 2:00pm',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
-              )
-            ],
-          ),
-        ],
+              ],
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(CupertinoIcons.arrow_right),
+            ),
+          ],
+        ),
       ),
     );
   }

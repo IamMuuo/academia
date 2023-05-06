@@ -1,3 +1,5 @@
+import 'package:academia/widgets/course_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:academia/widgets/emojicon.dart';
 
@@ -19,8 +21,8 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
+    return Scaffold(
+      body: Column(
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -61,7 +63,7 @@ class _DashBoardState extends State<DashBoard> {
                     child: IconButton(
                       onPressed: () {},
                       icon: const Icon(
-                        Icons.notifications,
+                        CupertinoIcons.bell_fill,
                         size: 30,
                         color: Colors.white,
                       ),
@@ -92,7 +94,7 @@ class _DashBoardState extends State<DashBoard> {
                   padding: const EdgeInsets.all(16),
                   onPressed: () {},
                   icon: const Icon(
-                    Icons.search,
+                    CupertinoIcons.search,
                     color: Colors.white,
                     size: 30,
                   ),
@@ -143,29 +145,41 @@ class _DashBoardState extends State<DashBoard> {
 
           // Courses you are taking
 
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            color: Colors.grey[200],
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children:const [
-                // Heading section
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 16,
-                    horizontal: 16,
-                  ),
-                  child: Text(
-                    'Your Courses',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(25),
+              color: Colors.grey[100],
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'Your courses',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
-                  ),
+
+                    // list view of courses
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          CourseCard(),
+                          CourseCard(),
+                          CourseCard(),
+                          CourseCard(),
+                          CourseCard(),
+                          CourseCard(),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ],

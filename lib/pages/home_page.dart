@@ -23,15 +23,15 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[700],
       body: IndexedStack(children: pages, index: currentIndex),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.blue[300],
+        backgroundColor: Colors.white,
         currentIndex: currentIndex,
         onTap: (index) => setState(() => currentIndex = index),
         items: const [
           BottomNavigationBarItem(
+            activeIcon: Icon(CupertinoIcons.house_fill),
             icon: Icon(CupertinoIcons.home),
             label: 'Home',
           ),
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
             label: 'Courses',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings_outlined),
+            icon: Icon(Icons.person),
             label: 'Profile',
           ),
         ],
