@@ -35,7 +35,7 @@ class _DashBoardState extends State<DashBoard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Hi, Jessica!',
+                        'Hi, Judas!',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 26,
@@ -147,7 +147,7 @@ class _DashBoardState extends State<DashBoard> {
 
           Expanded(
             child: Container(
-              padding: EdgeInsets.all(25),
+              padding: const EdgeInsets.all(25),
               color: Colors.grey[100],
               child: Center(
                 child: Column(
@@ -167,7 +167,7 @@ class _DashBoardState extends State<DashBoard> {
                     // list view of courses
                     Expanded(
                       child: ListView(
-                        children: [
+                        children: const [
                           CourseCard(),
                           CourseCard(),
                           CourseCard(),
