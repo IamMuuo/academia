@@ -1,4 +1,5 @@
 import 'package:academia/pages/home_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -9,8 +10,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController? _admnoController;
-  TextEditingController? _passwordController;
+  TextEditingController _admnoController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   bool _hiddenPasswordFlag = false;
   bool? _acceptedTerms = false;
 
@@ -32,6 +33,8 @@ class _LoginPageState extends State<LoginPage> {
     //_admnoController.dispose();
     //_passwordController.dispose();
     super.dispose();
+    _admnoController.dispose();
+    _admnoController.dispose();
   }
 
   @override
@@ -52,6 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   fontSize: 40,
+                  color: Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -59,9 +63,13 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.only(top: 1, bottom: 20),
                 child: Text(
                   'Good things coming your way',
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 12,
+                  ),
                 ),
               ),
+
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: TextField(
@@ -82,12 +90,13 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: InputDecoration(
                     hintText: 'Your password',
                     suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _hiddenPasswordFlag = !_hiddenPasswordFlag;
-                          });
-                        },
-                        icon: const Icon(Icons.quiz)),
+                      onPressed: () {
+                        setState(() {
+                          _hiddenPasswordFlag = !_hiddenPasswordFlag;
+                        });
+                      },
+                      icon: const Icon(CupertinoIcons.eye),
+                    ),
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                     ),
@@ -111,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                       softWrap: true,
                       style: TextStyle(
                         // fontWeight: FontWeight.w500,
-                        color: Colors.grey,
+                        color: Colors.white,
                         fontSize: 12,
                       ),
                     ),
