@@ -169,14 +169,7 @@ class _DashBoardState extends State<DashBoard> {
                     // list view of courses
                     Expanded(
                       child: ListView(
-                        children: const [
-                          CourseCard(),
-                          CourseCard(),
-                          CourseCard(),
-                          CourseCard(),
-                          CourseCard(),
-                          CourseCard(),
-                        ],
+                        children: buildCourseCards(),
                       ),
                     ),
                   ],

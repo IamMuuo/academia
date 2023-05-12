@@ -78,14 +78,7 @@ class _CoursesPageState extends State<CoursesPage> {
               child: Container(
                 padding: EdgeInsets.all(12),
                 child: ListView(
-                  children: [
-                    CourseCard(),
-                    CourseCard(),
-                    CourseCard(),
-                    CourseCard(),
-                    CourseCard(),
-                    CourseCard(),
-                  ],
+                  children: buildCourseCards(),
                 ),
               ),
             ),
