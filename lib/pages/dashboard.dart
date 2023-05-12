@@ -2,6 +2,7 @@ import 'package:academia/widgets/course_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:academia/widgets/emojicon.dart';
+import 'package:intl/intl.dart';
 
 class DashBoard extends StatefulWidget {
   const DashBoard({super.key});
@@ -11,12 +12,18 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
-  TextEditingController? _searchController;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
-    _searchController = TextEditingController();
+    // _searchController = TextEditingController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -44,7 +51,7 @@ class _DashBoardState extends State<DashBoard> {
                       ),
                       // Date
                       Text(
-                        '5 May, 2023',
+                        DateFormat.yMMMMEEEEd().format(DateTime.now()),
                         style: TextStyle(
                           color: Colors.grey[300],
                           fontWeight: FontWeight.w500,
@@ -131,12 +138,7 @@ class _DashBoardState extends State<DashBoard> {
 
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              Emojicon(),
-              Emojicon(),
-              Emojicon(),
-              Emojicon(),
-            ],
+            children: buildEmojiCons(),
           ),
 
           SizedBox(

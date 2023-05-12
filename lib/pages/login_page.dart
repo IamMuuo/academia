@@ -10,8 +10,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController _admnoController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _admnoController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool _hiddenPasswordFlag = false;
   bool? _acceptedTerms = false;
 
@@ -23,15 +23,13 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    _admnoController = TextEditingController();
-    _passwordController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    //_admnoController.dispose();
-    //_passwordController.dispose();
+    _admnoController.dispose();
+    _passwordController.dispose();
     super.dispose();
     _admnoController.dispose();
     _admnoController.dispose();
