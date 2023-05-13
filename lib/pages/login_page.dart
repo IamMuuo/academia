@@ -31,8 +31,6 @@ class _LoginPageState extends State<LoginPage> {
     _admnoController.dispose();
     _passwordController.dispose();
     super.dispose();
-    _admnoController.dispose();
-    _admnoController.dispose();
   }
 
   @override
