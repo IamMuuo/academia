@@ -4,16 +4,17 @@ import 'package:flutter/cupertino.dart';
 class InfoCard extends StatefulWidget {
   const InfoCard({
     super.key,
-    /*
-    required this.courseName,
-    this.icon,
-    this.courseTime,
-    */
+    this.icon = CupertinoIcons.mail_solid,
+    this.topic = "School Email",
+    this.content = "someone@school.com",
+    this.color = Colors.green,
   });
-  // final icon;
-  // final String? courseName;
-  // final String? courseTime;
-  //
+
+  final IconData icon;
+  final String topic;
+  final String content;
+  final MaterialColor color;
+
   @override
   State<InfoCard> createState() => _InfoCardState();
 }
@@ -37,22 +38,22 @@ class _InfoCardState extends State<InfoCard> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.amber,
+                    color: widget.color,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(
-                    CupertinoIcons.mail_solid,
+                  child: Icon(
+                    widget.icon,
                     size: 30,
                   ),
                 ),
                 const SizedBox(width: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     // Title
                     Text(
-                      'School Email',
-                      style: TextStyle(
+                      widget.topic,
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
@@ -60,8 +61,8 @@ class _InfoCardState extends State<InfoCard> {
 
                     // subtitle
                     Text(
-                      'someone@example.com',
-                      style: TextStyle(
+                      widget.content,
+                      style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
@@ -73,7 +74,7 @@ class _InfoCardState extends State<InfoCard> {
             ),
             IconButton(
               onPressed: () {},
-              icon: const Icon(CupertinoIcons.arrow_right),
+              icon: const Icon(CupertinoIcons.arrow_uturn_right),
             ),
           ],
         ),
