@@ -1,6 +1,6 @@
-# SchoolPal 🎓📱
+# Academia 🎓📱
 
-SchoolPal is a 📱 mobile app designed to help students manage their school life. With SchoolPal, students can easily keep track of their class schedule, assignments, exams, grades and more, all in one place. The app is built using 🚀 Flutter, a mobile app SDK for building high-performance, high-fidelity, apps for iOS, Android, web and desktop from a single codebase. 
+Academia is a 📱 mobile app designed to help students manage their school life. With SchoolPal, students can easily keep track of their class schedule, assignments, exams, grades and more, all in one place. The app is built using 🚀 Flutter, a mobile app SDK for building high-performance, high-fidelity, apps for iOS, Android, web and desktop from a single codebase. 
 
 ## Features 🔥🚀
 
@@ -18,12 +18,12 @@ SchoolPal is a 📱 mobile app designed to help students manage their school lif
 
 ## Screenshots 📷
 
-![Screenshots of SchoolPal app](screenshots.png)
+![Screenshots of Academia app](screenshots.png)
 
 ## Getting Started 🚀
 
 1. Install [Flutter](https://flutter.dev/docs/get-started/install).
-2. Clone this repository: `git clone https://github.com/YOUR-USERNAME/SchoolPal.git`
+2. Clone this repository: `git clone https://github.com/IamMuuo/academia.git`
 3. Install dependencies: `flutter pub get`
 4. Run the app: `flutter run`
 

@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class Emojicon extends StatefulWidget {
-  const Emojicon({super.key});
+  Emojicon({
+    Key? key,
+    required this.path,
+    required this.func,
+  }) : super(key: key);
+
+  final String path;
+  final VoidCallback func;
 
   @override
   State<Emojicon> createState() => _EmojiconState();
@@ -18,12 +25,22 @@ class _EmojiconState extends State<Emojicon> {
           Radius.circular(20),
         ),
       ),
-      child: Image.asset(
-        'assets/images/drool.png',
-        scale: 2,
-        height: 55,
-        width: 55,
+      child: IconButton(
+        onPressed: widget.func,
+        icon: Image.asset(
+          widget.path,
+          scale: 5,
+        ),
       ),
     );
   }
+}
+
+List<Emojicon> buildEmojiCons() {
+  final emojicons = <Emojicon>[];
+  emojicons.add(Emojicon(path: "assets/images/drool.png", func: () {}));
+  emojicons.add(Emojicon(path: "assets/images/bored.png", func: () {}));
+  emojicons.add(Emojicon(path: "assets/images/smiley.png", func: () {}));
+  emojicons.add(Emojicon(path: "assets/images/bored.png", func: () {}));
+  return emojicons;
 }

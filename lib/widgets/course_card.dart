@@ -4,16 +4,15 @@ import 'package:flutter/cupertino.dart';
 class CourseCard extends StatefulWidget {
   const CourseCard({
     super.key,
-    /*
+    required this.icon,
     required this.courseName,
-    this.icon,
-    this.courseTime,
-    */
+    required this.courseTime,
   });
-  // final icon;
-  // final String? courseName;
-  // final String? courseTime;
-  //
+
+  final IconData icon;
+  final String courseName;
+  final String courseTime;
+
   @override
   State<CourseCard> createState() => _CourseCardState();
 }
@@ -22,9 +21,9 @@ class _CourseCardState extends State<CourseCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 12),
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
@@ -35,21 +34,19 @@ class _CourseCardState extends State<CourseCard> {
             Row(
               children: [
                 IconButton(
-                  padding: EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(12),
                   enableFeedback: true,
                   onPressed: () {},
-                  icon: Icon(
-                    CupertinoIcons.heart_fill,
-                  ),
+                  icon: Icon(widget.icon),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Title
                     Text(
-                      'ACS 211',
-                      style: TextStyle(
+                      widget.courseName,
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
@@ -57,8 +54,8 @@ class _CourseCardState extends State<CourseCard> {
 
                     // subtitle
                     Text(
-                      'Today at 2:00pm',
-                      style: TextStyle(
+                      widget.courseTime,
+                      style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
@@ -70,11 +67,56 @@ class _CourseCardState extends State<CourseCard> {
             ),
             IconButton(
               onPressed: () {},
-              icon: Icon(CupertinoIcons.arrow_right),
+              icon: const Icon(CupertinoIcons.arrow_right),
             ),
           ],
         ),
       ),
     );
   }
+}
+
+// This method is supposed to build
+// the user's courses from the api
+// never create a single course card instance
+// without this method
+
+List<CourseCard> buildCourseCards() {
+  final courses = <CourseCard>[];
+  courses.add(const CourseCard(
+    icon: CupertinoIcons.circle,
+    courseName: "MSB 101",
+    courseTime: "Today 11:00pm",
+  ));
+
+  courses.add(const CourseCard(
+    icon: CupertinoIcons.circle,
+    courseName: "MATH 121",
+    courseTime: "Today 11:00pm",
+  ));
+
+  courses.add(const CourseCard(
+    icon: CupertinoIcons.circle,
+    courseName: "ENG 101",
+    courseTime: "Tommorow 11:00pm",
+  ));
+
+  courses.add(const CourseCard(
+    icon: CupertinoIcons.circle,
+    courseName: "PHY 217",
+    courseTime: "Thur 11:00pm",
+  ));
+
+  courses.add(const CourseCard(
+    icon: CupertinoIcons.circle,
+    courseName: "BIO 111",
+    courseTime: "Tommorow 3:00pm",
+  ));
+
+  courses.add(const CourseCard(
+    icon: CupertinoIcons.circle,
+    courseName: "PHIL 111",
+    courseTime: "Sat 12:00pm",
+  ));
+  return courses;
 }

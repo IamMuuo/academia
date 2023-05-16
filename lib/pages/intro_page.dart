@@ -22,10 +22,11 @@ class IntroPage extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.all(16),
               child: Text(
-                "Your school life partner awaits",
+                "Your school life assistant awaits",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 50,
+                  color: Colors.black87,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.w600,
                 ),
