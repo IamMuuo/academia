@@ -1,4 +1,5 @@
 import 'package:academia/models/user.dart';
+import 'package:academia/pages/home_page.dart';
 import 'package:academia/pages/intro_page.dart';
 import 'package:academia/themes/theme.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ void main() async {
   var appDB = await Hive.openBox("appDB");
 
   runApp(GetMaterialApp(
-    home: const IntroPage(),
+    home: appDB.get("user") == null ? const IntroPage() : const HomePage(),
     theme: lightModeTheme,
   ));
 }

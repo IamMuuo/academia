@@ -4,6 +4,7 @@ import 'package:academia/pages/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart';
 import 'package:academia/constants/common.dart';
 
@@ -52,6 +53,8 @@ class LoginController extends GetxController {
       if (response.statusCode == 200) {
         // Authentication successful
         // Process response and handle user authentication
+        var db = await Hive.openBox("appDB");
+        db.put("user", newStudent);
         // Redirect to the home screen or perform other actions
         Get.snackbar(
           "Success",
