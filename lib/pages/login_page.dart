@@ -1,41 +1,14 @@
-import 'package:academia/models/user_utils.dart';
-import 'package:academia/pages/home_page.dart';
+import 'package:academia/controllers/login_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _admnoController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  bool _hiddenPasswordFlag = false;
-  bool? _acceptedTerms = false;
-
-  void _acceptedTermsHandler(bool? newValue) {
-    setState(() {
-      _acceptedTerms = newValue;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _admnoController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final LoginController loginController = Get.put(LoginController());
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -70,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: TextField(
-                  controller: _admnoController,
+                  controller: loginController.usernameController,
                   decoration: const InputDecoration(
                     hintText: 'Your admission number',
                     border: OutlineInputBorder(
@@ -81,21 +54,22 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(16),
-                child: TextField(
-                  controller: _passwordController,
-                  obscureText: !_hiddenPasswordFlag,
-                  decoration: InputDecoration(
-                    hintText: 'Your password',
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _hiddenPasswordFlag = !_hiddenPasswordFlag;
-                        });
-                      },
-                      icon: const Icon(CupertinoIcons.eye),
-                    ),
-                    border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                child: Obx(
+                  () => TextField(
+                    controller: loginController.passwordController,
+                    obscureText: loginController.showPassword.value,
+                    decoration: InputDecoration(
+                      hintText: 'Your password',
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          loginController.showPassword.value =
+                              !loginController.showPassword.value;
+                        },
+                        icon: const Icon(CupertinoIcons.eye),
+                      ),
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
                     ),
                   ),
                 ),
@@ -107,9 +81,13 @@ class _LoginPageState extends State<LoginPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Checkbox(
-                      value: _acceptedTerms,
-                      onChanged: _acceptedTermsHandler,
+                    Obx(
+                      () => Checkbox(
+                        value: loginController.acceptTerms.value,
+                        onChanged: (value) {
+                          loginController.acceptTerms.value = value!;
+                        },
+                      ),
                     ),
                     const Text(
                       'I agree to the terms and conditions',
@@ -125,36 +103,31 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              ElevatedButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return const Center(
+              Obx(
+                () => !loginController.isloading.value
+                    ? ElevatedButton(
+                        onPressed: () {
+                          loginController.login();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          minimumSize: const Size(327, 60),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12),
+                            ),
+                          ),
+                        ),
+                        child: const Text(
+                          'I want in',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      )
+                    : const Center(
                         child: CircularProgressIndicator(),
-                      );
-                    },
-                  );
-                  try {
-                    createUser(_admnoController.text, _passwordController.text);
-                  } catch (e) {}
-                  //Navigator.of(context).pop();
-                },
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  minimumSize: const Size(327, 60),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(12),
-                    ),
-                  ),
-                ),
-                child: const Text(
-                  'I want in',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                      ),
               ),
             ],
           ),

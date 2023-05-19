@@ -35,7 +35,7 @@ class User {
 
   Map<String, dynamic> toModel() {
     return {
-      'admno': admno,
+      'username': admno,
       'password': password,
     };
   }
