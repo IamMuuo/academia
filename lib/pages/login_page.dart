@@ -1,3 +1,4 @@
+import 'package:academia/models/user_utils.dart';
 import 'package:academia/pages/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -125,12 +126,20 @@ class _LoginPageState extends State<LoginPage> {
               ),
 
               ElevatedButton(
-                onPressed: () => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return const HomePage();
-                  }),
-                ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  );
+                  try {
+                    createUser(_admnoController.text, _passwordController.text);
+                  } catch (e) {}
+                  //Navigator.of(context).pop();
+                },
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
                   minimumSize: const Size(327, 60),
