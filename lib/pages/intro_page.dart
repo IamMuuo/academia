@@ -44,7 +44,7 @@ class IntroPage extends StatelessWidget {
             ),
 
             ElevatedButton(
-              onPressed: () => Get.to(LoginPage()),
+              onPressed: () => Get.off(const LoginPage()),
               style: ElevatedButton.styleFrom(
                 elevation: 0,
                 minimumSize: const Size(327, 60),
