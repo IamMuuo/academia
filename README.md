@@ -1,4 +1,5 @@
 <img src="assets/icons/academia.png">
+
 # Academia 
 
 Academia is a 📱 mobile app designed to help students manage their school life. With SchoolPal, students can easily keep track of their class schedule, assignments, exams, grades and more, all in one place. The app is built using 🚀 Flutter, a mobile app SDK for building high-performance, high-fidelity, apps for iOS, Android, web and desktop from a single codebase. 
