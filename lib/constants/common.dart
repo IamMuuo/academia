@@ -1,1 +1,1 @@
-const String urlPrefix = "https://backend.kimworks.buzz";
+const String urlPrefix = "https://daystar-backend-atrocious-jpg.vercel.app";

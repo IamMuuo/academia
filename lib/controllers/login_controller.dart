@@ -1,93 +1,69 @@
-import 'dart:convert';
 import 'package:academia/models/user.dart';
 import 'package:academia/pages/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:http/http.dart';
-import 'package:academia/constants/common.dart';
+import 'package:hive/hive.dart';
 
 class LoginController extends GetxController {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  User newUser = User();
   var acceptTerms = false.obs;
   var showPassword = false.obs;
   var isloading = false.obs;
 
   Future<void> login() async {
     isloading.value = true;
-    // Does the user conform to the T&C ?
-    if (acceptTerms.isFalse) {
+    if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
       Get.snackbar(
-        "Terms Error",
-        "Please accept the terms and conditions",
+        "Form Error",
+        "Please ensure you fill in the form to continue",
         icon: const Icon(
-          CupertinoIcons.xmark_circle_fill,
+          CupertinoIcons.xmark_circle,
           color: Colors.red,
         ),
-        backgroundColor: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
       );
       isloading.value = false;
       return;
     }
-    // Make API request to authenticate user
-    try {
-      final url = Uri.parse("$urlPrefix/login");
-      final headers = {"Content-type": "application/json"};
-      User newStudent = User()
-        ..password = passwordController.text
-        ..admno = usernameController.text;
 
-      // Send a request
-      final response = await post(
-        url,
-        headers: headers,
-        body: json.encode(newStudent.toModel()),
+    // validate accepts T&C
+    if (!acceptTerms.value) {
+      Get.snackbar(
+        "Terms and Conditions",
+        "You must agree the terms and conditions to continue to the applications",
+        icon: const Icon(
+          CupertinoIcons.xmark_circle,
+          color: Colors.red,
+        ),
       );
-
-      debugPrint("Login status code: ${response.statusCode}");
-
-      // Check response status
-      if (response.statusCode == 200) {
-        // Authentication successful
-        // Process response and handle user authentication
-        var db = await Hive.openBox("appDB");
-        db.put("user", newStudent);
-        // Redirect to the home screen or perform other actions
-        Get.snackbar(
-          "Success",
-          "Welcome, you've made it",
-          icon: const Icon(
-            CupertinoIcons.check_mark_circled_solid,
-            color: Colors.green,
-          ),
-          backgroundColor: Colors.white,
-          snackPosition: SnackPosition.BOTTOM,
-        );
-        isloading.value = false;
-
-        Get.off(const HomePage());
-      } else {
-        // Authentication failed
-        // Display error message or perform other actions
-        Get.snackbar(
-          "Validation error",
-          "Please checkout your username and password and try again",
-          icon: const Icon(
-            CupertinoIcons.xmark_circle_fill,
-            color: Colors.red,
-          ),
-          backgroundColor: Colors.white,
-          snackPosition: SnackPosition.BOTTOM,
-        );
-        isloading.value = false;
-      }
-    } catch (error) {
-      // Handle network or API errors
       isloading.value = false;
-      debugPrint("Error during login: ${error.toString()}");
+      return;
     }
+
+    // auth the user
+    bool authenticated = await newUser.login(
+        usernameController.text.trim(), passwordController.text.trim());
+
+    if (authenticated) {
+      newUser = await newUser.getUserDetails(
+          usernameController.text, passwordController.text);
+
+      // store the user
+      var appDB = await Hive.openBox("appDB");
+      appDB.put("user", newUser);
+
+      Get.off(const HomePage());
+    }
+    Get.snackbar(
+      "Form Validation Error",
+      "Login failure, Please check your admno and password",
+      icon: const Icon(
+        CupertinoIcons.xmark_circle,
+        color: Colors.red,
+      ),
+    );
+    isloading.value = false;
   }
 }

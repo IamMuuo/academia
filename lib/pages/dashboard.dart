@@ -1,32 +1,18 @@
+import 'package:academia/controllers/dashboard_controller.dart';
 import 'package:academia/widgets/course_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:academia/widgets/emojicon.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class DashBoard extends StatefulWidget {
+class DashBoard extends StatelessWidget {
   const DashBoard({super.key});
 
   @override
-  State<DashBoard> createState() => _DashBoardState();
-}
-
-class _DashBoardState extends State<DashBoard> {
-  final TextEditingController _searchController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final DashboardController _dashBoardController =
+        Get.put(DashboardController());
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -68,7 +54,9 @@ class _DashBoardState extends State<DashBoard> {
                         ),
                       ),
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _dashBoardController.getNotifications();
+                        },
                         icon: const Icon(
                           CupertinoIcons.bell_fill,
                           size: 30,
@@ -92,7 +80,7 @@ class _DashBoardState extends State<DashBoard> {
                 left: 16,
               ),
               child: TextField(
-                controller: _searchController,
+                controller: _dashBoardController.searchBoxController,
                 cursorColor: Colors.white,
                 decoration: InputDecoration(
                   filled: true,
