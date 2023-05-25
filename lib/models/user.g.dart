@@ -32,13 +32,15 @@ class UserAdapter extends TypeAdapter<User> {
       ..status = fields[12] as String?
       ..amountBilled = fields[13] as String?
       ..amountPaid = fields[14] as String?
-      ..balance = fields[15] as String?;
+      ..balance = fields[15] as String?
+      ..cookie = fields[16] as String?
+      ..profile = fields[17] as String?;
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(16)
+      ..writeByte(18)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -70,7 +72,11 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(14)
       ..write(obj.amountPaid)
       ..writeByte(15)
-      ..write(obj.balance);
+      ..write(obj.balance)
+      ..writeByte(16)
+      ..write(obj.cookie)
+      ..writeByte(17)
+      ..write(obj.profile);
   }
 
   @override

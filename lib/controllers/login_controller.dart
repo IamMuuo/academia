@@ -19,6 +19,7 @@ class LoginController extends GetxController {
       Get.snackbar(
         "Form Error",
         "Please ensure you fill in the form to continue",
+        backgroundColor: Colors.white,
         icon: const Icon(
           CupertinoIcons.xmark_circle,
           color: Colors.red,
@@ -33,6 +34,7 @@ class LoginController extends GetxController {
       Get.snackbar(
         "Terms and Conditions",
         "You must agree the terms and conditions to continue to the applications",
+        backgroundColor: Colors.white,
         icon: const Icon(
           CupertinoIcons.xmark_circle,
           color: Colors.red,
@@ -53,17 +55,20 @@ class LoginController extends GetxController {
       // store the user
       var appDB = await Hive.openBox("appDB");
       appDB.put("user", newUser);
-
-      Get.off(const HomePage());
+      isloading.value = false;
+      // Get.off(const HomePage());
+      return;
+    } else {
+      Get.snackbar(
+        "Form Validation Error",
+        "Login failure, Please check your admno and password",
+        backgroundColor: Colors.white,
+        icon: const Icon(
+          CupertinoIcons.xmark_circle,
+          color: Colors.red,
+        ),
+      );
+      isloading.value = false;
     }
-    Get.snackbar(
-      "Form Validation Error",
-      "Login failure, Please check your admno and password",
-      icon: const Icon(
-        CupertinoIcons.xmark_circle,
-        color: Colors.red,
-      ),
-    );
-    isloading.value = false;
   }
 }

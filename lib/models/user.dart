@@ -58,6 +58,12 @@ class User {
   @HiveField(15)
   String? balance;
 
+  @HiveField(16)
+  String? cookie;
+
+  @HiveField(17)
+  String? profile;
+
   // To json object
   Map<String, dynamic> toJson() {
     return {
@@ -100,10 +106,12 @@ class User {
       );
 
       debugPrint("Login status code: ${response.statusCode}");
+      debugPrint("Login cookie: ${response.headers['set-cookie']}");
 
       // Check response status
       if (response.statusCode == 200) {
         // Authentication successful
+        cookie = response.headers['set-cookie'];
         return true;
       }
     } catch (error) {
@@ -118,20 +126,40 @@ class User {
     User newUser = User();
 
     try {
-      final url = Uri.parse("$urlPrefix/api/user");
-      final headers = {"Content-type": "application/json"};
+      final url = Uri.parse("$urlPrefix/api/user/");
+      // final headers = {"Content-type": "application/json"};
+
+      debugPrint("Attempting to get user details: ${cookie}");
 
       final response = await get(
         url,
-        headers: headers,
+        headers: {'cookie': cookie!},
       );
 
       debugPrint("Get user details status: ${response.statusCode}");
 
       // Check response status
       if (response.statusCode == 200) {
-        debugPrint("Success");
-        debugPrint(jsonDecode(response.body));
+        dynamic jsonData = json.decode(response.body);
+
+        // The values
+        admno = jsonData[1]["badge"];
+        name = jsonData[2]["badge"];
+        idno = jsonData[3]["badge"];
+        gender = jsonData[4]["badge"];
+        address = jsonData[5]["badge"];
+        email = jsonData[6]["badge"];
+        dateOfBirth = jsonData[7]["badge"];
+        campus = jsonData[8]["badge"];
+        programme = jsonData[9]["badge"];
+        completedUnits = jsonData[10]["badge"];
+        gpa = double.parse(jsonData[11]["badge"]);
+        status = jsonData[12]["badge"];
+        amountBilled = jsonData[13]["badge"];
+        amountPaid = jsonData[14]["badge"];
+        balance = jsonData[15]["badge"];
+
+        debugPrint("Success getting student data!");
       } else {
         debugPrint("Error getting user info");
         Get.snackbar(
@@ -144,7 +172,7 @@ class User {
         );
       }
     } catch (e) {
-      debugPrint("Error");
+      debugPrint("Error: ${e.toString()}");
     }
 
     return newUser;
