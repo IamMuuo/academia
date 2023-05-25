@@ -2,3 +2,4 @@
 // For local development
 
 const String urlPrefix = "https://daystar-backend.onrender.com";
+const String dbName = "appDB";

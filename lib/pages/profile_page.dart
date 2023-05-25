@@ -1,18 +1,18 @@
+import 'package:academia/controllers/profile_page_controller.dart';
 import 'package:academia/widgets/info_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:academia/widgets/gpa_info_widget.dart';
+import 'package:get/get.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
-  @override
   Widget build(BuildContext context) {
+    ProfilePageController profilePageController =
+        Get.put(ProfilePageController());
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -58,10 +58,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Container(
                     padding: const EdgeInsets.only(bottom: 16),
-                    child: const Text(
-                      'Judas Iscariot',
+                    child: Text(
+                      '${profilePageController.user!.name}',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 30,
                         fontWeight: FontWeight.bold,

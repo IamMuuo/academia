@@ -56,7 +56,7 @@ class LoginController extends GetxController {
       var appDB = await Hive.openBox("appDB");
       appDB.put("user", newUser);
       isloading.value = false;
-      // Get.off(const HomePage());
+      Get.off(const HomePage());
       return;
     } else {
       Get.snackbar(
