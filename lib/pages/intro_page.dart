@@ -1,4 +1,5 @@
 import 'package:academia/pages/login_page.dart';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 class IntroPage extends StatelessWidget {
@@ -43,12 +44,7 @@ class IntroPage extends StatelessWidget {
             ),
 
             ElevatedButton(
-              onPressed: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) {
-                  return const LoginPage();
-                }),
-              ),
+              onPressed: () => Get.off(const LoginPage()),
               style: ElevatedButton.styleFrom(
                 elevation: 0,
                 minimumSize: const Size(327, 60),

@@ -43,6 +43,8 @@ dependencies:
   hive_flutter: ^1.1.0
   hive_generator: ^2.0.0
   build_runner: ^2.3.3
+  get: ^4.6.5
+  flutter_launcher_icons: ^0.13.1
 
 
 
@@ -60,8 +62,14 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 flutter_native_splash:
-  image: assets/icons/academia.png
-  color: "#FD8E0B"
+  image: "assets/images/graduate_girl.png"
+  color: "##1975D1"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/academia.png"
+  min_sdk_android: 21
 
 # The following section is specific to Flutter packages.
 flutter:

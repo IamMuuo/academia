@@ -23,7 +23,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(children: pages, index: currentIndex),
+      body: Scaffold(
+        body: IndexedStack(children: pages, index: currentIndex),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.white,
