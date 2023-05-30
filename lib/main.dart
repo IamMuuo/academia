@@ -11,9 +11,11 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(UserAdapter());
   var appDB = await Hive.openBox("appDB");
+  User user = appDB.get("user");
 
   runApp(GetMaterialApp(
-    home: appDB.get("user") == null ? const IntroPage() : const HomePage(),
+    //TODO: update
+    home: user.admno != null ? const IntroPage() : const HomePage(),
     theme: lightModeTheme,
   ));
 }

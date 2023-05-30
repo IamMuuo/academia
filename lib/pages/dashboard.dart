@@ -137,8 +137,12 @@ class DashBoard extends StatelessWidget {
 
             Expanded(
               child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20))),
                 padding: const EdgeInsets.all(25),
-                color: Colors.grey[100],
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
