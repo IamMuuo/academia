@@ -1,20 +1,19 @@
+import 'package:academia/models/user.dart';
+import 'package:academia/pages/home_page.dart';
 import 'package:academia/pages/intro_page.dart';
 import 'package:academia/themes/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:get/get.dart';
 
-void main() {
-  runApp(const App());
-}
+void main() async {
+  // Init flutter
+  await Hive.initFlutter();
+  Hive.registerAdapter(UserAdapter());
+  var appDB = await Hive.openBox("appDB");
 
-class App extends StatelessWidget {
-  const App({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Academia',
-      home: const IntroPage(),
-      theme: lightModeTheme,
-    );
-  }
+  runApp(GetMaterialApp(
+    home: appDB.get("user") == null ? const IntroPage() : const HomePage(),
+    theme: lightModeTheme,
+  ));
 }
