@@ -1,3 +1,4 @@
+import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/dashboard_controller.dart';
 import 'package:academia/widgets/course_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +12,7 @@ class DashBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DashboardController _dashBoardController =
+    final DashboardController dashBoardController =
         Get.put(DashboardController());
     return Scaffold(
       body: SafeArea(
@@ -27,9 +28,9 @@ class DashBoard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Hi, Judas!',
-                          style: TextStyle(
+                        Text(
+                          'Hi, ${user.name!.split(" ")[0]}!',
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 26,
                             fontWeight: FontWeight.bold,
@@ -55,7 +56,7 @@ class DashBoard extends StatelessWidget {
                       ),
                       child: IconButton(
                         onPressed: () {
-                          _dashBoardController.getNotifications();
+                          dashBoardController.getNotifications();
                         },
                         icon: const Icon(
                           CupertinoIcons.bell_fill,
@@ -80,7 +81,7 @@ class DashBoard extends StatelessWidget {
                 left: 16,
               ),
               child: TextField(
-                controller: _dashBoardController.searchBoxController,
+                controller: dashBoardController.searchBoxController,
                 cursorColor: Colors.white,
                 decoration: InputDecoration(
                   filled: true,
@@ -148,13 +149,16 @@ class DashBoard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        'Your courses',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6, bottom: 18),
+                        child: Text(
+                          'Your courses',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
 
