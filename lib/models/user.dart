@@ -71,15 +71,42 @@ class User {
       'admno': admno,
       'password': password,
       'gpa': gpa,
+      'idno': idno,
+      'gender': gender,
+      'address': address,
+      'email': email,
+      'dateOfBirth': dateOfBirth,
+      'campus': campus,
+      'programme': programme,
+      'completedUnits': completedUnits,
+      'status': status,
+      'amountBilled': amountBilled,
+      'amountPaid': amountPaid,
+      'balance': balance,
+      'cookie': cookie,
+      'profile': profile,
     };
   }
 
   // from json
-  User.fromJson(Map<String, dynamic> json)
+  User.fromJson(Map<dynamic, dynamic> json)
       : name = json['name'],
         gpa = json['gpa'],
         password = json['password'],
-        admno = json['admno'];
+        admno = json['admno'],
+        gender = json['gender'],
+        address = json['address'],
+        email = json['email'],
+        dateOfBirth = json["dateOfBirth"],
+        campus = json["campus"],
+        programme = json["programme"],
+        completedUnits = json["completedUnits"],
+        status = json["status"],
+        amountBilled = json["amountBilled"],
+        amountPaid = json["amountPaid"],
+        balance = json["balance"],
+        cookie = json["cookie"],
+        profile = json["profile"];
 
   Map<String, dynamic> toModel() {
     return {
@@ -122,9 +149,7 @@ class User {
   }
 
   // Retrieves user details from the api
-  Future<User> getUserDetails(String username, String password) async {
-    User newUser = User();
-
+  Future<void> getUserDetails(String username, String password) async {
     try {
       final url = Uri.parse("$urlPrefix/api/user/");
       // final headers = {"Content-type": "application/json"};
@@ -174,7 +199,5 @@ class User {
     } catch (e) {
       debugPrint("Error: ${e.toString()}");
     }
-
-    return newUser;
   }
 }
