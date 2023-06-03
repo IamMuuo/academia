@@ -13,10 +13,15 @@ void main() async {
   Hive.registerAdapter(UserAdapter());
   Box appDB = await Hive.openBox(dbName);
 
+  bool isLoggedIn = false;
 
+  if (appDB.containsKey("user")) {
+    user = User.fromJson(appDB.get("user"));
+    isLoggedIn = true;
+  }
   runApp(
     GetMaterialApp(
-      home: appDB.containsKey("user") ? const HomePage() : const IntroPage(),
+      home: isLoggedIn ? const HomePage() : const IntroPage(),
       theme: lightModeTheme,
     ),
   );
