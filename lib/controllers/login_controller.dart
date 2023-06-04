@@ -1,4 +1,4 @@
-import 'package:academia/models/user.dart';
+import 'package:academia/constants/common.dart';
 import 'package:academia/pages/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +8,8 @@ import 'package:hive/hive.dart';
 class LoginController extends GetxController {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  User newUser = User();
   var acceptTerms = false.obs;
-  var showPassword = false.obs;
+  var showPassword = true.obs;
   var isloading = false.obs;
 
   Future<void> login() async {
@@ -45,18 +44,19 @@ class LoginController extends GetxController {
     }
 
     // auth the user
-    bool authenticated = await newUser.login(
+    bool authenticated = await user.login(
         usernameController.text.trim(), passwordController.text.trim());
 
     if (authenticated) {
-      newUser = await newUser.getUserDetails(
+      await user.getUserDetails(
           usernameController.text, passwordController.text);
 
       // store the user
       var appDB = await Hive.openBox("appDB");
-      appDB.put("user", newUser);
+      appDB.put("user", user.toJson());
       isloading.value = false;
-      // Get.off(const HomePage());
+      debugPrint("User details: ${appDB.get('user')}");
+      Get.off(const HomePage());
       return;
     } else {
       Get.snackbar(

@@ -1,83 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-class InfoCard extends StatefulWidget {
+class InfoCard extends StatelessWidget {
   const InfoCard({
     super.key,
-    this.icon = CupertinoIcons.mail_solid,
-    this.topic = "School Email",
-    this.content = "someone@school.com",
-    this.color = Colors.green,
+    required this.title,
+    required this.content,
+    required this.icon,
   });
-
-  final IconData icon;
-  final String topic;
+  final String title;
   final String content;
-  final MaterialColor color;
+  final IconData icon;
 
-  @override
-  State<InfoCard> createState() => _InfoCardState();
-}
-
-class _InfoCardState extends State<InfoCard> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.only(bottom: 12),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: widget.color,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(
-                    widget.icon,
-                    size: 30,
-                  ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Icon(
+                icon,
+                color: Colors.grey,
+                size: 20,
+              ),
+              const SizedBox(
+                width: 4,
+              ),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                  color: Colors.grey,
                 ),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Title
-                    Text(
-                      widget.topic,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-
-                    // subtitle
-                    Text(
-                      widget.content,
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+              ),
+              const Spacer(),
+              Text(
+                content,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                  color: Colors.black,
                 ),
-              ],
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(CupertinoIcons.arrow_uturn_right),
-            ),
-          ],
-        ),
+              )
+            ],
+          ),
+          const Divider(
+            thickness: 2,
+          ),
+        ],
       ),
     );
   }
