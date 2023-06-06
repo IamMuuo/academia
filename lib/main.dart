@@ -11,7 +11,7 @@ void main() async {
   // Init flutter
   await Hive.initFlutter();
   Hive.registerAdapter(UserAdapter());
-  Box appDB = await Hive.openBox(dbName);
+  appDB = await Hive.openBox(dbName);
 
   bool isLoggedIn = false;
 
