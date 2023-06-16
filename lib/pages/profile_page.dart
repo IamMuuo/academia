@@ -40,6 +40,15 @@ class ProfilePage extends StatelessWidget {
                 CircleAvatar(
                   radius: 50.0,
                   backgroundColor: Colors.blue[300],
+                  child: user.gender! == "Male"
+                      ? Image.asset(
+                          "assets/images/male_student.png",
+                          width: 80,
+                        )
+                      : Image.asset(
+                          "assets/images/graduate_girl.png",
+                          width: 80,
+                        ),
                 ),
                 if (user.gpa! > 3.0)
                   Positioned(
