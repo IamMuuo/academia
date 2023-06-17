@@ -1,4 +1,5 @@
 import 'package:academia/constants/common.dart';
+import 'package:academia/models/schedule.dart';
 import 'package:academia/models/user.dart';
 import 'package:academia/pages/home_page.dart';
 import 'package:academia/pages/intro_page.dart';
@@ -11,6 +12,7 @@ void main() async {
   // Init flutter
   await Hive.initFlutter();
   Hive.registerAdapter(UserAdapter());
+  Hive.registerAdapter(ScheduleAdapter());
   appDB = await Hive.openBox(dbName);
 
   bool isLoggedIn = false;
