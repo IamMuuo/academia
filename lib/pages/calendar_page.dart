@@ -19,8 +19,15 @@ class CalendarPage extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              color: Colors.white,
               padding: const EdgeInsets.only(bottom: 16),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    // topLeft: Radius.circular(20),
+                    // topRight: Radius.circular(20),
+                    bottomRight: Radius.circular(60),
+                    bottomLeft: Radius.circular(60)),
+              ),
               child: TableCalendar(
                   headerStyle: HeaderStyle(
                     titleCentered: true,
@@ -85,12 +92,12 @@ class CalendarPage extends StatelessWidget {
                                 Container(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 12),
-                                  child: const Column(
+                                  child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,
                                     children: [
-                                      Text(
+                                      const Text(
                                         "Task Name",
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
@@ -99,7 +106,9 @@ class CalendarPage extends StatelessWidget {
                                         ),
                                       ),
                                       TextField(
-                                        decoration: InputDecoration(
+                                        controller: calendarPageController
+                                            .taskNameController,
+                                        decoration: const InputDecoration(
                                           hintText: 'Add task name...',
                                           border: OutlineInputBorder(
                                             borderRadius: BorderRadius.all(
@@ -115,12 +124,12 @@ class CalendarPage extends StatelessWidget {
                                 Container(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 12),
-                                  child: const Column(
+                                  child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,
                                     children: [
-                                      Text(
+                                      const Text(
                                         "Description",
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
@@ -129,8 +138,10 @@ class CalendarPage extends StatelessWidget {
                                         ),
                                       ),
                                       TextField(
+                                        controller: calendarPageController
+                                            .taskDescription,
                                         maxLines: 4,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                           hintText: 'Add task description...',
                                           border: OutlineInputBorder(
                                             borderRadius: BorderRadius.all(
@@ -192,44 +203,63 @@ class CalendarPage extends StatelessWidget {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 12),
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      const Text(
-                                        "Time",
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        const Text(
+                                          "Time",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      TextField(
-                                        onTap: () async {
-                                          final TimeOfDay? newTime =
-                                              await showTimePicker(
-                                            context: context,
-                                            initialTime:
-                                                TimeOfDay(hour: 7, minute: 15),
-                                          );
-                                        },
-                                        decoration: const InputDecoration(
-                                          hintText: 'Select Time',
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(5),
+                                        TextField(
+                                          onTap: () async {
+                                            final TimeOfDay? newTime =
+                                                await showTimePicker(
+                                              context: context,
+                                              initialTime: const TimeOfDay(
+                                                  hour: 7, minute: 15),
+                                            );
+
+                                            calendarPageController
+                                                    .taskTime.text =
+                                                "${newTime!.hour.toString()} : ${newTime.minute.toString()}";
+                                          },
+                                          controller:
+                                              calendarPageController.taskTime,
+                                          decoration: const InputDecoration(
+                                            hintText: 'Select Time',
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(5),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
+                                      ]),
                                 ),
 
                                 // schedule it button
                                 // button to refresh all content
                                 ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    // validate the text fields are not empty
+
+                                    calendarPageController.scheduleDate =
+                                        selectedDay.toString();
+                                    calendarPageController.addSchedule();
+
+                                    // Clear the controlllers
+                                    calendarPageController.taskDescription
+                                        .clear();
+                                    calendarPageController.taskNameController
+                                        .clear();
+                                    calendarPageController.taskTime.clear();
+                                  },
                                   style: ElevatedButton.styleFrom(
                                     elevation: 0,
                                     minimumSize: const Size(300, 60),
