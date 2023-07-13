@@ -22,11 +22,11 @@ class CalendarPage extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 16),
               decoration: const BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    // topLeft: Radius.circular(20),
-                    // topRight: Radius.circular(20),
-                    bottomRight: Radius.circular(60),
-                    bottomLeft: Radius.circular(60)),
+                //   borderRadius:BorderRadius.only(
+                //       // topLeft: Radius.circular(20),
+                //       // topRight: Radius.circular(20),
+                //       bottomRight: Radius.circular(60),
+                //       bottomLeft: Radius.circular(60)),
               ),
               child: TableCalendar(
                   headerStyle: HeaderStyle(
@@ -289,17 +289,7 @@ class CalendarPage extends StatelessWidget {
                   vertical: 16,
                 ),
                 child: ListView(
-                  children: const [
-                    TaskCard(),
-                    TaskCard(),
-                    TaskCard(),
-
-                    // school events
-                    EventCard(),
-
-                    // Dita's Event Card
-                    EventCard(),
-                  ],
+                  children: calendarPageController.buildTasksCards(),
                 ),
               ),
             ),

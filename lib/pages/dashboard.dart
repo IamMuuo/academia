@@ -15,6 +15,7 @@ class DashBoard extends StatelessWidget {
     final DashboardController dashBoardController =
         Get.put(DashboardController());
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [

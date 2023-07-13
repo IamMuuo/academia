@@ -1,5 +1,6 @@
 import 'package:academia/constants/common.dart';
 import 'package:academia/models/schedule.dart';
+import 'package:academia/widgets/task_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,7 +11,7 @@ class CalendarPageController extends GetxController {
   final TextEditingController taskTime = TextEditingController();
   String? scheduleDate;
 
-  List? schedules;
+  List? schedules = [].obs;
 
   // load schedules
 
@@ -36,12 +37,14 @@ class CalendarPageController extends GetxController {
   void addSchedule() {
     final Schedule s = Schedule();
     s.taskName = taskNameController.text;
-    s.taskDate = taskTime.text;
+    s.taskTime = taskTime.text;
     s.taskDescription = taskDescription.text;
     s.taskDate = scheduleDate;
 
     schedules!.add(s);
-
+    // schedules.sort((a, b) {
+    //
+    //     },)
     saveSchedule();
   }
 
@@ -53,5 +56,18 @@ class CalendarPageController extends GetxController {
       schedules = <Schedule>[];
     }
     printSchedules();
+  }
+
+  List<Widget> buildTasksCards() {
+    List<Widget> tasks = [];
+    for (int i = 0; i < schedules!.length; i++) {
+      debugPrint(
+          "Schedule: ${schedules![i].taskName}\n ${schedules![i].taskTime}");
+      tasks.add(TaskCard(
+        taskName: schedules![i].taskName,
+        taskTime: schedules![i].taskTime,
+      ));
+    }
+    return tasks;
   }
 }
