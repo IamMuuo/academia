@@ -15,14 +15,24 @@ class TaskCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(8),
       decoration: const BoxDecoration(
+        // color: Colors.white,
         borderRadius: BorderRadius.all(
           Radius.circular(12),
         ),
       ),
       child: ListTile(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12),),
+        contentPadding: const EdgeInsets.all(8),
+        trailing: IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              CupertinoIcons.delete_solid,
+              color: Colors.red,
+            )),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
         tileColor: Colors.white,
         // contentPadding: const EdgeInsets.all(8),
         subtitle:

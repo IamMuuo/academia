@@ -4,6 +4,7 @@ import 'package:academia/widgets/task_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class CalendarPageController extends GetxController {
   final TextEditingController taskNameController = TextEditingController();
@@ -12,6 +13,7 @@ class CalendarPageController extends GetxController {
   String? scheduleDate;
 
   List? schedules = [].obs;
+  var isLoading = true.obs;
 
   // load schedules
 
@@ -31,10 +33,30 @@ class CalendarPageController extends GetxController {
         .then((value) => debugPrint("Schedule saved successfully"))
         .catchError((error) {
       debugPrint("An error occuerred: $error");
-    }).whenComplete(() => debugPrint("Done!"));
+    }).whenComplete(() => Get.snackbar(
+              "success",
+              "Your schedule was saved successfully!",
+              icon: const Icon(
+                CupertinoIcons.checkmark_circle,
+                color: Colors.green,
+              ),
+              backgroundColor: Colors.white,
+            ));
   }
 
   void addSchedule() {
+    if (taskNameController.value.text.isEmpty) {
+      Get.snackbar(
+        "Error",
+        "You must atleast specify the name of your task before saving",
+        backgroundColor: Colors.white,
+        icon: const Icon(
+          CupertinoIcons.xmark_circle,
+          color: Colors.red,
+        ),
+      );
+      return;
+    }
     final Schedule s = Schedule();
     s.taskName = taskNameController.text;
     s.taskTime = taskTime.text;
@@ -42,9 +64,7 @@ class CalendarPageController extends GetxController {
     s.taskDate = scheduleDate;
 
     schedules!.add(s);
-    // schedules.sort((a, b) {
-    //
-    //     },)
+    schedules?.sort((a, b) => a.taskDate!.compareTo(b.taskDate!));
     saveSchedule();
   }
 
@@ -59,15 +79,57 @@ class CalendarPageController extends GetxController {
   }
 
   List<Widget> buildTasksCards() {
-    List<Widget> tasks = [];
-    for (int i = 0; i < schedules!.length; i++) {
-      debugPrint(
-          "Schedule: ${schedules![i].taskName}\n ${schedules![i].taskTime}");
-      tasks.add(TaskCard(
-        taskName: schedules![i].taskName,
-        taskTime: schedules![i].taskTime,
-      ));
+    if (schedules!.isNotEmpty) {
+      List<Widget> tasks = [];
+      for (int i = 0; i < schedules!.length; i++) {
+        debugPrint(
+            "Schedule: ${schedules![i].taskName}\n ${schedules![i].taskTime}");
+        tasks.add(TaskCard(
+          taskName: schedules![i].taskName,
+          taskTime: schedules![i].taskTime,
+          taskDate: DateFormat.yMMMMEEEEd()
+              .format(DateTime.parse(schedules![i].taskDate)),
+        ));
+      }
+      isLoading.value = false;
+      return tasks;
     }
-    return tasks;
+    isLoading.value = false;
+    return <Widget>[
+      Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(
+            Radius.circular(16),
+          ),
+        ),
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          children: [
+            const Text(
+              "Seems you have no events or tasks for today",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            ClipRRect(
+              child: Image.asset(
+                "assets/images/no_task.png",
+                // height: 250,
+                // width: 250,
+              ),
+            ),
+            const Text("We will notify you once you have a task or an event"),
+          ],
+        ),
+      ),
+    ];
+  }
+
+  @override
+  void onInit() {
+    isLoading.value = false;
+    super.onInit();
   }
 }
