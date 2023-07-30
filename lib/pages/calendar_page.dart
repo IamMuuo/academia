@@ -312,7 +312,7 @@ class CalendarPage extends StatelessWidget {
                         : Container(
                             constraints: BoxConstraints(
                               minHeight:
-                                  MediaQuery.of(context).size.height * 0.5,
+                                  MediaQuery.of(context).size.height * 0.75,
                             ),
                             padding: const EdgeInsets.symmetric(
                               horizontal: 12,
@@ -320,6 +320,10 @@ class CalendarPage extends StatelessWidget {
                             ),
                             decoration: BoxDecoration(
                               color: Colors.blue[700],
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(16),
+                                topRight: Radius.circular(16),
+                              ),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,

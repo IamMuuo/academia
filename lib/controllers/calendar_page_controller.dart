@@ -81,6 +81,17 @@ class CalendarPageController extends GetxController {
   List<Widget> buildTasksCards() {
     if (schedules!.isNotEmpty) {
       List<Widget> tasks = [];
+      tasks.add(
+        const Padding(
+          padding: EdgeInsets.all(8),
+          child: Text(
+            "Your saved schedules",
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
       for (int i = 0; i < schedules!.length; i++) {
         debugPrint(
             "Schedule: ${schedules![i].taskName}\n ${schedules![i].taskTime}");
@@ -89,6 +100,12 @@ class CalendarPageController extends GetxController {
           taskTime: schedules![i].taskTime,
           taskDate: DateFormat.yMMMMEEEEd()
               .format(DateTime.parse(schedules![i].taskDate)),
+          ondelete: () {
+            isLoading.value = true;
+            schedules!.remove(schedules![i]);
+            saveSchedule();
+            buildTasksCards();
+          },
         ));
       }
       isLoading.value = false;
@@ -96,32 +113,35 @@ class CalendarPageController extends GetxController {
     }
     isLoading.value = false;
     return <Widget>[
-      Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(
-            Radius.circular(16),
+      Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(
+              Radius.circular(16),
+            ),
           ),
-        ),
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          children: [
-            const Text(
-              "Seems you have no events or tasks for today",
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            children: [
+              const Text(
+                "Seems you have no events or tasks for today",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            ClipRRect(
-              child: Image.asset(
-                "assets/images/no_task.png",
-                // height: 250,
-                // width: 250,
+              ClipRRect(
+                child: Image.asset(
+                  "assets/images/no_task.png",
+                  // height: 250,
+                  // width: 250,
+                ),
               ),
-            ),
-            const Text("We will notify you once you have a task or an event"),
-          ],
+              const Text("We will notify you once you have a task or an event"),
+            ],
+          ),
         ),
       ),
     ];
