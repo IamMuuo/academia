@@ -62,8 +62,10 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 flutter_native_splash:
-  image: "assets/images/graduate_girl.png"
-  color: "##1975D1"
+  image: "assets/icons/academia.png"
+  branding: "assets/icons/branding.png"
+  branding_mode: bottom
+  color: "#ffffff"
 
 flutter_launcher_icons:
   android: "launcher_icon"
