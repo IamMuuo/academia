@@ -1,9 +1,11 @@
 import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/dashboard_controller.dart';
+import 'package:academia/widgets/caurosel_item_card.dart';
 import 'package:academia/widgets/course_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:academia/widgets/emojicon.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -48,7 +50,7 @@ class DashBoard extends StatelessWidget {
                       ],
                     ),
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
                         color: Colors.blue[400],
                         borderRadius: const BorderRadius.all(
@@ -144,33 +146,49 @@ class DashBoard extends StatelessWidget {
                     borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20))),
-                padding: const EdgeInsets.all(25),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 6, bottom: 18),
-                        child: Text(
-                          'Your courses',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
+                padding: const EdgeInsets.only(
+                  top: 20,
+                  bottom: 20,
+                  left: 12,
+                  right: 12,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Your school life at glance',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
                       ),
-
-                      // list view of courses
-                      Expanded(
-                        child: ListView(
-                          children: buildCourseCards(),
-                        ),
+                    ),
+                    FlutterCarousel(
+                      items: dashBoardController.buildCauroselCards(),
+                      // [
+                      //   CauroselItemCard(
+                      //     date: "Sunday 14, January, 2023",
+                      //     title: "Task 1",
+                      //     description: "Test task",
+                      //     location: "Everywhere",
+                      //     center: Image.asset(
+                      //       "assets/images/smiley.png",
+                      //       height: 100,
+                      //     ),
+                      //   ),
+                      // ],
+                      options: CarouselOptions(
+                        // padEnds: false,
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        showIndicator: true,
+                        autoPlay: true,
+                        enlargeCenterPage: true,
+                        slideIndicator: CircularWaveSlideIndicator(),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
