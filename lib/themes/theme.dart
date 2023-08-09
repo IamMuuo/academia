@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 ThemeData lightModeTheme = ThemeData(
-  fontFamily: 'Poppins',
+  fontFamily: 'Nunito',
   primarySwatch: Colors.blue,
   scaffoldBackgroundColor: Colors.blue[700],
   bottomNavigationBarTheme: BottomNavigationBarThemeData(

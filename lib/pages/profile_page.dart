@@ -1,4 +1,5 @@
 import 'package:academia/constants/common.dart';
+import 'package:academia/pages/settings_page.dart';
 import 'package:academia/widgets/info_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,9 @@ class ProfilePage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.to(const SettingsPage());
+            },
             icon: const Icon(CupertinoIcons.settings),
           )
         ],
@@ -103,7 +106,7 @@ class ProfilePage extends StatelessWidget {
 
           // school info
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -172,36 +175,6 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  /*Container(
-                    padding: const EdgeInsets.all(12),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            user.balance.toString(),
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 2,
-                          ),
-                          const Text(
-                            "Fee Balance",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "Poppins",
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),*/
                 ],
               ),
             ),
@@ -221,7 +194,8 @@ class ProfilePage extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [

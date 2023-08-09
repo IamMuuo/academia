@@ -45,6 +45,7 @@ dependencies:
   build_runner: ^2.3.3
   get: ^4.6.5
   flutter_launcher_icons: ^0.13.1
+  flutter_carousel_widget: ^2.0.4
 
 
 
@@ -62,8 +63,10 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 flutter_native_splash:
-  image: "assets/images/graduate_girl.png"
-  color: "##1975D1"
+  image: "assets/icons/academia.png"
+  branding: "assets/icons/branding.png"
+  branding_mode: bottom
+  color: "#ffffff"
 
 flutter_launcher_icons:
   android: "launcher_icon"
@@ -96,17 +99,16 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-    - family: Poppins
+  fonts:
+    - family: Nunito
       fonts:
-        - asset: assets/fonts/Poppins-Bold.ttf
-          style: bold
-        - asset: assets/fonts/Poppins-Light
-        - asset: assets/fonts/Poppins-Medium
-          style: normal
-        - asset:
-        - asset: fonts/Schyler-Italic.ttf
-          style: italic
+        - asset: assets/fonts/Nunito.ttf
+        #   style: bold
+        # - asset: assets/fonts/Poppins-Light
+        # - asset: assets/fonts/Poppins-Medium
+        #   style: normal
+        # - asset: fonts/Schyler-Italic.ttf
+        #   style: italic
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

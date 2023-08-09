@@ -1,82 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-class TaskCard extends StatefulWidget {
+class TaskCard extends StatelessWidget {
   const TaskCard({
     super.key,
-    /*
-    required this.courseName,
-    this.icon,
-    this.courseTime,
-    */
+    this.taskName,
+    this.taskDate = "chrismass",
+    this.taskTime,
+    required this.ondelete,
   });
-  // final icon;
-  // final String? courseName;
-  // final String? courseTime;
-  //
-  @override
-  State<TaskCard> createState() => _TaskCardState();
-}
+  final String? taskName;
+  final String? taskDate;
+  final String? taskTime;
+  final Function ondelete;
 
-class _TaskCardState extends State<TaskCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(8),
       child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.all(
+            Radius.circular(12),
+          ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.blue[300],
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(
-                    CupertinoIcons.bell_fill,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    // Title
-                    Text(
-                      "Today's Task",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-
-                    // subtitle
-                    Text(
-                      'Seems there are no tasks',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+        child: ListTile(
+          contentPadding: const EdgeInsets.all(8),
+          trailing: IconButton(
+              onPressed: () {
+                ondelete();
+              },
+              icon: const Icon(
+                CupertinoIcons.delete_solid,
+                color: Colors.red,
+              )),
+          subtitle: Text(
+              "${taskName!} is scheduled for ${taskDate!} at ${taskTime!}"),
+          leading: Icon(
+            CupertinoIcons.bell_fill,
+            color: Colors.blue[300],
+            size: 30,
+          ),
+          title: Text(
+            taskName!,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
             ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(CupertinoIcons.add),
-            ),
-          ],
+          ),
         ),
       ),
     );
