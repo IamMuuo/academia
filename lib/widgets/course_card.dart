@@ -1,122 +1,155 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-class CourseCard extends StatefulWidget {
-  const CourseCard({
+class CourseCard extends StatelessWidget {
+  CourseCard({
     super.key,
-    required this.icon,
-    required this.courseName,
-    required this.courseTime,
+    required this.courseTitle,
+    required this.dayOfWeek,
+    required this.period,
+    required this.venue,
+    required this.lecturer,
+    required this.campus,
+    this.icon,
+    this.backGround = Colors.white,
+    this.borderColor = Colors.grey,
+    this.keyStyle = const TextStyle(
+      color: Colors.blue,
+      fontWeight: FontWeight.bold,
+      fontSize: 12,
+    ),
+    this.valueStyle = const TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.bold,
+      fontSize: 12,
+    ),
   });
+  final String courseTitle;
+  final String dayOfWeek;
+  final String period;
+  final String campus;
+  final String venue;
+  final String lecturer;
+  Color backGround;
+  Color borderColor;
+  TextStyle valueStyle;
+  TextStyle keyStyle;
+  Icon? icon;
 
-  final IconData icon;
-  final String courseName;
-  final String courseTime;
-
-  @override
-  State<CourseCard> createState() => _CourseCardState();
-}
-
-class _CourseCardState extends State<CourseCard> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                IconButton(
-                  padding: const EdgeInsets.all(12),
-                  enableFeedback: true,
-                  onPressed: () {},
-                  icon: Icon(widget.icon),
-                ),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Title
-                    Text(
-                      widget.courseName,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+    return Container(
+      decoration: BoxDecoration(
+        color: backGround,
+        border: Border.all(color: borderColor, width: 2),
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
+      ),
+      constraints: const BoxConstraints(minHeight: 150),
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          // header
+          Row(
+            children: [
+              icon ?? const Icon(Icons.school_sharp),
+              const Spacer(),
+              Text(
+                courseTitle,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+            ],
+          ),
 
-                    // subtitle
-                    Text(
-                      widget.courseTime,
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
+          // Date and time
+          Row(
+            children: [
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "Every: ",
+                      style: keyStyle,
+                    ),
+                    TextSpan(
+                      text: dayOfWeek,
+                      style: valueStyle,
                     ),
                   ],
                 ),
-              ],
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(CupertinoIcons.arrow_right),
-            ),
-          ],
-        ),
+              ),
+              const Spacer(),
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "Period: ",
+                      style: keyStyle,
+                    ),
+                    TextSpan(
+                      text: period,
+                      style: valueStyle,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          // Venues
+          Row(
+            children: [
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "Campus: ",
+                      style: keyStyle,
+                    ),
+                    TextSpan(
+                      text: campus,
+                      style: valueStyle,
+                    ),
+                  ],
+                ),
+              ),
+              const Spacer(),
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "Venue: ",
+                      style: keyStyle,
+                    ),
+                    TextSpan(
+                      text: venue,
+                      style: valueStyle,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          Row(
+            children: [
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "Lecturer: ",
+                      style: keyStyle,
+                    ),
+                    TextSpan(
+                      text: lecturer,
+                      style: valueStyle,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
-}
-
-// This method is supposed to build
-// the user's courses from the api
-// never create a single course card instance
-// without this method
-
-List<CourseCard> buildCourseCards() {
-  final courses = <CourseCard>[];
-  courses.add(const CourseCard(
-    icon: CupertinoIcons.circle,
-    courseName: "MSB 101",
-    courseTime: "Today 11:00pm",
-  ));
-
-  courses.add(const CourseCard(
-    icon: CupertinoIcons.circle,
-    courseName: "MATH 121",
-    courseTime: "Today 11:00pm",
-  ));
-
-  courses.add(const CourseCard(
-    icon: CupertinoIcons.circle,
-    courseName: "ENG 101",
-    courseTime: "Tommorow 11:00pm",
-  ));
-
-  courses.add(const CourseCard(
-    icon: CupertinoIcons.circle,
-    courseName: "PHY 217",
-    courseTime: "Thur 11:00pm",
-  ));
-
-  courses.add(const CourseCard(
-    icon: CupertinoIcons.circle,
-    courseName: "BIO 111",
-    courseTime: "Tommorow 3:00pm",
-  ));
-
-  courses.add(const CourseCard(
-    icon: CupertinoIcons.circle,
-    courseName: "PHIL 111",
-    courseTime: "Sat 12:00pm",
-  ));
-  return courses;
 }

@@ -116,6 +116,14 @@ class SettingsPage extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
+            title: const Text("How to contribute to Academia"),
+            trailing: IconButton(
+                onPressed: () {},
+                icon: const Icon(CupertinoIcons.arrow_right_circle)),
+          ),
+
+          const Divider(),
+          ListTile(
             title: const Text("How to contact us"),
             trailing: IconButton(
                 onPressed: () {},

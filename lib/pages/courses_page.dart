@@ -1,6 +1,7 @@
 import 'package:academia/widgets/course_card.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
 class CoursesPage extends StatefulWidget {
   const CoursesPage({super.key});
@@ -13,77 +14,80 @@ class _CoursesPageState extends State<CoursesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
-          'Your Courses',
+          "Courses",
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.bold,
-            fontSize: 25,
           ),
         ),
+        centerTitle: true,
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
+      body: Column(
+        children: [
+          FlutterCarousel(
+            items: [
+              CourseCard(
+                courseTitle: "ACS 113",
+                period: "08:00 AM - 13:00PM",
+                venue: "Power Lab",
+                lecturer: "James Bond",
+                campus: "Athi",
+                dayOfWeek: "Monday",
+                icon: const Icon(
+                  CupertinoIcons.paw,
+                  color: Colors.green,
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Your courses',
-                          style: TextStyle(
-                            color: Colors.grey[700],
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Icon(CupertinoIcons.ellipsis)
-                      ],
-                    ),
-                    Image.asset(
-                      "assets/images/graduating.png",
-                      height: 250,
-                      width: 250,
-                    ),
-                    Text(
-                      'August 2100 semester',
-                      style: TextStyle(
-                        color: Colors.grey[700],
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+              )
+            ],
+            options: CarouselOptions(
+              height: MediaQuery.of(context).size.height * 0.2,
+              autoPlay: true,
+              slideIndicator: CircularWaveSlideIndicator(
+                currentIndicatorColor: Colors.blue,
+                indicatorBackgroundColor: Colors.blue[200],
+              ),
+              enlargeCenterPage: true,
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 20),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text("Browse all available courses"),
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.5,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ListView(
+                children: [
+                  CourseCard(
+                    courseTitle: "ACS 113",
+                    period: "08:00 AM - 13:00PM",
+                    venue: "Power Lab",
+                    lecturer: "James Bond",
+                    campus: "Athi",
+                    dayOfWeek: "Monday",
+                  ),
+                  CourseCard(
+                    courseTitle: "ACS 113",
+                    period: "08:00 AM - 13:00PM",
+                    venue: "Power Lab",
+                    lecturer: "James Bond",
+                    campus: "Athi",
+                    dayOfWeek: "Tuesday",
+                  ),
+                ],
               ),
             ),
-
-            // Couresel
-
-            // course cards
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.all(12),
-                child: ListView(
-                  children: buildCourseCards(),
-                ),
-              ),
-            ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
