@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -7,9 +8,11 @@ class WebViewPageController extends GetxController {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(NavigationDelegate(
         onNavigationRequest: (request) {
-          if (request.url.startsWith("https://www.github.com/")) {
+          if (request.url.startsWith("https://www.github.com/") ||
+              request.url.startsWith("https://elearnig.daystar.ac.ke")) {
             return NavigationDecision.navigate;
           } else {
+            debugPrint("waah");
             return NavigationDecision.prevent;
           }
         },

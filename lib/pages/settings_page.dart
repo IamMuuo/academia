@@ -23,8 +23,13 @@ class SettingsPage extends StatelessWidget {
           IconButton(
             tooltip: "About this app",
             onPressed: () {
-              Get.to(const WebviewPage(
-                  title: "About Academia", url: "https://github.com"));
+              Get.to(
+                const WebviewPage(
+                  title: "About Academia",
+                  url:
+                      "https://github.com/IamMuuo/academia/blob/main/README.md",
+                ),
+              );
             },
             icon: const Icon(CupertinoIcons.question_circle),
           ),
@@ -122,7 +127,14 @@ class SettingsPage extends StatelessWidget {
           ListTile(
             title: const Text("How to contribute to Academia"),
             trailing: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(
+                    const WebviewPage(
+                        title: "How to contribute",
+                        url:
+                            "https://github.com/IamMuuo/academia/blob/main/CONTRIBUTING.md"),
+                  );
+                },
                 icon: const Icon(CupertinoIcons.arrow_right_circle)),
           ),
 
@@ -130,7 +142,11 @@ class SettingsPage extends StatelessWidget {
           ListTile(
             title: const Text("How to contact us"),
             trailing: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(const WebviewPage(
+                      title: "DITA Contact",
+                      url: "https://dita.co.ke/#contact"));
+                },
                 icon: const Icon(CupertinoIcons.arrow_right_circle)),
           ),
 
