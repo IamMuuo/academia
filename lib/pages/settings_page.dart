@@ -1,3 +1,4 @@
+import 'package:academia/pages/webview_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,7 +22,10 @@ class SettingsPage extends StatelessWidget {
         actions: [
           IconButton(
             tooltip: "About this app",
-            onPressed: () {},
+            onPressed: () {
+              Get.to(const WebviewPage(
+                  title: "About Academia", url: "https://github.com"));
+            },
             icon: const Icon(CupertinoIcons.question_circle),
           ),
           IconButton(
