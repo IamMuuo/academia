@@ -46,6 +46,7 @@ dependencies:
   get: ^4.6.5
   flutter_launcher_icons: ^0.13.1
   flutter_carousel_widget: ^2.0.4
+  webview_flutter: ^4.2.2
 
 
 

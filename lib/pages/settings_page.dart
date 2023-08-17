@@ -1,3 +1,4 @@
+import 'package:academia/pages/webview_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,7 +22,15 @@ class SettingsPage extends StatelessWidget {
         actions: [
           IconButton(
             tooltip: "About this app",
-            onPressed: () {},
+            onPressed: () {
+              Get.to(
+                const WebviewPage(
+                  title: "About Academia",
+                  url:
+                      "https://github.com/IamMuuo/academia/blob/main/README.md",
+                ),
+              );
+            },
             icon: const Icon(CupertinoIcons.question_circle),
           ),
           IconButton(
@@ -118,7 +127,14 @@ class SettingsPage extends StatelessWidget {
           ListTile(
             title: const Text("How to contribute to Academia"),
             trailing: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(
+                    const WebviewPage(
+                        title: "How to contribute",
+                        url:
+                            "https://github.com/IamMuuo/academia/blob/main/CONTRIBUTING.md"),
+                  );
+                },
                 icon: const Icon(CupertinoIcons.arrow_right_circle)),
           ),
 
@@ -126,7 +142,11 @@ class SettingsPage extends StatelessWidget {
           ListTile(
             title: const Text("How to contact us"),
             trailing: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(const WebviewPage(
+                      title: "DITA Contact",
+                      url: "https://dita.co.ke/#contact"));
+                },
                 icon: const Icon(CupertinoIcons.arrow_right_circle)),
           ),
 
