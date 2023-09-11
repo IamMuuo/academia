@@ -154,7 +154,7 @@ class User {
       final url = Uri.parse("$urlPrefix/api/user/");
       // final headers = {"Content-type": "application/json"};
 
-      debugPrint("Attempting to get user details: ${cookie}");
+      debugPrint("Attempting to get user details: $cookie");
 
       final response = await get(
         url,

@@ -1,5 +1,4 @@
 import 'package:academia/constants/common.dart';
-import 'package:academia/models/schedule.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -38,7 +37,7 @@ class DashboardController extends GetxController {
     //   return cards;
     // }
     return <Widget>[
-      CauroselItemCard(
+     const CauroselItemCard(
           icon1: Icons.quiz,
           icon2: CupertinoIcons.question_circle,
           title: "You have no items",

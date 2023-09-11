@@ -12,9 +12,9 @@ class _EventCardState extends State<EventCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 12),
+      padding:const EdgeInsets.only(bottom: 12),
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
@@ -31,7 +31,7 @@ class _EventCardState extends State<EventCard> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Icon(CupertinoIcons.ellipsis),
+                const Icon(CupertinoIcons.ellipsis),
               ],
             ),
             Image.asset('assets/images/having_coffee.png'),

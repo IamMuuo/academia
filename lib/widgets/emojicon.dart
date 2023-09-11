@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Emojicon extends StatefulWidget {
-  Emojicon({
+const  Emojicon({
     Key? key,
     required this.path,
     required this.func,
