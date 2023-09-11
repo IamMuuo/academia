@@ -30,7 +30,7 @@ class _CoursesPageState extends State<CoursesPage> {
       body: Column(
         children: [
           FlutterCarousel(
-            items: [
+            items: const [
               CourseCard(
                 courseTitle: "ACS 113",
                 period: "08:00 AM - 13:00PM",
@@ -38,7 +38,7 @@ class _CoursesPageState extends State<CoursesPage> {
                 lecturer: "James Bond",
                 campus: "Athi",
                 dayOfWeek: "Monday",
-                icon: const Icon(
+                icon: Icon(
                   CupertinoIcons.paw,
                   color: Colors.green,
                 ),
@@ -66,7 +66,7 @@ class _CoursesPageState extends State<CoursesPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: ListView(
-                children: [
+                children: const [
                   CourseCard(
                     courseTitle: "ACS 113",
                     period: "08:00 AM - 13:00PM",

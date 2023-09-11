@@ -3,7 +3,6 @@ import 'package:academia/pages/settings_page.dart';
 import 'package:academia/widgets/info_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:academia/controllers/profile_page_controller.dart';
 import 'package:get/get.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -11,8 +10,6 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ProfilePageController profilePageController =
-        Get.put(ProfilePageController());
     return Scaffold(
       appBar: AppBar(
         title: const Text(

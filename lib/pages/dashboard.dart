@@ -1,7 +1,5 @@
 import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/dashboard_controller.dart';
-import 'package:academia/widgets/caurosel_item_card.dart';
-import 'package:academia/widgets/course_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:academia/widgets/emojicon.dart';

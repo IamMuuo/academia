@@ -1,26 +1,25 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CauroselItemCard extends StatelessWidget {
-  CauroselItemCard({
+  const CauroselItemCard({
     super.key,
     this.color = Colors.blue,
     required this.title,
     required this.description,
     required this.location,
     required this.date,
-    this.icon1 = CupertinoIcons.calendar_today,
+    this.icon1 = Icons.calendar_today,
     this.icon2 = Icons.location_pin,
     this.center,
   });
-  Color color;
-  String title;
-  String description;
-  IconData icon1;
-  String date;
-  IconData icon2;
-  String location;
-  Widget? center;
+  final Color color;
+  final String title;
+  final String description;
+  final IconData icon1;
+  final String date;
+  final IconData icon2;
+  final String location;
+  final Widget? center;
 
   @override
   Widget build(BuildContext context) {

@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Scaffold(
-        body: IndexedStack(children: pages, index: currentIndex),
+        body: IndexedStack( index: currentIndex,children: pages),
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
