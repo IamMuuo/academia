@@ -32,7 +32,7 @@ class LoginController extends GetxController {
     if (!acceptTerms.value) {
       Get.snackbar(
         "Terms and Conditions",
-        "You must agree the terms and conditions to continue to the applications",
+        "You must consent to the terms and conditions provided by Academia's License to continue",
         backgroundColor: Colors.white,
         icon: const Icon(
           CupertinoIcons.xmark_circle,
@@ -56,7 +56,11 @@ class LoginController extends GetxController {
       appDB.put("user", user.toJson());
       isloading.value = false;
       debugPrint("User details: ${appDB.get('user')}");
-      Get.off(const HomePage());
+      Get.off(
+        const HomePage(),
+        duration: const Duration(seconds: 2),
+        transition: Transition.cupertino,
+      );
       return;
     } else {
       Get.snackbar(

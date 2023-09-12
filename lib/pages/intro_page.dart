@@ -1,4 +1,6 @@
+import 'package:academia/constants/common.dart';
 import 'package:academia/pages/login_page.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
@@ -8,15 +10,38 @@ class IntroPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Welcome image ...
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Image.asset('assets/images/girl_sitted.png'),
+            FlutterCarousel(
+              items: [
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Image.asset('assets/images/bot_hello.png'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Image.asset('assets/images/bot_wave.png'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Image.asset('assets/images/bot_love.png'),
+                ),
+              ],
+              options: CarouselOptions(
+                height: MediaQuery.of(context).size.height * 0.5,
+                reverse: false,
+                autoPlay: true,
+                enlargeCenterPage: false,
+                slideIndicator: CircularSlideIndicator(
+                  indicatorBackgroundColor: Theme.of(context).primaryColor,
+                  indicatorRadius: 7,
+                ),
+              ),
             ),
 
             // Welcoming message
@@ -25,12 +50,7 @@ class IntroPage extends StatelessWidget {
               child: Text(
                 "Your school life assistant awaits",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 50,
-                  color: Colors.black87,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w600,
-                ),
+                style: h1,
               ),
             ),
 
@@ -44,15 +64,10 @@ class IntroPage extends StatelessWidget {
             ),
 
             ElevatedButton(
-              onPressed: () => Get.off(const LoginPage()),
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                minimumSize: const Size(327, 60),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(12),
-                  ),
-                ),
+              onPressed: () => Get.off(
+                const LoginPage(),
+                duration: const Duration(seconds: 3),
+                transition: Transition.fade,
               ),
               child: const Text(
                 'Get Started',
