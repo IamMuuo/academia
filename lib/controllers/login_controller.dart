@@ -3,7 +3,6 @@ import 'package:academia/pages/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 
 class LoginController extends GetxController {
   final TextEditingController usernameController = TextEditingController();
@@ -49,11 +48,8 @@ class LoginController extends GetxController {
 
     if (authenticated) {
       await user.getUserDetails(
-          usernameController.text, passwordController.text);
+          usernameController.text.trim(), passwordController.text.trim());
 
-      // store the user
-      var appDB = await Hive.openBox("appDB");
-      appDB.put("user", user.toJson());
       isloading.value = false;
       debugPrint("User details: ${appDB.get('user')}");
       Get.off(

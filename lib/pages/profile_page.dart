@@ -41,7 +41,7 @@ class ProfilePage extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 60.0,
-                  child: user.gender! == "Male"
+                  child: user.gender! == "male"
                       ? Image.asset(
                           "assets/images/male_student.png",
                         )

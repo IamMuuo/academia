@@ -1,10 +1,8 @@
 import 'dart:convert';
 
 import 'package:academia/constants/common.dart';
-import 'package:academia/models/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
-import 'dart:io';
 
 import 'package:http/http.dart';
 

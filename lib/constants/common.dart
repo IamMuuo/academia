@@ -4,11 +4,13 @@
 import 'package:academia/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:magnet/magnet.dart';
 
 const String urlPrefix = "https://daystar-backend.onrender.com";
 const String dbName = "appDB";
 User user = User();
 late Box appDB;
+late Magnet magnet;
 
 extension StringExtension on String {
   String title() {
