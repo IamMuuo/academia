@@ -48,6 +48,10 @@ dependencies:
   flutter_carousel_widget: ^2.0.4
   webview_flutter: ^4.2.2
   loading_animation_widget: ^1.2.0+4
+  magnet:
+    git:
+      url: https://github.com/IamMuuo/magnet.git
+      ref: master
 
 
 

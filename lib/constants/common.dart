@@ -11,7 +11,7 @@ User user = User();
 late Box appDB;
 
 extension StringExtension on String {
-  String capitalize() {
+  String title() {
     return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
   }
 }

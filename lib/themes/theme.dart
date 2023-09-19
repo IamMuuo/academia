@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 ThemeData lightModeTheme = ThemeData(
   fontFamily: 'Nunito',
   primarySwatch: Colors.blueGrey,
-  scaffoldBackgroundColor: Colors.blue[700],
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     showSelectedLabels: true,
     showUnselectedLabels: false,
@@ -26,5 +25,8 @@ ThemeData lightModeTheme = ThemeData(
         ),
       ),
     ),
+  ),
+  appBarTheme: const AppBarTheme(
+    color: Colors.blueGrey,
   ),
 );

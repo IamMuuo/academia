@@ -18,13 +18,12 @@ class ProfilePage extends StatelessWidget {
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.transparent,
         actions: [
           IconButton(
             onPressed: () {
               Get.to(const SettingsPage());
             },
-            icon: const Icon(CupertinoIcons.settings),
+            icon: const Icon(Icons.settings_sharp),
           )
         ],
       ),
@@ -32,22 +31,22 @@ class ProfilePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          const SizedBox(
+            height: 10,
+          ),
           // profile pic
           Align(
             alignment: Alignment.center,
             child: Stack(
               children: [
                 CircleAvatar(
-                  radius: 50.0,
-                  backgroundColor: Colors.blue[300],
+                  radius: 60.0,
                   child: user.gender! == "Male"
                       ? Image.asset(
                           "assets/images/male_student.png",
-                          width: 80,
                         )
                       : Image.asset(
-                          "assets/images/graduate_girl.png",
-                          width: 80,
+                          "assets/images/female_student.png",
                         ),
                 ),
                 if (user.gpa! > 3.0)
@@ -56,8 +55,8 @@ class ProfilePage extends StatelessWidget {
                     right: 0,
                     child: Container(
                       padding: const EdgeInsets.all(2.0),
-                      decoration: const BoxDecoration(
-                        color: Colors.blue,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
@@ -79,9 +78,9 @@ class ProfilePage extends StatelessWidget {
               child: Text(
                 user.name!,
                 style: const TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
@@ -93,10 +92,6 @@ class ProfilePage extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 user.programme!,
-                style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
               ),
             ),
           ),

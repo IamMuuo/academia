@@ -27,8 +27,16 @@ We utilize GetX for state management in our academia project. Please ensure that
 
 1. Create a new branch for your changes. Use a descriptive name related to the feature or bug fix you're working on.
 2. Make your changes, commit them, and push to your forked repository.
-3. Open a pull request (PR) from your branch to the `main` branch of the main project repository.
-4. Provide a clear and concise description of the changes you've made in the PR, including any relevant information that would help reviewers understand the purpose and impact of your changes.
+3. Before pushing your changes run:
+
+```bash
+flutter analyze
+```
+
+Ensure that you fix the warnings and errors presented to you otherwise the tests will fail
+
+4. Open a pull request (PR) from your branch to the `main` branch of the main project repository.
+5. Provide a clear and concise description of the changes you've made in the PR, including any relevant information that would help reviewers understand the purpose and impact of your changes.
 
 ## 👥 Code Review and Merging
 
@@ -44,4 +52,3 @@ Please note that we have a Code of Conduct in place, and we expect all contribut
 If you have any questions or need further assistance, feel free to reach out to us through the project's communication channels.
 
 Happy coding and thank you for your contributions! ✌️
-

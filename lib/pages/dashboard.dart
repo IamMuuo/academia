@@ -1,8 +1,8 @@
 import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/dashboard_controller.dart';
+import 'package:academia/models/courses.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:academia/widgets/emojicon.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -16,7 +16,7 @@ class DashBoard extends StatelessWidget {
         Get.put(DashboardController());
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
@@ -29,40 +29,28 @@ class DashBoard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Hi, ${user.name!.split(" ")[0]}!',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        Text('Hi, ${(user.name!.split(" ")[0]).title()}!',
+                            style: h4),
                         // Date
                         Text(
                           DateFormat.yMMMMEEEEd().format(DateTime.now()),
-                          style: TextStyle(
-                            color: Colors.grey[300],
-                            fontWeight: FontWeight.w500,
-                          ),
                         ),
                       ],
                     ),
                     Container(
                       padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        color: Colors.blue[400],
-                        borderRadius: const BorderRadius.all(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
                           Radius.circular(20),
                         ),
                       ),
                       child: IconButton(
                         onPressed: () {
-                          dashBoardController.getNotifications();
+                          fetchMyUnits();
                         },
                         icon: const Icon(
                           CupertinoIcons.bell_fill,
                           size: 30,
-                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -70,126 +58,103 @@ class DashBoard extends StatelessWidget {
                 ),
               ),
             ),
-
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-
             // Search bar
             Container(
-              padding: const EdgeInsets.only(
-                right: 16,
-                left: 16,
-              ),
+              padding: const EdgeInsets.all(16),
               child: TextField(
                 controller: dashBoardController.searchBoxController,
-                cursorColor: Colors.white,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: Colors.blue[400],
                   suffixIcon: IconButton(
                     padding: const EdgeInsets.all(16),
                     onPressed: () {},
                     icon: const Icon(
                       CupertinoIcons.search,
-                      color: Colors.white,
                       size: 30,
                     ),
                   ),
                   hintText: 'Looking for something?',
-                  hintStyle: const TextStyle(
-                    color: Colors.white,
-                  ),
-                  border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                  ),
+                  hintStyle: const TextStyle(),
                 ),
               ),
             ),
+            //
 
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
-            ),
-
-            // mood text
-            const Text(
-              "How are you currently feeling?",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+            FlutterCarousel(
+              items: dashBoardController.buildCauroselCards(),
+              // [
+              //   CauroselItemCard(
+              //     date: "Sunday 14, January, 2023",
+              //     title: "Task 1",
+              //     description: "Test task",
+              //     location: "Everywhere",
+              //     center: Image.asset(
+              //       "assets/images/smiley.png",
+              //       height: 100,
+              //     ),
+              //   ),
+              // ],
+              options: CarouselOptions(
+                height: MediaQuery.of(context).size.height * 0.25,
+                showIndicator: true,
+                autoPlay: true,
+                enlargeCenterPage: true,
+                slideIndicator: CircularWaveSlideIndicator(),
               ),
             ),
 
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: buildEmojiCons(),
-            ),
-
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
-            ),
-
-            // Courses you are taking
-
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20))),
-                padding: const EdgeInsets.only(
-                  top: 20,
-                  bottom: 20,
-                  left: 12,
-                  right: 12,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.5,
+                child: ListView(
                   children: [
-                    Text(
-                      'Your school life at glance',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                    const Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Courses you're enrolled to",
+                        style: h5,
                       ),
                     ),
-                    FlutterCarousel(
-                      items: dashBoardController.buildCauroselCards(),
-                      // [
-                      //   CauroselItemCard(
-                      //     date: "Sunday 14, January, 2023",
-                      //     title: "Task 1",
-                      //     description: "Test task",
-                      //     location: "Everywhere",
-                      //     center: Image.asset(
-                      //       "assets/images/smiley.png",
-                      //       height: 100,
-                      //     ),
-                      //   ),
-                      // ],
-                      options: CarouselOptions(
-                        // padEnds: false,
-                        height: MediaQuery.of(context).size.height * 0.3,
-                        showIndicator: true,
-                        autoPlay: true,
-                        enlargeCenterPage: true,
-                        slideIndicator: CircularWaveSlideIndicator(),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12, bottom: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                              height: 100, width: 180, color: Colors.black),
+                          Container(
+                              height: 100, width: 180, color: Colors.green)
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12, bottom: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(height: 100, width: 180, color: Colors.red),
+                          Container(
+                              height: 100, width: 180, color: Colors.purple)
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12, bottom: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                              height: 100, width: 180, color: Colors.teal),
+                          Container(
+                              height: 100, width: 180, color: Colors.black)
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),
