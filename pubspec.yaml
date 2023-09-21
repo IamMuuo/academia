@@ -52,6 +52,8 @@ dependencies:
     git:
       url: https://github.com/IamMuuo/magnet.git
       ref: master
+  liquid_pull_to_refresh: ^3.0.1
+  cached_network_image: ^3.2.3
 
 
 
