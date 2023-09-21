@@ -74,33 +74,3 @@ class Courses {
   }
 }
 
-Future<List<Courses>> fetchMyUnits() async {
-  final url = Uri.parse("$urlPrefix/api/units/");
-
-  try {
-    // login
-    // var user = User.fromJson(appDB.get("user"));
-    // user.login();
-    final response = await get(
-      url,
-    );
-
-    debugPrint(response.body);
-
-    if (response.statusCode == 200) {
-      debugPrint(response.body);
-      var body = json.decode(response.body);
-      List unitsList = body[0];
-      List<Courses> myUnits = <Courses>[];
-      for (int i = 1; i < unitsList.length; i++) {
-        myUnits.add(Courses.fromJson(unitsList[i]));
-      }
-
-      return myUnits;
-    }
-  } catch (e) {
-    debugPrint(e.toString());
-  }
-
-  return [];
-}

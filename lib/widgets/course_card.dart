@@ -1,3 +1,4 @@
+import 'package:academia/constants/common.dart';
 import 'package:flutter/material.dart';
 
 class CourseCard extends StatelessWidget {
@@ -9,16 +10,16 @@ class CourseCard extends StatelessWidget {
     required this.venue,
     required this.lecturer,
     required this.campus,
-    this.icon =  const Icon(Icons.school_sharp),
+    this.icon = const Icon(Icons.school_sharp),
     this.backGround = Colors.white,
     this.borderColor = Colors.grey,
     this.keyStyle = const TextStyle(
-      color: Colors.blue,
+      color: Colors.white,
       fontWeight: FontWeight.bold,
       fontSize: 12,
     ),
     this.valueStyle = const TextStyle(
-      color: Colors.black,
+      color: Colors.white,
       fontWeight: FontWeight.bold,
       fontSize: 12,
     ),
@@ -55,8 +56,11 @@ class CourseCard extends StatelessWidget {
               const Spacer(),
               Text(
                 courseTitle,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),
@@ -68,11 +72,11 @@ class CourseCard extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: "Every: ",
+                      text: "Every : ",
                       style: keyStyle,
                     ),
                     TextSpan(
-                      text: dayOfWeek,
+                      text: dayOfWeek.title(),
                       style: valueStyle,
                     ),
                   ],
@@ -83,7 +87,7 @@ class CourseCard extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: "Period: ",
+                      text: "Period : ",
                       style: keyStyle,
                     ),
                     TextSpan(

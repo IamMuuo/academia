@@ -45,7 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
         color: Theme.of(context).primaryColor,
         backgroundColor: Colors.white,
         onRefresh: () async {
-          return Future.delayed(Duration(seconds: 3));
+          return user.getUserDetails(user.admno!, user.password!);
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -288,7 +288,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               InfoCard(
                                 title: "Fee Balance",
-                                content: user.amountPaid!,
+                                content: user.balance!,
                                 icon: CupertinoIcons.money_euro_circle_fill,
                               ),
 
