@@ -1,10 +1,5 @@
-import 'dart:convert';
-
-import 'package:academia/constants/common.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 
-import 'package:http/http.dart';
 
 part 'courses.g.dart';
 

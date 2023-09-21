@@ -1,6 +1,5 @@
 import 'package:academia/models/courses.dart';
 import 'package:academia/widgets/course_card.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import "package:academia/constants/common.dart";
@@ -10,24 +9,14 @@ class CoursesPageController extends GetxController {
   var userTimeTable = <Courses>[].obs;
   CoursesPageController() {
     if (appDB.containsKey("timetable")) {
-      debugPrint("TT present");
       userTimeTable.value = appDB.get("timetable").cast<Courses>();
     }
     if (appDB.containsKey("allCourses")) {
-      debugPrint("all courses present");
       allCourses.value = appDB.get("allCourses").cast<Courses>();
     }
-
-    // userTimeTable.value = appDB.containsKey("timetable")
-    //     ? appDB.get("timetable") as List<Courses>
-    //     : <Courses>[];
-    // allCourses.value = appDB.containsKey("allCourses")
-    //     ? appDB.get("allCourses") as List<Courses>
-    //     : <Courses>[];
   }
 
   List<Widget> buildTimeTableCourses() {
-    debugPrint(userTimeTable.length.toString());
     List<Widget> courseCards = [];
 
     for (var course in userTimeTable) {
@@ -47,6 +36,34 @@ class CoursesPageController extends GetxController {
       ));
     }
     return courseCards;
+  }
+
+  List<DataColumn> buildDataColumn() {
+    return const [
+      DataColumn(label: Text("Course")),
+      DataColumn(label: Text("Lecturer")),
+      DataColumn(label: Text("Period")),
+      DataColumn(label: Text("Day")),
+      DataColumn(label: Text("Venue")),
+    ];
+  }
+
+  List<DataRow> buildDataRow() {
+    List<DataRow> datarow = <DataRow>[];
+    for (var course in allCourses) {
+      datarow.add(
+        DataRow(
+          cells: [
+            DataCell(Text(course.name!)),
+            DataCell(Text(course.lecturer!)),
+            DataCell(Text(course.period!)),
+            DataCell(Text(course.dayOfTheWeek!.title())),
+            DataCell(Text(course.venue ?? course.room!)),
+          ],
+        ),
+      );
+    }
+    return datarow;
   }
 
   Future<void> updateCourses() async {

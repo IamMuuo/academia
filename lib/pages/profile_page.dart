@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:academia/constants/common.dart';
-import 'package:academia/controllers/profile_page_controller.dart';
 import 'package:academia/pages/settings_page.dart';
 import 'package:academia/widgets/info_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,8 +8,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -22,7 +19,6 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    ProfilePageController controller = Get.put(ProfilePageController());
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -115,7 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Align(
                 alignment: Alignment.center,
                 child: Text(
-                  user.programme!,
+                  user.programme!.title(),
                 ),
               ),
             ),
@@ -240,7 +236,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               // gender
                               InfoCard(
                                 title: "Gender",
-                                content: user.gender!,
+                                content: user.gender!.title(),
                                 icon: CupertinoIcons.person_2_fill,
                               ),
 
@@ -264,14 +260,14 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               InfoCard(
                                 title: "Academic Status",
-                                content: user.status!,
+                                content: user.status!.title(),
                                 icon: CupertinoIcons.circle,
                               ),
 
                               // campus
                               InfoCard(
                                 title: "Campus",
-                                content: user.campus!,
+                                content: user.campus!.title(),
                                 icon: CupertinoIcons.flag_fill,
                               ),
 

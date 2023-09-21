@@ -29,4 +29,11 @@ ThemeData lightModeTheme = ThemeData(
   appBarTheme: const AppBarTheme(
     color: Colors.blueGrey,
   ),
+  dataTableTheme: DataTableThemeData(
+    headingRowColor:
+        MaterialStateColor.resolveWith((states) => Colors.blueGrey),
+    headingTextStyle: const TextStyle(
+      color: Colors.white,
+    ),
+  ),
 );

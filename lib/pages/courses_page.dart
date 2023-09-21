@@ -1,5 +1,4 @@
 import 'package:academia/controllers/courses_page_controller.dart';
-import 'package:academia/widgets/course_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
@@ -22,13 +21,6 @@ class CoursesPage extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-              onPressed: () async {
-                await controller.updateCourses();
-              },
-              icon: const Icon(Icons.password))
-        ],
       ),
       body: LiquidPullToRefresh(
         height: 200,
@@ -57,28 +49,13 @@ class CoursesPage extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.5,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ListView(
-                  children: const [
-                    CourseCard(
-                      courseTitle: "ACS 113",
-                      period: "08:00 AM - 13:00PM",
-                      venue: "Power Lab",
-                      lecturer: "James Bond",
-                      campus: "Athi",
-                      dayOfWeek: "Monday",
-                    ),
-                    CourseCard(
-                      courseTitle: "ACS 113",
-                      period: "08:00 AM - 13:00PM",
-                      venue: "Power Lab",
-                      lecturer: "James Bond",
-                      campus: "Athi",
-                      dayOfWeek: "Tuesday",
-                    ),
-                  ],
+              width: MediaQuery.of(context).size.width,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  columnSpacing: 10,
+                  columns: controller.buildDataColumn(),
+                  rows: controller.buildDataRow(),
                 ),
               ),
             )
