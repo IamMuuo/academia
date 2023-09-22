@@ -29,17 +29,24 @@ class CoursesPage extends StatelessWidget {
         },
         child: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 10),
-              child: FlutterCarousel(
-                items: controller.buildTimeTableCourses(),
-                options: CarouselOptions(
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  autoPlay: true,
-                  showIndicator: false,
-                  enlargeCenterPage: true,
-                ),
-              ),
+            Obx(
+              () => controller.hasCourses.value
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 20, bottom: 10),
+                      child: FlutterCarousel(
+                        items: controller.buildTimeTableCourses(),
+                        options: CarouselOptions(
+                          height: MediaQuery.of(context).size.height * 0.2,
+                          autoPlay: true,
+                          showIndicator: false,
+                          enlargeCenterPage: true,
+                        ),
+                      ),
+                    )
+                  : SizedBox(
+                      height: 200,
+                      child: Image.asset("assets/images/bot_sad.png"),
+                    ),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 20),
@@ -48,16 +55,23 @@ class CoursesPage extends StatelessWidget {
                 child: Text("Browse all available courses"),
               ),
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  columnSpacing: 10,
-                  columns: controller.buildDataColumn(),
-                  rows: controller.buildDataRow(),
-                ),
-              ),
+            Obx(
+              () => controller.hasTimetable.value
+                  ? SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: DataTable(
+                          columnSpacing: 10,
+                          columns: controller.buildDataColumn(),
+                          rows: controller.buildDataRow(),
+                        ),
+                      ),
+                    )
+                  : const Center(
+                      child: Text(
+                          "No  units found, please pull to refresh, if the problem persists please relaunch the app!"),
+                    ),
             )
           ],
         ),

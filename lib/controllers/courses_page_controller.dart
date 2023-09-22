@@ -7,12 +7,17 @@ import "package:academia/constants/common.dart";
 class CoursesPageController extends GetxController {
   var allCourses = <Courses>[].obs;
   var userTimeTable = <Courses>[].obs;
+  var hasCourses = false.obs;
+  var hasTimetable = false.obs;
+
   CoursesPageController() {
     if (appDB.containsKey("timetable")) {
       userTimeTable.value = appDB.get("timetable").cast<Courses>();
+      hasCourses = true.obs;
     }
     if (appDB.containsKey("allCourses")) {
       allCourses.value = appDB.get("allCourses").cast<Courses>();
+      hasTimetable = true.obs;
     }
   }
 
@@ -88,5 +93,6 @@ class CoursesPageController extends GetxController {
     // store the timetable courses and course
     await appDB.put("timetable", userTimeTable);
     await appDB.put("allCourses", allFetchedCourses);
+    refresh();
   }
 }
