@@ -4,6 +4,8 @@
 
 "Academia" is a 📱 mobile app 🎓🏫 exclusively designed for Daystar University students, tailored to streamline their academic experience. With Academia, Daystar students can effortlessly manage their class schedules 🗓️, assignments 📚, exams 📝, grades 📊, and more, all within a single, user-friendly platform. The app harnesses the power of 🚀 Flutter, a versatile mobile app SDK for building high-performance, cross-platform apps for iOS, Android, web, and desktop, all from a unified codebase. 📲
 
+
+Academia is powered by magnet for scraping data 
 ## Features 🔥🚀
 
 📅 **Schedule:** Keep track of all your classes and lectures with the built-in calendar.
