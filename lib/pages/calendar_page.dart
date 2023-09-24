@@ -43,12 +43,13 @@ class CalendarPage extends StatelessWidget {
                           leftChevronIcon:
                               const Icon(CupertinoIcons.arrow_left),
                         ),
-                        calendarStyle: const CalendarStyle(
-                          selectedDecoration: BoxDecoration(color: Colors.grey),
+                        calendarStyle: CalendarStyle(
+                          selectedDecoration:
+                              const BoxDecoration(color: Colors.grey),
                           todayDecoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                            color: Colors.blue,
-                          ),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(30)),
+                              color: Theme.of(context).primaryColor),
                         ),
                         firstDay: DateTime.utc(2020, 1, 1),
                         lastDay: DateTime.utc(2030, 3, 14),
@@ -312,25 +313,24 @@ class CalendarPage extends StatelessWidget {
                         : Container(
                             constraints: BoxConstraints(
                               minHeight:
-                                  MediaQuery.of(context).size.height * 0.75,
+                                  MediaQuery.of(context).size.height * 0.5,
                             ),
                             padding: const EdgeInsets.symmetric(
                               horizontal: 12,
                               // vertical: 16,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.blue[700],
+                              color: Theme.of(context).primaryColor,
                               borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(16),
-                                topRight: Radius.circular(16),
-                              ),
+                                  // topLeft: Radius.circular(16),
+                                  // topRight: Radius.circular(16),
+                                  ),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children:
                                   calendarPageController.buildTasksCards(),
-                            ),
-                          ),
+                            )),
                   ),
                 ],
               ),
