@@ -8,6 +8,7 @@ import 'package:academia/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:get/get.dart';
+import 'package:magnet/magnet.dart';
 
 void main() async {
   // Init flutter
@@ -18,10 +19,10 @@ void main() async {
   appDB = await Hive.openBox(dbName);
 
   bool isLoggedIn = false;
-
   if (appDB.containsKey("user")) {
-    user = User.fromJson(appDB.get("user"));
+    user = await appDB.get("user");
     isLoggedIn = true;
+    magnet = Magnet(user.admno!, user.password!);
   }
   runApp(
     GetMaterialApp(

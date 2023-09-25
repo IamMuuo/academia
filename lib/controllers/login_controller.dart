@@ -3,7 +3,6 @@ import 'package:academia/pages/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 
 class LoginController extends GetxController {
   final TextEditingController usernameController = TextEditingController();
@@ -32,7 +31,7 @@ class LoginController extends GetxController {
     if (!acceptTerms.value) {
       Get.snackbar(
         "Terms and Conditions",
-        "You must agree the terms and conditions to continue to the applications",
+        "You must consent to the terms and conditions provided by Academia's License to continue",
         backgroundColor: Colors.white,
         icon: const Icon(
           CupertinoIcons.xmark_circle,
@@ -49,14 +48,15 @@ class LoginController extends GetxController {
 
     if (authenticated) {
       await user.getUserDetails(
-          usernameController.text, passwordController.text);
+          usernameController.text.trim(), passwordController.text.trim());
 
-      // store the user
-      var appDB = await Hive.openBox("appDB");
-      appDB.put("user", user.toJson());
       isloading.value = false;
       debugPrint("User details: ${appDB.get('user')}");
-      Get.off(const HomePage());
+      Get.off(
+        const HomePage(),
+        duration: const Duration(seconds: 2),
+        transition: Transition.cupertino,
+      );
       return;
     } else {
       Get.snackbar(

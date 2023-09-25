@@ -1,7 +1,9 @@
+import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/login_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -10,6 +12,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final LoginController loginController = Get.put(LoginController());
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: SingleChildScrollView(
@@ -18,26 +21,16 @@ class LoginPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // image
-              Image.asset('assets/images/girl_holding_phone.png'),
-              // Welcome  text
-              const Text(
-                'Welcome',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontSize: 40,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                ),
+              Image.asset(
+                'assets/images/bot_search.png',
+                height: MediaQuery.of(context).size.height * 0.5,
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 1, bottom: 20),
-                child: Text(
-                  'Good things coming your way',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                  ),
-                ),
+              // Welcome  text
+              const Text('Welcome', textAlign: TextAlign.left, style: h2),
+              Padding(
+                padding: const EdgeInsets.only(top: 1, bottom: 20),
+                child: Text('Lets find you and setup things for you',
+                    style: normal.copyWith(fontSize: 12)),
               ),
 
               Padding(
@@ -46,9 +39,6 @@ class LoginPage extends StatelessWidget {
                   controller: loginController.usernameController,
                   decoration: const InputDecoration(
                     hintText: 'Your admission number',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                    ),
                   ),
                 ),
               ),
@@ -66,9 +56,6 @@ class LoginPage extends StatelessWidget {
                               !loginController.showPassword.value;
                         },
                         icon: const Icon(CupertinoIcons.eye),
-                      ),
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
                       ),
                     ),
                   ),
@@ -93,11 +80,6 @@ class LoginPage extends StatelessWidget {
                       'I agree to the terms and conditions',
                       textAlign: TextAlign.center,
                       softWrap: true,
-                      style: TextStyle(
-                        // fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
                     ),
                   ],
                 ),
@@ -109,24 +91,16 @@ class LoginPage extends StatelessWidget {
                         onPressed: () {
                           loginController.login();
                         },
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          minimumSize: const Size(327, 60),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(12),
-                            ),
-                          ),
-                        ),
                         child: const Text(
-                          'I want in',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                          ),
+                          'Get started',
+                          style: h6,
                         ),
                       )
-                    : const Center(
-                        child: CircularProgressIndicator(),
+                    : Center(
+                        child: LoadingAnimationWidget.threeArchedCircle(
+                          color: Theme.of(context).primaryColor,
+                          size: 30,
+                        ),
                       ),
               ),
             ],

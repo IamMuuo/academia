@@ -21,7 +21,6 @@ class WebviewPage extends StatelessWidget {
           },
           icon: const Icon(CupertinoIcons.xmark),
         ),
-        backgroundColor: Colors.blue,
         title: Text(title),
       ),
       body: WebViewWidget(controller: webPageController.controller),

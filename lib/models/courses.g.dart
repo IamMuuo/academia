@@ -16,15 +16,16 @@ class CoursesAdapter extends TypeAdapter<Courses> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Courses()
-      ..name = fields[0] as String?
-      ..venue = fields[1] as String?
-      ..section = fields[2] as String?
-      ..time = fields[3] as String?
-      ..dayOfTheWeek = fields[4] as String?
-      ..period = fields[5] as String?
-      ..room = fields[6] as String?
-      ..lecturer = fields[7] as String?;
+    return Courses(
+      name: fields[0] as String?,
+      venue: fields[1] as String?,
+      section: fields[2] as String?,
+      time: fields[3] as String?,
+      dayOfTheWeek: fields[4] as String?,
+      period: fields[5] as String?,
+      room: fields[6] as String?,
+      lecturer: fields[7] as String?,
+    );
   }
 
   @override

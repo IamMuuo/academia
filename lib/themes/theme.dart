@@ -2,13 +2,38 @@ import 'package:flutter/material.dart';
 
 ThemeData lightModeTheme = ThemeData(
   fontFamily: 'Nunito',
-  primarySwatch: Colors.blue,
-  scaffoldBackgroundColor: Colors.blue[700],
-  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+  primarySwatch: Colors.blueGrey,
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     showSelectedLabels: true,
     showUnselectedLabels: false,
     elevation: 20,
-    selectedItemColor: Colors.blue[800],
-    unselectedItemColor: Colors.blue[100],
+    selectedItemColor: Colors.blueGrey,
+    unselectedItemColor: Colors.blueGrey,
+  ),
+  inputDecorationTheme: const InputDecorationTheme(
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(5)),
+    ),
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      elevation: 0,
+      minimumSize: const Size(327, 60),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(12),
+        ),
+      ),
+    ),
+  ),
+  appBarTheme: const AppBarTheme(
+    color: Colors.blueGrey,
+  ),
+  dataTableTheme: DataTableThemeData(
+    headingRowColor:
+        MaterialStateColor.resolveWith((states) => Colors.blueGrey),
+    headingTextStyle: const TextStyle(
+      color: Colors.white,
+    ),
   ),
 );
