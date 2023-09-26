@@ -287,26 +287,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                 content: user.balance!,
                                 icon: CupertinoIcons.money_euro_circle_fill,
                               ),
-
-                              // button to refresh all content
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 0,
-                                  minimumSize: const Size(300, 60),
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(12),
-                                    ),
-                                  ),
-                                ),
-                                child: const Text(
-                                  'Refresh Details',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              )
                             ],
                           ),
                         ),
