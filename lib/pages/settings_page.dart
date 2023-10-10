@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../constants/common.dart';
+import 'intro_page.dart';
+
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
@@ -175,7 +178,13 @@ class SettingsPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             child: ElevatedButton(
-              onPressed: () {},
+              // log out the use
+              onPressed: () {
+                user.logout();
+                Get.offAll(const IntroPage());
+                Get.snackbar(
+                    "Logout status", "You have successfully logged out!");
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
                 elevation: 0,
@@ -187,7 +196,7 @@ class SettingsPage extends StatelessWidget {
                 ),
               ),
               child: const Text(
-                'Clear App Data',
+                'Log out',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                 ),

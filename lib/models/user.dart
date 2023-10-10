@@ -65,7 +65,7 @@ class User {
   // from json
   User.fromJson(Map<dynamic, dynamic> json)
       : name = json['name'],
-        gpa = double.parse(json['gpa']),
+        gpa = double.parse(json["gpa"]),
         password = json['password'],
         admno = json['regno'],
         gender = json['gender'],
@@ -79,7 +79,10 @@ class User {
         amountBilled = json["totalbilled"],
         amountPaid = json["totalpaid"],
         balance = json["feebalance"],
-        profile = json["profile"];
+        profile = json["profile"] {
+    json["profile"] = "a";
+    print(json);
+  }
 
   Map<String, dynamic> toModel() {
     return {
@@ -105,14 +108,31 @@ class User {
 
   // Retrieves user details from magnet and stores it on disk
   Future<void> getUserDetails(String username, String password) async {
+    // try {
+    debugPrint(username);
+    debugPrint(password);
+    appDB = await Hive.openBox(dbName);
+    var data = await magnet.fetchUserData();
+    user = User.fromJson(data);
+    user.password = password;
+    appDB.put("user", user);
+    // } catch (e) {
+    // debugPrint("Error: ${e.toString()}");
+    // }
+  }
+
+  // Logout a user
+  Future<void> logout() async {
     try {
-      appDB = await Hive.openBox(dbName);
-      var data = await magnet.fetchUserData();
-      user = User.fromJson(data);
-      user.password = password;
-      appDB.put("user", user);
+      // Close the Hive box
+      await appDB.close();
+      // Delete the Hive box directory to remove all data
+      await Hive.deleteBoxFromDisk(dbName);
+      // Clear the user instance
+      // ignore: cast_from_null_always_fails
+      user = null as User;
     } catch (e) {
-      debugPrint("Error: ${e.toString()}");
+      debugPrint("Error during logout: ${e.toString()}");
     }
   }
 }
