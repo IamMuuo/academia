@@ -115,4 +115,19 @@ class User {
       debugPrint("Error: ${e.toString()}");
     }
   }
+
+  // Logout a user
+  Future<void> logout() async {
+    try {
+      // Close the Hive box
+      await appDB.close();
+      // Delete the Hive box directory to remove all data
+      await Hive.deleteBoxFromDisk(dbName);
+      // Clear the user instance
+      // ignore: cast_from_null_always_fails
+      user = null as User;
+    } catch (e) {
+      debugPrint("Error during logout: ${e.toString()}");
+    }
+  }
 }
