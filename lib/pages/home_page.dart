@@ -37,15 +37,18 @@ class _HomePageState extends State<HomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.calendar),
-            label: 'Schedule',
+            icon: Icon(CupertinoIcons.hammer),
+            activeIcon: Icon(CupertinoIcons.hammer_fill),
+            label: 'Tools',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.file_copy),
+            icon: Icon(Icons.file_copy_outlined),
+            activeIcon: Icon(Icons.file_copy),
             label: 'Courses',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.person_outline),
+            activeIcon: Icon(Icons.person),
             label: 'Profile',
           ),
         ],
