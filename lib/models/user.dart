@@ -115,7 +115,7 @@ class User {
     var data = await magnet.fetchUserData();
     user = User.fromJson(data);
     user.password = password;
-    appDB.put("user", user);
+    await appDB.put("user", user);
     // } catch (e) {
     // debugPrint("Error: ${e.toString()}");
     // }

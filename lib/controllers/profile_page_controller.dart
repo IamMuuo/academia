@@ -11,7 +11,7 @@ class ProfilePageController extends GetxController {
 
   // fetch user details
   Future<void> refreshUserDetails() async {
-    user.getUserDetails(user.admno!, user.password!);
+    await user.getUserDetails(user.admno!, user.password!);
     currentUser.value = await appDB.get("user");
   }
 }

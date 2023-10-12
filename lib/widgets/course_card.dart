@@ -23,6 +23,7 @@ class CourseCard extends StatelessWidget {
       fontWeight: FontWeight.bold,
       fontSize: 12,
     ),
+    this.titleColor = Colors.white,
   });
   final String courseTitle;
   final String dayOfWeek;
@@ -32,6 +33,7 @@ class CourseCard extends StatelessWidget {
   final String lecturer;
   final Color backGround;
   final Color borderColor;
+  final Color titleColor;
   final TextStyle valueStyle;
   final TextStyle keyStyle;
   final Icon icon;
@@ -56,10 +58,10 @@ class CourseCard extends StatelessWidget {
               const Spacer(),
               Text(
                 courseTitle,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
-                  color: Colors.white,
+                  color: titleColor,
                 ),
               ),
             ],
