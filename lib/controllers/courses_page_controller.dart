@@ -31,8 +31,6 @@ class CoursesPageController extends GetxController {
 
     var userCourses = <Widget>[];
 
-    debugPrint(DateFormat("EEEE").format(DateTime.now()));
-
     for (Courses course in courses) {
       userCourses.add(CourseCard(
           backGround: DateFormat("EEEE").format(DateTime.now()) ==
@@ -71,10 +69,10 @@ class CoursesPageController extends GetxController {
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
                 ),
-          courseTitle: course.name.toString().title(),
+          courseTitle: course.name.toString(),
           dayOfWeek: course.dayOfTheWeek.toString().title(),
           period: course.period.toString().title(),
-          venue: course.room.toString().title(),
+          venue: course.room.toString(),
           lecturer: course.lecturer.toString().title(),
           campus: user.campus.toString().title()));
     }
