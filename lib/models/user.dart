@@ -81,7 +81,6 @@ class User {
         balance = json["feebalance"],
         profile = json["profile"] {
     json["profile"] = "a";
-    print(json);
   }
 
   Map<String, dynamic> toModel() {
