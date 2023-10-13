@@ -1,7 +1,7 @@
-import 'package:academia/pages/calendar_page.dart';
 import 'package:academia/pages/courses_page.dart';
 import 'package:academia/pages/dashboard.dart';
 import 'package:academia/pages/profile_page.dart';
+import 'package:academia/pages/tool_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   int currentIndex = 0;
   final pages = const [
     DashBoard(),
-    CalendarPage(),
+    ToolsPage(),
     CoursesPage(),
     ProfilePage(),
   ];
