@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:academia/constants/common.dart';
+import 'package:academia/controllers/profile_page_controller.dart';
 import 'package:academia/pages/settings_page.dart';
 import 'package:academia/widgets/info_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,6 +20,9 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put(ProfilePageController());
+    // controller.currentUser.value.gpa = 0.1;
+    controller.currentUser.value.name = "Erick";
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -41,7 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
         color: Theme.of(context).primaryColor,
         backgroundColor: Colors.white,
         onRefresh: () async {
-          return user.getUserDetails(user.admno!, user.password!);
+          await controller.refreshUserDetails();
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -63,13 +67,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       child: Image.memory(
                         Uint8List.fromList(
-                          base64Decode(user.profile!
+                          base64Decode(controller.currentUser.value.profile!
                               .replaceFirst("data:image/gif;base64,", "")),
                         ),
                       ),
                     ),
                   ),
-                  if (user.gpa! > 3.0)
+                  if (controller.currentUser.value.gpa! > 3.0)
                     Positioned(
                       bottom: 0,
                       right: 0,
@@ -96,7 +100,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Align(
                 alignment: Alignment.center,
                 child: Text(
-                  user.name!.title(),
+                  controller.currentUser.value.name!.toString().title(),
                   style: const TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -111,7 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Align(
                 alignment: Alignment.center,
                 child: Text(
-                  user.programme!.title(),
+                  controller.currentUser.value.programme!.title(),
                 ),
               ),
             ),
@@ -135,7 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              user.gpa.toString(),
+                              controller.currentUser.value.gpa.toString(),
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -165,7 +169,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              user.completedUnits.toString(),
+                              controller.currentUser.value.completedUnits
+                                  .toString(),
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -229,84 +234,70 @@ class _ProfilePageState extends State<ProfilePage> {
                               // admno
                               InfoCard(
                                 title: "Admission No",
-                                content: user.admno!,
+                                content: controller.currentUser.value.admno!,
                                 icon: CupertinoIcons.person_fill,
                               ),
 
                               // gender
                               InfoCard(
                                 title: "Gender",
-                                content: user.gender!.title(),
+                                content: controller.currentUser.value.gender!
+                                    .title(),
                                 icon: CupertinoIcons.person_2_fill,
                               ),
 
                               // dob
                               InfoCard(
                                 title: "Date Of Birth",
-                                content: user.dateOfBirth!,
+                                content:
+                                    controller.currentUser.value.dateOfBirth!,
                                 icon: CupertinoIcons.calendar,
                               ),
                               // address
                               InfoCard(
                                 title: "Address",
-                                content: user.address!,
+                                content: controller.currentUser.value.address!,
                                 icon: CupertinoIcons.envelope_fill,
                               ),
                               // email
                               InfoCard(
                                 title: "Email",
-                                content: user.email!,
+                                content: controller.currentUser.value.email!,
                                 icon: CupertinoIcons.envelope_fill,
                               ),
                               InfoCard(
                                 title: "Academic Status",
-                                content: user.status!.title(),
+                                content: controller.currentUser.value.status!
+                                    .title(),
                                 icon: CupertinoIcons.circle,
                               ),
 
                               // campus
                               InfoCard(
                                 title: "Campus",
-                                content: user.campus!.title(),
+                                content: controller.currentUser.value.campus!
+                                    .title(),
                                 icon: CupertinoIcons.flag_fill,
                               ),
 
                               // fee Info
                               InfoCard(
                                 title: "Amount Billed",
-                                content: user.amountBilled!,
+                                content:
+                                    controller.currentUser.value.amountBilled!,
                                 icon: CupertinoIcons.money_rubl_circle_fill,
                               ),
                               InfoCard(
                                 title: "Fee Paid",
-                                content: user.amountPaid!,
+                                content:
+                                    controller.currentUser.value.amountPaid!,
                                 icon: CupertinoIcons.money_euro_circle,
                               ),
                               InfoCard(
                                 title: "Fee Balance",
-                                content: user.balance!,
+                                content: controller.currentUser.value.balance!,
                                 icon: CupertinoIcons.money_euro_circle_fill,
                               ),
-
-                              // button to refresh all content
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 0,
-                                  minimumSize: const Size(300, 60),
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(12),
-                                    ),
-                                  ),
-                                ),
-                                child: const Text(
-                                  'Refresh Details',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              )
                             ],
                           ),
                         ),

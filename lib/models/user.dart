@@ -65,7 +65,7 @@ class User {
   // from json
   User.fromJson(Map<dynamic, dynamic> json)
       : name = json['name'],
-        gpa = double.parse(json['gpa']),
+        gpa = double.parse(json["gpa"]),
         password = json['password'],
         admno = json['regno'],
         gender = json['gender'],
@@ -79,7 +79,10 @@ class User {
         amountBilled = json["totalbilled"],
         amountPaid = json["totalpaid"],
         balance = json["feebalance"],
-        profile = json["profile"];
+        profile = json["profile"] {
+    json["profile"] = "a";
+    print(json);
+  }
 
   Map<String, dynamic> toModel() {
     return {
@@ -105,15 +108,17 @@ class User {
 
   // Retrieves user details from magnet and stores it on disk
   Future<void> getUserDetails(String username, String password) async {
-    try {
-      appDB = await Hive.openBox(dbName);
-      var data = await magnet.fetchUserData();
-      user = User.fromJson(data);
-      user.password = password;
-      appDB.put("user", user);
-    } catch (e) {
-      debugPrint("Error: ${e.toString()}");
-    }
+    // try {
+    debugPrint(username);
+    debugPrint(password);
+    appDB = await Hive.openBox(dbName);
+    var data = await magnet.fetchUserData();
+    user = User.fromJson(data);
+    user.password = password;
+    await appDB.put("user", user);
+    // } catch (e) {
+    // debugPrint("Error: ${e.toString()}");
+    // }
   }
 
   // Logout a user

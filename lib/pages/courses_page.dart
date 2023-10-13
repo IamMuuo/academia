@@ -25,7 +25,10 @@ class CoursesPage extends StatelessWidget {
       body: LiquidPullToRefresh(
         height: 200,
         onRefresh: () async {
-          return controller.updateCourses();
+          var isUpdated = await controller.updateCourses();
+          if (isUpdated) {
+            Get.snackbar("Done!", "Courses Updated Successfully");
+          }
         },
         child: ListView(
           children: [
@@ -34,7 +37,7 @@ class CoursesPage extends StatelessWidget {
                   ? Padding(
                       padding: const EdgeInsets.only(top: 20, bottom: 10),
                       child: FlutterCarousel(
-                        items: controller.buildTimeTableCourses(),
+                        items: controller.buildElements(),
                         options: CarouselOptions(
                           height: MediaQuery.of(context).size.height * 0.2,
                           autoPlay: true,
@@ -52,27 +55,27 @@ class CoursesPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 20),
               child: Align(
                 alignment: Alignment.center,
-                child: Text("Browse all available courses"),
+                child: Text("My Class Attendance"),
               ),
             ),
-            Obx(
-              () => controller.hasTimetable.value
-                  ? SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: DataTable(
-                          columnSpacing: 10,
-                          columns: controller.buildDataColumn(),
-                          rows: controller.buildDataRow(),
-                        ),
-                      ),
-                    )
-                  : const Center(
-                      child: Text(
-                          "No  units found, please pull to refresh, if the problem persists please relaunch the app!"),
-                    ),
-            )
+            // Obx(
+            //   () => controller.hasTimetable.value
+            //       ? SizedBox(
+            //           width: MediaQuery.of(context).size.width,
+            //           child: SingleChildScrollView(
+            //             scrollDirection: Axis.horizontal,
+            //             child: DataTable(
+            //               columnSpacing: 10,
+            //               columns: controller.buildDataColumn(),
+            //               rows: controller.buildDataRow(),
+            //             ),
+            //           ),
+            //         )
+            //       : const Center(
+            //           child: Text(
+            //               "No  units found, please pull to refresh, if the problem persists please relaunch the app!"),
+            //         ),
+            // )
           ],
         ),
       ),
