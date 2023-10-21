@@ -1,4 +1,5 @@
 import 'package:academia/constants/common.dart';
+import 'package:academia/constants/settings.dart';
 import 'package:academia/pages/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,13 @@ class LoginController extends GetxController {
 
       isloading.value = false;
       debugPrint("User details: ${appDB.get('user')}");
+
+      // append the default settings if not exists
+      if(appDB.containsKey("settings")){
+        await appDB.put("settings", settings);
+      }
+
+      // Navigate to home page
       Get.off(
         const HomePage(),
         duration: const Duration(seconds: 2),
