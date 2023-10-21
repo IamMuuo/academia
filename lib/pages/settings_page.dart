@@ -198,11 +198,37 @@ class SettingsPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               child: ElevatedButton(
                 // log out the use
-                onPressed: () {
-                  user.logout();
-                  Get.offAll(const IntroPage());
-                  Get.snackbar(
-                      "Logout status", "You have successfully logged out!");
+                onPressed: () async {
+                  bool flag = await Get.defaultDialog(
+                    title: "Confirmation",
+                    content: Column(
+                      children: [
+                        Image.asset(
+                          "assets/images/bot_sad.png",
+                          height: 80,
+                          width: 80,
+                        ),
+                        const Text("Are you sure you wish to leave?"),
+                      ],
+                    ),
+                    textConfirm: "Leave",
+                    textCancel: "I'll stay",
+                    onCancel: () {
+                      Get.back(result: false);
+                    },
+                    onConfirm: () => Get.back(result: true),
+                  );
+
+                  if (flag) {
+                    user.logout();
+                    Get.offAll(const IntroPage());
+                    Get.snackbar(
+                      "Logout success",
+                      "Please take your time to let us know what we would have done to make you stay",
+                      backgroundColor: Colors.white,
+                      icon: const Icon(CupertinoIcons.checkmark_seal),
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
