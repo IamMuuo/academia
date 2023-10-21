@@ -1,11 +1,14 @@
+import 'package:academia/controllers/tool_page_controller.dart';
 import 'package:academia/widgets/tool_card.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ToolsPage extends StatelessWidget {
   const ToolsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put(ToolPageController());
     return Scaffold(
       appBar: AppBar(
         title: const Text("Tools"),
@@ -19,8 +22,19 @@ class ToolsPage extends StatelessWidget {
               Icons.food_bank,
               color: Colors.white,
             ),
-            ontap: () {},
+            ontap: () async {
+              await controller.fetchToken();
+            },
             title: "Generate Token",
+            backGround: Colors.blueGrey,
+          ),
+          ToolCard(
+            ontap: () {},
+            icon: const Icon(
+              Icons.check,
+              color: Colors.white,
+            ),
+            title: "My Attendance",
             backGround: Colors.blueGrey,
           ),
           ToolCard(
@@ -31,7 +45,34 @@ class ToolsPage extends StatelessWidget {
             ),
             title: "GPA Calculator",
             backGround: Colors.blueGrey,
-          )
+          ),
+          ToolCard(
+            ontap: () {},
+            icon: const Icon(
+              Icons.school,
+              color: Colors.white,
+            ),
+            title: "My Scedules",
+            backGround: Colors.blueGrey,
+          ),
+          ToolCard(
+            ontap: () {},
+            icon: const Icon(
+              Icons.school,
+              color: Colors.white,
+            ),
+            title: "To Elearning",
+            backGround: Colors.blueGrey,
+          ),
+          ToolCard(
+            ontap: () {},
+            icon: const Icon(
+              Icons.abc_rounded,
+              color: Colors.white,
+            ),
+            title: "My Grades",
+            backGround: Colors.blueGrey,
+          ),
         ],
       ),
     );
