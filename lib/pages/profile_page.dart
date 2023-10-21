@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/profile_page_controller.dart';
+import 'package:academia/controllers/settings_controller.dart';
 import 'package:academia/pages/settings_page.dart';
 import 'package:academia/widgets/info_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,6 +22,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(ProfilePageController());
+    var settingsController = Get.put(SettingsController());
     // controller.currentUser.value.gpa = 0.1;
     controller.currentUser.value.name = "Erick";
     return Scaffold(
@@ -57,40 +59,48 @@ class _ProfilePageState extends State<ProfilePage> {
             // profile pic
             Align(
               alignment: Alignment.center,
-              child: Stack(
-                children: [
-                  CircleAvatar(
-                    radius: 60.0,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(50),
-                      ),
-                      child: Image.memory(
-                        Uint8List.fromList(
-                          base64Decode(controller.currentUser.value.profile!
-                              .replaceFirst("data:image/gif;base64,", "")),
+              child: Obx(
+                () => Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 60.0,
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(50),
                         ),
-                      ),
-                    ),
-                  ),
-                  if (controller.currentUser.value.gpa! > 3.0)
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        padding: const EdgeInsets.all(2.0),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          CupertinoIcons.checkmark_seal_fill,
-                          color: Colors.white,
-                          size: 20.0,
-                        ),
+                        child: settingsController.showProfilePic.value
+                            ? Image.memory(
+                                Uint8List.fromList(
+                                  base64Decode(controller
+                                      .currentUser.value.profile!
+                                      .replaceFirst(
+                                          "data:image/gif;base64,", "")),
+                                ),
+                              )
+                            : Image.asset(user.gender == "male"
+                                ? "assets/images/male_student.png"
+                                : "assets/images/female_student.png"),
                       ),
                     ),
-                ],
+                    if (controller.currentUser.value.gpa! > 3.0)
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          padding: const EdgeInsets.all(2.0),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            CupertinoIcons.checkmark_seal_fill,
+                            color: Colors.white,
+                            size: 20.0,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
 
@@ -138,11 +148,16 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              controller.currentUser.value.gpa.toString(),
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                            Obx(
+                              () => Text(
+                                settingsController.showGPA.value
+                                    ? controller.currentUser.value.gpa
+                                        .toString()
+                                    : "Hidden",
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                             const SizedBox(

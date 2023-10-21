@@ -55,7 +55,7 @@ class LoginController extends GetxController {
       debugPrint("User details: ${appDB.get('user')}");
 
       // append the default settings if not exists
-      if(appDB.containsKey("settings")){
+      if(!appDB.containsKey("settings")){
         await appDB.put("settings", settings);
       }
 
