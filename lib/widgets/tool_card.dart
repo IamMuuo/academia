@@ -30,13 +30,20 @@ class ToolCard extends StatelessWidget {
           ),
         ),
         child: GestureDetector(
+          onTap: () {
+            ontap();
+          },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  icon ?? const Icon(CupertinoIcons.hammer_fill, color: Colors.white,),
+                  icon ??
+                      const Icon(
+                        CupertinoIcons.hammer_fill,
+                        color: Colors.white,
+                      ),
                   IconButton(
                     onPressed: () {
                       ontap();

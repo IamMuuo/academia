@@ -11,7 +11,6 @@ class CoursesPageController extends GetxController {
 
   Future<bool> updateCourses() async {
     var courses = await magnet.fetchTimeTable();
-    debugPrint(courses.toString());
 
     if (courses.isEmpty) {
       hasCourses.value = false;

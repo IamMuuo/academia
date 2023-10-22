@@ -25,10 +25,7 @@ class CoursesPage extends StatelessWidget {
       body: LiquidPullToRefresh(
         height: 200,
         onRefresh: () async {
-          var isUpdated = await controller.updateCourses();
-          if (isUpdated) {
-            Get.snackbar("Done!", "Courses Updated Successfully");
-          }
+          await controller.updateCourses();
         },
         child: ListView(
           children: [
