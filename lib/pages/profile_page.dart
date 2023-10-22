@@ -24,7 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
     var controller = Get.put(ProfilePageController());
     var settingsController = Get.put(SettingsController());
     // controller.currentUser.value.gpa = 0.1;
-    controller.currentUser.value.name = "Erick";
+    //controller.currentUser.value.name = "Erick";
     return Scaffold(
       appBar: AppBar(
         title: const Text(
