@@ -1,5 +1,7 @@
 import 'package:academia/controllers/tool_page_controller.dart';
+import 'package:academia/pages/webview_page.dart';
 import 'package:academia/widgets/tool_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,6 +19,21 @@ class ToolsPage extends StatelessWidget {
       body: GridView.count(
         crossAxisCount: 2,
         children: [
+          ToolCard(
+            ontap: () {
+              Get.to(
+                const WebviewPage(
+                    title: "Daystar Elearning",
+                    url: "https://student.daystar.ac.ke"),
+              );
+            },
+            icon: const Icon(
+              CupertinoIcons.book_circle,
+              color: Colors.white,
+            ),
+            title: "To Elearning",
+            backGround: Colors.blueGrey,
+          ),
           ToolCard(
             icon: const Icon(
               Icons.food_bank,
@@ -53,15 +70,6 @@ class ToolsPage extends StatelessWidget {
               color: Colors.white,
             ),
             title: "My Scedules",
-            backGround: Colors.blueGrey,
-          ),
-          ToolCard(
-            ontap: () {},
-            icon: const Icon(
-              Icons.school,
-              color: Colors.white,
-            ),
-            title: "To Elearning",
             backGround: Colors.blueGrey,
           ),
           ToolCard(
