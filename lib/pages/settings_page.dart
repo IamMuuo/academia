@@ -231,7 +231,7 @@ class SettingsPage extends StatelessWidget {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
+                  backgroundColor: Colors.blueGrey,
                   elevation: 0,
                   minimumSize: const Size(300, 60),
                   shape: const RoundedRectangleBorder(
