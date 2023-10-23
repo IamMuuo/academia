@@ -1,4 +1,5 @@
 import 'package:academia/models/courses.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class GPACalculatorController extends GetxController {
@@ -7,9 +8,18 @@ class GPACalculatorController extends GetxController {
   List<Unit> get courseList => _courses;
   double get gpa => _calculateGPA();
 
-  void addCourse(String name, String code, double creditHours, String grade) {
+  void addCourse(String name, String code, String creditHours, String grade) {
+    double tcreditHours = 0;
+    try {
+      tcreditHours = double.parse(creditHours);
+    } catch (e) {
+      Get.defaultDialog(
+          title: "Incorrect credit Hours",
+          content: const Text("Credit hours must be a number"));
+      throw Exception('Credit hours must be a number');
+    }
     final course =
-        Unit(name: name, code: code, creditHours: creditHours, grade: grade);
+        Unit(name: name, code: code, creditHours: tcreditHours, grade: grade);
     _courses.add(course);
   }
 
@@ -22,11 +32,18 @@ class GPACalculatorController extends GetxController {
       {required int index,
       required String newName,
       required String newCode,
-      required double newCreditHours,
+      required String newCreditHours,
       required String newGrade}) {
     _courses[index].name = newName;
     _courses[index].code = newCode;
-    _courses[index].creditHours = newCreditHours;
+    try {
+      _courses[index].creditHours = double.parse(newCreditHours);
+    } catch (e) {
+      Get.defaultDialog(
+          title: "Incorrect credit Hours",
+          content: const Text("Credit hours must be a number"));
+      throw Exception('Credit hours must be a number');
+    }
     _courses[index].grade = newGrade;
     _courses.refresh();
   }
@@ -38,8 +55,6 @@ class GPACalculatorController extends GetxController {
       totalPoints += getGradePoints(course.grade) * course.creditHours;
       totalCreditHours += course.creditHours;
     }
-    print(totalPoints.toString());
-    print(totalCreditHours.toString());
     return (totalPoints / totalCreditHours).toPrecision(2);
   }
 

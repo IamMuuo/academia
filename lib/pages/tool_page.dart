@@ -25,7 +25,7 @@ class ToolsPage extends StatelessWidget {
               Get.to(
                 const WebviewPage(
                     title: "Daystar Elearning",
-                    url: "https://student.daystar.ac.ke"),
+                    url: "https://elearning.daystar.ac.ke"),
               );
             },
             icon: const Icon(
