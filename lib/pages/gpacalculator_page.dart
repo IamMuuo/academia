@@ -43,9 +43,14 @@ class GpaCalculator extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
+                if (unitController.courseList.length.isEqual(0)) {
+                  Get.defaultDialog(
+                      title: "List empty",
+                      content: const Text("Input Grades!"));
+                }
                 Get.defaultDialog(
                   title: "Your GPA",
-                  content: Text("Your GPA is ${unitController.gpa}"),
+                  content: Text("Your GPA is ${unitController.gpa.toString()}"),
                 );
               },
               child: const Text("Calculate GPA"),
@@ -121,6 +126,8 @@ class GpaCalculator extends StatelessWidget {
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: TextField(
+                                              keyboardType:
+                                                  TextInputType.number,
                                               decoration: const InputDecoration(
                                                 border: OutlineInputBorder(),
                                                 labelText: 'Credit Hours',
@@ -161,9 +168,8 @@ class GpaCalculator extends StatelessWidget {
                                                               codeController
                                                                   .text,
                                                           newCreditHours:
-                                                              double.parse(
-                                                                  creditHoursController
-                                                                      .text),
+                                                              creditHoursController
+                                                                  .text,
                                                           newGrade:
                                                               gradeController
                                                                   .text);
@@ -262,6 +268,7 @@ class GpaCalculator extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: TextField(
+                                    keyboardType: TextInputType.number,
                                     decoration: const InputDecoration(
                                       border: OutlineInputBorder(),
                                       labelText: 'Credit Hours',
@@ -289,8 +296,13 @@ class GpaCalculator extends StatelessWidget {
                                   onPressed: () {
                                     final name = nameController.text;
                                     final code = codeController.text;
-                                    final creditHours = double.parse(
-                                        creditHoursController.text);
+                                    final creditHours =
+                                        creditHoursController.text;
+
+                                    // if (creditHours is! double) {
+                                    //   Get.snackbar("Invalid Credit hours",
+                                    //       "Must be a number");
+                                    // }
                                     final grade = gradeController.text;
                                     if (nameController.text != '' &&
                                         codeController.text != '' &&
@@ -304,7 +316,7 @@ class GpaCalculator extends StatelessWidget {
                                       } else {
                                         Get.defaultDialog(
                                           title: "Invalid Grade",
-                                          content: Text(
+                                          content: const Text(
                                               "Please enter a valid grade"),
                                         );
                                       }
