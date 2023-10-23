@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 
-
 part 'courses.g.dart';
 
 @HiveType(typeId: 2)
@@ -69,3 +68,16 @@ class Courses {
   }
 }
 
+class Unit {
+  String name;
+  String code;
+  double creditHours;
+  String grade;
+
+  Unit({
+    required this.name,
+    required this.code,
+    required this.creditHours,
+    required this.grade,
+  });
+}

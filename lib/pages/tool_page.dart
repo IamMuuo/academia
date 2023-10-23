@@ -1,4 +1,5 @@
 import 'package:academia/controllers/tool_page_controller.dart';
+import 'package:academia/pages/gpacalculator_page.dart';
 import 'package:academia/pages/webview_page.dart';
 import 'package:academia/widgets/tool_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,7 +56,9 @@ class ToolsPage extends StatelessWidget {
             backGround: Colors.blueGrey,
           ),
           ToolCard(
-            ontap: () {},
+            ontap: () {
+              Get.to(() => GpaCalculator());
+            },
             icon: const Icon(
               Icons.calculate,
               color: Colors.white,
