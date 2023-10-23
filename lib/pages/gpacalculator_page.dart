@@ -296,9 +296,18 @@ class GpaCalculator extends StatelessWidget {
                                         codeController.text != '' &&
                                         creditHoursController.text != '' &&
                                         gradeController.text != '') {
-                                      unitController.addCourse(
-                                          name, code, creditHours, grade);
-                                      Get.back();
+                                      if (GPACalculatorController
+                                          .testValidGrade(grade)) {
+                                        unitController.addCourse(
+                                            name, code, creditHours, grade);
+                                        Get.back();
+                                      } else {
+                                        Get.defaultDialog(
+                                          title: "Invalid Grade",
+                                          content: Text(
+                                              "Please enter a valid grade"),
+                                        );
+                                      }
                                     }
                                   },
                                   child: const Text("Add unit"),

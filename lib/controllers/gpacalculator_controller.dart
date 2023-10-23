@@ -33,14 +33,14 @@ class GPACalculatorController extends GetxController {
 
   double _calculateGPA() {
     double totalPoints = 0;
-    num totalCreditHours = 0;
-    // TODO: Perform cases to calculate grades
+    double totalCreditHours = 0;
     for (var course in _courses) {
       totalPoints += getGradePoints(course.grade) * course.creditHours;
       totalCreditHours += course.creditHours;
     }
-
-    return totalPoints / totalCreditHours;
+    print(totalPoints.toString());
+    print(totalCreditHours.toString());
+    return (totalPoints / totalCreditHours).toPrecision(2);
   }
 
   static double getGradePoints(String grade) {
@@ -73,6 +73,39 @@ class GPACalculatorController extends GetxController {
         return 0.0;
       default:
         return 0.0;
+    }
+  }
+
+  static bool testValidGrade(var grade) {
+    switch (grade) {
+      case 'A':
+        return true;
+      case 'A-':
+        return true;
+      case 'B+':
+        return true;
+      case 'B':
+        return true;
+      case 'B-':
+        return true;
+      case 'C+':
+        return true;
+      case 'C':
+        return true;
+      case 'C-':
+        return true;
+      case 'D+':
+        return true;
+      case 'D':
+        return true;
+      case 'D-':
+        return true;
+      case 'E':
+        return true;
+      case 'F':
+        return true;
+      default:
+        return false;
     }
   }
 }
