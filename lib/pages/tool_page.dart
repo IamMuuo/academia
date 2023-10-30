@@ -36,17 +36,6 @@ class ToolsPage extends StatelessWidget {
             backGround: Colors.blueGrey,
           ),
           ToolCard(
-            icon: const Icon(
-              Icons.food_bank,
-              color: Colors.white,
-            ),
-            ontap: () async {
-              await controller.fetchToken();
-            },
-            title: "Generate Token",
-            backGround: Colors.blueGrey,
-          ),
-          ToolCard(
             ontap: () {},
             icon: const Icon(
               Icons.check,
