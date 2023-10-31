@@ -24,8 +24,9 @@ class ToolsPage extends StatelessWidget {
             ontap: () {
               Get.to(
                 const WebviewPage(
-                    title: "Daystar Elearning",
-                    url: "https://elearning.daystar.ac.ke"),
+                  title: "Daystar Elearning",
+                  url: "https://elearning.daystar.ac.ke",
+                ),
               );
             },
             icon: const Icon(
@@ -33,6 +34,17 @@ class ToolsPage extends StatelessWidget {
               color: Colors.white,
             ),
             title: "To Elearning",
+            backGround: Colors.blueGrey,
+          ),
+          ToolCard(
+            ontap: () async {
+              await controller.fetchToken();
+            },
+            icon: const Icon(
+              Icons.check,
+              color: Colors.white,
+            ),
+            title: "Generate Token",
             backGround: Colors.blueGrey,
           ),
           ToolCard(
