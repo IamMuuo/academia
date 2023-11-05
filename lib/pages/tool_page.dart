@@ -41,7 +41,7 @@ class ToolsPage extends StatelessWidget {
               await controller.fetchToken();
             },
             icon: const Icon(
-              Icons.check,
+              Icons.emoji_food_beverage,
               color: Colors.white,
             ),
             title: "Generate Token",
