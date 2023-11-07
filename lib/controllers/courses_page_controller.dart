@@ -1,4 +1,5 @@
 import 'package:academia/models/courses.dart';
+import 'package:academia/widgets/course_attendance_widget.dart';
 import 'package:academia/widgets/course_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:intl/intl.dart';
 class CoursesPageController extends GetxController {
   var userCourses = <Courses>[];
   var hasCourses = true.obs;
+  var hasProgress = true.obs;
 
   Future<bool> updateCourses() async {
     var courses = await magnet.fetchTimeTable();
@@ -22,6 +24,8 @@ class CoursesPageController extends GetxController {
     }
     await appDB.put("timetable", userCourses);
     hasCourses.value = true;
+
+    await updateProgress();
     return true;
   }
 
@@ -81,6 +85,30 @@ class CoursesPageController extends GetxController {
     return userCourses;
   }
 
+  List<Widget> buildProgressCards() {
+    var progress = appDB.get("attendance") ?? [];
+
+    if (progress == []) {
+      hasProgress.value = false;
+      return [];
+    }
+
+    var progressList = <Widget>[];
+
+    for (Map p in progress) {
+      progressList.add(CourseAttendanceCard(
+          course: p.keys.first,
+          percent: double.parse(p.values.first.toString()),));
+    }
+    return progressList;
+  }
+
+  Future<bool> updateProgress() async {
+    var courseProgress = await magnet.fetchUserClassAttendance();
+    await appDB.put("attendance", courseProgress);
+    return true;
+  }
+
   @override
   void onInit() async {
     if (!appDB.containsKey("timetable")) {
@@ -88,6 +116,14 @@ class CoursesPageController extends GetxController {
       var isUpdated = await updateCourses();
       if (isUpdated) {
         hasCourses.value = true;
+      }
+    }
+
+    if (!appDB.containsKey("attendance")) {
+      hasProgress.value = false;
+      var updatedProgress = await updateProgress();
+      if (updatedProgress) {
+        hasProgress.value = true;
       }
     }
     super.onInit();

@@ -1,4 +1,5 @@
 import 'package:academia/controllers/tool_page_controller.dart';
+import 'package:academia/pages/attendance_page.dart';
 import 'package:academia/pages/gpacalculator_page.dart';
 import 'package:academia/pages/webview_page.dart';
 import 'package:academia/widgets/tool_card.dart';
@@ -48,7 +49,9 @@ class ToolsPage extends StatelessWidget {
             backGround: Colors.blueGrey,
           ),
           ToolCard(
-            ontap: () {},
+            ontap: () {
+              Get.to(const AttendancePage());
+            },
             icon: const Icon(
               Icons.check,
               color: Colors.white,
