@@ -1,4 +1,5 @@
 import 'package:academia/controllers/tool_page_controller.dart';
+import 'package:academia/pages/attendance_page.dart';
 import 'package:academia/pages/gpacalculator_page.dart';
 import 'package:academia/pages/webview_page.dart';
 import 'package:academia/widgets/tool_card.dart';
@@ -41,14 +42,16 @@ class ToolsPage extends StatelessWidget {
               await controller.fetchToken();
             },
             icon: const Icon(
-              Icons.check,
+              Icons.emoji_food_beverage,
               color: Colors.white,
             ),
             title: "Generate Token",
             backGround: Colors.blueGrey,
           ),
           ToolCard(
-            ontap: () {},
+            ontap: () {
+              Get.to(const AttendancePage());
+            },
             icon: const Icon(
               Icons.check,
               color: Colors.white,

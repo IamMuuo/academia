@@ -1,4 +1,5 @@
 import 'package:academia/controllers/courses_page_controller.dart';
+import 'package:academia/widgets/course_attendance_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
@@ -55,24 +56,20 @@ class CoursesPage extends StatelessWidget {
                 child: Text("My Class Attendance"),
               ),
             ),
-            // Obx(
-            //   () => controller.hasTimetable.value
-            //       ? SizedBox(
-            //           width: MediaQuery.of(context).size.width,
-            //           child: SingleChildScrollView(
-            //             scrollDirection: Axis.horizontal,
-            //             child: DataTable(
-            //               columnSpacing: 10,
-            //               columns: controller.buildDataColumn(),
-            //               rows: controller.buildDataRow(),
-            //             ),
-            //           ),
-            //         )
-            //       : const Center(
-            //           child: Text(
-            //               "No  units found, please pull to refresh, if the problem persists please relaunch the app!"),
-            //         ),
-            // )
+            Obx(
+              () => SizedBox(
+                height: MediaQuery.of(context).size.height * 0.75,
+                child: controller.hasProgress.value
+                    
+                    ? GridView.count(
+                        crossAxisCount: 2,
+                        padding: const EdgeInsets.all(5),
+                        mainAxisSpacing: 2,
+                        crossAxisSpacing: 2,
+                        children: controller.buildProgressCards(),
+                      ) : Image.asset("assets/images/bot_sad.png")
+              ),
+            ),
           ],
         ),
       ),

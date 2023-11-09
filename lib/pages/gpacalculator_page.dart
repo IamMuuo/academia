@@ -43,10 +43,12 @@ class GpaCalculator extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                if (unitController.courseList.length.isEqual(0)) {
+                if (unitController.courseList.isEmpty) {
                   Get.defaultDialog(
-                      title: "List empty",
-                      content: const Text("Input Grades!"));
+                    title: "List empty",
+                    content: const Text("Input Grades!"),
+                  );
+                  return;
                 }
                 Get.defaultDialog(
                   title: "Your GPA",

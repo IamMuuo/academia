@@ -54,6 +54,7 @@ dependencies:
       ref: master
   liquid_pull_to_refresh: ^3.0.1
   cached_network_image: ^3.2.3
+  percent_indicator: ^4.2.3
 
 
 
