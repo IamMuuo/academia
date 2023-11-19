@@ -41,21 +41,29 @@ class GpaCalculator extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                if (unitController.courseList.isEmpty) {
-                  Get.defaultDialog(
-                    title: "List empty",
-                    content: const Text("Input Grades!"),
-                  );
-                  return;
-                }
-                Get.defaultDialog(
-                  title: "Your GPA",
-                  content: Text("Your GPA is ${unitController.gpa.toString()}"),
-                );
-              },
-              child: const Text("Calculate GPA"),
+            Column(
+              children: [
+                ElevatedButton(
+                    onPressed: () {},
+                    child: const Text("Load Registered Units")),
+                ElevatedButton(
+                  onPressed: () {
+                    if (unitController.courseList.isEmpty) {
+                      Get.defaultDialog(
+                        title: "List empty",
+                        content: const Text("Input Grades!"),
+                      );
+                      return;
+                    }
+                    Get.defaultDialog(
+                      title: "Your GPA",
+                      content:
+                          Text("Your GPA is ${unitController.gpa.toString()}"),
+                    );
+                  },
+                  child: const Text("Calculate GPA"),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
             Expanded(
