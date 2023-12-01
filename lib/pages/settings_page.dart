@@ -117,7 +117,6 @@ class SettingsPage extends StatelessWidget {
               trailing: Switch(
                   value: controller.showExamTimeTable.value,
                   onChanged: (value) async {
-                    print("Toggled to $value");
                     controller.showExamTimeTable.value = value;
                     await controller.saveSettings();
                   }),

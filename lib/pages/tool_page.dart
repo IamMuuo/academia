@@ -24,11 +24,20 @@ class _ToolsPageState extends State<ToolsPage> {
       "action": "Generate Token",
       "image": "assets/images/food.png",
       "ontap": () async {
-        var token = await magnet.fetchCateringToken();
-        await Get.defaultDialog(
-          title: "Your Token",
-          content: Text("Your Token is ${token['message'] ?? ''}"),
-        );
+        try {
+          var token = await magnet.fetchCateringToken();
+          await Get.defaultDialog(
+            title: "Your Token",
+            content: Text("Your Token is ${token['message'] ?? ''}"),
+          );
+        } catch (e) {
+          Get.snackbar(
+            "Error",
+            "Please check your internet connection and try again!",
+            icon: const Icon(Icons.network_check),
+            backgroundColor: Colors.white,
+          );
+        }
       },
       "description": "Hungry? Maybe its time to generate your catering token!"
     },
