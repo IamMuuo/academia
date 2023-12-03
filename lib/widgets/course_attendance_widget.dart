@@ -27,7 +27,7 @@ class CourseAttendanceCard extends StatelessWidget {
       child: CircularPercentIndicator(
         animation: true,
         animationDuration: 1000,
-        radius: 70,
+        radius: 50,
         percent: percent / 100,
         lineWidth: 20,
         progressColor: Theme.of(context).primaryColor,
@@ -38,6 +38,9 @@ class CourseAttendanceCard extends StatelessWidget {
         ),
         footer: Text(
           course,
+          style: h6.copyWith(
+            fontSize: 10,
+          ),
           overflow: TextOverflow.ellipsis,
         ),
       ),

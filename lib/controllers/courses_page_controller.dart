@@ -97,8 +97,9 @@ class CoursesPageController extends GetxController {
 
     for (Map p in progress) {
       progressList.add(CourseAttendanceCard(
-          course: p.keys.first,
-          percent: double.parse(p.values.first.toString()),));
+        course: p.keys.first,
+        percent: double.parse(p.values.first.toString()),
+      ));
     }
     return progressList;
   }
