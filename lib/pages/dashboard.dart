@@ -14,7 +14,7 @@ class DashBoard extends StatelessWidget {
     final DashboardController dashBoardController =
         Get.put(DashboardController());
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -45,8 +45,9 @@ class DashBoard extends StatelessWidget {
                       ),
                       child: IconButton(
                         onPressed: () {},
-                        icon: const Icon(
+                        icon: Icon(
                           CupertinoIcons.bell_fill,
+                          color: Theme.of(context).primaryColor,
                           size: 30,
                         ),
                       ),
@@ -105,47 +106,12 @@ class DashBoard extends StatelessWidget {
               child: SizedBox(
                 height: MediaQuery.of(context).size.height * 0.5,
                 child: ListView(
-                  children: [
-                    const Align(
+                  children: const [
+                    Align(
                       alignment: Alignment.center,
                       child: Text(
                         "Courses you're enrolled to",
                         style: h5,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12, bottom: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                              height: 100, width: 180, color: Colors.black),
-                          Container(
-                              height: 100, width: 180, color: Colors.green)
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12, bottom: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(height: 100, width: 180, color: Colors.red),
-                          Container(
-                              height: 100, width: 180, color: Colors.purple)
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12, bottom: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                              height: 100, width: 180, color: Colors.teal),
-                          Container(
-                              height: 100, width: 180, color: Colors.black)
-                        ],
                       ),
                     ),
                   ],

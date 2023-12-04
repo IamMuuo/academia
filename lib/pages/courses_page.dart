@@ -1,5 +1,4 @@
 import 'package:academia/controllers/courses_page_controller.dart';
-import 'package:academia/widgets/course_attendance_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
