@@ -66,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       radius: 60.0,
                       child: ClipRRect(
                         borderRadius: const BorderRadius.all(
-                          Radius.circular(50),
+                          Radius.circular(800),
                         ),
                         child: settingsController.showProfilePic.value
                             ? Image.memory(

@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/dashboard_controller.dart';
+import 'package:academia/controllers/settings_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
@@ -13,6 +17,7 @@ class DashBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     final DashboardController dashBoardController =
         Get.put(DashboardController());
+    final settingsController = Get.find<SettingsController>();
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
@@ -23,32 +28,59 @@ class DashBoard extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Hi, ${(user.name!.split(" ")[0]).title()}!',
-                            style: h4),
-                        // Date
-                        Text(
-                          DateFormat.yMMMMEEEEd().format(DateTime.now()),
+                    CircleAvatar(
+                      radius: 20.0,
+                      child: Obx(
+                        () => ClipRRect(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(800),
+                          ),
+                          child: settingsController.showProfilePic.value
+                              ? Image.memory(
+                                  Uint8List.fromList(
+                                    base64Decode(user.profile!.replaceFirst(
+                                        "data:image/gif;base64,", "")),
+                                  ),
+                                  fit: BoxFit.cover,
+                                  width: 400,
+                                  height: 400,
+                                )
+                              : Image.asset(
+                                  user.gender == "male"
+                                      ? "assets/images/male_student.png"
+                                      : "assets/images/female_student.png",
+                                ),
                         ),
-                      ],
+                      ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Hi, ${(user.name!.split(" ")[0]).title()}!',
+                              style: h4),
+                          // Date
+                          Text(
+                            DateFormat.yMMMMEEEEd().format(DateTime.now()),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Spacer(),
                     Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(20),
-                        ),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).primaryColor,
                       ),
                       child: IconButton(
                         onPressed: () {},
+                        tooltip: "Notifications",
                         icon: Icon(
                           CupertinoIcons.bell_fill,
-                          color: Theme.of(context).primaryColor,
-                          size: 30,
+                          color: Theme.of(context).primaryColorLight,
                         ),
                       ),
                     ),
@@ -56,69 +88,7 @@ class DashBoard extends StatelessWidget {
                 ),
               ),
             ),
-            // Search bar
-            Container(
-              padding: const EdgeInsets.all(16),
-              child: TextField(
-                controller: dashBoardController.searchBoxController,
-                decoration: InputDecoration(
-                  filled: true,
-                  suffixIcon: IconButton(
-                    padding: const EdgeInsets.all(16),
-                    onPressed: () {},
-                    icon: const Icon(
-                      CupertinoIcons.search,
-                      size: 30,
-                    ),
-                  ),
-                  hintText: 'Looking for something?',
-                  hintStyle: const TextStyle(),
-                ),
-              ),
-            ),
-            //
-
-            FlutterCarousel(
-              items: dashBoardController.buildCauroselCards(),
-              // [
-              //   CauroselItemCard(
-              //     date: "Sunday 14, January, 2023",
-              //     title: "Task 1",
-              //     description: "Test task",
-              //     location: "Everywhere",
-              //     center: Image.asset(
-              //       "assets/images/smiley.png",
-              //       height: 100,
-              //     ),
-              //   ),
-              // ],
-              options: CarouselOptions(
-                height: MediaQuery.of(context).size.height * 0.25,
-                showIndicator: true,
-                autoPlay: true,
-                enlargeCenterPage: true,
-                slideIndicator: CircularWaveSlideIndicator(),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: ListView(
-                  children: const [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Courses you're enrolled to",
-                        style: h5,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          ],
+          ], //
         ),
       ),
     );
