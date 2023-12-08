@@ -1,4 +1,5 @@
 import 'package:academia/constants/common.dart';
+import 'package:academia/controllers/settings_controller.dart';
 import 'package:academia/models/courses.dart';
 import 'package:academia/models/schedule.dart';
 import 'package:academia/models/user.dart';
@@ -24,6 +25,10 @@ void main() async {
     isLoggedIn = true;
     magnet = Magnet(user.admno!, user.password!);
   }
+
+  // Init settings controller
+  Get.put(SettingsController());
+
   runApp(
     GetMaterialApp(
       home: isLoggedIn ? const HomePage() : const IntroPage(),
