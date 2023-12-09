@@ -1,8 +1,11 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/dashboard_controller.dart';
+import 'package:academia/controllers/settings_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -13,8 +16,9 @@ class DashBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     final DashboardController dashBoardController =
         Get.put(DashboardController());
+    final settingsController = Get.find<SettingsController>();
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -23,31 +27,59 @@ class DashBoard extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Hi, ${(user.name!.split(" ")[0]).title()}!',
-                            style: h4),
-                        // Date
-                        Text(
-                          DateFormat.yMMMMEEEEd().format(DateTime.now()),
+                    CircleAvatar(
+                      radius: 20.0,
+                      child: Obx(
+                        () => ClipRRect(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(800),
+                          ),
+                          child: settingsController.showProfilePic.value
+                              ? Image.memory(
+                                  Uint8List.fromList(
+                                    base64Decode(user.profile!.replaceFirst(
+                                        "data:image/gif;base64,", "")),
+                                  ),
+                                  fit: BoxFit.cover,
+                                  width: 400,
+                                  height: 400,
+                                )
+                              : Image.asset(
+                                  user.gender == "male"
+                                      ? "assets/images/male_student.png"
+                                      : "assets/images/female_student.png",
+                                ),
                         ),
-                      ],
+                      ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Hi, ${(user.name!.split(" ")[0]).title()}!',
+                              style: h4),
+                          // Date
+                          Text(
+                            DateFormat.yMMMMEEEEd().format(DateTime.now()),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Spacer(),
                     Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(20),
-                        ),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).primaryColor,
                       ),
                       child: IconButton(
                         onPressed: () {},
-                        icon: const Icon(
+                        tooltip: "Notifications",
+                        icon: Icon(
                           CupertinoIcons.bell_fill,
-                          size: 30,
+                          color: Theme.of(context).primaryColorLight,
                         ),
                       ),
                     ),
@@ -55,103 +87,100 @@ class DashBoard extends StatelessWidget {
                 ),
               ),
             ),
-            // Search bar
-            Container(
-              padding: const EdgeInsets.all(16),
-              child: TextField(
-                controller: dashBoardController.searchBoxController,
-                decoration: InputDecoration(
-                  filled: true,
-                  suffixIcon: IconButton(
+
+            // body
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  // Classes Today
+                  Container(
+                    width: 180,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(8),
+                      ),
+                      // color: Theme.of(context).primaryColorLight,
+                      color: Colors.white,
+                    ),
                     padding: const EdgeInsets.all(16),
-                    onPressed: () {},
-                    icon: const Icon(
-                      CupertinoIcons.search,
-                      size: 30,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(90),
+                          ),
+                          child: CircleAvatar(
+                            radius: 40,
+                            child: Image.asset(
+                              "assets/images/abc.png",
+                              fit: BoxFit.scaleDown,
+                              height: 50,
+                              width: 50,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "${dashBoardController.classesToday}",
+                          style: h3,
+                        ),
+                        Text(
+                          "Classes today",
+                          style: normal.copyWith(
+                            color: Theme.of(context).primaryColorLight,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  hintText: 'Looking for something?',
-                  hintStyle: const TextStyle(),
-                ),
+
+                  // Schedules today
+                  Container(
+                    width: 180,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(8),
+                      ),
+                      // color: Theme.of(context).primaryColorLight,
+                      color: Colors.white,
+                    ),
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(90),
+                          ),
+                          child: CircleAvatar(
+                            radius: 40,
+                            child: Image.asset(
+                              "assets/images/schedule.png",
+                              fit: BoxFit.scaleDown,
+                              height: 50,
+                              width: 50,
+                            ),
+                          ),
+                        ),
+                        const Text(
+                          "0",
+                          style: h3,
+                        ),
+                        Text(
+                          "Events and Schedules",
+                          style: normal.copyWith(
+                            color: Theme.of(context).primaryColorLight,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
-            //
-
-            FlutterCarousel(
-              items: dashBoardController.buildCauroselCards(),
-              // [
-              //   CauroselItemCard(
-              //     date: "Sunday 14, January, 2023",
-              //     title: "Task 1",
-              //     description: "Test task",
-              //     location: "Everywhere",
-              //     center: Image.asset(
-              //       "assets/images/smiley.png",
-              //       height: 100,
-              //     ),
-              //   ),
-              // ],
-              options: CarouselOptions(
-                height: MediaQuery.of(context).size.height * 0.25,
-                showIndicator: true,
-                autoPlay: true,
-                enlargeCenterPage: true,
-                slideIndicator: CircularWaveSlideIndicator(),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: ListView(
-                  children: [
-                    const Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Courses you're enrolled to",
-                        style: h5,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12, bottom: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                              height: 100, width: 180, color: Colors.black),
-                          Container(
-                              height: 100, width: 180, color: Colors.green)
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12, bottom: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(height: 100, width: 180, color: Colors.red),
-                          Container(
-                              height: 100, width: 180, color: Colors.purple)
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12, bottom: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                              height: 100, width: 180, color: Colors.teal),
-                          Container(
-                              height: 100, width: 180, color: Colors.black)
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
           ],
         ),
       ),

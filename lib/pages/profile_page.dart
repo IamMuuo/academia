@@ -22,7 +22,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(ProfilePageController());
-    var settingsController = Get.put(SettingsController());
+    var settingsController = Get.find<SettingsController>();
     // controller.currentUser.value.gpa = 0.1;
     //controller.currentUser.value.name = "Erick";
     return Scaffold(
@@ -66,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       radius: 60.0,
                       child: ClipRRect(
                         borderRadius: const BorderRadius.all(
-                          Radius.circular(50),
+                          Radius.circular(800),
                         ),
                         child: settingsController.showProfilePic.value
                             ? Image.memory(
