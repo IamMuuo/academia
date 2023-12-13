@@ -16,9 +16,6 @@ class CoursesPage extends StatelessWidget {
         elevation: 0,
         title: const Text(
           "Courses",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
         ),
         centerTitle: true,
       ),
