@@ -10,9 +10,13 @@ class NotificationsController extends GetxController {
     }
   }
 
-  List<Map<String, dynamic>> get events {
+  bool get hasCalendar{
+    return appDB.get("academic_calendar").isEmpty;
+  }
+
+  Future<List<Map<String, dynamic>>> get events async {
     if (appDB.containsKey("academic_calendar")) {
-      return appDB.get("academic_calendar");
+      return await appDB.get("academic_calendar");
     }
     return [];
   }
