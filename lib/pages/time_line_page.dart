@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/notifications_controller.dart';
 import 'package:academia/widgets/semester_timeline_tile.dart';
@@ -6,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class TimeLinePage extends StatelessWidget {
   const TimeLinePage({super.key});
@@ -41,44 +41,67 @@ class TimeLinePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Semester Timeline"),
         elevation: 0,
-        actions: [
-          IconButton(
-              onPressed: () async {
-                // await controller.fetchAcademicCalendar();
-                sleep(const Duration(seconds: 10));
-              },
-              icon: const Icon(Icons.refresh))
-        ],
       ),
-      body: LiquidPullToRefresh(
-        onRefresh: () async {
-          await controller.fetchAcademicCalendar();
-        },
-        height: 200,
-        child: controller.hasCalendar
+      body: Obx(
+        () => controller.isLoading.value
             ? Center(
-                child: ListView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Image.asset(
-                          "assets/images/girl_sitted.png",
-                          height: 200,
-                        ),
-                        const Text(
-                          "Darn you got us but we are working to provide your semester's timeline",
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+                    LoadingAnimationWidget.flickr(
+                      rightDotColor: Theme.of(context).primaryColorLight,
+                      leftDotColor: Theme.of(context).primaryColorDark,
+                      size: 60,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(12),
+                      child: Text("Hang on tight we're crunching numbers"),
                     ),
                   ],
                 ),
               )
-            : Padding(
-                padding: const EdgeInsets.all(20),
-                child: buildEventsWidget(),
+            : LiquidPullToRefresh(
+                onRefresh: () async {
+                  controller.isLoading.value = true;
+                  await controller.fetchAcademicCalendar();
+                  controller.isLoading.value = false;
+                },
+                height: 200,
+                child: controller.hasCalendar
+                    ? Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: buildEventsWidget(),
+                      )
+                    : Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/images/girl_sitted.png",
+                              height: 200,
+                            ),
+                            const Text(
+                              "Darn you got us but we are working to provide your semester's timeline",
+                              textAlign: TextAlign.center,
+                            ),
+                            ElevatedButton.icon(
+                              onPressed: () async {
+                                controller.isLoading.value = true;
+                                await controller.fetchAcademicCalendar();
+                                controller.isLoading.value = false;
+                              },
+                              icon: const Icon(Icons.touch_app_sharp),
+                              label: const Text("Try again"),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Theme.of(context).primaryColorDark,
+                                  elevation: 0,
+                                  maximumSize: const Size(120, 60),
+                                  minimumSize: const Size(120, 60)),
+                            ),
+                          ],
+                        ),
+                      ),
               ),
       ),
     );

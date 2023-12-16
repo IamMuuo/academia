@@ -2,6 +2,7 @@ import 'package:academia/constants/common.dart';
 import 'package:get/get.dart';
 
 class NotificationsController extends GetxController {
+  var isLoading = false.obs;
   // fetches the event calendar
   Future<void> fetchAcademicCalendar() async {
     var events = await magnet.fetchAcademicCalendar();
@@ -10,8 +11,8 @@ class NotificationsController extends GetxController {
     }
   }
 
-  bool get hasCalendar{
-    return appDB.get("academic_calendar").isEmpty;
+  bool get hasCalendar {
+    return appDB.containsKey("academic_calendar") ? true : false;
   }
 
   Future<List<Map<String, dynamic>>> get events async {
