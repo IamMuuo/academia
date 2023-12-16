@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/dashboard_controller.dart';
 import 'package:academia/controllers/settings_controller.dart';
 import 'package:academia/pages/time_line_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -73,7 +71,7 @@ class DashBoard extends StatelessWidget {
                     Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Theme.of(context).primaryColor,
+                        color: Theme.of(context).primaryColorDark,
                       ),
                       child: IconButton(
                         onPressed: () {
@@ -103,7 +101,7 @@ class DashBoard extends StatelessWidget {
                 children: [
                   // Classes Today
                   Container(
-                    width: 180,
+                    width: MediaQuery.of(context).size.width * 0.45,
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(
                         Radius.circular(8),
@@ -145,7 +143,7 @@ class DashBoard extends StatelessWidget {
 
                   // Schedules today
                   Container(
-                    width: 180,
+                    width: MediaQuery.of(context).size.width * 0.45,
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(
                         Radius.circular(8),
