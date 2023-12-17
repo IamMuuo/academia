@@ -16,8 +16,9 @@ class DashBoard extends StatelessWidget {
     final DashboardController dashBoardController =
         Get.put(DashboardController());
     final settingsController = Get.find<SettingsController>();
+
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Column(
           children: [

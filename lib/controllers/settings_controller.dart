@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 class SettingsController extends GetxController {
   Rx<bool> showGPA = true.obs;
   Rx<bool> showProfilePic = true.obs;
+  Rx<bool> showExamTimeTable = true.obs;
   late Map<dynamic, dynamic> settings;
 
   @override
@@ -12,6 +13,7 @@ class SettingsController extends GetxController {
     settings = await appDB.get("settings");
     showGPA.value = settings["show_gpa"] ?? true;
     showProfilePic.value = settings["show_profile_pic"] ?? true;
+    showExamTimeTable.value = settings["show_exam_timetable"] ?? true;
 
     debugPrint("Settings loaded!");
     super.onInit();
@@ -20,6 +22,7 @@ class SettingsController extends GetxController {
   Future<void> saveSettings() async {
     settings["show_profile_pic"] = showProfilePic.value;
     settings["show_gpa"] = showGPA.value;
+    settings["show_exam_timetable"] = showExamTimeTable.value;
     await appDB.put("settings", settings);
   }
 }

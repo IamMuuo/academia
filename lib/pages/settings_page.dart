@@ -118,6 +118,16 @@ class SettingsPage extends StatelessWidget {
               ),
             ),
             ListTile(
+              title: const Text("Show exam timetable during exam period"),
+              trailing: Switch(
+                  value: controller.showExamTimeTable.value,
+                  onChanged: (value) async {
+                    controller.showExamTimeTable.value = value;
+                    await controller.saveSettings();
+                  }),
+            ),
+
+            ListTile(
               title: const Text("Allow push notifications"),
               trailing: Switch(value: true, onChanged: (value) {}),
             ),
