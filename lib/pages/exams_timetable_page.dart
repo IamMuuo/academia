@@ -4,8 +4,10 @@ import 'dart:typed_data';
 import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/settings_controller.dart';
 import 'package:academia/pages/home_page.dart';
+import 'package:academia/widgets/caurosel_item_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -98,8 +100,19 @@ class ExamTimeTablePage extends StatelessWidget {
                     ],
                   ),
                 ),
-
                 // The actual body
+                const SizedBox(height: 16),
+
+                FlutterCarousel(
+                  items: [
+                    Container(
+                      color: Colors.red,
+                    )
+                  ],
+                  options: CarouselOptions(
+                    height: MediaQuery.of(context).size.height * 0.3,
+                  ),
+                )
               ],
             ),
           ),
@@ -117,15 +130,29 @@ class ExamTimeTablePage extends StatelessWidget {
                       children: [
                         SizedBox(
                           width: MediaQuery.of(context).size.width,
-                          height: 80,
+                          height: 60,
                           child: TextField(
                             decoration: InputDecoration(
-                                hintText: "Units",
-                                suffix: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(CupertinoIcons.search_circle_fill))),
+                              hintText: "BIL 112, MATH 120, ..",
+                              label: const Text("Please input units to find"),
+                              suffix: IconButton(
+                                onPressed: () {},
+                                icon: Icon(CupertinoIcons.search_circle_fill),
+                              ),
+                            ),
                           ),
                         ),
+                        Padding(
+                            padding: const EdgeInsets.only(
+                                top: 20, left: 8, right: 8),
+                            child: Column(
+                              children: [
+                                Image.asset("assets/images/view.png",
+                                    width: 200),
+                                const Text(
+                                    "Input your units and let us do the heavy lifting")
+                              ],
+                            )),
                       ],
                     ),
                   ),
