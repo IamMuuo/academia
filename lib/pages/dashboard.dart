@@ -22,12 +22,16 @@ class DashBoard extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+            // Header
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColorDark,
+                    borderRadius: const BorderRadius.all(Radius.circular(8))),
                 child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CircleAvatar(
                       radius: 20.0,
@@ -54,45 +58,46 @@ class DashBoard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Hi, ${(user.name!.split(" ")[0]).title()}!',
-                              style: h4),
-                          // Date
-                          Text(
-                            DateFormat.yMMMMEEEEd().format(DateTime.now()),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Hi, ${(user.name!.split(" ")[0]).title().trim()}",
+                          style: normal.copyWith(
+                            color: Theme.of(context).primaryColorLight,
                           ),
-                        ],
-                      ),
+                        ),
+                        Text(
+                          "It's ${DateFormat.yMMMMEEEEd().format(DateTime.now())}",
+                          style: h6.copyWith(
+                            color: Theme.of(context).primaryColorLight,
+                          ),
+                        )
+                      ],
                     ),
                     const Spacer(),
                     Container(
                       decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Theme.of(context).primaryColorDark,
+                        color: Theme.of(context).primaryColorLight,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(50)),
                       ),
                       child: IconButton(
+                        tooltip: "Back to home",
                         onPressed: () {
-                          Get.to(
-                            const TimeLinePage(),
-                            transition: Transition.cupertino,
-                          );
+                          Get.to(const TimeLinePage());
                         },
-                        tooltip: "Semester Time Line",
-                        icon: Icon(
-                          Icons.timeline,
-                          color: Theme.of(context).primaryColorLight,
-                        ),
+                        icon: const Icon(Icons.timeline),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
             ),
-
             // body
             SizedBox(
               width: MediaQuery.of(context).size.width,
