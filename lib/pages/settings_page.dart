@@ -38,11 +38,6 @@ class SettingsPage extends StatelessWidget {
             },
             icon: const Icon(CupertinoIcons.question_circle),
           ),
-          IconButton(
-            tooltip: "Logout",
-            onPressed: () {},
-            icon: const Icon(Icons.logout),
-          ),
         ],
       ),
       body: Obx(
@@ -232,6 +227,7 @@ class SettingsPage extends StatelessWidget {
                   if (flag) {
                     user.logout();
                     Get.offAll(const IntroPage());
+                    Get.deleteAll(); // Clear all the controllers
                     Get.snackbar(
                       "Logout success",
                       "Please take your time to let us know what we would have done to make you stay",
