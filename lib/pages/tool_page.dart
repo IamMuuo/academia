@@ -1,5 +1,6 @@
 import 'package:academia/controllers/tool_page_controller.dart';
 import 'package:academia/pages/attendance_page.dart';
+import 'package:academia/pages/exams_timetable_page.dart';
 import 'package:academia/pages/gpacalculator_page.dart';
 import 'package:academia/pages/webview_page.dart';
 import 'package:academia/widgets/tool_card.dart';
@@ -48,6 +49,17 @@ class ToolsPage extends StatelessWidget {
             title: "Generate Token",
             backGround: Colors.blueGrey,
           ),
+
+          // Exam calendar
+          ToolCard(
+              icon: const Icon(
+                Icons.checklist,
+                color: Colors.white,
+              ),
+              ontap: () {
+                Get.to(const ExamTimeTablePage());
+              },
+              title: "Exam Timetable"),
           ToolCard(
             ontap: () {
               Get.to(const AttendancePage());

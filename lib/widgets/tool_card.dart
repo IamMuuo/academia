@@ -32,7 +32,7 @@ class _ToolCardState extends State<ToolCard> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: widget.backGround ?? Colors.blueAccent,
+          color: widget.backGround ??Theme.of(context).primaryColor,
           borderRadius: const BorderRadius.all(
             Radius.circular(12),
           ),
