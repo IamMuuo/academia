@@ -36,7 +36,6 @@ class ToolsPage extends StatelessWidget {
               color: Colors.white,
             ),
             title: "To Elearning",
-            backGround: Colors.blueGrey,
           ),
           ToolCard(
             ontap: () async {
@@ -47,7 +46,6 @@ class ToolsPage extends StatelessWidget {
               color: Colors.white,
             ),
             title: "Generate Token",
-            backGround: Colors.blueGrey,
           ),
 
           // Exam calendar
@@ -69,7 +67,6 @@ class ToolsPage extends StatelessWidget {
               color: Colors.white,
             ),
             title: "My Attendance",
-            backGround: Colors.blueGrey,
           ),
           ToolCard(
             ontap: () {
@@ -80,7 +77,6 @@ class ToolsPage extends StatelessWidget {
               color: Colors.white,
             ),
             title: "GPA Calculator",
-            backGround: Colors.blueGrey,
           ),
           ToolCard(
             ontap: () {},
@@ -89,7 +85,6 @@ class ToolsPage extends StatelessWidget {
               color: Colors.white,
             ),
             title: "My Scedules",
-            backGround: Colors.blueGrey,
           ),
           ToolCard(
             ontap: () {},
@@ -98,7 +93,14 @@ class ToolsPage extends StatelessWidget {
               color: Colors.white,
             ),
             title: "My Grades",
-            backGround: Colors.blueGrey,
+          ),
+          ToolCard(
+            ontap: () {},
+            icon: const Icon(
+              Icons.monetization_on_rounded,
+              color: Colors.white,
+            ),
+            title: "Finance Statement",
           ),
         ],
       ),
