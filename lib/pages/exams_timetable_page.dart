@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:academia/constants/common.dart';
-import 'package:academia/controllers/exams_timetable_controller.dart';
+// import 'package:academia/controllers/exams_timetable_controller.dart';
 import 'package:academia/controllers/settings_controller.dart';
 import 'package:academia/pages/home_page.dart';
 import 'package:academia/widgets/count_down_widget.dart';
@@ -17,7 +17,7 @@ class ExamTimeTablePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var settingsController = Get.find<SettingsController>();
-    var controller = Get.put(ExamsTimeTableController());
+    // var controller = Get.put(ExamsTimeTableController());
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -104,7 +104,7 @@ class ExamTimeTablePage extends StatelessWidget {
                 // The actual body
                 CountDown(
                   deadline: DateTime.now()
-                      .add(Duration(hours: 10, minutes: 7, seconds: 12)),
+                      .add(const Duration(hours: 10, minutes: 7, seconds: 12)),
                 ),
                 const SizedBox(height: 16),
 
@@ -150,7 +150,8 @@ class ExamTimeTablePage extends StatelessWidget {
                               label: const Text("Please input units to find"),
                               suffix: IconButton(
                                 onPressed: () {},
-                                icon: Icon(CupertinoIcons.search_circle_fill),
+                                icon: const Icon(
+                                    CupertinoIcons.search_circle_fill),
                               ),
                             ),
                           ),
@@ -262,6 +263,6 @@ class ExamTimeTablePage extends StatelessWidget {
         ],
       );
     }
-    return FlutterLogo();
+    return const FlutterLogo();
   }
 }
