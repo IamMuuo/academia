@@ -5,6 +5,7 @@ import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/exams_timetable_controller.dart';
 import 'package:academia/controllers/settings_controller.dart';
 import 'package:academia/pages/home_page.dart';
+import 'package:academia/widgets/count_down_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
@@ -101,6 +102,10 @@ class ExamTimeTablePage extends StatelessWidget {
                   ),
                 ),
                 // The actual body
+                CountDown(
+                  deadline: DateTime.now()
+                      .add(Duration(hours: 10, minutes: 7, seconds: 12)),
+                ),
                 const SizedBox(height: 16),
 
                 FlutterCarousel(
