@@ -1,9 +1,6 @@
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/dashboard_controller.dart';
-import 'package:academia/controllers/settings_controller.dart';
-import 'package:academia/pages/time_line_page.dart';
+import 'package:academia/widgets/academia_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -15,7 +12,6 @@ class DashBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     final DashboardController dashBoardController =
         Get.put(DashboardController());
-    final settingsController = Get.find<SettingsController>();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -23,80 +19,10 @@ class DashBoard extends StatelessWidget {
         child: Column(
           children: [
             // Header
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColorDark,
-                    borderRadius: const BorderRadius.all(Radius.circular(8))),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 20.0,
-                      child: Obx(
-                        () => ClipRRect(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(800),
-                          ),
-                          child: settingsController.showProfilePic.value
-                              ? Image.memory(
-                                  Uint8List.fromList(
-                                    base64Decode(user.profile!.replaceFirst(
-                                        "data:image/gif;base64,", "")),
-                                  ),
-                                  fit: BoxFit.cover,
-                                  width: 400,
-                                  height: 400,
-                                )
-                              : Image.asset(
-                                  user.gender == "male"
-                                      ? "assets/images/male_student.png"
-                                      : "assets/images/female_student.png",
-                                ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Hi, ${(user.name!.split(" ")[0]).title().trim()}",
-                          style: normal.copyWith(
-                            color: Theme.of(context).primaryColorLight,
-                          ),
-                        ),
-                        Text(
-                          "It's ${DateFormat.yMMMMEEEEd().format(DateTime.now())}",
-                          style: h6.copyWith(
-                            color: Theme.of(context).primaryColorLight,
-                          ),
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColorLight,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(50)),
-                      ),
-                      child: IconButton(
-                        tooltip: "Back to home",
-                        onPressed: () {
-                          Get.to(const TimeLinePage());
-                        },
-                        icon: const Icon(Icons.timeline),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+            AcademiaAppBar(
+              title: "Hi, ${(user.name!.split(" ")[0]).title().trim()}",
+              subtitle:
+                  "It's ${DateFormat.yMMMMEEEEd().format(DateTime.now())}",
             ),
             // body
             SizedBox(

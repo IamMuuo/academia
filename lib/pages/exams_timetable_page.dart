@@ -1,10 +1,7 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:academia/constants/common.dart';
-// import 'package:academia/controllers/exams_timetable_controller.dart';
-import 'package:academia/controllers/settings_controller.dart';
 import 'package:academia/pages/home_page.dart';
+// import 'package:academia/controllers/exams_timetable_controller.dart';
+import 'package:academia/widgets/academia_app_bar.dart';
 import 'package:academia/widgets/count_down_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +13,6 @@ class ExamTimeTablePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var settingsController = Get.find<SettingsController>();
     // var controller = Get.put(ExamsTimeTableController());
     return Scaffold(
       body: SafeArea(
@@ -25,82 +21,18 @@ class ExamTimeTablePage extends StatelessWidget {
             padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
             child: Column(
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColorDark,
-                      borderRadius: const BorderRadius.all(Radius.circular(8))),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 20.0,
-                        child: Obx(
-                          () => ClipRRect(
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(800),
-                            ),
-                            child: settingsController.showProfilePic.value
-                                ? Image.memory(
-                                    Uint8List.fromList(
-                                      base64Decode(user.profile!.replaceFirst(
-                                          "data:image/gif;base64,", "")),
-                                    ),
-                                    fit: BoxFit.cover,
-                                    width: 400,
-                                    height: 400,
-                                  )
-                                : Image.asset(
-                                    user.gender == "male"
-                                        ? "assets/images/male_student.png"
-                                        : "assets/images/female_student.png",
-                                  ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            DateTime.now().hour < 11
-                                ? "Good Morning"
-                                : DateTime.now().hour < 13
-                                    ? "Good Afternoon"
-                                    : "Good Evening",
-                            style: normal.copyWith(
-                              color: Theme.of(context).primaryColorLight,
-                            ),
-                          ),
-                          Text(
-                            "Are you ready ${(user.name!.split(" ")[0]).title().trim()}?",
-                            style: h6.copyWith(
-                              color: Theme.of(context).primaryColorLight,
-                            ),
-                          )
-                        ],
-                      ),
-                      const Spacer(),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColorLight,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(50)),
-                        ),
-                        child: IconButton(
-                          tooltip: "Back to home",
-                          onPressed: () {
-                            Get.to(const HomePage());
-                          },
-                          icon: const Icon(CupertinoIcons.house),
-                        ),
-                      )
-                    ],
-                  ),
+                AcademiaAppBar(
+                  title: DateTime.now().hour < 11
+                      ? "Good Morning"
+                      : DateTime.now().hour < 13
+                          ? "Good Afternoon"
+                          : "Good Evening",
+                  subtitle:
+                      "Are you ready ${(user.name!.split(" ")[0]).title().trim()}?",
+                  icon: const Icon(CupertinoIcons.home),
+                  ontapped: () => Get.to(const HomePage(), transition: Transition.rightToLeft),
                 ),
+
                 // The actual body
                 CountDown(
                   deadline: DateTime.now()

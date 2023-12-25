@@ -17,13 +17,18 @@ class _CountDownState extends State<CountDown> {
 
   @override
   void initState() {
+    super.initState();
     _calculateTimeLeft(widget.deadline);
 
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _calculateTimeLeft(widget.deadline);
     });
+  }
 
-    super.initState();
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
   }
 
   @override
