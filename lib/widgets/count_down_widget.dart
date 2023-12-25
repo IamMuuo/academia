@@ -34,98 +34,112 @@ class _CountDownState extends State<CountDown> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints:
-          BoxConstraints(minWidth: MediaQuery.of(context).size.height * 0.4),
+      constraints: BoxConstraints(
+        minHeight: MediaQuery.of(context).size.height * 0.1,
+        maxWidth: MediaQuery.of(context).size.width,
+      ),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       padding: const EdgeInsets.all(16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Days
-          Container(
-            width: 80,
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColorLight,
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-            ),
-            child: Column(
-              children: [
-                Text(
-                  duration.inDays.toString().padLeft(2, "0"),
-                  style: h2.copyWith(
-                    color: Theme.of(context).primaryColorDark,
-                  ),
-                ),
-                const Text("Days"),
-              ],
-            ),
+          Text(
+            "Time's ticking",
+            style: h5.copyWith(color: Theme.of(context).primaryColorLight),
           ),
-
-          // Hours
-          Container(
-            width: 80,
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColorLight,
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-            ),
-            child: Column(
-              children: [
-                Text(
-                  (duration.inHours % 24).toString().padLeft(2, "0"),
-                  style: h2.copyWith(
-                    color: Theme.of(context).primaryColorDark,
-                  ),
-                ),
-                const Text("Hours"),
-              ],
-            ),
+          const SizedBox(
+            height: 2,
           ),
-
-          // Minutes
-          Container(
-            width: 80,
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColorLight,
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-            ),
-            child: Column(
-              children: [
-                Text(
-                  (duration.inMinutes % 60).toString().padLeft(2, "0"),
-                  style: h2.copyWith(
-                    color: Theme.of(context).primaryColorDark,
-                  ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // Days
+              Container(
+                width: 70,
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColorLight,
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
                 ),
-                const Text("Minutes"),
-              ],
-            ),
-          ),
-
-          // Seconds
-          Container(
-            width: 80,
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColorLight,
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-            ),
-            child: Column(
-              children: [
-                Text(
-                  (duration.inSeconds % 60).toString().padLeft(2, "0"),
-                  style: h2.copyWith(
-                    color: Theme.of(context).primaryColorDark,
-                  ),
+                child: Column(
+                  children: [
+                    Text(
+                      duration.inDays.toString().padLeft(2, "0"),
+                      style: h2.copyWith(
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                    ),
+                    const Text("Days"),
+                  ],
                 ),
-                const Text("Seconds"),
-              ],
-            ),
+              ),
+
+              // Hours
+              Container(
+                width: 70,
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColorLight,
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      (duration.inHours % 24).toString().padLeft(2, "0"),
+                      style: h2.copyWith(
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                    ),
+                    const Text("Hours"),
+                  ],
+                ),
+              ),
+
+              // Minutes
+              Container(
+                width: 70,
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColorLight,
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      (duration.inMinutes % 60).toString().padLeft(2, "0"),
+                      style: h2.copyWith(
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                    ),
+                    const Text("Minutes"),
+                  ],
+                ),
+              ),
+
+              // Seconds
+              Container(
+                width: 70,
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColorLight,
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      (duration.inSeconds % 60).toString().padLeft(2, "0"),
+                      style: h2.copyWith(
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                    ),
+                    const Text("Seconds"),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),

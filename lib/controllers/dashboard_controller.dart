@@ -12,6 +12,20 @@ class DashboardController extends GetxController {
     debugPrint("${user.name}");
   }
 
+  double get weekPercent {
+    int weekDay = DateTime.now().weekday;
+    return weekDay / 7;
+  }
+
+  double get semesterPercent {
+    return 1;
+  }
+
+  double get daypercent {
+    int hours = DateTime.now().hour;
+    return (hours / 24);
+  }
+
   int get classesToday {
     int classes = 0;
     var courses = appDB.get("timetable") ?? [];

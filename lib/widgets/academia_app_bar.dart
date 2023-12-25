@@ -24,7 +24,7 @@ class AcademiaAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final settingsController = Get.find<SettingsController>();
     return Padding(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.only(top: 12, bottom: 12),
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.all(16),
@@ -67,14 +67,16 @@ class AcademiaAppBar extends StatelessWidget {
               children: [
                 Text(
                   title,
+                  overflow: TextOverflow.ellipsis,
                   style: normal.copyWith(
                     color: Theme.of(context).primaryColorLight,
                   ),
                 ),
                 Text(
                   subtitle,
-                  style: h6.copyWith(
+                  style: normal.copyWith(
                     color: Theme.of(context).primaryColorLight,
+                    fontWeight: FontWeight.bold,
                   ),
                 )
               ],

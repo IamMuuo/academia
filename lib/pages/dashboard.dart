@@ -2,8 +2,10 @@ import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/dashboard_controller.dart';
 import 'package:academia/widgets/academia_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class DashBoard extends StatelessWidget {
   const DashBoard({super.key});
@@ -16,6 +18,7 @@ class DashBoard extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
+        padding: const EdgeInsets.only(left: 12, right: 12),
         child: Column(
           children: [
             // Header
@@ -25,6 +28,102 @@ class DashBoard extends StatelessWidget {
                   "It's ${DateFormat.yMMMMEEEEd().format(DateTime.now())}",
             ),
             // body
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: FlutterCarousel(
+                items: [
+                  // Day Percent
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    child: Row(
+                      children: [
+                        CircularPercentIndicator(
+                          radius: 60,
+                          center: Text(
+                            "${(dashBoardController.daypercent * 100).floor()}%",
+                            style: h5,
+                          ),
+                          percent: dashBoardController.daypercent,
+                          lineWidth: 20,
+                          progressColor: Theme.of(context).primaryColorDark,
+                          animationDuration: 2000,
+                          animation: true,
+                          circularStrokeCap: CircularStrokeCap.round,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Week percent
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    child: Row(
+                      children: [
+                        CircularPercentIndicator(
+                          radius: 60,
+                          center: Text(
+                            "${(dashBoardController.weekPercent * 100).floor()}%",
+                            style: h5,
+                          ),
+                          percent: dashBoardController.weekPercent,
+                          lineWidth: 20,
+                          progressColor: Theme.of(context).primaryColorDark,
+                          animationDuration: 2000,
+                          animation: true,
+                          circularStrokeCap: CircularStrokeCap.round,
+                        ),
+                      ],
+                    ),
+                  ),
+                  //
+                  // // Semester
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    child: Row(
+                      children: [
+                        CircularPercentIndicator(
+                          radius: 60,
+                          center: Text(
+                            "${(dashBoardController.semesterPercent * 100).floor()}%",
+                            style: h5,
+                          ),
+                          percent: dashBoardController.semesterPercent,
+                          lineWidth: 20,
+                          progressColor: Theme.of(context).primaryColorDark,
+                          animationDuration: 2000,
+                          animation: true,
+                          circularStrokeCap: CircularStrokeCap.round,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                options: CarouselOptions(
+                  autoPlay: true,
+                  enableInfiniteScroll: true,
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  enlargeCenterPage: true,
+                  slideIndicator: CircularSlideIndicator(
+                    indicatorRadius: 6,
+                    itemSpacing: 12,
+                    indicatorBackgroundColor:
+                        Theme.of(context).primaryColorDark,
+                  ),
+                ),
+              ),
+            ),
             SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.3,
