@@ -1,19 +1,20 @@
 import 'package:academia/constants/common.dart';
 import 'package:academia/pages/home_page.dart';
-// import 'package:academia/controllers/exams_timetable_controller.dart';
+import 'package:academia/controllers/exams_timetable_controller.dart';
 import 'package:academia/widgets/academia_app_bar.dart';
 import 'package:academia/widgets/count_down_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ExamTimeTablePage extends StatelessWidget {
   const ExamTimeTablePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // var controller = Get.put(ExamsTimeTableController());
+    var controller = Get.put(ExamsTimeTableController());
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -30,7 +31,8 @@ class ExamTimeTablePage extends StatelessWidget {
                   subtitle:
                       "Are you ready ${(user.name!.split(" ")[0]).title().trim()}?",
                   icon: const Icon(CupertinoIcons.home),
-                  ontapped: () => Get.to(const HomePage(), transition: Transition.rightToLeft),
+                  ontapped: () => Get.to(const HomePage(),
+                      transition: Transition.rightToLeft),
                 ),
 
                 // The actual body
@@ -40,21 +42,32 @@ class ExamTimeTablePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
 
-                FlutterCarousel(
-                  items: buildCauroselItems(context, hasExams: false),
-                  options: CarouselOptions(
-                    height: MediaQuery.of(context).size.height * 0.25,
-                    autoPlayCurve: Curves.easeInSine,
-                    enlargeCenterPage: true,
-                    autoPlay: true,
-                    indicatorMargin: 2,
-                    slideIndicator: CircularSlideIndicator(
-                      itemSpacing: 12,
-                      indicatorBorderColor: Theme.of(context).primaryColorDark,
-                      indicatorRadius: 5,
-                      // indicatorBackgroundColor: Colors.red,
-                    ),
-                  ),
+                Obx(
+                  () => controller.isLoading.value
+                      ? LoadingAnimationWidget.prograssiveDots(
+                          size: 80,
+                          color: Theme.of(context).primaryColorDark,
+                        )
+                      : FlutterCarousel(
+                          items: buildCauroselItems(
+                            context,
+                            hasExams: controller.hasExams.value,
+                          ),
+                          options: CarouselOptions(
+                            height: MediaQuery.of(context).size.height * 0.25,
+                            autoPlayCurve: Curves.easeInSine,
+                            enlargeCenterPage: true,
+                            autoPlay: true,
+                            indicatorMargin: 2,
+                            slideIndicator: CircularSlideIndicator(
+                              itemSpacing: 12,
+                              indicatorBorderColor:
+                                  Theme.of(context).primaryColorDark,
+                              indicatorRadius: 5,
+                              // indicatorBackgroundColor: Colors.red,
+                            ),
+                          ),
+                        ),
                 ),
 
                 buildContentCards(context),
@@ -78,7 +91,7 @@ class ExamTimeTablePage extends StatelessWidget {
                           height: 60,
                           child: TextField(
                             decoration: InputDecoration(
-                              hintText: "BIL 112, MATH 120, ..",
+                              hintText: "BIL 112B, MATH 120A, ...",
                               label: const Text("Please input units to find"),
                               suffix: IconButton(
                                 onPressed: () {},
@@ -178,7 +191,7 @@ class ExamTimeTablePage extends StatelessWidget {
   }
 
   // build content cards
-  Widget buildContentCards(BuildContext context, {bool hasExams = false}) {
+  Widget buildContentCards(BuildContext context, {bool hasExams = true}) {
     if (!hasExams) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
