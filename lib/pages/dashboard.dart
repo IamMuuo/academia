@@ -40,6 +40,7 @@ class DashBoard extends StatelessWidget {
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(8))),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CircularPercentIndicator(
                           radius: 60,
@@ -54,6 +55,25 @@ class DashBoard extends StatelessWidget {
                           animation: true,
                           circularStrokeCap: CircularStrokeCap.round,
                         ),
+                        Text.rich(
+                          TextSpan(children: [
+                            TextSpan(
+                              text: "The day is\n",
+                              style: h5.copyWith(
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                            TextSpan(
+                              text:
+                                  "${(dashBoardController.daypercent * 100).floor()}%",
+                              style: h3,
+                            ),
+                            const TextSpan(text: "\nGone\n", style: h6),
+                            TextSpan(
+                                text: dashBoardController.getDayPercentQuote,
+                                style: normal.copyWith(fontSize: 12))
+                          ]),
+                        ),
                       ],
                     ),
                   ),
@@ -66,6 +86,7 @@ class DashBoard extends StatelessWidget {
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(8))),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CircularPercentIndicator(
                           radius: 60,
@@ -80,6 +101,25 @@ class DashBoard extends StatelessWidget {
                           animation: true,
                           circularStrokeCap: CircularStrokeCap.round,
                         ),
+                        Text.rich(
+                          TextSpan(children: [
+                            TextSpan(
+                              text: "The week is\n",
+                              style: h5.copyWith(
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                            TextSpan(
+                              text:
+                                  "${(dashBoardController.weekPercent * 100).floor()}%",
+                              style: h3,
+                            ),
+                            const TextSpan(text: "\nVanished\n", style: h6),
+                            TextSpan(
+                                text: dashBoardController.getWeekPercentQuote,
+                                style: normal.copyWith(fontSize: 12))
+                          ]),
+                        ),
                       ],
                     ),
                   ),
@@ -92,6 +132,7 @@ class DashBoard extends StatelessWidget {
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(8))),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CircularPercentIndicator(
                           radius: 60,
@@ -105,6 +146,26 @@ class DashBoard extends StatelessWidget {
                           animationDuration: 2000,
                           animation: true,
                           circularStrokeCap: CircularStrokeCap.round,
+                        ),
+                        Text.rich(
+                          TextSpan(children: [
+                            TextSpan(
+                              text: "The semester is\n",
+                              style: h5.copyWith(
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                            TextSpan(
+                              text:
+                                  "${(dashBoardController.semesterPercent * 100).floor()}%",
+                              style: h3,
+                            ),
+                            const TextSpan(text: "\nGone!\n", style: h6),
+                            TextSpan(
+                                text:
+                                    dashBoardController.getSemesterPercentQuote,
+                                style: normal.copyWith(fontSize: 12))
+                          ]),
                         ),
                       ],
                     ),

@@ -21,6 +21,41 @@ class DashboardController extends GetxController {
     return 1;
   }
 
+  String get getDayPercentQuote {
+    if (daypercent > 0.75) {
+      return "Perhaps much is already done!";
+    } else if (daypercent > 0.5) {
+      return "The day is halfway done strive to make a change";
+    } else if (daypercent > 0.25) {
+      return "Its almost midday";
+    }
+    return "Make it or break it while its young!";
+  }
+
+  String get getWeekPercentQuote {
+    if (weekPercent > 0.75) {
+      return "Its probably on a Friday!";
+    } else if (daypercent > 0.5) {
+      return "Stay strong weekend is coming";
+    } else if (daypercent > 0.25) {
+      return "Focus, its tough we get it";
+    }
+    return "Its Monday, are your asignments done?";
+  }
+
+  String get getSemesterPercentQuote {
+    if (semesterPercent > 0.90) {
+      return "Relax, it was a tough one!";
+    } else if (semesterPercent > 0.75) {
+      return "Projects, exams panic!";
+    } else if (semesterPercent > 0.5) {
+      return "Its about to get real messy";
+    } else if (semesterPercent > 0.25) {
+      return "CATS CATS CATS, cats all the way";
+    }
+    return "Ready, aim shoot for the sky";
+  }
+
   double get daypercent {
     int hours = DateTime.now().hour;
     return (hours / 24);
