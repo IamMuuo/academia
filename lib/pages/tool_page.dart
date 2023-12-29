@@ -1,108 +1,48 @@
-import 'package:academia/controllers/tool_page_controller.dart';
-import 'package:academia/pages/attendance_page.dart';
-import 'package:academia/pages/exams_timetable_page.dart';
-import 'package:academia/pages/gpacalculator_page.dart';
-import 'package:academia/pages/webview_page.dart';
-import 'package:academia/widgets/tool_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-class ToolsPage extends StatelessWidget {
+class ToolsPage extends StatefulWidget {
   const ToolsPage({super.key});
 
   @override
+  State<ToolsPage> createState() => _ToolsPageState();
+}
+
+class _ToolsPageState extends State<ToolsPage> {
+  // all available tools
+
+  @override
   Widget build(BuildContext context) {
-    var controller = Get.put(ToolPageController());
     return Scaffold(
       appBar: AppBar(
         title: const Text("Tools"),
         centerTitle: true,
+        elevation: 0,
       ),
-      body: GridView.count(
-        crossAxisCount: 2,
-        children: [
-          ToolCard(
-            ontap: () {
-              Get.to(
-                const WebviewPage(
-                  title: "Daystar Elearning",
-                  url: "https://elearning.daystar.ac.ke",
+      body: Padding(
+        padding: const EdgeInsets.only(top: 8, left: 12, right: 12),
+        child: Column(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 60,
+              child: TextField(
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                  ),
+                  hintText: "GPA Calculator",
+                  label: const Text("Search for a tool"),
+                  suffix: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(CupertinoIcons.search_circle_fill),
+                  ),
                 ),
-              );
-            },
-            icon: const Icon(
-              CupertinoIcons.book_circle,
-              color: Colors.white,
-            ),
-            title: "To Elearning",
-          ),
-          ToolCard(
-            ontap: () async {
-              await controller.fetchToken();
-            },
-            icon: const Icon(
-              Icons.emoji_food_beverage,
-              color: Colors.white,
-            ),
-            title: "Generate Token",
-          ),
-
-          // Exam calendar
-          ToolCard(
-              icon: const Icon(
-                Icons.checklist,
-                color: Colors.white,
               ),
-              ontap: () {
-                Get.to(const ExamTimeTablePage());
-              },
-              title: "Exam Timetable"),
-          ToolCard(
-            ontap: () {
-              Get.to(const AttendancePage());
-            },
-            icon: const Icon(
-              Icons.check,
-              color: Colors.white,
             ),
-            title: "My Attendance",
-          ),
-          ToolCard(
-            ontap: () {
-              Get.to(() => GpaCalculator());
-            },
-            icon: const Icon(
-              Icons.calculate,
-              color: Colors.white,
-            ),
-            title: "GPA Calculator",
-          ),
-          ToolCard(
-            ontap: () {},
-            icon: const Icon(
-              Icons.school,
-              color: Colors.white,
-            ),
-            title: "My Scedules",
-          ),
-          ToolCard(
-            ontap: () {},
-            icon: const Icon(
-              Icons.abc_rounded,
-              color: Colors.white,
-            ),
-            title: "My Grades",
-          ),
-          ToolCard(
-            ontap: () {},
-            icon: const Icon(
-              Icons.monetization_on_rounded,
-              color: Colors.white,
-            ),
-            title: "Finance Statement",
-          ),
-        ],
+            const SizedBox(height: 12),
+          ],
+        ),
       ),
     );
   }
