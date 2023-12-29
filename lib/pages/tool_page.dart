@@ -1,6 +1,12 @@
+import 'package:academia/constants/common.dart';
+import 'package:academia/pages/attendance_page.dart';
+import 'package:academia/pages/exams_timetable_page.dart';
+import 'package:academia/pages/gpacalculator_page.dart';
+import 'package:academia/pages/webview_page.dart';
 import 'package:academia/widgets/tool_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ToolsPage extends StatefulWidget {
   const ToolsPage({super.key});
@@ -16,18 +22,32 @@ class _ToolsPageState extends State<ToolsPage> {
       "id": 1,
       "name": "GPA Calculator",
       "action": "Calculate GPA",
+      "ontap": () {
+        Get.to(GpaCalculator());
+      },
       "description": "Wanna calculate your GPA? try it here"
     },
     {
       "id": 2,
       "name": "Generate Catering Token",
       "action": "Generate Token",
+      "ontap": () async {
+        var token = await magnet.fetchCateringToken();
+        await Get.defaultDialog(
+          title: "Your Token",
+          content: Text("Your Token is ${token['message'] ?? ''}"),
+        );
+      },
       "description": "Hungry? Maybe its time to generate your catering token!"
     },
     {
       "id": 3,
       "name": "Elearning",
       "action": "Visit Elearning",
+      "ontap": () {
+        Get.to(const WebviewPage(
+            title: "Elearning", url: "https://elearning.daystar.ac.ke"));
+      },
       "description":
           "Psst! Elearning is here for you. Keep track of your assignments and notes!",
     },
@@ -35,6 +55,9 @@ class _ToolsPageState extends State<ToolsPage> {
       "id": 4,
       "name": "Class Attendance",
       "action": "View class Attendance",
+      "ontap": () {
+        Get.to(const AttendancePage());
+      },
       "description":
           "Curious to know how many classes you have missed this semester, this might be the tool",
     },
@@ -42,6 +65,9 @@ class _ToolsPageState extends State<ToolsPage> {
       "id": 5,
       "name": "Exam Timetable",
       "action": "Show exam timetable",
+      "ontap": () {
+        Get.to(const ExamTimeTablePage());
+      },
       "description":
           "Exams around the corner? Don't panic we've got you covered with the timetable",
     },
@@ -115,7 +141,7 @@ class _ToolsPageState extends State<ToolsPage> {
                           heading: foundTools[index]["name"],
                           description: foundTools[index]["description"],
                           image: "assets/images/bot_sad.png",
-                          ontap: () {},
+                          ontap: foundTools[index]["ontap"],
                           action: foundTools[index]["action"],
                         );
                       },

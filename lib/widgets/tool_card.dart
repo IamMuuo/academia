@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ToolCard extends StatefulWidget {
   const ToolCard({
@@ -20,6 +23,7 @@ class ToolCard extends StatefulWidget {
 }
 
 class _ToolCardState extends State<ToolCard> {
+  bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -31,13 +35,16 @@ class _ToolCardState extends State<ToolCard> {
             // subtitle: Text(subheading),
             trailing: const Icon(Icons.favorite_outline),
           ),
-          SizedBox(
-            height: 200.0,
-            child: Image.asset(
-              widget.image,
-              fit: BoxFit.cover,
-            ),
-          ),
+          _isLoading
+              ? LoadingAnimationWidget.beat(
+                  color: Theme.of(context).primaryColor, size: 80)
+              : SizedBox(
+                  height: 200.0,
+                  child: Image.asset(
+                    widget.image,
+                    fit: BoxFit.cover,
+                  ),
+                ),
           Container(
             padding: const EdgeInsets.all(16.0),
             alignment: Alignment.centerLeft,
@@ -48,7 +55,9 @@ class _ToolCardState extends State<ToolCard> {
               TextButton(
                 child: Text(widget.action),
                 onPressed: () {
+                  _isLoading = true;
                   widget.ontap.call();
+                  _isLoading = false;
                 },
               ),
             ],
