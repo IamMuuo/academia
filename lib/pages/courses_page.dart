@@ -169,9 +169,13 @@ class CoursesPage extends StatelessWidget {
                         ),
                       ),
                       CircleAvatar(
-                        radius: 50,
+                        radius: 40,
                         child: Image.asset(
-                          "assets/images/holding_back.png",
+                          dashBoardController.classesTommorrow == 0
+                              ? "assets/images/holding_back.png"
+                              : dashBoardController.classesTommorrow > 1
+                                  ? "assets/images/bored.png"
+                                  : "assets/images/smiley.png",
                           fit: BoxFit.scaleDown,
                           height: 70,
                           width: 70,
