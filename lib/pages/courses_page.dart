@@ -152,42 +152,42 @@ class CoursesPage extends StatelessWidget {
                     border: Border.all(color: Theme.of(context).primaryColor),
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text(
-                        "Of",
-                        style: h2,
+                      Text.rich(
+                        TextSpan(
+                          text: "You have\n",
+                          children: [
+                            TextSpan(
+                              text: "${dashBoardController.classesTommorrow}",
+                              style: h3,
+                            ),
+                            const TextSpan(
+                              text: "\n Classes tommorrow",
+                            ),
+                          ],
+                        ),
                       ),
-                      Text.rich(TextSpan(text: "today's\n", children: [
-                        TextSpan(
-                          text: "${dashBoardController.classesToday}",
-                          style: h3,
+                      CircleAvatar(
+                        radius: 50,
+                        child: Image.asset(
+                          "assets/images/holding_back.png",
+                          fit: BoxFit.scaleDown,
+                          height: 70,
+                          width: 70,
                         ),
-                        TextSpan(
-                          text: "\nYou have completed",
-                        ),
-                      ]))
+                      ),
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Spacer(),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          Get.to(const AttendancePage());
-                        },
-                        icon: const Icon(Icons.check_circle_rounded),
-                        label: const Text("View Attendance"),
-                      ),
-                      const Spacer(),
-                    ],
-                  ),
-                )
+                const SizedBox(height: 12),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Get.to(const AttendancePage());
+                  },
+                  icon: const Icon(Icons.check_circle_rounded),
+                  label: const Text("View Attendance"),
+                ),
               ],
             ),
           ),

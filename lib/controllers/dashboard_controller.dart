@@ -72,4 +72,17 @@ class DashboardController extends GetxController {
     }
     return classes;
   }
+
+  int get classesTommorrow {
+    int classes = 0;
+    var courses = appDB.get("timetable") ?? [];
+    for (Courses course in courses) {
+      if (course.dayOfTheWeek!.title() ==
+          DateFormat("EEEE")
+              .format(DateTime.now().add(const Duration(hours: 24)))) {
+        classes++;
+      }
+    }
+    return classes;
+  }
 }
