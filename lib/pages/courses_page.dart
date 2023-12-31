@@ -137,7 +137,36 @@ class CoursesPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                      )
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.93,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(8),
+                    ),
+                    border: Border.all(color: Theme.of(context).primaryColor),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        "Of",
+                        style: h2,
+                      ),
+                      Text.rich(TextSpan(text: "today's\n", children: [
+                        TextSpan(
+                          text: "${dashBoardController.classesToday}",
+                          style: h3,
+                        ),
+                        TextSpan(
+                          text: "\nYou have completed",
+                        ),
+                      ]))
                     ],
                   ),
                 ),

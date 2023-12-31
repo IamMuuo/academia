@@ -3,7 +3,6 @@ import 'package:academia/controllers/settings_controller.dart';
 import 'package:academia/models/courses.dart';
 import 'package:academia/models/schedule.dart';
 import 'package:academia/models/user.dart';
-import 'package:academia/pages/exams_timetable_page.dart';
 import 'package:academia/pages/home_page.dart';
 import 'package:academia/pages/intro_page.dart';
 import 'package:academia/themes/theme.dart';
@@ -28,15 +27,11 @@ void main() async {
   }
 
   // Init settings controller
-  var controller = Get.put(SettingsController());
+  Get.put(SettingsController());
 
   runApp(
     GetMaterialApp(
-      home: isLoggedIn
-          ? controller.showExamTimeTable.value
-              ? const ExamTimeTablePage()
-              : const HomePage()
-          : const IntroPage(),
+      home: isLoggedIn ? const HomePage() : const IntroPage(),
       theme: lightModeTheme,
     ),
   );

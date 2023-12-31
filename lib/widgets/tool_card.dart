@@ -42,7 +42,7 @@ class _ToolCardState extends State<ToolCard> {
                   height: 200.0,
                   child: Image.asset(
                     widget.image,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fitWidth,
                   ),
                 ),
           Container(

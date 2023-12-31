@@ -20,17 +20,9 @@ class _ToolsPageState extends State<ToolsPage> {
   final List<Map<String, dynamic>> _allTools = [
     {
       "id": 1,
-      "name": "GPA Calculator",
-      "action": "Calculate GPA",
-      "ontap": () {
-        Get.to(GpaCalculator());
-      },
-      "description": "Wanna calculate your GPA? try it here"
-    },
-    {
-      "id": 2,
       "name": "Generate Catering Token",
       "action": "Generate Token",
+      "image": "assets/images/food.png",
       "ontap": () async {
         var token = await magnet.fetchCateringToken();
         await Get.defaultDialog(
@@ -41,8 +33,19 @@ class _ToolsPageState extends State<ToolsPage> {
       "description": "Hungry? Maybe its time to generate your catering token!"
     },
     {
+      "id": 2,
+      "name": "GPA Calculator",
+      "action": "Calculate GPA",
+      "image": "assets/images/calculator.png",
+      "ontap": () {
+        Get.to(GpaCalculator());
+      },
+      "description": "Wanna calculate your GPA? try it here"
+    },
+    {
       "id": 3,
       "name": "Elearning",
+      "image": "assets/images/grade.png",
       "action": "Visit Elearning",
       "ontap": () {
         Get.to(const WebviewPage(
@@ -55,6 +58,7 @@ class _ToolsPageState extends State<ToolsPage> {
       "id": 4,
       "name": "Class Attendance",
       "action": "View class Attendance",
+      "image": "assets/images/girl_sitted.png",
       "ontap": () {
         Get.to(const AttendancePage());
       },
@@ -65,6 +69,7 @@ class _ToolsPageState extends State<ToolsPage> {
       "id": 5,
       "name": "Exam Timetable",
       "action": "Show exam timetable",
+      "image": "assets/images/exam_timetable.png",
       "ontap": () {
         Get.to(const ExamTimeTablePage());
       },
@@ -140,7 +145,7 @@ class _ToolsPageState extends State<ToolsPage> {
                         return ToolCard(
                           heading: foundTools[index]["name"],
                           description: foundTools[index]["description"],
-                          image: "assets/images/bot_sad.png",
+                          image: foundTools[index]["image"],
                           ontap: foundTools[index]["ontap"],
                           action: foundTools[index]["action"],
                         );
