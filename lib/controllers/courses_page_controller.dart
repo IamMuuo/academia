@@ -39,10 +39,10 @@ class CoursesPageController extends GetxController {
           backGround: DateFormat("EEEE").format(DateTime.now()) ==
                   course.dayOfTheWeek!.title()
               ? Colors.blueGrey
-              : Colors.white,
+              : Colors.transparent,
           titleColor: DateFormat("EEEE").format(DateTime.now()) ==
                   course.dayOfTheWeek!.title()
-              ? Colors.white
+              ? Colors.transparent
               : Colors.blueGrey,
           borderColor: DateFormat("EEEE").format(DateTime.now()) ==
                   course.dayOfTheWeek!.title()
@@ -102,6 +102,14 @@ class CoursesPageController extends GetxController {
       ));
     }
     return progressList;
+  }
+
+  int get numOfClasses {
+    if (appDB.containsKey("timetable")) {
+      var courses = appDB.get("timetable") ?? [];
+      return courses.length;
+    }
+    return 0;
   }
 
   Future<bool> updateProgress() async {
