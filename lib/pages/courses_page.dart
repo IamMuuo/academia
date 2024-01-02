@@ -85,7 +85,7 @@ class CoursesPage extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "${dashBoardController.classesToday}",
+                              "${dashBoardController.classesTodayCount}",
                               style: h3,
                             ),
                             Text(
@@ -159,7 +159,7 @@ class CoursesPage extends StatelessWidget {
                           text: "You have\n",
                           children: [
                             TextSpan(
-                              text: "${dashBoardController.classesTommorrow}",
+                              text: "${dashBoardController.classesTommorrowCount}",
                               style: h3,
                             ),
                             const TextSpan(
@@ -171,9 +171,9 @@ class CoursesPage extends StatelessWidget {
                       CircleAvatar(
                         radius: 40,
                         child: Image.asset(
-                          dashBoardController.classesTommorrow == 0
+                          dashBoardController.classesTommorrowCount == 0
                               ? "assets/images/holding_back.png"
-                              : dashBoardController.classesTommorrow > 1
+                              : dashBoardController.classesTommorrowCount > 1
                                   ? "assets/images/bored.png"
                                   : "assets/images/smiley.png",
                           fit: BoxFit.scaleDown,

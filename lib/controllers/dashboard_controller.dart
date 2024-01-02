@@ -61,7 +61,7 @@ class DashboardController extends GetxController {
     return (hours / 24);
   }
 
-  int get classesToday {
+  int get classesTodayCount {
     int classes = 0;
     var courses = appDB.get("timetable") ?? [];
     for (Courses course in courses) {
@@ -73,7 +73,7 @@ class DashboardController extends GetxController {
     return classes;
   }
 
-  int get classesTommorrow {
+  int get classesTommorrowCount {
     int classes = 0;
     var courses = appDB.get("timetable") ?? [];
     for (Courses course in courses) {
@@ -81,6 +81,33 @@ class DashboardController extends GetxController {
           DateFormat("EEEE")
               .format(DateTime.now().add(const Duration(hours: 24)))) {
         classes++;
+      }
+    }
+    return classes;
+  }
+
+  List<Courses> get classesToday {
+    List<Courses> classes = <Courses>[];
+
+    var courses = appDB.get("timetable") ?? [];
+    for (Courses course in courses) {
+      if (course.dayOfTheWeek!.title() ==
+          DateFormat("EEEE").format(DateTime.now())) {
+        classes.add(course);
+      }
+    }
+
+    return classes;
+  }
+
+  List<Courses> get classesTommorrow {
+    List<Courses> classes = <Courses>[];
+    var courses = appDB.get("timetable") ?? [];
+    for (Courses course in courses) {
+      if (course.dayOfTheWeek!.title() ==
+          DateFormat("EEEE")
+              .format(DateTime.now().add(const Duration(hours: 24)))) {
+        classes.add(course);
       }
     }
     return classes;

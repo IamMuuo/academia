@@ -1,6 +1,7 @@
 import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/dashboard_controller.dart';
 import 'package:academia/widgets/academia_app_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
@@ -220,7 +221,7 @@ class DashBoard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${dashBoardController.classesToday}",
+                          "${dashBoardController.classesTodayCount}",
                           style: h3,
                         ),
                         Text(
@@ -274,6 +275,99 @@ class DashBoard extends StatelessWidget {
                       ],
                     ),
                   )
+                ],
+              ),
+            ),
+
+            const SizedBox(
+              height: 12,
+            ),
+            SizedBox(
+              // height: 400,
+              child: Column(
+                children: [
+                  const Text(
+                    "Today's activities and classes",
+                    style: h6,
+                  ),
+                  dashBoardController.classesTodayCount == 0
+                      ? Column(
+                          children: [
+                            Image.asset("assets/images/chill.png"),
+                            const Text(
+                              "You have no classes today take the day off, maybe visit the library",
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        )
+                      : SizedBox(
+                          height: 120,
+                          child: ListView.builder(
+                            itemCount: dashBoardController.classesToday.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(12))),
+                                  child: ListTile(
+                                    leading: const Icon(CupertinoIcons.timer),
+                                    title: Text(dashBoardController
+                                        .classesToday[index].name!),
+                                    // tileColor:
+                                    // Theme.of(context).primaryColorDark,
+                                    subtitle: Text(
+                                      "${dashBoardController.classesToday[index].name!} will be in ${dashBoardController.classesToday[index].room}, between ${dashBoardController.classesToday[index].period}, and will be taught by ${dashBoardController.classesToday[index].lecturer}",
+                                    ),
+                                    // titleTextStyle: normal,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                  const SizedBox(height: 12),
+                  const Text("Upcoming events and classes", style: h6),
+                  SizedBox(
+                      height: 120,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: dashBoardController.classesTommorrow.length,
+                        itemBuilder: ((context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(12)),
+                                  color: Theme.of(context).primaryColorDark),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor:
+                                        Theme.of(context).primaryColorLight,
+                                    child: const Icon(CupertinoIcons.timer),
+                                  ),
+                                  Text(
+                                    dashBoardController
+                                        .classesTommorrow[index].name!,
+                                    style: normal.copyWith(
+                                        color: Theme.of(context)
+                                            .primaryColorLight),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }),
+                      ))
                 ],
               ),
             ),
