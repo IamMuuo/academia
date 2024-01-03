@@ -25,7 +25,7 @@ class DashboardController extends GetxController {
     if (daypercent > 0.75) {
       return "Perhaps much is already done!";
     } else if (daypercent > 0.5) {
-      return "The day is halfway done strive to make a change";
+      return "Sun down approaches";
     } else if (daypercent > 0.25) {
       return "Its almost midday";
     }

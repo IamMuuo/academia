@@ -2,6 +2,7 @@ import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/courses_page_controller.dart';
 import 'package:academia/controllers/dashboard_controller.dart';
 import 'package:academia/pages/attendance_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
@@ -21,6 +22,23 @@ class CoursesPage extends StatelessWidget {
           "Courses",
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Get.defaultDialog(
+                  title: "Information",
+                  content: Column(
+                    children: [
+                      Image.asset("assets/images/bot_love.png", height: 100),
+                      const Text(
+                        "Here we will display your courses and everything in between",
+                      )
+                    ],
+                  ));
+            },
+            icon: const Icon(CupertinoIcons.info),
+          )
+        ],
       ),
       body: LiquidPullToRefresh(
         height: 200,
@@ -159,7 +177,8 @@ class CoursesPage extends StatelessWidget {
                           text: "You have\n",
                           children: [
                             TextSpan(
-                              text: "${dashBoardController.classesTommorrowCount}",
+                              text:
+                                  "${dashBoardController.classesTommorrowCount}",
                               style: h3,
                             ),
                             const TextSpan(

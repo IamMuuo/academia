@@ -121,6 +121,24 @@ class _ToolsPageState extends State<ToolsPage> {
       appBar: AppBar(
         title: const Text("Tools"),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Get.defaultDialog(
+                title: "Information",
+                content: Column(
+                  children: [
+                    Image.asset("assets/images/bot_love.png", height: 100),
+                    const Text(
+                      "From calculating your GPA to generating your tokens, tools are the bare essentials",
+                    )
+                  ],
+                ),
+              );
+            },
+            icon: const Icon(CupertinoIcons.info),
+          ),
+        ],
         elevation: 0,
       ),
       body: Padding(
@@ -132,16 +150,13 @@ class _ToolsPageState extends State<ToolsPage> {
               height: 60,
               child: TextField(
                 onChanged: (value) => _runToolFilter(value),
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                   ),
                   hintText: "GPA Calculator",
-                  label: const Text("Search for a tool"),
-                  suffix: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(CupertinoIcons.search_circle_fill),
-                  ),
+                  label: Text("Search for a tool"),
+                  suffixIcon: Icon(CupertinoIcons.search),
                 ),
               ),
             ),

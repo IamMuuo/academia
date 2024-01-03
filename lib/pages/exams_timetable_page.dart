@@ -1,5 +1,4 @@
 import 'package:academia/constants/common.dart';
-import 'package:academia/pages/home_page.dart';
 import 'package:academia/controllers/exams_timetable_controller.dart';
 import 'package:academia/widgets/academia_app_bar.dart';
 import 'package:academia/widgets/count_down_widget.dart';
@@ -30,9 +29,8 @@ class ExamTimeTablePage extends StatelessWidget {
                           : "Good Evening",
                   subtitle:
                       "Are you ready ${(user.name!.split(" ")[0]).title().trim()}?",
-                  icon: const Icon(CupertinoIcons.home),
-                  ontapped: () => Get.to(const HomePage(),
-                      transition: Transition.rightToLeft),
+                  icon: const Icon(CupertinoIcons.arrowshape_turn_up_left),
+                  ontapped: () => Get.back(),
                 ),
 
                 // The actual body
