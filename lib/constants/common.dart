@@ -4,6 +4,7 @@
 import 'package:academia/models/user.dart';
 import 'package:academia/pages/attendance_page.dart';
 import 'package:academia/pages/exams_timetable_page.dart';
+import 'package:academia/pages/fees_page.dart';
 import 'package:academia/pages/gpacalculator_page.dart';
 import 'package:academia/pages/webview_page.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +89,8 @@ final List<Map<String, dynamic>> allTools = [
           icon: const Icon(Icons.network_check),
           backgroundColor: Colors.white,
         );
-      } },
+      }
+    },
     "description": "Hungry? Maybe its time to generate your catering token!"
   },
   {
@@ -115,6 +117,16 @@ final List<Map<String, dynamic>> allTools = [
   },
   {
     "id": 4,
+    "name": "Fees Statement",
+    "action": "Get my fee statement",
+    "image": "assets/images/fees.png",
+    "ontap": () {
+      Get.to(const FeesPage());
+    },
+    "description": "Not sure about finances? We are here for you"
+  },
+  {
+    "id": 5,
     "name": "Class Attendance",
     "action": "View class Attendance",
     "image": "assets/images/girl_sitted.png",
@@ -125,7 +137,7 @@ final List<Map<String, dynamic>> allTools = [
         "Curious to know how many classes you have missed this semester, this might be the tool",
   },
   {
-    "id": 5,
+    "id": 6,
     "name": "Exam Timetable",
     "action": "Show exam timetable",
     "image": "assets/images/exam_timetable.png",
