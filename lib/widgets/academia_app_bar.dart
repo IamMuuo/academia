@@ -89,7 +89,9 @@ class AcademiaAppBar extends StatelessWidget {
               ),
               child: IconButton(
                 onPressed: () {
-                  ontapped?.call() ?? Get.to(const TimeLinePage());
+                  ontapped == null
+                      ? Get.to(const TimeLinePage())
+                      : ontapped?.call();
                 },
                 icon: icon ?? const Icon(Icons.timeline),
               ),
