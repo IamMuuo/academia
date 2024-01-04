@@ -120,8 +120,9 @@ final List<Map<String, dynamic>> allTools = [
     "name": "Fees Statement",
     "action": "Get my fee statement",
     "image": "assets/images/fees.png",
-    "ontap": () {
-      Get.to(const FeesPage());
+    "ontap": () async {
+      var statements = await magnet.fetchFeeStatement();
+      Get.to(FeesPage(allStatements: statements));
     },
     "description": "Not sure about finances? We are here for you"
   },
