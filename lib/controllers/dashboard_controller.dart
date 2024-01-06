@@ -27,16 +27,16 @@ class DashboardController extends GetxController {
     } else if (daypercent > 0.5) {
       return "Sun down approaches";
     } else if (daypercent > 0.25) {
-      return "Its almost midday";
+      return "Its almost midday☀️";
     }
     return "Make it or break it while its young!";
   }
 
   String get getWeekPercentQuote {
     if (weekPercent > 0.75) {
-      return "Its probably on a Friday!";
+      return "The weekend 🙃!";
     } else if (daypercent > 0.5) {
-      return "Stay strong weekend is coming";
+      return "Stay strong weekend is coming😉";
     } else if (daypercent > 0.25) {
       return "Focus, its tough we get it";
     }
@@ -45,7 +45,7 @@ class DashboardController extends GetxController {
 
   String get getSemesterPercentQuote {
     if (semesterPercent > 0.90) {
-      return "Relax, it was a tough one!";
+      return "Relax, it was a tough one!😅";
     } else if (semesterPercent > 0.75) {
       return "Projects, exams panic!";
     } else if (semesterPercent > 0.5) {

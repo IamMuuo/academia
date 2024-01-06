@@ -46,7 +46,15 @@ class _ProfilePageState extends State<ProfilePage> {
         color: Theme.of(context).primaryColor,
         backgroundColor: Colors.white,
         onRefresh: () async {
-          await controller.refreshUserDetails();
+          try {
+            await controller.refreshUserDetails();
+          } catch (e) {
+            Get.snackbar(
+              "Connection Problem",
+              "Please review your internet connection and try again",
+              icon: const Icon(Icons.network_check),
+            );
+          }
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -152,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 settingsController.showGPA.value
                                     ? controller.currentUser.value.gpa
                                         .toString()
-                                    : "Hidden",
+                                    : "🔒",
                                 style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -295,22 +303,33 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
 
                               // fee Info
-                              InfoCard(
-                                title: "Amount Billed",
-                                content:
-                                    controller.currentUser.value.amountBilled!,
-                                icon: CupertinoIcons.money_rubl_circle_fill,
+                              Obx(
+                                () => InfoCard(
+                                  title: "Amount Billed",
+                                  content: settingsController.showFees.value
+                                      ? controller
+                                          .currentUser.value.amountBilled!
+                                      : "🔒🔒🔒",
+                                  icon: CupertinoIcons.money_rubl_circle_fill,
+                                ),
                               ),
-                              InfoCard(
-                                title: "Fee Paid",
-                                content:
-                                    controller.currentUser.value.amountPaid!,
-                                icon: CupertinoIcons.money_euro_circle,
+                              Obx(
+                                () => InfoCard(
+                                  title: "Fee Paid",
+                                  content: settingsController.showFees.value
+                                      ? controller.currentUser.value.amountPaid!
+                                      : "🔒🔒🔒",
+                                  icon: CupertinoIcons.money_euro_circle,
+                                ),
                               ),
-                              InfoCard(
-                                title: "Fee Balance",
-                                content: controller.currentUser.value.balance!,
-                                icon: CupertinoIcons.money_euro_circle_fill,
+                              Obx(
+                                () => InfoCard(
+                                  title: "Fee Balance",
+                                  content: settingsController.showFees.value
+                                      ? controller.currentUser.value.balance!
+                                      : "🔒🔒🔒",
+                                  icon: CupertinoIcons.money_euro_circle_fill,
+                                ),
                               ),
                             ],
                           ),

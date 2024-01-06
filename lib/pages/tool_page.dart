@@ -1,8 +1,4 @@
-import 'package:academia/constants/common.dart';
-import 'package:academia/pages/attendance_page.dart';
-import 'package:academia/pages/exams_timetable_page.dart';
-import 'package:academia/pages/gpacalculator_page.dart';
-import 'package:academia/pages/webview_page.dart';
+import 'package:academia/constants/tools.dart';
 import 'package:academia/widgets/tool_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

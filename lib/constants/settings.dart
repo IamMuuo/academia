@@ -7,6 +7,7 @@ var settings = {
   "allow_push_notifications": true,
   "show_transcript": true,
   "show_audit": true,
+  "show_fees": false,
 
   // Exam timetable features
   "show_exam_timetable": true,

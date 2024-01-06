@@ -108,6 +108,16 @@ class SettingsPage extends StatelessWidget {
                     await controller.saveSettings();
                   }),
             ),
+            const Divider(),
+            ListTile(
+              title: const Text("Show fees statistics"),
+              trailing: Switch(
+                  value: controller.showFees.value,
+                  onChanged: (value) async {
+                    controller.showFees.value = value;
+                    await controller.saveSettings();
+                  }),
+            ),
 
             // notifications
 
