@@ -6,6 +6,8 @@ class SettingsController extends GetxController {
   Rx<bool> showGPA = true.obs;
   Rx<bool> showProfilePic = true.obs;
   Rx<bool> showExamTimeTable = false.obs;
+  Rx<bool> showTranscript = false.obs;
+  Rx<bool> showAudit = false.obs;
   late Map<dynamic, dynamic> settings;
 
   @override
@@ -14,6 +16,8 @@ class SettingsController extends GetxController {
     showGPA.value = settings["show_gpa"] ?? true;
     showProfilePic.value = settings["show_profile_pic"] ?? true;
     showExamTimeTable.value = settings["show_exam_timetable"] ?? true;
+    showAudit.value = settings["show_audit"] ?? true;
+    showTranscript.value = settings["show_transcript"] ?? true;
 
     debugPrint("Settings loaded!");
     super.onInit();
@@ -23,6 +27,8 @@ class SettingsController extends GetxController {
     settings["show_profile_pic"] = showProfilePic.value;
     settings["show_gpa"] = showGPA.value;
     settings["show_exam_timetable"] = showExamTimeTable.value;
+    settings["show_transcript"] = showTranscript.value;
+    settings["show_audit"] = showAudit.value;
     await appDB.put("settings", settings);
   }
 }

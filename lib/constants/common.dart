@@ -1,6 +1,7 @@
 // const String urlPrefix = "https://daystar-backend-atrocious-jpg.vercel.app";
 // For local development
 
+import 'package:academia/controllers/settings_controller.dart';
 import 'package:academia/models/user.dart';
 import 'package:academia/pages/attendance_page.dart';
 import 'package:academia/pages/exams_timetable_page.dart';
@@ -132,11 +133,18 @@ final List<Map<String, dynamic>> allTools = [
     "action": "Get my audit",
     "image": "assets/images/view.png",
     "ontap": () async {
-      Get.to(WebviewPage(
-        title: "Your audit",
-        url:
-            "https://student.daystar.ac.ke/Downloads/STDAUDIT-${user.admno}.pdf",
-      ));
+      var controller = Get.find<SettingsController>();
+      if (controller.showTranscript.value) {
+        Get.snackbar("Tool locked",
+            "Student Audit functionality is locked in the settings page, please unlock it to view our student audit",
+            icon: const Icon(Icons.lock));
+      } else {
+        Get.to(WebviewPage(
+          title: "Your audit",
+          url:
+              "https://student.daystar.ac.ke/Downloads/STDAUDIT-${user.admno}.pdf",
+        ));
+      }
     },
     "description": "Having trouble finding your audit? Here it is"
   },
@@ -146,11 +154,20 @@ final List<Map<String, dynamic>> allTools = [
     "action": "Get my transcript",
     "image": "assets/images/graduating.png",
     "ontap": () async {
-      Get.to(WebviewPage(
-        title: "Transcript",
-        url:
-            "https://student.daystar.ac.ke/Downloads/PROVISIONAL%20RESULTS-${user.admno}.pdf",
-      ));
+      var controller = Get.find<SettingsController>();
+      if (controller.showTranscript.value) {
+        Get.snackbar(
+          "Tool locked",
+          "Transcript functionality is locked in the settings page, please unlock it to view your transcript",
+          icon: const Icon(Icons.lock),
+        );
+      } else {
+        Get.to(WebviewPage(
+          title: "Transcript",
+          url:
+              "https://student.daystar.ac.ke/Downloads/PROVISIONAL%20RESULTS-${user.admno}.pdf",
+        ));
+      }
     },
     "description": "Need your transcript ASAP? Find it here"
   },

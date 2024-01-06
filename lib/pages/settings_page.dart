@@ -81,7 +81,7 @@ class SettingsPage extends StatelessWidget {
             const Align(
               alignment: Alignment.center,
               child: Text(
-                "Todo Settings",
+                "Tool Settings",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -90,13 +90,23 @@ class SettingsPage extends StatelessWidget {
             ),
 
             ListTile(
-              title: const Text("Show todos on carousel"),
-              trailing: Switch(value: true, onChanged: (value) {}),
+              title: const Text("Lock showing audit tool"),
+              trailing: Switch(
+                  value: controller.showAudit.value,
+                  onChanged: (value) async {
+                    controller.showAudit.value = value;
+                    await controller.saveSettings();
+                  }),
             ),
             const Divider(),
             ListTile(
-              title: const Text("Delete older todo items"),
-              trailing: Switch(value: true, onChanged: (value) {}),
+              title: const Text("Lock showing transcript tool"),
+              trailing: Switch(
+                  value: controller.showTranscript.value,
+                  onChanged: (value) async {
+                    controller.showTranscript.value = value;
+                    await controller.saveSettings();
+                  }),
             ),
 
             // notifications
