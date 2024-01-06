@@ -1,8 +1,4 @@
-import 'package:academia/constants/common.dart';
-import 'package:academia/pages/attendance_page.dart';
-import 'package:academia/pages/exams_timetable_page.dart';
-import 'package:academia/pages/gpacalculator_page.dart';
-import 'package:academia/pages/webview_page.dart';
+import 'package:academia/constants/tools.dart';
 import 'package:academia/widgets/tool_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,66 +13,7 @@ class ToolsPage extends StatefulWidget {
 
 class _ToolsPageState extends State<ToolsPage> {
   // all available tools
-  final List<Map<String, dynamic>> _allTools = [
-    {
-      "id": 1,
-      "name": "Generate Catering Token",
-      "action": "Generate Token",
-      "image": "assets/images/food.png",
-      "ontap": () async {
-        var token = await magnet.fetchCateringToken();
-        await Get.defaultDialog(
-          title: "Your Token",
-          content: Text("Your Token is ${token['message'] ?? ''}"),
-        );
-      },
-      "description": "Hungry? Maybe its time to generate your catering token!"
-    },
-    {
-      "id": 2,
-      "name": "GPA Calculator",
-      "action": "Calculate GPA",
-      "image": "assets/images/calculator.png",
-      "ontap": () {
-        Get.to(GpaCalculator());
-      },
-      "description": "Wanna calculate your GPA? try it here"
-    },
-    {
-      "id": 3,
-      "name": "Elearning",
-      "image": "assets/images/grade.png",
-      "action": "Visit Elearning",
-      "ontap": () {
-        Get.to(const WebviewPage(
-            title: "Elearning", url: "https://elearning.daystar.ac.ke"));
-      },
-      "description":
-          "Psst! Elearning is here for you. Keep track of your assignments and notes!",
-    },
-    {
-      "id": 4,
-      "name": "Class Attendance",
-      "action": "View class Attendance",
-      "image": "assets/images/girl_sitted.png",
-      "ontap": () {
-        Get.to(const AttendancePage());
-      },
-      "description":
-          "Curious to know how many classes you have missed this semester, this might be the tool",
-    },
-    {
-      "id": 5,
-      "name": "Exam Timetable",
-      "action": "Show exam timetable",
-      "image": "assets/images/exam_timetable.png",
-      "ontap": () {
-        Get.to(const ExamTimeTablePage());
-      },
-      "description":
-          "Exams around the corner? Don't panic we've got you covered with the timetable",
-    },
-  ];
+  final List<Map<String, dynamic>> _allTools = allTools;
 
   List<Map<String, dynamic>> foundTools = [];
 
@@ -112,6 +49,24 @@ class _ToolsPageState extends State<ToolsPage> {
       appBar: AppBar(
         title: const Text("Tools"),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Get.defaultDialog(
+                title: "Information",
+                content: Column(
+                  children: [
+                    Image.asset("assets/images/bot_love.png", height: 100),
+                    const Text(
+                      "From calculating your GPA to generating your tokens, tools are the bare essentials",
+                    )
+                  ],
+                ),
+              );
+            },
+            icon: const Icon(CupertinoIcons.info),
+          ),
+        ],
         elevation: 0,
       ),
       body: Padding(
@@ -123,16 +78,13 @@ class _ToolsPageState extends State<ToolsPage> {
               height: 60,
               child: TextField(
                 onChanged: (value) => _runToolFilter(value),
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                   ),
                   hintText: "GPA Calculator",
-                  label: const Text("Search for a tool"),
-                  suffix: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(CupertinoIcons.search_circle_fill),
-                  ),
+                  label: Text("Search for a tool"),
+                  suffixIcon: Icon(CupertinoIcons.search),
                 ),
               ),
             ),

@@ -25,18 +25,18 @@ class DashboardController extends GetxController {
     if (daypercent > 0.75) {
       return "Perhaps much is already done!";
     } else if (daypercent > 0.5) {
-      return "The day is halfway done strive to make a change";
+      return "Sun down approaches";
     } else if (daypercent > 0.25) {
-      return "Its almost midday";
+      return "Its almost midday☀️";
     }
     return "Make it or break it while its young!";
   }
 
   String get getWeekPercentQuote {
     if (weekPercent > 0.75) {
-      return "Its probably on a Friday!";
+      return "The weekend 🙃!";
     } else if (daypercent > 0.5) {
-      return "Stay strong weekend is coming";
+      return "Stay strong weekend is coming😉";
     } else if (daypercent > 0.25) {
       return "Focus, its tough we get it";
     }
@@ -45,7 +45,7 @@ class DashboardController extends GetxController {
 
   String get getSemesterPercentQuote {
     if (semesterPercent > 0.90) {
-      return "Relax, it was a tough one!";
+      return "Relax, it was a tough one!😅";
     } else if (semesterPercent > 0.75) {
       return "Projects, exams panic!";
     } else if (semesterPercent > 0.5) {
@@ -61,7 +61,7 @@ class DashboardController extends GetxController {
     return (hours / 24);
   }
 
-  int get classesToday {
+  int get classesTodayCount {
     int classes = 0;
     var courses = appDB.get("timetable") ?? [];
     for (Courses course in courses) {
@@ -73,7 +73,7 @@ class DashboardController extends GetxController {
     return classes;
   }
 
-  int get classesTommorrow {
+  int get classesTommorrowCount {
     int classes = 0;
     var courses = appDB.get("timetable") ?? [];
     for (Courses course in courses) {
@@ -81,6 +81,33 @@ class DashboardController extends GetxController {
           DateFormat("EEEE")
               .format(DateTime.now().add(const Duration(hours: 24)))) {
         classes++;
+      }
+    }
+    return classes;
+  }
+
+  List<Courses> get classesToday {
+    List<Courses> classes = <Courses>[];
+
+    var courses = appDB.get("timetable") ?? [];
+    for (Courses course in courses) {
+      if (course.dayOfTheWeek!.title() ==
+          DateFormat("EEEE").format(DateTime.now())) {
+        classes.add(course);
+      }
+    }
+
+    return classes;
+  }
+
+  List<Courses> get classesTommorrow {
+    List<Courses> classes = <Courses>[];
+    var courses = appDB.get("timetable") ?? [];
+    for (Courses course in courses) {
+      if (course.dayOfTheWeek!.title() ==
+          DateFormat("EEEE")
+              .format(DateTime.now().add(const Duration(hours: 24)))) {
+        classes.add(course);
       }
     }
     return classes;
