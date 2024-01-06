@@ -128,6 +128,34 @@ final List<Map<String, dynamic>> allTools = [
   },
   {
     "id": 5,
+    "name": "Student Audit",
+    "action": "Get my audit",
+    "image": "assets/images/view.png",
+    "ontap": () async {
+      Get.to(WebviewPage(
+        title: "Your audit",
+        url:
+            "https://student.daystar.ac.ke/Downloads/STDAUDIT-${user.admno}.pdf",
+      ));
+    },
+    "description": "Having trouble finding your audit? Here it is"
+  },
+  {
+    "id": 6,
+    "name": "Transcript",
+    "action": "Get my transcript",
+    "image": "assets/images/graduating.png",
+    "ontap": () async {
+      Get.to(WebviewPage(
+        title: "Transcript",
+        url:
+            "https://student.daystar.ac.ke/Downloads/PROVISIONAL%20RESULTS-${user.admno}.pdf",
+      ));
+    },
+    "description": "Need your transcript ASAP? Find it here"
+  },
+  {
+    "id": 7,
     "name": "Class Attendance",
     "action": "View class Attendance",
     "image": "assets/images/girl_sitted.png",
@@ -138,7 +166,7 @@ final List<Map<String, dynamic>> allTools = [
         "Curious to know how many classes you have missed this semester, this might be the tool",
   },
   {
-    "id": 6,
+    "id": 8,
     "name": "Exam Timetable",
     "action": "Show exam timetable",
     "image": "assets/images/exam_timetable.png",
