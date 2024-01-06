@@ -1,81 +1,68 @@
-import 'package:academia/constants/common.dart';
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class ToolCardController extends GetxController {
-  var isLoading = false.obs;
-}
-
-class ToolCard extends StatelessWidget {
+class ToolCard extends StatefulWidget {
   const ToolCard({
     super.key,
+    required this.heading,
+    required this.image,
+    required this.description,
     required this.ontap,
-    required this.title,
-    this.backGround,
-    this.icon,
-    this.titlestyle,
+    required this.action,
   });
-
+  final String heading;
+  final String image;
+  final String description;
   final Function ontap;
-  final Color? backGround;
-  final Icon? icon;
-  final String title;
-  final TextStyle? titlestyle;
+  final String action;
 
   @override
+  State<ToolCard> createState() => _ToolCardState();
+}
+
+class _ToolCardState extends State<ToolCard> {
+  bool _isLoading = false;
+  @override
   Widget build(BuildContext context) {
-    var controller = Get.put(ToolCardController());
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: backGround ?? Colors.blueAccent,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(12),
+    return Card(
+      elevation: 4.0,
+      child: Column(
+        children: [
+          ListTile(
+            title: Text(widget.heading),
+            // subtitle: Text(subheading),
+            trailing: const Icon(Icons.favorite_outline),
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                icon ??
-                    const Icon(
-                      CupertinoIcons.hammer_fill,
-                      color: Colors.white,
-                    ),
-                Obx(
-                  () => controller.isLoading.value
-                      ? LoadingAnimationWidget.hexagonDots(
-                          size: 20, color: Colors.white)
-                      : IconButton(
-                          onPressed: () async {
-                            controller.isLoading.value = true;
-                            ontap();
-                            controller.isLoading.value = false;
-                          },
-                          icon: const Icon(
-                            CupertinoIcons.arrow_right_circle,
-                            color: Colors.white,
-                          ),
-                        ),
-                ),
-              ],
-            ),
-            Text(
-              title,
-              style: titlestyle ??
-                  h6.copyWith(
-                    fontSize: 14,
-                    color: Colors.white,
+          _isLoading
+              ? LoadingAnimationWidget.beat(
+                  color: Theme.of(context).primaryColor, size: 80)
+              : SizedBox(
+                  height: 200.0,
+                  child: Image.asset(
+                    widget.image,
+                    fit: BoxFit.fitWidth,
                   ),
-            )
-          ],
-        ),
+                ),
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            alignment: Alignment.centerLeft,
+            child: Text(widget.description),
+          ),
+          ButtonBar(
+            children: [
+              TextButton(
+                child: Text(widget.action),
+                onPressed: () {
+                  _isLoading = true;
+                  widget.ontap.call();
+                  _isLoading = false;
+                },
+              ),
+            ],
+          )
+        ],
       ),
     );
   }

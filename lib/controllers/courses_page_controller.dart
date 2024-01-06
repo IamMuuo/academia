@@ -39,10 +39,10 @@ class CoursesPageController extends GetxController {
           backGround: DateFormat("EEEE").format(DateTime.now()) ==
                   course.dayOfTheWeek!.title()
               ? Colors.blueGrey
-              : Colors.white,
+              : Colors.transparent,
           titleColor: DateFormat("EEEE").format(DateTime.now()) ==
                   course.dayOfTheWeek!.title()
-              ? Colors.white
+              ? Colors.transparent
               : Colors.blueGrey,
           borderColor: DateFormat("EEEE").format(DateTime.now()) ==
                   course.dayOfTheWeek!.title()
@@ -97,10 +97,19 @@ class CoursesPageController extends GetxController {
 
     for (Map p in progress) {
       progressList.add(CourseAttendanceCard(
-          course: p.keys.first,
-          percent: double.parse(p.values.first.toString()),));
+        course: p.keys.first,
+        percent: double.parse(p.values.first.toString()),
+      ));
     }
     return progressList;
+  }
+
+  int get numOfClasses {
+    if (appDB.containsKey("timetable")) {
+      var courses = appDB.get("timetable") ?? [];
+      return courses.length;
+    }
+    return 0;
   }
 
   Future<bool> updateProgress() async {

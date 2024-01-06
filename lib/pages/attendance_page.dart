@@ -1,8 +1,6 @@
 import 'package:academia/controllers/courses_page_controller.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class AttendancePage extends StatefulWidget {
