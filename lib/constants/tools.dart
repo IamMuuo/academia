@@ -61,7 +61,7 @@ final List<Map<String, dynamic>> allTools = [
     "image": "assets/images/fees.png",
     "ontap": () async {
       var controller = Get.find<SettingsController>();
-      if (!controller.showTranscript.value) {
+      if (!controller.showFees.value) {
         Get.snackbar("Tool locked",
             "Fees functionality is locked in the settings page, please unlock it to view your fees statement",
             icon: const Icon(Icons.lock));

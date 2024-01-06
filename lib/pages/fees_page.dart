@@ -90,7 +90,7 @@ class _FeesPageState extends State<FeesPage> {
                 children: [
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    height: 60,
+                    height: MediaQuery.of(context).size.height * 0.1,
                     child: TextField(
                       onChanged: (value) => _runStatementFilter(value),
                       decoration: const InputDecoration(
@@ -104,7 +104,7 @@ class _FeesPageState extends State<FeesPage> {
                     ),
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.80,
+                    height: MediaQuery.of(context).size.height * 0.7,
                     child: ListView.builder(
                       itemCount: _statements.length,
                       itemBuilder: (context, index) {
