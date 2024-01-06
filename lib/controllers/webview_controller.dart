@@ -8,7 +8,8 @@ class WebViewPageController extends GetxController {
       ..setNavigationDelegate(NavigationDelegate(
         onNavigationRequest: (request) {
           if (request.url.startsWith("https://www.github.com/") ||
-              request.url.startsWith("https://elearnig.daystar.ac.ke")) {
+              request.url.startsWith("https://elearnig.daystar.ac.ke") ||
+              request.url.startsWith("https://student.daystar.ac.ke/")) {
             return NavigationDecision.navigate;
           } else {
             return NavigationDecision.prevent;
