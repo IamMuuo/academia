@@ -1,3 +1,4 @@
+import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/gpacalculator_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -44,8 +45,9 @@ class GpaCalculator extends StatelessWidget {
             Column(
               children: [
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: loadRegisteredUnits,
                     child: const Text("Load Registered Units")),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
                     if (unitController.courseList.isEmpty) {
@@ -75,11 +77,11 @@ class GpaCalculator extends StatelessWidget {
                         final unit = unitController.courseList[index];
                         return ListTile(
                           title: Text(unit.name),
-                          subtitle: Text(unit.code),
+                          subtitle: Text("${unit.creditHours.toInt()} hrs"),
                           trailing: Text(unit.grade),
                           onTap: () {
                             nameController.text = unit.name;
-                            codeController.text = unit.code;
+                            // codeController.text = unit.code;
                             creditHoursController.text =
                                 unit.creditHours.toString();
                             gradeController.text = unit.grade;
@@ -123,19 +125,6 @@ class GpaCalculator extends StatelessWidget {
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: TextField(
-                                              decoration: const InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                labelText: 'Unit Code',
-                                              ),
-                                              controller: codeController,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: TextField(
                                               keyboardType:
                                                   TextInputType.number,
                                               decoration: const InputDecoration(
@@ -169,20 +158,18 @@ class GpaCalculator extends StatelessWidget {
                                                       const EdgeInsets.all(8.0),
                                                   child: ElevatedButton(
                                                     onPressed: () {
-                                                      unitController.updateCourse(
-                                                          index: index,
-                                                          newName:
-                                                              nameController
-                                                                  .text,
-                                                          newCode:
-                                                              codeController
-                                                                  .text,
-                                                          newCreditHours:
-                                                              creditHoursController
-                                                                  .text,
-                                                          newGrade:
-                                                              gradeController
-                                                                  .text);
+                                                      unitController
+                                                          .updateCourse(
+                                                              index: index,
+                                                              newName:
+                                                                  nameController
+                                                                      .text,
+                                                              newCreditHours:
+                                                                  creditHoursController
+                                                                      .text,
+                                                              newGrade:
+                                                                  gradeController
+                                                                      .text);
                                                       Get.back();
                                                     },
                                                     child:
@@ -265,19 +252,6 @@ class GpaCalculator extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: TextField(
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      labelText: 'Unit Code',
-                                    ),
-                                    controller: codeController,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: TextField(
                                     keyboardType: TextInputType.number,
                                     decoration: const InputDecoration(
                                       border: OutlineInputBorder(),
@@ -305,14 +279,8 @@ class GpaCalculator extends StatelessWidget {
                                 ElevatedButton(
                                   onPressed: () {
                                     final name = nameController.text;
-                                    final code = codeController.text;
                                     final creditHours =
                                         creditHoursController.text;
-
-                                    // if (creditHours is! double) {
-                                    //   Get.snackbar("Invalid Credit hours",
-                                    //       "Must be a number");
-                                    // }
                                     final grade = gradeController.text;
                                     if (nameController.text != '' &&
                                         codeController.text != '' &&
@@ -321,7 +289,7 @@ class GpaCalculator extends StatelessWidget {
                                       if (GPACalculatorController
                                           .testValidGrade(grade)) {
                                         unitController.addCourse(
-                                            name, code, creditHours, grade);
+                                            name, creditHours, grade);
                                         Get.back();
                                       } else {
                                         Get.defaultDialog(
@@ -347,5 +315,31 @@ class GpaCalculator extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void loadRegisteredUnits() {
+    unitController.courseList.clear();
+    final courses = appDB.get("timetable");
+    for (final course in courses) {
+      final period = course.period.split('-');
+      final startPeriod = period[0].trim().split(':');
+      final endPeriod = period[1].trim().split(':');
+
+      final startHour = int.parse(startPeriod[0]);
+      final startMinute = int.parse(startPeriod[1].substring(0, 2));
+      final startAmPm = startPeriod[1].substring(2).trim();
+
+      final endHour = int.parse(endPeriod[0]);
+      final endMinute = int.parse(endPeriod[1].substring(0, 2));
+      final endAmPm = endPeriod[1].substring(2).trim();
+
+      final startTime = DateTime(
+          0, 0, 0, startHour + (startAmPm == 'PM' ? 12 : 0), startMinute);
+      final endTime =
+          DateTime(0, 0, 0, endHour + (endAmPm == 'PM' ? 12 : 0), endMinute);
+
+      final difference = endTime.difference(startTime);
+      unitController.addCourse(course.name, difference.inHours.toString(), "A");
+    }
   }
 }
