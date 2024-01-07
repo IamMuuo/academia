@@ -8,7 +8,7 @@ class GPACalculatorController extends GetxController {
   List<Unit> get courseList => _courses;
   double get gpa => _calculateGPA();
 
-  void addCourse(String name, String code, String creditHours, String grade) {
+  void addCourse(String name, String creditHours, String grade) {
     double tcreditHours = 0;
     try {
       tcreditHours = double.parse(creditHours);
@@ -19,7 +19,7 @@ class GPACalculatorController extends GetxController {
       throw Exception('Credit hours must be a number');
     }
     final course =
-        Unit(name: name, code: code, creditHours: tcreditHours, grade: grade);
+        Unit(name: name, creditHours: tcreditHours, grade: grade);
     _courses.add(course);
   }
 
@@ -31,11 +31,11 @@ class GPACalculatorController extends GetxController {
   void updateCourse(
       {required int index,
       required String newName,
-      required String newCode,
+      // required String newCode,
       required String newCreditHours,
       required String newGrade}) {
     _courses[index].name = newName;
-    _courses[index].code = newCode;
+    // _courses[index].code = newCode;
     try {
       _courses[index].creditHours = double.parse(newCreditHours);
     } catch (e) {

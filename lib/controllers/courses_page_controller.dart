@@ -17,7 +17,7 @@ class CoursesPageController extends GetxController {
     if (courses.isEmpty) {
       hasCourses.value = false;
       return false;
-    }
+    } 
 
     for (var i = 0; i < courses.length; i++) {
       userCourses.add(Courses.fromJson(courses[i]));
