@@ -65,7 +65,7 @@ class User {
   // from json
   User.fromJson(Map<dynamic, dynamic> json)
       : name = json['name'],
-        gpa = double.parse(json["gpa"]),
+        gpa = double.parse(json["gpa"] ?? "0"),
         password = json['password'],
         admno = json['regno'],
         gender = json['gender'],
