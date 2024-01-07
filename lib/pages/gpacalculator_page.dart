@@ -158,18 +158,17 @@ class GpaCalculator extends StatelessWidget {
                                                       const EdgeInsets.all(8.0),
                                                   child: ElevatedButton(
                                                     onPressed: () {
-                                                      unitController
-                                                          .updateCourse(
-                                                              index: index,
-                                                              newName:
-                                                                  nameController
-                                                                      .text,
-                                                              newCreditHours:
-                                                                  creditHoursController
-                                                                      .text,
-                                                              newGrade:
-                                                                  gradeController
-                                                                      .text);
+                                                      unitController.updateCourse(
+                                                          index: index,
+                                                          newName:
+                                                              nameController
+                                                                  .text,
+                                                          newCreditHours:
+                                                              creditHoursController
+                                                                  .text,
+                                                          newGrade:
+                                                              gradeController
+                                                                  .text);
                                                       Get.back();
                                                     },
                                                     child:
@@ -320,6 +319,13 @@ class GpaCalculator extends StatelessWidget {
   void loadRegisteredUnits() {
     unitController.courseList.clear();
     final courses = appDB.get("timetable");
+    if (courses == null) {
+      Get.defaultDialog(
+        title: "No courses found",
+        content: const Text("Please register your courses first"),
+      );
+      return;
+    }
     for (final course in courses) {
       final period = course.period.split('-');
       final startPeriod = period[0].trim().split(':');
