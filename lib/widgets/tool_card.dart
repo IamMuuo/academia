@@ -53,9 +53,13 @@ class _ToolCardState extends State<ToolCard> {
               TextButton(
                 child: Text(widget.action),
                 onPressed: () {
-                  _isLoading = true;
+                  setState(() {
+                    _isLoading = true;
+                  });
                   widget.ontap.call();
-                  _isLoading = false;
+                  setState(() {
+                    _isLoading = false;
+                  });
                 },
               ),
             ],
