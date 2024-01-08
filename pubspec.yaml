@@ -57,6 +57,8 @@ dependencies:
   percent_indicator: ^4.2.3
   timeline_tile: ^2.0.0
   easy_pdf_viewer: ^1.0.7
+  flutter_local_notifications: ^16.3.0
+  
 
 
 

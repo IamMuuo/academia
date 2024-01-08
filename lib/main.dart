@@ -3,6 +3,7 @@ import 'package:academia/controllers/settings_controller.dart';
 import 'package:academia/models/courses.dart';
 import 'package:academia/models/schedule.dart';
 import 'package:academia/models/user.dart';
+import 'package:academia/notifications/notification_service.dart';
 import 'package:academia/pages/home_page.dart';
 import 'package:academia/pages/intro_page.dart';
 import 'package:academia/themes/theme.dart';
@@ -12,6 +13,8 @@ import 'package:get/get.dart';
 import 'package:magnet/magnet.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService().initNotifications();
   // Init flutter
   await Hive.initFlutter();
   Hive.registerAdapter(UserAdapter());
@@ -28,6 +31,7 @@ void main() async {
 
   // Init settings controller
   Get.put(SettingsController());
+  NotificationService().showNotification();
 
   runApp(
     GetMaterialApp(

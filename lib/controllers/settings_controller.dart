@@ -13,7 +13,7 @@ class SettingsController extends GetxController {
 
   @override
   void onInit() async {
-    settings = await appDB.get("settings");
+    settings = await appDB.get("settings") ?? {};
     showGPA.value = settings["show_gpa"] ?? true;
     showProfilePic.value = settings["show_profile_pic"] ?? true;
     showExamTimeTable.value = settings["show_exam_timetable"] ?? true;

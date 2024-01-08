@@ -1,56 +1,78 @@
 import 'package:academia/constants/common.dart';
-import 'package:academia/controllers/exams_timetable_controller.dart';
+import 'package:academia/models/courses.dart';
 import 'package:academia/widgets/academia_app_bar.dart';
 import 'package:academia/widgets/count_down_widget.dart';
+import 'package:academia/widgets/exam_course_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class ExamTimeTablePage extends StatelessWidget {
+class ExamTimeTablePage extends StatefulWidget {
   const ExamTimeTablePage({super.key});
 
   @override
+  State<ExamTimeTablePage> createState() => _ExamTimeTablePageState();
+}
+
+class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
+  bool _isLoading = false;
+  bool _hasExams = false;
+  var _searchedUnits = [];
+  final _searchController = TextEditingController();
+  @override
   Widget build(BuildContext context) {
-    var controller = Get.put(ExamsTimeTableController());
+    _isLoading = appDB.get("exam_timetable").isEmpty;
+    _hasExams = appDB.get("exam_timetable").isNotEmpty;
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
-            child: Column(
-              children: [
-                AcademiaAppBar(
-                  title: DateTime.now().hour < 11
-                      ? "Good Morning"
-                      : DateTime.now().hour < 13
-                          ? "Good Afternoon"
-                          : "Good Evening",
-                  subtitle:
-                      "Are you ready ${(user.name!.split(" ")[0]).title().trim()}?",
-                  icon: const Icon(CupertinoIcons.arrowshape_turn_up_left),
-                  ontapped: () => Get.back(),
-                ),
+      body: FutureBuilder(
+        future: fetchCoreUnits(),
+        builder: (context, snapshot) => !snapshot.hasData
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset("assets/images/having_coffee.png"),
+                  const Text(
+                    "Exam magic in progress 😜",
+                  ),
+                  LoadingAnimationWidget.hexagonDots(
+                    size: 40,
+                    color: Theme.of(context).primaryColorDark,
+                  )
+                ],
+              )
+            : SafeArea(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
+                    child: Column(
+                      children: [
+                        AcademiaAppBar(
+                          title: DateTime.now().hour < 11
+                              ? "Good Morning"
+                              : DateTime.now().hour < 13
+                                  ? "Good Afternoon"
+                                  : "Good Evening",
+                          subtitle:
+                              "Are you ready ${(user.name!.split(" ")[0]).title().trim()}?",
+                          icon: const Icon(
+                              CupertinoIcons.arrowshape_turn_up_left),
+                          ontapped: () => Get.back(),
+                        ),
 
-                // The actual body
-                CountDown(
-                  deadline: DateTime.now()
-                      .add(const Duration(hours: 10, minutes: 7, seconds: 12)),
-                ),
-                const SizedBox(height: 16),
+                        // The actual body
+                        CountDown(
+                          deadline: DateTime.now().add(
+                              const Duration(hours: 0, minutes: 0, seconds: 0)),
+                        ),
+                        const SizedBox(height: 16),
 
-                Obx(
-                  () => controller.isLoading.value
-                      ? LoadingAnimationWidget.prograssiveDots(
-                          size: 80,
-                          color: Theme.of(context).primaryColorDark,
-                        )
-                      : FlutterCarousel(
-                          items: buildCauroselItems(
-                            context,
-                            hasExams: controller.hasExams.value,
-                          ),
+                        FlutterCarousel(
+                          items:
+                              buildCauroselItems(context, hasExams: _hasExams),
                           options: CarouselOptions(
                             height: MediaQuery.of(context).size.height * 0.25,
                             autoPlayCurve: Curves.easeInSine,
@@ -66,13 +88,60 @@ class ExamTimeTablePage extends StatelessWidget {
                             ),
                           ),
                         ),
-                ),
 
-                buildContentCards(context),
-              ],
-            ),
-          ),
-        ),
+                        const SizedBox(height: 8),
+
+                        !_isLoading
+                            ? SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.5,
+                                child: ListView.builder(
+                                  itemCount: snapshot.data?.length,
+                                  itemBuilder: (context, index) => Padding(
+                                    padding: const EdgeInsets.only(bottom: 8),
+                                    child: ExamCourseCard(
+                                      ontap: () {
+                                        print("Hi");
+                                      },
+                                      code: snapshot.data![index]["course_code"]
+                                          .toString(),
+                                      date: DateFormat('EEE dd/MM/yy').format(
+                                          DateFormat('dd/MM/yy').parse(snapshot
+                                              .data![index]["day"]
+                                              .toString()
+                                              .split(" ")[1])),
+                                      venue: snapshot.data![index]["room"]
+                                          .toString(),
+                                      time: snapshot.data![index]["time"]
+                                          .toString(),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.5,
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      LoadingAnimationWidget.halfTriangleDot(
+                                        color:
+                                            Theme.of(context).primaryColorDark,
+                                        size: 40,
+                                      ),
+                                      Text(
+                                        "Updating your view",
+                                        style: normal.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ]),
+                              ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -88,11 +157,21 @@ class ExamTimeTablePage extends StatelessWidget {
                           width: MediaQuery.of(context).size.width,
                           height: 60,
                           child: TextField(
+                            controller: _searchController,
                             decoration: InputDecoration(
                               hintText: "BIL 112B, MATH 120A, ...",
                               label: const Text("Please input units to find"),
                               suffix: IconButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+                                  _searchedUnits = await fetchExamTimeTable(
+                                      _searchController.text);
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                },
                                 icon: const Icon(
                                     CupertinoIcons.search_circle_fill),
                               ),
@@ -100,16 +179,21 @@ class ExamTimeTablePage extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding:
-                              const EdgeInsets.only(top: 20, left: 8, right: 8),
-                          child: Column(
-                            children: [
-                              Image.asset("assets/images/view.png", width: 200),
-                              const Text(
-                                  "Input your units and let us do the heavy lifting")
-                            ],
-                          ),
-                        ),
+                            padding: const EdgeInsets.only(
+                                top: 20, left: 8, right: 8),
+                            child: !_isLoading
+                                ? Column(
+                                    children: [
+                                      Image.asset("assets/images/view.png",
+                                          width: 200),
+                                      const Text(
+                                          "Input your units and let us do the heavy lifting")
+                                    ],
+                                  )
+                                : LoadingAnimationWidget.hexagonDots(
+                                    color: Theme.of(context).primaryColorDark,
+                                    size: 40,
+                                  )),
                       ],
                     ),
                   ),
@@ -184,28 +268,148 @@ class ExamTimeTablePage extends StatelessWidget {
           ),
         ),
       );
+    } else {
+      var x = appDB.get("exam_timetable");
+      for (var element in x) {
+        items.add(
+          Container(
+            decoration: BoxDecoration(
+              color: DateTime.now().isBefore(DateFormat('dd/MM/yy')
+                      .parse(element["day"].toString().split(" ")[1])
+                      .toUtc())
+                  ? Theme.of(context).primaryColor
+                  : Theme.of(context).primaryColorDark,
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+            ),
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          "Course: ",
+                          style: h6.copyWith(color: Colors.white),
+                        ),
+                        Text(
+                          element["course_code"],
+                          style: normal.copyWith(color: Colors.white70),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Date: ",
+                          style: h6.copyWith(color: Colors.white),
+                        ),
+                        Text(
+                          element["day"],
+                          style: normal.copyWith(color: Colors.white70),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Course: ",
+                          style: h6.copyWith(color: Colors.white),
+                        ),
+                        Text(
+                          element["course_code"],
+                          style: normal.copyWith(color: Colors.white70),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Status: ",
+                          style: h6.copyWith(color: Colors.white),
+                        ),
+                        Text(
+                          DateTime.now().isBefore(DateFormat('dd/MM/yy')
+                                  .parse(
+                                      element["day"].toString().split(" ")[1])
+                                  .toUtc())
+                              ? "Future"
+                              : "Done",
+                          style: normal.copyWith(color: Colors.white70),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                Image.asset(
+                  DateTime.now().isBefore(DateFormat('dd/MM/yy')
+                          .parse(element["day"].toString().split(" ")[1])
+                          .toUtc())
+                      ? "assets/images/girl_sitted.png"
+                      : "assets/images/bot_wave.png",
+                ),
+              ],
+            ),
+          ),
+        );
+      }
     }
     return items;
   }
 
   // build content cards
-  Widget buildContentCards(BuildContext context, {bool hasExams = true}) {
-    if (!hasExams) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SizedBox(height: 40),
-          Image.asset(
-            "assets/images/view.png",
-            height: 200,
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          const Text("You are upto date, no exams for now"),
-        ],
-      );
+
+  Future<List<dynamic>> fetchCoreUnits() async {
+    var units = await appDB.get("exam_timetable") as List<dynamic>;
+    if (units.isEmpty) {
+      var courses = appDB.get("timetable");
+      String payload = "";
+      for (Courses c in courses) {
+        payload =
+            "$payload ${c.name!.replaceAll("-", " ")}${c.section!.split('-')[0]},";
+      }
+      var fetchedUnits = await fetchExamTimeTable(payload.trim());
+      await addFetchedUnits(fetchedUnits);
+      _hasExams = true;
+      return fetchedUnits;
     }
-    return const FlutterLogo();
+    return units;
+  }
+
+  Future<List<dynamic>> fetchExamTimeTable(String units,
+      {bool athi = true}) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      var fetchedUnits = await magnet.fetchExamTimeTabale(units);
+      setState(() {
+        _isLoading = false;
+      });
+
+      return fetchedUnits;
+    } catch (e) {
+      Get.snackbar(
+        "Oh Snap!",
+        "Something went wrong while attempting to fetch your exam timetable, please check your network connection and try again",
+        icon: const Icon(
+          Icons.network_ping,
+        ),
+        maxWidth: 500,
+      );
+      debugPrint(e.toString());
+    }
+    setState(() {
+      _isLoading = false;
+    });
+
+    return [];
+  }
+
+  Future<void> addFetchedUnits(List<dynamic> fetchedUnits) async {
+    await appDB.put("exam_timetable", fetchedUnits);
   }
 }
