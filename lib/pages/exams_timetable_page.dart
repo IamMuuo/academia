@@ -21,10 +21,11 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
   bool _isLoading = false;
   bool _hasExams = false;
   var _searchedUnits = [];
-  var _searchController = TextEditingController();
+  final _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     _isLoading = appDB.get("exam_timetable").isEmpty;
+    _hasExams = appDB.get("exam_timetable").isNotEmpty;
     return Scaffold(
       body: FutureBuilder(
         future: fetchCoreUnits(),
@@ -64,8 +65,8 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
 
                         // The actual body
                         CountDown(
-                          deadline: DateTime.now().add(const Duration(
-                              hours: 10, minutes: 7, seconds: 12)),
+                          deadline: DateTime.now().add(
+                              const Duration(hours: 0, minutes: 0, seconds: 0)),
                         ),
                         const SizedBox(height: 16),
 
@@ -270,7 +271,89 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
     } else {
       var x = appDB.get("exam_timetable");
       for (var element in x) {
-        debugPrint("$element");
+        items.add(
+          Container(
+            decoration: BoxDecoration(
+              color: DateTime.now().isBefore(DateFormat('dd/MM/yy')
+                      .parse(element["day"].toString().split(" ")[1])
+                      .toUtc())
+                  ? Theme.of(context).primaryColor
+                  : Theme.of(context).primaryColorDark,
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+            ),
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          "Course: ",
+                          style: h6.copyWith(color: Colors.white),
+                        ),
+                        Text(
+                          element["course_code"],
+                          style: normal.copyWith(color: Colors.white70),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Date: ",
+                          style: h6.copyWith(color: Colors.white),
+                        ),
+                        Text(
+                          element["day"],
+                          style: normal.copyWith(color: Colors.white70),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Course: ",
+                          style: h6.copyWith(color: Colors.white),
+                        ),
+                        Text(
+                          element["course_code"],
+                          style: normal.copyWith(color: Colors.white70),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Status: ",
+                          style: h6.copyWith(color: Colors.white),
+                        ),
+                        Text(
+                          DateTime.now().isBefore(DateFormat('dd/MM/yy')
+                                  .parse(
+                                      element["day"].toString().split(" ")[1])
+                                  .toUtc())
+                              ? "Future"
+                              : "Done",
+                          style: normal.copyWith(color: Colors.white70),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                Image.asset(
+                  DateTime.now().isBefore(DateFormat('dd/MM/yy')
+                          .parse(element["day"].toString().split(" ")[1])
+                          .toUtc())
+                      ? "assets/images/girl_sitted.png"
+                      : "assets/images/bot_wave.png",
+                ),
+              ],
+            ),
+          ),
+        );
       }
     }
     return items;
