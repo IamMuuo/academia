@@ -25,6 +25,20 @@ extension StringExtension on String {
   }
 }
 
+Map<String, int> notifications = {
+  "user": 1,
+  "course": 2,
+  "course_begins": 3,
+  "course_ends": 4,
+  "tips": 5,
+  "greetings": 6,
+  "exam_done": 7,
+  "exam_upcoming": 8,
+  "exam_in_progress": 9,
+  "fee_balance": 10,
+  "semester_timeLine": 11,
+};
+
 const TextStyle normal = TextStyle(); // Default font
 
 const TextStyle h1 = TextStyle(

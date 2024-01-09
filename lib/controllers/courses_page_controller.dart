@@ -12,21 +12,28 @@ class CoursesPageController extends GetxController {
   var hasProgress = true.obs;
 
   Future<bool> updateCourses() async {
-    var courses = await magnet.fetchTimeTable();
+    try {
+      var courses = await magnet.fetchTimeTable();
 
-    if (courses.isEmpty) {
-      hasCourses.value = false;
-      return false;
-    } 
+      if (courses.isEmpty) {
+        hasCourses.value = false;
+        return false;
+      }
 
-    for (var i = 0; i < courses.length; i++) {
-      userCourses.add(Courses.fromJson(courses[i]));
+      for (var i = 0; i < courses.length; i++) {
+        userCourses.add(Courses.fromJson(courses[i]));
+      }
+      await appDB.put("timetable", userCourses);
+      hasCourses.value = true;
+
+      await updateProgress();
+      return true;
+    } catch (e) {
+      Get.snackbar("Error",
+          "We could not establish internet connection to refresh your courses, Please check your connection and try again!",
+          icon: const Icon(Icons.network_locked));
     }
-    await appDB.put("timetable", userCourses);
-    hasCourses.value = true;
-
-    await updateProgress();
-    return true;
+    return false;
   }
 
   List<Widget> buildElements() {
@@ -120,20 +127,28 @@ class CoursesPageController extends GetxController {
 
   @override
   void onInit() async {
-    if (!appDB.containsKey("timetable")) {
-      hasCourses.value = false;
-      var isUpdated = await updateCourses();
-      if (isUpdated) {
-        hasCourses.value = true;
+    try {
+      if (!appDB.containsKey("timetable")) {
+        hasCourses.value = false;
+        var isUpdated = await updateCourses();
+        if (isUpdated) {
+          hasCourses.value = true;
+        }
       }
-    }
 
-    if (!appDB.containsKey("attendance")) {
-      hasProgress.value = false;
-      var updatedProgress = await updateProgress();
-      if (updatedProgress) {
-        hasProgress.value = true;
+      if (!appDB.containsKey("attendance")) {
+        hasProgress.value = false;
+        var updatedProgress = await updateProgress();
+        if (updatedProgress) {
+          hasProgress.value = true;
+        }
       }
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "It seems we couldn't find your timetable, please review your connection and if the problem persits consider logging out and loggin in again",
+        icon: const Icon(Icons.network_wifi),
+      );
     }
     super.onInit();
   }

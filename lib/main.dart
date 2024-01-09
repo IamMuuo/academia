@@ -31,7 +31,6 @@ void main() async {
 
   // Init settings controller
   Get.put(SettingsController());
-  NotificationService().showNotification();
 
   runApp(
     GetMaterialApp(
