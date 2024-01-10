@@ -24,9 +24,9 @@ class TaskManagerController extends GetxController {
   var isloading = false.obs;
   var tasks = [].obs;
 
-  void getTasks() {
+  Future<void> getTasks() async {
     tasks.clear();
-    final tasksList = appDB.get("tasks") ?? [];
+    final tasksList = await appDB.get("tasks") ?? [];
     for (final task in tasksList) {
       tasks.add(task);
     }
