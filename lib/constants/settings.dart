@@ -11,4 +11,7 @@ var settings = {
 
   // Exam timetable features
   "show_exam_timetable": true,
+
+  // notification settings 
+  "birthday_notify": true,
 };

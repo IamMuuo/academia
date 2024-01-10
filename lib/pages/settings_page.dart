@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:academia/controllers/settings_controller.dart';
 import 'package:academia/pages/webview_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -141,15 +143,16 @@ class SettingsPage extends StatelessWidget {
                     await controller.saveSettings();
                   }),
             ),
+            const Divider(),
 
             ListTile(
-              title: const Text("Allow push notifications"),
-              trailing: Switch(value: true, onChanged: (value) {}),
-            ),
-            const Divider(),
-            ListTile(
-              title: const Text("Only show really important notifications"),
-              trailing: Switch(value: true, onChanged: (value) {}),
+              title: const Text("Wish me happy birthday"),
+              trailing: Switch(
+                  value: controller.birthdayNotify.value,
+                  onChanged: (value) async {
+                    controller.birthdayNotify.value = value;
+                    await controller.saveSettings();
+                  }),
             ),
             const Divider(),
 
@@ -196,27 +199,7 @@ class SettingsPage extends StatelessWidget {
                   },
                   icon: const Icon(CupertinoIcons.arrow_right_circle)),
             ),
-
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-              child: TextField(
-                // controller: dashBoardController.searchBoxController,
-                maxLines: 4,
-                cursorColor: Colors.white,
-                decoration: InputDecoration(
-                  filled: true,
-                  // fillColor: Colors.blue[400],
-                  hintText: 'Please describe your feature',
-                  hintStyle: TextStyle(
-                    color: Colors.black,
-                  ),
-
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                  ),
-                ),
-              ),
-            ),
+            const Divider(),
 
             // button to refresh all content
             Padding(

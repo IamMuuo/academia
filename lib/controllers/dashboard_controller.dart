@@ -40,7 +40,7 @@ class DashboardController extends GetxController {
     } else if (daypercent > 0.25) {
       return "Focus, its tough we get it";
     }
-    return "Its Monday, are your asignments done?";
+    return "Nothing to say?";
   }
 
   String get getSemesterPercentQuote {
@@ -96,6 +96,7 @@ class DashboardController extends GetxController {
         classes.add(course);
       }
     }
+    debugPrint(DateFormat("EEEE").format(DateTime.now()));
 
     return classes;
   }

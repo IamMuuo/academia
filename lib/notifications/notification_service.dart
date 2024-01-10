@@ -40,9 +40,13 @@ class NotificationService {
     AndroidInitializationSettings initializationSettingsAndroid =
         const AndroidInitializationSettings("app_icon");
 
+    LinuxInitializationSettings linuxInitializationSettings =
+        const LinuxInitializationSettings(defaultActionName: "app_icon");
+
     final InitializationSettings initializationSettings =
         InitializationSettings(
       android: initializationSettingsAndroid,
+      linux: linuxInitializationSettings,
     );
 
     platformChannelSpecifics =
@@ -69,13 +73,13 @@ class NotificationService {
     int id,
     String title,
     String body,
-    Duration duration,
+    DateTime date,
   ) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       title,
       body,
-      tz.TZDateTime.now(tz.local).add(duration),
+      tz.TZDateTime.from(date, tz.local),
       platformChannelSpecifics,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
