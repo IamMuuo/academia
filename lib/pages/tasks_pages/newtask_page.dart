@@ -3,33 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class TaskManagerPage extends StatelessWidget {
-  TaskManagerPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Task Manager"),
-        ),
-        body: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.task, size: 100),
-              Text("No tasks yet"),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Get.to(NewTaskPage());
-          },
-          child: const Icon(Icons.add),
-        ));
-  }
-}
-
 class NewTaskPage extends StatelessWidget {
   NewTaskPage({super.key});
   final TaskManagerController taskManagerController =
@@ -116,7 +89,7 @@ class NewTaskPage extends StatelessWidget {
                               ],
                             ),
                           ),
-                          barrierColor: Colors.transparent, // Add this line
+                          barrierColor: Colors.transparent,
                           backgroundColor: Colors.white);
                     },
                     child: Row(

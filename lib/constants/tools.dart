@@ -3,7 +3,7 @@ import 'package:academia/pages/attendance_page.dart';
 import 'package:academia/pages/exams_timetable_page.dart';
 import 'package:academia/pages/fees_page.dart';
 import 'package:academia/pages/gpacalculator_page.dart';
-import 'package:academia/pages/taskmanager_page.dart';
+import 'package:academia/pages/tasks_pages/taskmanager_page.dart';
 import 'package:academia/pages/webview_page.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';

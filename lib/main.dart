@@ -1,5 +1,6 @@
 import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/settings_controller.dart';
+import 'package:academia/controllers/taskmanager_controller.dart';
 import 'package:academia/models/courses.dart';
 import 'package:academia/models/schedule.dart';
 import 'package:academia/models/tasks.dart';
@@ -30,6 +31,9 @@ void main() async {
 
   // Init settings controller
   Get.put(SettingsController());
+
+  // Init TasksManager controller
+  Get.put(TaskManagerController());
 
   runApp(
     GetMaterialApp(

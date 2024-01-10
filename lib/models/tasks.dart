@@ -19,19 +19,24 @@ class Task {
   @HiveField(4)
   String? description;
 
+  @HiveField(5)
+  int? progress;
+
   Task(
       {required this.deadline,
       required this.unit,
       required this.type,
       required this.title,
-      required this.description}); // silence compiler
+      required this.description,
+      this.progress = 0});
 
   Task.fromJson(Map<dynamic, dynamic> json)
       : deadline = json["deadline"],
         unit = json["unit"],
         type = json["type"],
         title = json["title"],
-        description = json["description"];
+        description = json["description"],
+        progress = json["progress"] ?? 0;
 
   Map<String, dynamic> toJson() {
     return {
@@ -40,6 +45,7 @@ class Task {
       "type": type,
       "title": title,
       "description": description,
+      "progress": progress,
     };
   }
 }

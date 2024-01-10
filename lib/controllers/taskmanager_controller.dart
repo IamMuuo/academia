@@ -10,6 +10,7 @@ class TaskManagerController extends GetxController {
   Rx<String> taskType = "".obs;
   Rx<String> taskTitle = "".obs;
   Rx<String> taskDescription = "".obs;
+  Rx<int> progress = 0.obs;
   final RxList<Unit> coursesList = <Unit>[].obs;
   Unit other = Unit(name: "Other", creditHours: 0, grade: "A");
   final RxList<String> taskTypes = <String>[
@@ -21,6 +22,16 @@ class TaskManagerController extends GetxController {
     "Other"
   ].obs;
   var isloading = false.obs;
+  var tasks = [].obs;
+
+  void getTasks() {
+    tasks.clear();
+    final tasksList = appDB.get("tasks") ?? [];
+    for (final task in tasksList) {
+      tasks.add(task);
+    }
+    debugPrint("Title: ${tasks[0].title}");
+  }
 
   void updateDeadline(DateTime newDate) {
     selectedDeadline.value = newDate;
@@ -42,13 +53,19 @@ class TaskManagerController extends GetxController {
     taskDescription.value = newTaskDescription;
   }
 
-  void updateTask(String newTaskType, String newTaskTitle,
-      String newTaskDescription, String newUnit, DateTime newDate) {
+  void updateTask(
+      String newTaskType,
+      String newTaskTitle,
+      String newTaskDescription,
+      String newUnit,
+      DateTime newDate,
+      int progress) {
     taskType.value = newTaskType;
     taskTitle.value = newTaskTitle;
     taskDescription.value = newTaskDescription;
     selectedUnit.value = newUnit;
     selectedDeadline.value = newDate;
+    this.progress.value = progress;
   }
 
   Future<void> addTask() async {
@@ -68,6 +85,7 @@ class TaskManagerController extends GetxController {
       debugPrint(task.title);
     }
     // debugPrint('${appDB.get("tasks")}');
+    getTasks();
     return;
   }
 
@@ -89,5 +107,6 @@ class TaskManagerController extends GetxController {
     taskType.value = "";
     taskTitle.value = "";
     taskDescription.value = "";
+    getTasks();
   }
 }
