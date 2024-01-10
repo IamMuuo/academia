@@ -9,6 +9,7 @@ class SettingsController extends GetxController {
   Rx<bool> showTranscript = false.obs;
   Rx<bool> showAudit = false.obs;
   Rx<bool> showFees = true.obs;
+  Rx<bool> birthdayNotify = true.obs;
   late Map<dynamic, dynamic> settings;
 
   @override
@@ -20,6 +21,7 @@ class SettingsController extends GetxController {
     showAudit.value = settings["show_audit"] ?? true;
     showTranscript.value = settings["show_transcript"] ?? true;
     showFees.value = settings["show_fees"] ?? false;
+    birthdayNotify.value = settings["birthday_notify"] ?? true;
 
     debugPrint("Settings loaded!");
     super.onInit();
@@ -32,6 +34,7 @@ class SettingsController extends GetxController {
     settings["show_transcript"] = showTranscript.value;
     settings["show_audit"] = showAudit.value;
     settings["show_fees"] = showFees.value;
+    settings["birthday_notify"] = birthdayNotify.value;
     await appDB.put("settings", settings);
   }
 }

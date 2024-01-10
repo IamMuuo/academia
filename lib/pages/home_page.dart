@@ -23,6 +23,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey,
+      extendBodyBehindAppBar: true,
       body: SafeArea(
         child: IndexedStack(index: currentIndex, children: pages),
       ),

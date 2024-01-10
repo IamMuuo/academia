@@ -49,7 +49,7 @@ class CoursesPageController extends GetxController {
               : Colors.transparent,
           titleColor: DateFormat("EEEE").format(DateTime.now()) ==
                   course.dayOfTheWeek!.title()
-              ? Colors.transparent
+              ? Colors.white
               : Colors.blueGrey,
           borderColor: DateFormat("EEEE").format(DateTime.now()) ==
                   course.dayOfTheWeek!.title()
