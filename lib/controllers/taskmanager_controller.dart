@@ -106,7 +106,7 @@ class TaskManagerController extends GetxController {
 
   void loadRegisteredUnits() {
     final courses = appDB.get("timetable");
-    if (courses != null) {
+    if (courses != null && coursesList.isEmpty) {
       for (final course in courses) {
         Unit unit = Unit(name: course.name, creditHours: 0, grade: 'A');
         coursesList.add(unit);

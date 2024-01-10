@@ -78,6 +78,7 @@ class TaskManagerPage extends StatelessWidget {
                     ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
+              taskManagerController.clearTaskManager();
               Get.to(() => NewTaskPage());
             },
             child: const Icon(Icons.add),

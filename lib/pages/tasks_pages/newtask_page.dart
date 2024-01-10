@@ -37,7 +37,7 @@ class NewTaskPage extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             Row(
@@ -67,7 +67,7 @@ class NewTaskPage extends StatelessWidget {
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                     )),
-                                Container(
+                                SizedBox(
                                   height: 300,
                                   child: ListView.builder(
                                     itemCount: taskManagerController
@@ -75,12 +75,11 @@ class NewTaskPage extends StatelessWidget {
                                     itemBuilder: (context, index) {
                                       return ListTile(
                                         title: Text(taskManagerController
-                                                .coursesList[index].name),
+                                            .coursesList[index].name),
                                         onTap: () {
                                           taskManagerController.updateUnit(
                                               taskManagerController
-                                                      .coursesList[index]
-                                                      .name);
+                                                  .coursesList[index].name);
                                           Get.back();
                                         },
                                       );
@@ -104,7 +103,7 @@ class NewTaskPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 TextButtonTheme(
                   data: TextButtonThemeData(
                     style: TextButton.styleFrom(
@@ -123,7 +122,7 @@ class NewTaskPage extends StatelessWidget {
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                     )),
-                                Container(
+                                SizedBox(
                                   height: 300,
                                   child: ListView.builder(
                                     itemCount:
@@ -152,8 +151,9 @@ class NewTaskPage extends StatelessWidget {
                       children: [
                         Obx(() => Text(
                             "Task Type: ${taskManagerController.taskType.value}")),
-                        SizedBox(width: 8),
-                        Icon(IconData(0xe098, fontFamily: 'MaterialIcons')),
+                        const SizedBox(width: 8),
+                        const Icon(
+                            IconData(0xe098, fontFamily: 'MaterialIcons')),
                       ],
                     ),
                   ),
