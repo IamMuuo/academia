@@ -1,5 +1,6 @@
 import 'package:academia/controllers/taskmanager_controller.dart';
 import 'package:academia/pages/tasks_pages/newtask_page.dart';
+import 'package:academia/pages/tasks_pages/taskinfo_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -15,9 +16,21 @@ class TaskManagerPage extends StatelessWidget {
       final tasks = taskManagerController.tasks;
 
       return Scaffold(
-          appBar: AppBar(
-            title: Text("Task Manager"),
-          ),
+          appBar: AppBar(title: Text("Task Manager"), actions: [
+            IconButton(
+              onPressed: () {
+                Get.defaultDialog(
+                  title: "Task Manager",
+                  content: const Text(
+                      "This is the task manager. You can add tasks here and view them in the calendar."),
+                  textConfirm: "Got it!",
+                  confirmTextColor: Colors.white,
+                  onConfirm: () => Get.back(),
+                );
+              },
+              icon: const Icon(Icons.info_rounded),
+            ),
+          ]),
           body: // Check if there are any tasks
               tasks.isEmpty
                   ? const Center(
@@ -56,7 +69,9 @@ class TaskManagerPage extends StatelessWidget {
                                 tasks[index].unit ?? '',
                                 tasks[index].deadline ?? DateTime.now(),
                                 tasks[index].progress ?? 0);
-                            Get.to(() => NewTaskPage());
+                            Get.to(() => TaskInformationPage(
+                                  task: tasks[index],
+                                ));
                           },
                         ));
                       },

@@ -68,6 +68,21 @@ class TaskManagerController extends GetxController {
     this.progress.value = progress;
   }
 
+  void updateTaskProgress(int newProgress) {
+    progress.value = newProgress;
+
+    // Update the progress of the task in the database
+    final tasksList = appDB.get("tasks") ?? [];
+    for (final task in tasksList) {
+      if (task.title == taskTitle.value) {
+        task.progress = newProgress;
+        break;
+      }
+    }
+    appDB.put("tasks", tasksList);
+    getTasks();
+  }
+
   Future<void> addTask() async {
     // debugPrint(taskTitle.value);
     // appDB.delete("tasks");
@@ -93,7 +108,8 @@ class TaskManagerController extends GetxController {
     final courses = appDB.get("timetable");
     if (courses != null) {
       for (final course in courses) {
-        coursesList.add(course);
+        Unit unit = Unit(name: course.name, creditHours: 0, grade: 'A');
+        coursesList.add(unit);
       }
     }
     if (!coursesList.contains(other)) {

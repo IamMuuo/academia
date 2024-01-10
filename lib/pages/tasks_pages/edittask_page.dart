@@ -1,12 +1,14 @@
 import 'package:academia/controllers/taskmanager_controller.dart';
+import 'package:academia/models/tasks.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class NewTaskPage extends StatelessWidget {
-  NewTaskPage({super.key});
+class EditTaskPage extends StatelessWidget {
+    EditTaskPage({Key? key, required this.task}) : super(key: key);
   final TaskManagerController taskManagerController =
       Get.put(TaskManagerController());
+  final Task task;
   final TextEditingController taskTitleController = TextEditingController();
   final TextEditingController taskDescriptionController =
       TextEditingController();
