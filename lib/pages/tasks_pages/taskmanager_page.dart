@@ -16,7 +16,7 @@ class TaskManagerPage extends StatelessWidget {
       final tasks = taskManagerController.tasks;
 
       return Scaffold(
-          appBar: AppBar(title: Text("Task Manager"), actions: [
+          appBar: AppBar(title: const Text("Task Manager"), actions: [
             IconButton(
               onPressed: () {
                 Get.defaultDialog(
@@ -48,7 +48,7 @@ class TaskManagerPage extends StatelessWidget {
                         return Card(
                             child: ListTile(
                           title: Text(tasks[index].title ?? ''),
-                          subtitle: Text(tasks[index].description ?? ''),
+                          subtitle: Text(tasks[index].unit ?? ''),
                           trailing: Column(
                             children: [
                               Text(

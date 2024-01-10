@@ -125,4 +125,41 @@ class TaskManagerController extends GetxController {
     taskDescription.value = "";
     getTasks();
   }
+
+  Future<void> editTask(
+      String newTaskTitle,
+      String newTaskDescription,
+      String newTaskType,
+      String newTaskUnit,
+      DateTime newTaskDeadline,
+      int newTaskProgress) async {
+    final tasksList = appDB.get("tasks") ?? [];
+    for (final task in tasksList) {
+      if (task.title == taskTitle.value) {
+        task.title = newTaskTitle;
+        task.description = newTaskDescription;
+        task.type = newTaskType;
+        task.unit = newTaskUnit;
+        task.deadline = newTaskDeadline;
+        task.progress = newTaskProgress;
+        break;
+      }
+    }
+    await appDB.put("tasks", tasksList);
+    getTasks();
+    // update all the other variables
+    taskTitle.value = newTaskTitle;
+    taskDescription.value = newTaskDescription;
+    taskType.value = newTaskType;
+    selectedUnit.value = newTaskUnit;
+    selectedDeadline.value = newTaskDeadline;
+    progress.value = newTaskProgress;
+  }
+
+  Future<void> deleteTask(Task task) async {
+    final tasksList = appDB.get("tasks") ?? [];
+    tasksList.remove(task);
+    await appDB.put("tasks", tasksList);
+    getTasks();
+  }
 }

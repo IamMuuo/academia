@@ -75,14 +75,12 @@ class NewTaskPage extends StatelessWidget {
                                     itemBuilder: (context, index) {
                                       return ListTile(
                                         title: Text(taskManagerController
-                                                .coursesList[index].name ??
-                                            ''),
+                                                .coursesList[index].name),
                                         onTap: () {
                                           taskManagerController.updateUnit(
                                               taskManagerController
                                                       .coursesList[index]
-                                                      .name ??
-                                                  '');
+                                                      .name);
                                           Get.back();
                                         },
                                       );

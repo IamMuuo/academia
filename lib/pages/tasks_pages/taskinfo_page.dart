@@ -14,16 +14,23 @@ class TaskInformationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Task Information'), actions: [
+      appBar: AppBar(title: const Text('Task Information'), actions: [
         IconButton(
           onPressed: () {
+            // Confirm user wants to delete the task
             Get.defaultDialog(
-              title: "Task Manager",
+              title: "Delete task?",
               content: const Text(
-                  "This is the task manager. You can add tasks here and view them in the calendar."),
-              textConfirm: "Got it!",
+                  "Are you sure you want to delete this task? This action cannot be undone."),
+              textConfirm: "Delete",
               confirmTextColor: Colors.white,
-              onConfirm: () => Get.back(),
+              onConfirm: () {
+                taskmangagerController.deleteTask(task);
+                Get.back();
+                Get.back();
+              },
+              textCancel: "Cancel",
+              onCancel: () => Get.back(),
             );
           },
           icon: const Icon(Icons.info_rounded),
@@ -34,29 +41,31 @@ class TaskInformationPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              '${task.title}',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
-            ),
+            Obx(() => Text(
+                  taskmangagerController.taskTitle.value,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w900),
+                )),
             const SizedBox(height: 0),
-            Text(
-              '${task.unit} - ${task.type}',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-            ),
+            Obx(() => Text(
+                  '${taskmangagerController.selectedUnit.value} - ${taskmangagerController.taskType.value}',
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w600),
+                )),
             const SizedBox(height: 20),
             const Divider(),
             const SizedBox(height: 10),
             Row(children: [
-              Icon(Icons.calendar_today_rounded, size: 30),
+              const Icon(Icons.calendar_today_rounded, size: 30),
               const SizedBox(width: 20),
-              Text(
-                'Due ${DateFormat("yMMMMd").format((task.deadline ?? DateTime.now()))}',
-                style: const TextStyle(fontSize: 16),
-              )
+              Obx(() => Text(
+                    'Due ${DateFormat("yMMMMd").format((taskmangagerController.selectedDeadline.value))}',
+                    style: const TextStyle(fontSize: 16),
+                  ))
             ]),
             const SizedBox(height: 10),
             Row(children: [
-              Icon(Icons.punch_clock_rounded, size: 35),
+              const Icon(Icons.punch_clock_rounded, size: 35),
               const SizedBox(width: 0),
               // Text(
               //   'Progress: ${task.progress}%',
@@ -68,10 +77,10 @@ class TaskInformationPage extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 20.0),
-                          child: Text(
-                            '${taskmangagerController.progress.value}% Complete',
-                            // style: const TextStyle(fontSize: 16),
-                          ),
+                          child: Obx(() => Text(
+                                '${taskmangagerController.progress.value}% Complete',
+                                // style: const TextStyle(fontSize: 16),
+                              )),
                         ),
                         Slider(
                           value:
@@ -92,11 +101,11 @@ class TaskInformationPage extends StatelessWidget {
               )
             ]),
             const SizedBox(height: 10),
-            Divider(),
-            Text(
-              '${task.description}',
-              style: TextStyle(fontSize: 16),
-            ),
+            const Divider(),
+            Obx(() => Text(
+                  taskmangagerController.taskDescription.value,
+                  style: const TextStyle(fontSize: 16),
+                )),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,

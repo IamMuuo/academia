@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class EditTaskPage extends StatelessWidget {
-    EditTaskPage({Key? key, required this.task}) : super(key: key);
+  EditTaskPage({Key? key, required this.task}) : super(key: key);
   final TaskManagerController taskManagerController =
       Get.put(TaskManagerController());
   final Task task;
@@ -15,13 +15,16 @@ class EditTaskPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    taskTitleController.text = task.title!;
+    taskDescriptionController.text = task.description!;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Get.back(),
           icon: const Icon(Icons.close),
         ),
-        title: const Text("New Task"),
+        title: const Text("Edit Task"),
         actions: [
           IconButton(
             onPressed: () {
@@ -39,7 +42,7 @@ class EditTaskPage extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             Row(
@@ -69,7 +72,7 @@ class EditTaskPage extends StatelessWidget {
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                     )),
-                                Container(
+                                SizedBox(
                                   height: 300,
                                   child: ListView.builder(
                                     itemCount: taskManagerController
@@ -77,14 +80,11 @@ class EditTaskPage extends StatelessWidget {
                                     itemBuilder: (context, index) {
                                       return ListTile(
                                         title: Text(taskManagerController
-                                                .coursesList[index].name ??
-                                            ''),
+                                            .coursesList[index].name),
                                         onTap: () {
                                           taskManagerController.updateUnit(
                                               taskManagerController
-                                                      .coursesList[index]
-                                                      .name ??
-                                                  '');
+                                                  .coursesList[index].name);
                                           Get.back();
                                         },
                                       );
@@ -108,7 +108,7 @@ class EditTaskPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 TextButtonTheme(
                   data: TextButtonThemeData(
                     style: TextButton.styleFrom(
@@ -127,7 +127,7 @@ class EditTaskPage extends StatelessWidget {
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                     )),
-                                Container(
+                                SizedBox(
                                   height: 300,
                                   child: ListView.builder(
                                     itemCount:
@@ -156,8 +156,9 @@ class EditTaskPage extends StatelessWidget {
                       children: [
                         Obx(() => Text(
                             "Task Type: ${taskManagerController.taskType.value}")),
-                        SizedBox(width: 8),
-                        Icon(IconData(0xe098, fontFamily: 'MaterialIcons')),
+                        const SizedBox(width: 8),
+                        const Icon(
+                            IconData(0xe098, fontFamily: 'MaterialIcons')),
                       ],
                     ),
                   ),
@@ -210,15 +211,19 @@ class EditTaskPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () async {
-                taskManagerController
-                    .updateTaskDescription(taskDescriptionController.text);
-                taskManagerController.updateTaskTitle(taskTitleController.text);
-                await taskManagerController.addTask();
+              onPressed: () {
+                taskManagerController.editTask(
+                    taskTitleController.text,
+                    taskDescriptionController.text,
+                    taskManagerController.taskType.value,
+                    taskManagerController.selectedUnit.value.toString(),
+                    taskManagerController.selectedDeadline.value,
+                    task.progress ?? 0);
+
                 Get.back();
-                Get.snackbar("Task saved", "Task saved successfully");
+                Get.snackbar("Task Edit", "Task has been edited successfully!");
               },
-              child: const Text("Save task"),
+              child: const Text("Edit task"),
             ),
           ],
         ),
