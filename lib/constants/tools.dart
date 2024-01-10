@@ -3,6 +3,7 @@ import 'package:academia/pages/attendance_page.dart';
 import 'package:academia/pages/exams_timetable_page.dart';
 import 'package:academia/pages/fees_page.dart';
 import 'package:academia/pages/gpacalculator_page.dart';
+import 'package:academia/pages/tasks_pages/taskmanager_page.dart';
 import 'package:academia/pages/webview_page.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -147,4 +148,15 @@ final List<Map<String, dynamic>> allTools = [
     "description":
         "Exams around the corner? Don't panic we've got you covered with the timetable",
   },
+  {
+    "id": 9,
+    "name": "Task Manager",
+    "action": "Manage your tasks",
+    "image": "assets/images/tasks_manager.png",
+    "ontap": () {
+      Get.to(TaskManagerPage());
+    },
+    "description":
+        "Having trouble keeping track of your Assignments? We've got you covered",
+  }
 ];

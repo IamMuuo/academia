@@ -1,7 +1,9 @@
 import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/settings_controller.dart';
+import 'package:academia/controllers/taskmanager_controller.dart';
 import 'package:academia/models/courses.dart';
 import 'package:academia/models/schedule.dart';
+import 'package:academia/models/tasks.dart';
 import 'package:academia/models/user.dart';
 import 'package:academia/notifications/notification_service.dart';
 import 'package:academia/pages/home_page.dart';
@@ -20,6 +22,7 @@ void main() async {
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(ScheduleAdapter());
   Hive.registerAdapter(CoursesAdapter());
+  Hive.registerAdapter(TaskAdapter());
   appDB = await Hive.openBox(dbName);
 
   bool isLoggedIn = false;
@@ -31,6 +34,9 @@ void main() async {
 
   // Init settings controller
   Get.put(SettingsController());
+
+  // Init TasksManager controller
+  Get.put(TaskManagerController());
 
   runApp(
     GetMaterialApp(
