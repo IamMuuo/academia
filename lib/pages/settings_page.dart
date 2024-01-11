@@ -105,6 +105,7 @@ class SettingsPage extends StatelessWidget {
                     await controller.saveSettings();
                   }),
             ),
+            const Divider(),
 
             ListTile(
               title: const Text("Show GPA"),
