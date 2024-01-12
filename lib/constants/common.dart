@@ -37,6 +37,7 @@ Map<String, int> notifications = {
   "exam_in_progress": 9,
   "fee_balance": 10,
   "semester_timeLine": 11,
+  "birthday": 12,
 };
 
 const TextStyle normal = TextStyle(); // Default font

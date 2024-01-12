@@ -45,9 +45,23 @@ class LoginController extends GetxController {
     }
 
     // auth the user
-    bool authenticated = await user.login(
-        usernameController.text.trim(), passwordController.text.trim());
-
+    bool authenticated = false;
+    try {
+      authenticated = await user.login(
+          usernameController.text.trim(), passwordController.text.trim());
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        e.toString(),
+        backgroundColor: Colors.white,
+        icon: const Icon(
+          CupertinoIcons.xmark_circle,
+          color: Colors.red,
+        ),
+      );
+      isloading.value = false;
+      return;
+    }
     if (authenticated) {
       await user.getUserDetails(
           usernameController.text.trim(), passwordController.text.trim());

@@ -100,9 +100,8 @@ class User {
       return await magnet.login();
     } catch (error) {
       // Handle magnet exceptions
-      debugPrint("Error during login: ${error.toString()}");
+      rethrow;
     }
-    return false;
   }
 
   // Retrieves user details from magnet and stores it on disk

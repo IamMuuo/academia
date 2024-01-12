@@ -96,6 +96,10 @@ class NotificationService {
   Future<void> cancelAllNotifications() async {
     await flutterLocalNotificationsPlugin.cancelAll();
   }
+
+  FlutterLocalNotificationsPlugin get notificationsPluginInstance{
+    return flutterLocalNotificationsPlugin;
+  }
 }
 
 Future selectNotification(String payload) async {

@@ -1,4 +1,5 @@
 import 'package:academia/controllers/settings_controller.dart';
+import 'package:academia/notifications/notification_service.dart';
 import 'package:academia/pages/webview_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -65,17 +66,27 @@ class SettingsPage extends StatelessWidget {
                       child: ListView.builder(
                         itemCount: snapshot.data!.length,
                         scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) => CircleAvatar(
-                          radius: 33,
-                          backgroundColor: Theme.of(context).primaryColorDark,
-                          child: ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(50)),
-                            child: CachedNetworkImage(
-                                height: 65,
-                                fit: BoxFit.contain,
-                                imageUrl: snapshot.data![index]["avatar_url"]),
-                          ),
+                        itemBuilder: (context, index) => Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 33,
+                              backgroundColor:
+                                  Theme.of(context).primaryColorDark,
+                              child: ClipRRect(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(50)),
+                                child: CachedNetworkImage(
+                                    height: 65,
+                                    fit: BoxFit.contain,
+                                    imageUrl: snapshot.data![index]
+                                        ["avatar_url"]),
+                              ),
+                            ),
+                            Text(
+                              snapshot.data![index]["login"],
+                              style: normal.copyWith(fontSize: 8),
+                            ),
+                          ],
                         ),
                       ),
                     )
@@ -276,6 +287,11 @@ class SettingsPage extends StatelessWidget {
                       "Please take your time to let us know what we would have done to make you stay",
                       backgroundColor: Colors.white,
                       icon: const Icon(CupertinoIcons.checkmark_seal),
+                    );
+                    NotificationService().showNotification(
+                      id: notifications["user"] ?? 0,
+                      body: "Goodbye friend see you maybe",
+                      title: "Goodbye",
                     );
                   }
                 },
