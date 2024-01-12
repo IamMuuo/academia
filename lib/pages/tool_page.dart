@@ -1,4 +1,5 @@
 import 'package:academia/constants/tools.dart';
+import 'package:academia/pages/birthday_page.dart';
 import 'package:academia/widgets/tool_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,11 @@ class _ToolsPageState extends State<ToolsPage> {
       appBar: AppBar(
         title: const Text("Tools"),
         centerTitle: true,
+        leading: IconButton(
+            onPressed: () {
+              Get.to(BirthDayPage());
+            },
+            icon: Icon(Icons.cake)),
         actions: [
           IconButton(
             onPressed: () {
