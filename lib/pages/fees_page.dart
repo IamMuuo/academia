@@ -53,6 +53,7 @@ class _FeesPageState extends State<FeesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text("Fee Statement"),
         centerTitle: true,
@@ -85,8 +86,8 @@ class _FeesPageState extends State<FeesPage> {
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: _hasStatement
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+            ? ListView(
+                // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
