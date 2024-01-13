@@ -1,4 +1,5 @@
 import 'package:academia/constants/common.dart';
+import 'package:academia/controllers/notifications_controller.dart';
 import 'package:academia/controllers/settings_controller.dart';
 import 'package:academia/controllers/taskmanager_controller.dart';
 import 'package:academia/models/courses.dart';
@@ -34,6 +35,7 @@ void main() async {
 
   // Init settings controller
   Get.put(SettingsController());
+  Get.put(NotificationsController());
 
   // Init TasksManager controller
   Get.put(TaskManagerController());

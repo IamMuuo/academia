@@ -1,10 +1,11 @@
-import 'dart:async';
-
 import 'package:academia/controllers/settings_controller.dart';
+import 'package:academia/notifications/notification_service.dart';
 import 'package:academia/pages/webview_page.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../constants/common.dart';
 import 'intro_page.dart';
@@ -45,6 +46,55 @@ class SettingsPage extends StatelessWidget {
       body: Obx(
         () => ListView(
           children: [
+            const Align(
+              alignment: Alignment.center,
+              child: Text(
+                "Academia Contributors",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+
+            // Devs
+            FutureBuilder(
+              future: magnet.fetchContributors(),
+              builder: (context, snapshot) => snapshot.hasData
+                  ? SizedBox(
+                      height: 120,
+                      child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) => Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 33,
+                              backgroundColor:
+                                  Theme.of(context).primaryColorDark,
+                              child: ClipRRect(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(50)),
+                                child: CachedNetworkImage(
+                                    height: 65,
+                                    fit: BoxFit.contain,
+                                    imageUrl: snapshot.data![index]
+                                        ["avatar_url"]),
+                              ),
+                            ),
+                            Text(
+                              snapshot.data![index]["login"],
+                              style: normal.copyWith(fontSize: 8),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : LoadingAnimationWidget.flickr(
+                      leftDotColor: Theme.of(context).primaryColor,
+                      rightDotColor: Theme.of(context).primaryColorDark,
+                      size: 60),
+            ),
             // Personal
             const Align(
               alignment: Alignment.center,
@@ -66,6 +116,7 @@ class SettingsPage extends StatelessWidget {
                     await controller.saveSettings();
                   }),
             ),
+            const Divider(),
 
             ListTile(
               title: const Text("Show GPA"),
@@ -236,6 +287,11 @@ class SettingsPage extends StatelessWidget {
                       "Please take your time to let us know what we would have done to make you stay",
                       backgroundColor: Colors.white,
                       icon: const Icon(CupertinoIcons.checkmark_seal),
+                    );
+                    NotificationService().showNotification(
+                      id: notifications["user"] ?? 0,
+                      body: "Goodbye friend see you maybe",
+                      title: "Goodbye",
                     );
                   }
                 },

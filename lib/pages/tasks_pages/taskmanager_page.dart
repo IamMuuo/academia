@@ -1,5 +1,4 @@
 import 'package:academia/controllers/taskmanager_controller.dart';
-import 'package:academia/models/tasks.dart';
 import 'package:academia/pages/tasks_pages/newtask_page.dart';
 import 'package:academia/pages/tasks_pages/taskinfo_page.dart';
 import 'package:flutter/material.dart';

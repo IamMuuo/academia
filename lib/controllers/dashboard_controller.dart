@@ -36,7 +36,7 @@ class DashboardController extends GetxController {
     if (weekPercent > 0.75) {
       return "The weekend 🙃!";
     } else if (daypercent > 0.5) {
-      return "Stay strong weekend is coming😉";
+      return "Weekend is coming😉";
     } else if (daypercent > 0.25) {
       return "Focus, its tough we get it";
     }
