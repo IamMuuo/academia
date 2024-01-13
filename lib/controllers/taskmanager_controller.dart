@@ -30,7 +30,7 @@ class TaskManagerController extends GetxController {
     for (final task in tasksList) {
       tasks.add(task);
     }
-    debugPrint("Title: ${tasks[0].title}");
+    // debugPrint("Title: ${tasks[0].title}");
   }
 
   void updateDeadline(DateTime newDate) {
