@@ -11,78 +11,76 @@ class TaskManagerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      taskManagerController.getTasks();
-      final tasks = taskManagerController.tasks;
+    taskManagerController.getTasks();
+    final tasks = taskManagerController.tasks;
 
-      return Scaffold(
-          appBar: AppBar(title: const Text("Task Manager"), actions: [
-            IconButton(
-              onPressed: () {
-                Get.defaultDialog(
-                  title: "Task Manager",
-                  content: const Text(
-                      "This is the task manager. You can add tasks here and view them in the calendar."),
-                  textConfirm: "Got it!",
-                  confirmTextColor: Colors.white,
-                  onConfirm: () => Get.back(),
-                );
-              },
-              icon: const Icon(Icons.info_rounded),
-            ),
-          ]),
-          body: // Check if there are any tasks
-              tasks.isEmpty
-                  ? const Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.task, size: 100),
-                          Text("No tasks yet"),
-                        ],
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: tasks.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                            child: ListTile(
-                          title: Text(tasks[index].title ?? ''),
-                          subtitle: Text(tasks[index].unit ?? ''),
-                          trailing: Column(
-                            children: [
-                              Text(
-                                DateFormat("dd/MM/yyyy").format(
-                                    (tasks[index].deadline ?? DateTime.now())),
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                "${tasks[index].progress}%",
-                              )
-                            ],
-                          ),
-                          onTap: () {
-                            taskManagerController.updateTask(
-                                tasks[index].type ?? '',
-                                tasks[index].title ?? '',
-                                tasks[index].description ?? '',
-                                tasks[index].unit ?? '',
-                                tasks[index].deadline ?? DateTime.now(),
-                                tasks[index].progress ?? 0);
-                            Get.to(() => TaskInformationPage(
-                                  task: tasks[index],
-                                ));
-                          },
-                        ));
-                      },
-                    ),
-          floatingActionButton: FloatingActionButton(
+    return Obx(() => Scaffold(
+        appBar: AppBar(title: const Text("Task Manager"), actions: [
+          IconButton(
             onPressed: () {
-              taskManagerController.clearTaskManager();
-              Get.to(() => NewTaskPage());
+              Get.defaultDialog(
+                title: "Task Manager",
+                content: const Text(
+                    "This is the task manager. You can add tasks here and view them in the calendar."),
+                textConfirm: "Got it!",
+                confirmTextColor: Colors.white,
+                onConfirm: () => Get.back(),
+              );
             },
-            child: const Icon(Icons.add),
-          ));
-    });
+            icon: const Icon(Icons.info_rounded),
+          ),
+        ]),
+        body: // Check if there are any tasks
+            tasks.isEmpty
+                ? const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.task, size: 100),
+                        Text("No tasks yet"),
+                      ],
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: tasks.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                          child: ListTile(
+                        title: Text(tasks[index].title ?? ''),
+                        subtitle: Text(tasks[index].unit ?? ''),
+                        trailing: Column(
+                          children: [
+                            Text(
+                              DateFormat("dd/MM/yyyy").format(
+                                  (tasks[index].deadline ?? DateTime.now())),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              "${tasks[index].progress}%",
+                            )
+                          ],
+                        ),
+                        onTap: () {
+                          taskManagerController.updateTask(
+                              tasks[index].type ?? '',
+                              tasks[index].title ?? '',
+                              tasks[index].description ?? '',
+                              tasks[index].unit ?? '',
+                              tasks[index].deadline ?? DateTime.now(),
+                              tasks[index].progress ?? 0);
+                          Get.to(() => TaskInformationPage(
+                                task: tasks[index],
+                              ));
+                        },
+                      ));
+                    },
+                  ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            taskManagerController.clearTaskManager();
+            Get.to(() => NewTaskPage());
+          },
+          child: const Icon(Icons.add),
+        )));
   }
 }
