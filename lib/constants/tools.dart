@@ -12,29 +12,6 @@ import 'package:academia/constants/common.dart';
 final List<Map<String, dynamic>> allTools = [
   {
     "id": 1,
-    "name": "Generate Catering Token",
-    "action": "Generate Token",
-    "image": "assets/images/food.png",
-    "ontap": () async {
-      try {
-        var token = await magnet.fetchCateringToken();
-        await Get.defaultDialog(
-          title: "Your Token",
-          content: Text("Your Token is ${token['message'] ?? ''}"),
-        );
-      } catch (e) {
-        Get.snackbar(
-          "Error",
-          "Please check your internet connection and try again!",
-          icon: const Icon(Icons.network_check),
-          backgroundColor: Colors.white,
-        );
-      }
-    },
-    "description": "Hungry? Maybe its time to generate your catering token!"
-  },
-  {
-    "id": 2,
     "name": "GPA Calculator",
     "action": "Calculate GPA",
     "image": "assets/images/calculator.png",
@@ -44,7 +21,7 @@ final List<Map<String, dynamic>> allTools = [
     "description": "Wanna calculate your GPA? try it here"
   },
   {
-    "id": 3,
+    "id": 2,
     "name": "Elearning",
     "image": "assets/images/grade.png",
     "action": "Visit Elearning",
@@ -56,7 +33,7 @@ final List<Map<String, dynamic>> allTools = [
         "Psst! Elearning is here for you. Keep track of your assignments and notes!",
   },
   {
-    "id": 4,
+    "id": 3,
     "name": "Fees Statement",
     "action": "Get my fee statement",
     "image": "assets/images/fees.png",
@@ -81,6 +58,29 @@ final List<Map<String, dynamic>> allTools = [
       }
     },
     "description": "Not sure about finances? We are here for you"
+  },
+  {
+    "id": 4,
+    "name": "Generate Catering Token",
+    "action": "Generate Token",
+    "image": "assets/images/food.png",
+    "ontap": () async {
+      try {
+        var token = await magnet.fetchCateringToken();
+        await Get.defaultDialog(
+          title: "Your Token",
+          content: Text("Your Token is ${token['message'] ?? ''}"),
+        );
+      } catch (e) {
+        Get.snackbar(
+          "Error",
+          "Please check your internet connection and try again!",
+          icon: const Icon(Icons.network_check),
+          backgroundColor: Colors.white,
+        );
+      }
+    },
+    "description": "Hungry? Maybe its time to generate your catering token!"
   },
   {
     "id": 5,
