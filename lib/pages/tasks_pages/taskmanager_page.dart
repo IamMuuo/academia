@@ -113,7 +113,12 @@ class TaskManagerPage extends StatelessWidget {
                           .toList()[index];
                       return Card(
                         child: ListTile(
-                          title: Text(task.title ?? ''),
+                          title: Text(
+                            task.title ?? '',
+                            style: const TextStyle(
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                          ),
                           subtitle: Text(task.unit ?? ''),
                           trailing: Column(
                             children: [
