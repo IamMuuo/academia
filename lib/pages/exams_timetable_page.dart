@@ -24,8 +24,8 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
   final _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    _isLoading = appDB.get("exam_timetable") ?? [].isEmpty;
-    _hasExams = appDB.get("exam_timetable") ?? [].isNotEmpty;
+    _isLoading = appDB.get("exam_timetable").isEmpty ?? [].isEmpty;
+    _hasExams = appDB.get("exam_timetable").isEmpty ?? [].isNotEmpty;
     return Scaffold(
       body: FutureBuilder(
         future: fetchCoreUnits(),

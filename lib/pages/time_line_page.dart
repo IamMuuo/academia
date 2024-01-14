@@ -36,7 +36,7 @@ class TimeLinePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    NotificationsController controller = Get.put(NotificationsController());
+    NotificationsController controller = Get.find<NotificationsController>();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Semester Timeline"),

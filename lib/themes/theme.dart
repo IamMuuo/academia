@@ -9,7 +9,7 @@ ThemeData lightModeTheme = ThemeData(
     errorColor: Colors.red,
     backgroundColor: Colors.white,
     cardColor: Colors.white,
-    brightness: Brightness.light,
+    // brightness: Brightness.light,
   ),
   scaffoldBackgroundColor: Colors.grey[100],
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -18,6 +18,24 @@ ThemeData lightModeTheme = ThemeData(
     elevation: 20,
     selectedItemColor: Colors.blueGrey[800],
     unselectedItemColor: Colors.blueGrey[300],
+  ),
+  dividerTheme: DividerThemeData(
+    color: Colors.blueGrey[100],
+    indent: 10,
+    endIndent: 10,
+    thickness: 0.5,
+  ),
+  inputDecorationTheme: const InputDecorationTheme(
+    outlineBorder: BorderSide(
+      color: Colors.blueGrey,
+      width: 2,
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        width: 1,
+        color: Colors.grey,
+      ),
+    ),
   ),
   iconButtonTheme: IconButtonThemeData(
     style: ButtonStyle(
@@ -29,15 +47,6 @@ ThemeData lightModeTheme = ThemeData(
     trackColor: MaterialStateColor.resolveWith((states) => Colors.transparent),
     trackOutlineColor:
         MaterialStateColor.resolveWith((states) => Colors.blueGrey),
-  ),
-  inputDecorationTheme: const InputDecorationTheme(
-    border: OutlineInputBorder(
-      borderSide: BorderSide(
-        width: 4,
-        color: Colors.grey,
-      ),
-      borderRadius: BorderRadius.all(Radius.circular(5)),
-    ),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
