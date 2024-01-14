@@ -88,76 +88,94 @@ class GpaCalculator extends StatelessWidget {
 
                             showModalBottomSheet(
                               context: context,
-                              builder: (context) => Flex(
-                                direction: Axis.vertical,
-                                children: [
-                                  Expanded(
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          const SizedBox(
-                                            height: 20,
+                              isScrollControlled: true,
+                              // useSafeArea: true,
+                              builder: (context) => Padding(
+                                padding: EdgeInsets.only(
+                                  bottom:
+                                      MediaQuery.of(context).viewInsets.bottom,
+                                ),
+                                child: SingleChildScrollView(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        const Text(
+                                          "Edit the unit details",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
                                           ),
-                                          const Text(
-                                            "Edit the unit details",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: TextField(
+                                            decoration: const InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              labelText: 'Unit Name',
                                             ),
+                                            controller: nameController,
                                           ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: TextField(
-                                              decoration: const InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                labelText: 'Unit Name',
-                                              ),
-                                              controller: nameController,
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: TextField(
+                                            keyboardType: TextInputType.number,
+                                            decoration: const InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              labelText: 'Credit Hours',
                                             ),
+                                            controller: creditHoursController,
                                           ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: TextField(
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              decoration: const InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                labelText: 'Credit Hours',
-                                              ),
-                                              controller: creditHoursController,
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: TextField(
+                                            decoration: const InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              labelText: 'Grade',
                                             ),
+                                            controller: gradeController,
                                           ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: TextField(
-                                              decoration: const InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                labelText: 'Grade',
-                                              ),
-                                              controller: gradeController,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Flexible(
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: ElevatedButton(
-                                                    onPressed: () {
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Flexible(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    final name =
+                                                        nameController.text;
+                                                    final creditHours =
+                                                        creditHoursController
+                                                            .text;
+                                                    final grade =
+                                                        gradeController.text;
+                                                    if (name.isNotEmpty &&
+                                                        creditHours
+                                                            .isNotEmpty &&
+                                                        grade.isNotEmpty &&
+                                                        GPACalculatorController
+                                                            .testValidGrade(
+                                                                grade)) {
                                                       unitController.updateCourse(
                                                           index: index,
                                                           newName:
@@ -170,34 +188,45 @@ class GpaCalculator extends StatelessWidget {
                                                               gradeController
                                                                   .text);
                                                       Get.back();
-                                                    },
-                                                    child:
-                                                        const Text("Edit unit"),
-                                                  ),
+                                                    } else {
+                                                      Get.defaultDialog(
+                                                        title: "Invalid input",
+                                                        content: const Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  8.0),
+                                                          child: Text(
+                                                              "Please ensure all fields are filled and a valid grade is entered!"),
+                                                        ),
+                                                      );
+                                                    }
+                                                  },
+                                                  child:
+                                                      const Text("Edit unit"),
                                                 ),
                                               ),
-                                              Flexible(
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: ElevatedButton(
-                                                    onPressed: () {
-                                                      unitController
-                                                          .removeCourse(index);
-                                                      Get.back();
-                                                    },
-                                                    child: const Text(
-                                                        "Remove Unit"),
-                                                  ),
+                                            ),
+                                            Flexible(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    unitController
+                                                        .removeCourse(index);
+                                                    Get.back();
+                                                  },
+                                                  child:
+                                                      const Text("Remove Unit"),
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
                             );
                           },
@@ -214,101 +243,102 @@ class GpaCalculator extends StatelessWidget {
                   gradeController.text = "";
                   showModalBottomSheet(
                     context: context,
-                    builder: (context) => Flex(
-                      direction: Axis.vertical,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  const Text(
-                                    "Enter the unit details",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: TextField(
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText: 'Unit Name',
-                                      ),
-                                      controller: nameController,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: TextField(
-                                      keyboardType: TextInputType.number,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText: 'Credit Hours',
-                                      ),
-                                      controller: creditHoursController,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: TextField(
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText: 'Grade',
-                                      ),
-                                      controller: gradeController,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      final name = nameController.text;
-                                      final creditHours =
-                                          creditHoursController.text;
-                                      final grade = gradeController.text;
-                                      if (nameController.text != '' &&
-                                          codeController.text != '' &&
-                                          creditHoursController.text != '' &&
-                                          gradeController.text != '') {
-                                        if (GPACalculatorController
-                                            .testValidGrade(grade)) {
-                                          unitController.addCourse(
-                                              name, creditHours, grade);
-                                          Get.back();
-                                        } else {
-                                          Get.defaultDialog(
-                                            title: "Invalid Grade",
-                                            content: const Text(
-                                                "Please enter a valid grade"),
-                                          );
-                                        }
-                                      }
-                                    },
-                                    child: const Text("Add unit"),
-                                  ),
-                                ],
+                    isScrollControlled: true,
+                    // useSafeArea: true,
+                    builder: (context) => Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
+                      ),
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 20,
                               ),
-                            ),
+                              const Text(
+                                "Enter the unit details",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Unit Name',
+                                  ),
+                                  controller: nameController,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+                                  keyboardType: TextInputType.number,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Credit Hours',
+                                  ),
+                                  controller: creditHoursController,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Grade',
+                                  ),
+                                  controller: gradeController,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  final name = nameController.text;
+                                  final creditHours =
+                                      creditHoursController.text;
+                                  final grade = gradeController.text;
+                                  if (name.isNotEmpty &&
+                                      creditHours.isNotEmpty &&
+                                      grade.isNotEmpty &&
+                                      GPACalculatorController.testValidGrade(
+                                          grade)) {
+                                    unitController.addCourse(
+                                        name, creditHours, grade);
+                                    Get.back();
+                                  } else {
+                                    Get.defaultDialog(
+                                      title: "Invalid input",
+                                      content: const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text(
+                                            "Please ensure all fields are filled and a valid grade is entered!"),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: const Text("Add unit"),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
+                      ),
                     ),
                   );
                 },

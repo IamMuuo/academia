@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Added this line to provide internet access -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="academia"
         android:name="${applicationName}"
