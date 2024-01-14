@@ -17,7 +17,14 @@ class TaskInformationPage extends StatelessWidget {
       appBar: AppBar(title: const Text('Task Information'), actions: [
         IconButton(
           onPressed: () {
-            // Confirm user wants to delete the task
+            Get.defaultDialog(
+              title: "Task Manager",
+              content: const Text(
+                  "This is the task manager. You can add tasks here and view them in the calendar."),
+              textConfirm: "Got it!",
+              confirmTextColor: Colors.white,
+              onConfirm: () => Get.back(),
+            );
           },
           icon: const Icon(Icons.info_rounded),
         ),
