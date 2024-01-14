@@ -3,6 +3,7 @@ import 'package:academia/pages/attendance_page.dart';
 import 'package:academia/pages/exams_timetable_page.dart';
 import 'package:academia/pages/fees_page.dart';
 import 'package:academia/pages/gpacalculator_page.dart';
+import 'package:academia/pages/pdf_viewer.dart';
 import 'package:academia/pages/tasks_pages/taskmanager_page.dart';
 import 'package:academia/pages/webview_page.dart';
 import 'package:get/get.dart';
@@ -94,7 +95,7 @@ final List<Map<String, dynamic>> allTools = [
             "Student Audit functionality is locked in the settings page, please unlock it to view your student audit",
             icon: const Icon(Icons.lock));
       } else {
-        Get.to(WebviewPage(
+        Get.to(PdfViewer(
           title: "Your audit",
           url:
               "https://student.daystar.ac.ke/Downloads/STDAUDIT-${user.admno}.pdf",
@@ -117,8 +118,8 @@ final List<Map<String, dynamic>> allTools = [
           icon: const Icon(Icons.lock),
         );
       } else {
-        Get.to(WebviewPage(
-          title: "Transcript",
+        Get.to(PdfViewer(
+          title: "Your Transcript",
           url:
               "https://student.daystar.ac.ke/Downloads/PROVISIONAL%20RESULTS-${user.admno}.pdf",
         ));
