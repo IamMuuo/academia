@@ -17,20 +17,13 @@ class TaskInformationPage extends StatelessWidget {
       appBar: AppBar(title: const Text('Task Information'), actions: [
         IconButton(
           onPressed: () {
-            // Confirm user wants to delete the task
             Get.defaultDialog(
-              title: "Delete task?",
+              title: "Task Manager",
               content: const Text(
-                  "Are you sure you want to delete this task? This action cannot be undone."),
-              textConfirm: "Delete",
+                  "This is the task manager. You can add tasks here and view them in the calendar."),
+              textConfirm: "Got it!",
               confirmTextColor: Colors.white,
-              onConfirm: () {
-                taskmangagerController.deleteTask(task);
-                Get.back();
-                Get.back();
-              },
-              textCancel: "Cancel",
-              onCancel: () => Get.back(),
+              onConfirm: () => Get.back(),
             );
           },
           icon: const Icon(Icons.info_rounded),
@@ -102,9 +95,13 @@ class TaskInformationPage extends StatelessWidget {
             ]),
             const SizedBox(height: 10),
             const Divider(),
-            Obx(() => Text(
-                  taskmangagerController.taskDescription.value,
-                  style: const TextStyle(fontSize: 16),
+            Obx(() => Expanded(
+                  child: SingleChildScrollView(
+                    child: Text(
+                      taskmangagerController.taskDescription.value,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ),
                 )),
             const SizedBox(height: 20),
             Row(
@@ -118,6 +115,26 @@ class TaskInformationPage extends StatelessWidget {
                   child: const Text('Edit task'),
                 ),
                 const SizedBox(width: 10),
+                TextButton(
+                  onPressed: () {
+                    // navigate to edit task page
+                    Get.defaultDialog(
+                      title: "Delete task?",
+                      content: const Text(
+                          "Are you sure you want to delete this task? This action cannot be undone."),
+                      textConfirm: "Delete",
+                      confirmTextColor: Colors.white,
+                      onConfirm: () {
+                        taskmangagerController.deleteTask(task);
+                        Get.back();
+                        Get.back();
+                      },
+                      textCancel: "Cancel",
+                      onCancel: () => Get.back(),
+                    );
+                  },
+                  child: const Text('Delete task'),
+                ),
               ],
             )
           ],

@@ -1,9 +1,11 @@
+import 'package:academia/controllers/settings_controller.dart';
 import 'package:academia/pages/courses_page.dart';
 import 'package:academia/pages/dashboard.dart';
 import 'package:academia/pages/profile_page.dart';
 import 'package:academia/pages/tool_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   ];
   @override
   Widget build(BuildContext context) {
+    Get.put(SettingsController());
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       extendBodyBehindAppBar: true,

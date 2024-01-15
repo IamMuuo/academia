@@ -1,5 +1,6 @@
 import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/dashboard_controller.dart';
+import 'package:academia/controllers/settings_controller.dart';
 import 'package:academia/widgets/academia_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class DashBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(SettingsController());
     final DashboardController dashBoardController =
         Get.put(DashboardController());
 

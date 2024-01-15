@@ -4,7 +4,8 @@ import 'package:academia/models/tasks.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class TaskManagerController extends GetxController {
+class TaskManagerController extends GetxController
+    with GetSingleTickerProviderStateMixin {
   Rx<DateTime> selectedDeadline = DateTime.now().obs;
   Rx<String> selectedUnit = "".obs;
   Rx<String> taskType = "".obs;
@@ -23,6 +24,24 @@ class TaskManagerController extends GetxController {
   ].obs;
   var isloading = false.obs;
   var tasks = [].obs;
+  final List<Tab> tabs = const <Tab>[
+    Tab(text: 'Pending'),
+    Tab(text: 'Completed'),
+  ];
+
+  late TabController tabController;
+
+  @override
+  void onInit() {
+    super.onInit();
+    tabController = TabController(vsync: this, length: tabs.length);
+  }
+
+  @override
+  void onClose() {
+    tabController.dispose();
+    super.onClose();
+  }
 
   Future<void> getTasks() async {
     tasks.clear();
