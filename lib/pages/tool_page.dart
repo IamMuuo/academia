@@ -1,9 +1,11 @@
+import 'package:academia/constants/common.dart';
 import 'package:academia/constants/tools.dart';
 import 'package:academia/pages/birthday_page.dart';
 import 'package:academia/widgets/tool_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class ToolsPage extends StatefulWidget {
   const ToolsPage({super.key});
@@ -44,17 +46,29 @@ class _ToolsPageState extends State<ToolsPage> {
     });
   }
 
+  bool get isBirthDay {
+    DateFormat inputFormat = DateFormat('dd/MM/yyyy');
+    var dob = inputFormat.parse(user.dateOfBirth!);
+
+    if (dob.day == DateTime.now().day && dob.month == DateTime.now().month) {
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Tools"),
         centerTitle: true,
-        leading: IconButton(
-            onPressed: () {
-              Get.to(BirthDayPage());
-            },
-            icon: Icon(Icons.cake)),
+        leading: isBirthDay
+            ? IconButton(
+                onPressed: () {
+                  Get.to(const BirthDayPage());
+                },
+                icon: const Icon(Icons.cake))
+            : null,
         actions: [
           IconButton(
             onPressed: () {
