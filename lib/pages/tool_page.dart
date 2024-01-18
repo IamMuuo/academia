@@ -1,8 +1,10 @@
 import 'package:academia/constants/common.dart';
 import 'package:academia/constants/tools.dart';
+import 'package:academia/controllers/settings_controller.dart';
 import 'package:academia/pages/birthday_page.dart';
 import 'package:academia/widgets/tool_card.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -15,6 +17,7 @@ class ToolsPage extends StatefulWidget {
 }
 
 class _ToolsPageState extends State<ToolsPage> {
+  var settingsController = Get.find<SettingsController>();
   // all available tools
   final List<Map<String, dynamic>> _allTools = allTools;
 
@@ -62,12 +65,14 @@ class _ToolsPageState extends State<ToolsPage> {
       appBar: AppBar(
         title: const Text("Tools"),
         centerTitle: true,
-        leading: isBirthDay
-            ? IconButton(
-                onPressed: () {
-                  Get.to(const BirthDayPage());
-                },
-                icon: const Icon(Icons.cake))
+        leading: settingsController.birthdayNotify.value
+            ? isBirthDay
+                ? IconButton(
+                    onPressed: () {
+                      Get.to(const BirthDayPage());
+                    },
+                    icon: const Icon(Icons.cake))
+                : null
             : null,
         actions: [
           IconButton(
