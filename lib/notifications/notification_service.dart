@@ -97,8 +97,40 @@ class NotificationService {
     await flutterLocalNotificationsPlugin.cancelAll();
   }
 
-  FlutterLocalNotificationsPlugin get notificationsPluginInstance{
+  FlutterLocalNotificationsPlugin get notificationsPluginInstance {
     return flutterLocalNotificationsPlugin;
+  }
+
+  Future<void> scheduleBirthdayNotification(DateTime birthday) async {
+    final DateTime now = DateTime.now();
+    final int difference = birthday.difference(now).inDays;
+
+    if (difference >= 0) {
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        0,
+        'Happy Birthday!',
+        'Wishing you a fantastic birthday!',
+        _nextInstanceOfBirthday(birthday),
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'Academia',
+            'Happy Birthday',
+          ),
+        ),
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+      );
+    }
+  }
+
+  tz.TZDateTime _nextInstanceOfBirthday(DateTime birthday) {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    final tz.TZDateTime scheduledDate =
+        tz.TZDateTime(tz.local, now.year, birthday.month, birthday.day);
+
+    return scheduledDate.isBefore(now)
+        ? tz.TZDateTime(tz.local, now.year + 1, birthday.month, birthday.day)
+        : scheduledDate;
   }
 }
 

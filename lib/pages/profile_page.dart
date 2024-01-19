@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/profile_page_controller.dart';
 import 'package:academia/controllers/settings_controller.dart';
+import 'package:academia/notifications/notification_service.dart';
 import 'package:academia/pages/settings_page.dart';
 import 'package:academia/widgets/info_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -21,6 +23,12 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    // Birthday Notification
+    DateFormat inputFormat = DateFormat('dd/MM/yyyy');
+    var dob = inputFormat.parse(user.dateOfBirth!);
+    NotificationService().scheduleBirthdayNotification(dob);
+
+    // controllers
     var controller = Get.put(ProfilePageController());
     var settingsController = Get.find<SettingsController>();
     // controller.currentUser.value.gpa = 0.1;
