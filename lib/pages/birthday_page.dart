@@ -6,11 +6,18 @@ import 'package:academia/controllers/settings_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:path_provider/path_provider.dart';
 
 class BirthDayPage extends StatelessWidget {
   const BirthDayPage({super.key});
+
+  int get years {
+    DateFormat inputFormat = DateFormat('dd/MM/yyyy');
+    var dob = inputFormat.parse(user.dateOfBirth!);
+    return DateTime.now().year - dob.year;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,13 +103,13 @@ class BirthDayPage extends StatelessWidget {
                                     : "assets/images/female_student.png"),
                           ),
                         ),
-                        const Positioned(
+                        Positioned(
                           bottom: 0,
                           right: 0,
                           child: CircleAvatar(
                             radius: 16,
                             child: Text(
-                              "21",
+                              "$years",
                               style: h6,
                             ),
                           ),
