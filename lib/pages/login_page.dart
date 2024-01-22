@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/login_controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -88,8 +90,8 @@ class LoginPage extends StatelessWidget {
               Obx(
                 () => !loginController.isloading.value
                     ? ElevatedButton(
-                        onPressed: () {
-                          loginController.login();
+                        onPressed: () async {
+                          await loginController.login();
                         },
                         child: const Text(
                           'Get started',
