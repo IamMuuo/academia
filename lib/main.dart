@@ -44,6 +44,7 @@ void main() async {
     GetMaterialApp(
       home: isLoggedIn ? const HomePage() : const IntroPage(),
       theme: lightModeTheme,
+      debugShowCheckedModeBanner: false,
     ),
   );
 }
