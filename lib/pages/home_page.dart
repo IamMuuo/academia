@@ -1,7 +1,7 @@
 import 'package:academia/controllers/settings_controller.dart';
 import 'package:academia/pages/courses_page.dart';
 import 'package:academia/pages/dashboard.dart';
-import 'package:academia/pages/profile_page.dart';
+import 'package:academia/pages/settings_page.dart';
 import 'package:academia/pages/tool_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
     DashBoard(),
     ToolsPage(),
     CoursesPage(),
-    ProfilePage(),
+    SettingsPage(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -56,9 +56,9 @@ class _HomePageState extends State<HomePage> {
             label: 'Courses',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.settings_outlined),
+            activeIcon: Icon(Icons.settings),
+            label: 'Settings',
           ),
         ],
       ),
