@@ -25,7 +25,7 @@ class LoginPage extends StatelessWidget {
               // image
               Image.asset(
                 'assets/images/bot_search.png',
-                height: MediaQuery.of(context).size.height * 0.5,
+                height: MediaQuery.of(context).size.height * 0.4,
               ),
               // Welcome  text
               const Text('Welcome', textAlign: TextAlign.left, style: h2),
