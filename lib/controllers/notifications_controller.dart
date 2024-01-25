@@ -11,7 +11,7 @@ class NotificationsController extends GetxController {
         0,
         "Happy Birthday",
         "We wish you a happy birthday and prosperous new year",
-        DateTime.now().add(Duration(seconds: 10)));
+        DateTime.now().add(const Duration(seconds: 10)));
 
     debugPrint("Notifications Done!");
   }
@@ -47,7 +47,7 @@ class NotificationsController extends GetxController {
 
     // If the scheduled date is in the past, add a week to it
     if (now.isAfter(scheduledDate)) {
-      scheduledDate = scheduledDate.add(Duration(days: 7));
+      scheduledDate = scheduledDate.add(const Duration(days: 7));
     }
 
     // Schedule the notification
