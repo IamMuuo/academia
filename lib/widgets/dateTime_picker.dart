@@ -45,9 +45,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
       children: [
         IconButton(
           onPressed: () => _selectDateTime(context),
-          icon: Icon(Icons.calendar_today),
+          icon: const Icon(Icons.calendar_today),
         ),
-        SizedBox(width: 8),
+        const SizedBox(width: 8),
         Text(
           selectedDateTime != null
               ? DateFormat('yyyy-MM-dd HH:mm').format(selectedDateTime)

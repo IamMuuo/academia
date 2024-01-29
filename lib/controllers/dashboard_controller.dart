@@ -18,7 +18,13 @@ class DashboardController extends GetxController {
   }
 
   double get semesterPercent {
-    return 1;
+    var month = DateTime.now().month;
+    if (month > DateTime.january && month < DateTime.april) {
+      return month / DateTime.april;
+    } else if (month > DateTime.april && month < DateTime.july) {
+      return month / DateTime.july;
+    }
+    return month / DateTime.december;
   }
 
   String get getDayPercentQuote {
