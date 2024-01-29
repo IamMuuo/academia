@@ -264,8 +264,8 @@ class DashBoard extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const Text(
-                          "0",
+                        Text(
+                          "${dashBoardController.numberofTasks}",
                           style: h3,
                         ),
                         Text(
