@@ -123,7 +123,10 @@ class SettingsPage extends StatelessWidget {
                           InfoCard(
                             title: "Gender",
                             content: (user.gender ?? "unknown").title(),
-                            icon: Icons.female,
+                            icon: (user.gender ?? "unknown").toLowerCase() ==
+                                    "male"
+                                ? Icons.male
+                                : Icons.female,
                           ),
                           InfoCard(
                             title: "Email Address",
