@@ -100,9 +100,7 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                                   itemBuilder: (context, index) => Padding(
                                     padding: const EdgeInsets.only(bottom: 8),
                                     child: ExamCourseCard(
-                                      ontap: () {
-                                        print("Hi");
-                                      },
+                                      ontap: () {},
                                       code: snapshot.data![index]["course_code"]
                                           .toString(),
                                       date: DateFormat('EEE dd/MM/yy').format(

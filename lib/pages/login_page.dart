@@ -88,8 +88,8 @@ class LoginPage extends StatelessWidget {
               Obx(
                 () => !loginController.isloading.value
                     ? ElevatedButton(
-                        onPressed: () {
-                          loginController.login();
+                        onPressed: () async {
+                          await loginController.login();
                         },
                         child: const Text(
                           'Get started',
