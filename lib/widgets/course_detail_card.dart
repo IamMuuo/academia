@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:academia/exports/barrel.dart';
 
 class CourseDetailCard extends StatefulWidget {
   const CourseDetailCard({super.key});

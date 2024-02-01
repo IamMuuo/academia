@@ -1,14 +1,7 @@
-import 'package:academia/constants/common.dart';
-import 'package:academia/models/courses.dart';
-import 'package:academia/widgets/academia_app_bar.dart';
-import 'package:academia/widgets/count_down_widget.dart';
-import 'package:academia/widgets/exam_course_card.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ExamTimeTablePage extends StatefulWidget {
   const ExamTimeTablePage({super.key});

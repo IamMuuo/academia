@@ -1,7 +1,5 @@
+import 'package:academia/exports/barrel.dart';
 import 'dart:async';
-
-import 'package:academia/constants/common.dart';
-import 'package:flutter/material.dart';
 
 class CountDown extends StatefulWidget {
   const CountDown({super.key, required this.deadline});

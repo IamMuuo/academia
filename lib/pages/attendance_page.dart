@@ -1,7 +1,6 @@
 import 'package:academia/controllers/courses_page_controller.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:academia/exports/barrel.dart';
 
 class AttendancePage extends StatefulWidget {
   const AttendancePage({super.key});

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:academia/exports/barrel.dart';
 
 ThemeData lightModeTheme = ThemeData(
     fontFamily: 'Nunito',

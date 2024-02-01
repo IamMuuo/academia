@@ -1,9 +1,6 @@
-import 'dart:typed_data';
+import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class PdfViewer extends StatefulWidget {
   const PdfViewer({

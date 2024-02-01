@@ -1,14 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-import 'package:academia/constants/common.dart';
-import 'package:academia/controllers/settings_controller.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:screenshot/screenshot.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:academia/exports/barrel.dart';
+import 'package:flutter/cupertino.dart';
 
 class BirthDayPage extends StatelessWidget {
   const BirthDayPage({super.key});

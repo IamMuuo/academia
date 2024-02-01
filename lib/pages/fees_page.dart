@@ -1,8 +1,6 @@
-import 'package:academia/constants/common.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class FeesPage extends StatefulWidget {
   const FeesPage({super.key, required this.allStatements});

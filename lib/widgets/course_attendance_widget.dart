@@ -1,6 +1,4 @@
-import 'package:academia/constants/common.dart';
-import 'package:flutter/material.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:academia/exports/barrel.dart';
 
 class CourseAttendanceCard extends StatelessWidget {
   const CourseAttendanceCard({

@@ -61,6 +61,8 @@ dependencies:
   screenshot: ^2.1.0
   path_provider: ^2.1.2
   timezone: ^0.9.2
+  network_info_plus: ^4.1.0+1
+  connectivity_plus: ^5.0.2
   
 
 

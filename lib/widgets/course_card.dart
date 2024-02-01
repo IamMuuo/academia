@@ -1,5 +1,4 @@
-import 'package:academia/constants/common.dart';
-import 'package:flutter/material.dart';
+import 'package:academia/exports/barrel.dart';
 
 class CourseCard extends StatelessWidget {
   const CourseCard({
@@ -58,7 +57,7 @@ class CourseCard extends StatelessWidget {
               const Spacer(),
               Text(
                 courseTitle,
-                style:  TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                   color: titleColor,

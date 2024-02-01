@@ -1,11 +1,7 @@
-import 'package:academia/constants/common.dart';
-import 'package:academia/controllers/notifications_controller.dart';
-import 'package:academia/widgets/semester_timeline_tile.dart';
-import 'package:flutter/material.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:intl/intl.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class TimeLinePage extends StatelessWidget {
   const TimeLinePage({super.key});
