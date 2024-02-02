@@ -58,7 +58,7 @@ class DashboardController extends GetxController {
     } else if (semesterPercent > 0.5) {
       return "Its about to get real messy";
     } else if (semesterPercent > 0.25) {
-      return "CATS CATS CATS, cats all the way";
+      return "CATS CATS, cats all the way";
     }
     return "Ready, aim shoot for the sky";
   }

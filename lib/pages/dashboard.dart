@@ -154,7 +154,7 @@ class DashBoard extends StatelessWidget {
                           TextSpan(children: [
                             TextSpan(
                               text: "The semester is\n",
-                              style: h5.copyWith(
+                              style: h6.copyWith(
                                 fontWeight: FontWeight.w300,
                               ),
                             ),
