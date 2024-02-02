@@ -2,6 +2,7 @@ import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/login_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -37,6 +38,8 @@ class LoginPage extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 child: TextField(
                   controller: loginController.usernameController,
+                  textAlign: TextAlign.center,
+                  inputFormatters: [AdmissionNumberFormatter()],
                   decoration: const InputDecoration(
                     hintText: 'Your admission number',
                   ),
@@ -48,6 +51,7 @@ class LoginPage extends StatelessWidget {
                   () => TextField(
                     controller: loginController.passwordController,
                     obscureText: loginController.showPassword.value,
+                    textAlign: TextAlign.center,
                     decoration: InputDecoration(
                       hintText: 'Your password',
                       suffixIcon: IconButton(
@@ -108,5 +112,31 @@ class LoginPage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class AdmissionNumberFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    final oldValueText = oldValue.text;
+    final newValueText = newValue.text;
+
+    if (newValueText == '') {
+      return newValue;
+    } else if (newValueText.length <= 2) {
+      return newValue;
+    } else if (newValueText.length == 3) {
+      return newValueText.endsWith('-')
+          ? newValue
+          : TextEditingValue(
+              text:
+                  "${newValueText.substring(0, 2)}-${newValueText.substring(2)}",
+            );
+    } else if (newValueText.length <= 7) {
+      return newValue;
+    } else {
+      return oldValue;
+    }
   }
 }

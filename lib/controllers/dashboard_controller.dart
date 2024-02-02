@@ -1,4 +1,5 @@
 import 'package:academia/constants/common.dart';
+import 'package:academia/controllers/taskmanager_controller.dart';
 import 'package:academia/models/courses.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,13 @@ class DashboardController extends GetxController {
   }
 
   double get semesterPercent {
-    return 1;
+    var month = DateTime.now().month;
+    if (month > DateTime.january && month < DateTime.april) {
+      return month / DateTime.april;
+    } else if (month > DateTime.april && month < DateTime.july) {
+      return month / DateTime.july;
+    }
+    return month / DateTime.december;
   }
 
   String get getDayPercentQuote {
@@ -51,7 +58,7 @@ class DashboardController extends GetxController {
     } else if (semesterPercent > 0.5) {
       return "Its about to get real messy";
     } else if (semesterPercent > 0.25) {
-      return "CATS CATS CATS, cats all the way";
+      return "CATS CATS, cats all the way";
     }
     return "Ready, aim shoot for the sky";
   }
@@ -71,6 +78,12 @@ class DashboardController extends GetxController {
       }
     }
     return classes;
+  }
+
+  int get numberofTasks {
+    var taskscontroller = Get.find<TaskManagerController>();
+    taskscontroller.getTasks();
+    return taskscontroller.tasks.length;
   }
 
   int get classesTommorrowCount {

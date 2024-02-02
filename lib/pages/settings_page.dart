@@ -85,7 +85,7 @@ class SettingsPage extends StatelessWidget {
                                     ),
                             ),
                             Positioned(
-                              right: -2,
+                              right: 3,
                               bottom: 0,
                               child: Icon(
                                 CupertinoIcons.checkmark_seal_fill,
@@ -106,43 +106,38 @@ class SettingsPage extends StatelessWidget {
                     const SizedBox(
                       height: 12,
                     ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.5,
-                      child: ListView(
-                        children: [
-                          InfoCard(
-                            title: "National ID",
-                            content: user.idno ?? "Unknown",
-                            icon: Icons.numbers,
-                          ),
-                          InfoCard(
-                            title: "Admission Number",
-                            content: user.admno ?? "00-0000",
-                            icon: Icons.person,
-                          ),
-                          InfoCard(
-                            title: "Gender",
-                            content: (user.gender ?? "unknown").title(),
-                            icon: Icons.female,
-                          ),
-                          InfoCard(
-                            title: "Email Address",
-                            content: user.email ?? "someone@example.com",
-                            icon: Icons.email,
-                          ),
-                          InfoCard(
-                            title: "Address",
-                            content: user.address ?? "unknown",
-                            icon: Icons.mail,
-                          ),
-                          InfoCard(
-                            title: "Birthday",
-                            content: (user.dateOfBirth ?? "unknown").title(),
-                            icon: Icons.cake_sharp,
-                          ),
-                        ],
-                      ),
-                    )
+                    InfoCard(
+                      title: "National ID",
+                      content: user.idno ?? "Unknown",
+                      icon: Icons.numbers,
+                    ),
+                    InfoCard(
+                      title: "Admission Number",
+                      content: user.admno ?? "00-0000",
+                      icon: Icons.person,
+                    ),
+                    InfoCard(
+                      title: "Gender",
+                      content: (user.gender ?? "unknown").title(),
+                      icon: (user.gender ?? "unknown").toLowerCase() == "male"
+                          ? Icons.male
+                          : Icons.female,
+                    ),
+                    InfoCard(
+                      title: "Email Address",
+                      content: user.email ?? "someone@example.com",
+                      icon: Icons.email,
+                    ),
+                    InfoCard(
+                      title: "Address",
+                      content: user.address ?? "unknown",
+                      icon: Icons.mail,
+                    ),
+                    InfoCard(
+                      title: "Birthday",
+                      content: (user.dateOfBirth ?? "unknown").title(),
+                      icon: Icons.cake_sharp,
+                    ),
                   ],
                 ),
               ),
@@ -180,10 +175,11 @@ class SettingsPage extends StatelessWidget {
                                       borderRadius: const BorderRadius.all(
                                           Radius.circular(50)),
                                       child: CachedNetworkImage(
-                                          height: 65,
-                                          fit: BoxFit.contain,
-                                          imageUrl: snapshot.data![index]
-                                              ["avatar_url"]),
+                                        height: 65,
+                                        fit: BoxFit.contain,
+                                        imageUrl: snapshot.data![index]
+                                            ["avatar_url"],
+                                      ),
                                     ),
                                   ),
                                   Text(

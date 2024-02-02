@@ -154,7 +154,7 @@ class DashBoard extends StatelessWidget {
                           TextSpan(children: [
                             TextSpan(
                               text: "The semester is\n",
-                              style: h5.copyWith(
+                              style: h6.copyWith(
                                 fontWeight: FontWeight.w300,
                               ),
                             ),
@@ -209,19 +209,18 @@ class DashBoard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ClipRRect(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(90),
-                          ),
-                          child: CircleAvatar(
-                            radius: 40,
-                            child: Image.asset(
-                              "assets/images/abc.png",
-                              fit: BoxFit.scaleDown,
-                              height: 50,
-                              width: 50,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(90),
                             ),
-                          ),
-                        ),
+                            child: CircleAvatar(
+                              radius: 40,
+                              child: Image.asset(
+                                "assets/images/abc.png",
+                                fit: BoxFit.scaleDown,
+                                height: 50,
+                                width: 50,
+                              ),
+                            )),
                         Text(
                           "${dashBoardController.classesTodayCount}",
                           style: h3,
@@ -264,8 +263,8 @@ class DashBoard extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const Text(
-                          "0",
+                        Text(
+                          "${dashBoardController.numberofTasks}",
                           style: h3,
                         ),
                         Text(
@@ -334,42 +333,61 @@ class DashBoard extends StatelessWidget {
                   const SizedBox(height: 12),
                   const Text("Upcoming events and classes", style: h6),
                   SizedBox(
-                      height: 120,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: dashBoardController.classesTommorrow.length,
-                        itemBuilder: ((context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(12)),
-                                  color: Theme.of(context).primaryColorDark),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CircleAvatar(
-                                    radius: 20,
-                                    backgroundColor:
-                                        Theme.of(context).primaryColorLight,
-                                    child: const Icon(CupertinoIcons.timer),
+                    height: 120,
+                    child: dashBoardController.classesTommorrow.isNotEmpty
+                        ? ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount:
+                                dashBoardController.classesTommorrow.length,
+                            itemBuilder: ((context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(12)),
+                                      color:
+                                          Theme.of(context).primaryColorDark),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 20,
+                                        backgroundColor:
+                                            Theme.of(context).primaryColorLight,
+                                        child: const Icon(CupertinoIcons.timer),
+                                      ),
+                                      Text(
+                                        dashBoardController
+                                            .classesTommorrow[index].name!,
+                                        style: normal.copyWith(
+                                            color: Theme.of(context)
+                                                .primaryColorLight),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    dashBoardController
-                                        .classesTommorrow[index].name!,
-                                    style: normal.copyWith(
-                                        color: Theme.of(context)
-                                            .primaryColorLight),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              );
+                            }),
+                          )
+                        : SizedBox(
+                            // height: 20,
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  "assets/images/having_coffee.png",
+                                  height: 80,
+                                ),
+                                const Text(
+                                  "Seems you have nothing upcoming for tommorrow take the day off, cool off",
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
                             ),
-                          );
-                        }),
-                      ))
+                          ),
+                  )
                 ],
               ),
             ),
