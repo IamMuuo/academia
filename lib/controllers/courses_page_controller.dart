@@ -19,6 +19,8 @@ class CoursesPageController extends GetxController {
         hasCourses.value = false;
         return false;
       }
+      await appDB.delete("timetable");
+      userCourses.clear();
 
       for (var i = 0; i < courses.length; i++) {
         userCourses.add(Courses.fromJson(courses[i]));
