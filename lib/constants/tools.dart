@@ -90,7 +90,7 @@ final List<Map<String, dynamic>> allTools = [
     "image": "assets/images/view.png",
     "ontap": () async {
       var controller = Get.find<SettingsController>();
-      if (controller.showTranscript.value) {
+      if (controller.showAudit.value) {
         Get.snackbar("Tool locked",
             "Student Audit functionality is locked in the settings page, please unlock it to view your student audit",
             icon: const Icon(Icons.lock));
