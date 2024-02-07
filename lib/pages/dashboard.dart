@@ -11,6 +11,8 @@ class DashBoard extends StatelessWidget {
     Get.put(SettingsController());
     final DashboardController dashBoardController =
         Get.put(DashboardController());
+    final CoursesPageController coursesController =
+        Get.find<CoursesPageController>();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -215,10 +217,17 @@ class DashBoard extends StatelessWidget {
                                 width: 50,
                               ),
                             )),
-                        Text(
-                          "${dashBoardController.classesTodayCount}",
-                          style: h3,
-                        ),
+                        Obx(() => coursesController.hasCourses.value
+                            ? Text(
+                                "${coursesController.userCourses.where((element) => DateFormat("EEEE").format(DateTime.now()) == element.dayOfTheWeek!.title()).length}",
+                                style: h3,
+                              )
+                            : Text(
+                                "Unregistered",
+                                style: normal.copyWith(
+                                  color: Theme.of(context).primaryColorDark,
+                                ),
+                              )),
                         Text(
                           "Classes today",
                           style: normal.copyWith(

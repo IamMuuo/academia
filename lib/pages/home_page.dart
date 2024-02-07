@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Get.put(SettingsController());
     Get.put(TaskManagerController());
+    Get.put(CoursesPageController());
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       extendBodyBehindAppBar: true,
