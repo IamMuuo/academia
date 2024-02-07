@@ -32,19 +32,18 @@ final List<Map<String, dynamic>> allTools = [
     "ontap": () async {
       var controller = Get.find<SettingsController>();
       if (!controller.showFees.value) {
-        Get.snackbar("Tool locked",
+        showCustomSnackbar("Tool locked",
             "Fees functionality is locked in the settings page, please unlock it to view your fees statement",
-            icon: const Icon(Icons.lock));
+            icon: Icons.lock);
       } else {
         try {
           var statements = await magnet.fetchFeeStatement();
           Get.to(FeesPage(allStatements: statements));
         } catch (e) {
-          Get.snackbar(
+          showCustomSnackbar(
             "Error",
             "Please check your internet connection and try again!",
-            icon: const Icon(Icons.network_check),
-            backgroundColor: Colors.white,
+            icon: Icons.network_check,
           );
         }
       }
@@ -64,11 +63,10 @@ final List<Map<String, dynamic>> allTools = [
           content: Text("Your Token is ${token['message'] ?? ''}"),
         );
       } catch (e) {
-        Get.snackbar(
+        showCustomSnackbar(
           "Error",
           "Please check your internet connection and try again!",
-          icon: const Icon(Icons.network_check),
-          backgroundColor: Colors.white,
+          icon: Icons.network_check,
         );
       }
     },
@@ -82,9 +80,11 @@ final List<Map<String, dynamic>> allTools = [
     "ontap": () async {
       var controller = Get.find<SettingsController>();
       if (controller.showAudit.value) {
-        Get.snackbar("Tool locked",
-            "Student Audit functionality is locked in the settings page, please unlock it to view your student audit",
-            icon: const Icon(Icons.lock));
+        showCustomSnackbar(
+          "Tool locked",
+          "Student Audit functionality is locked in the settings page, please unlock it to view your student audit",
+          icon: Icons.lock,
+        );
       } else {
         Get.to(PdfViewer(
           title: "Your audit",
@@ -103,10 +103,10 @@ final List<Map<String, dynamic>> allTools = [
     "ontap": () async {
       var controller = Get.find<SettingsController>();
       if (controller.showTranscript.value) {
-        Get.snackbar(
+        showCustomSnackbar(
           "Tool locked",
           "Transcript functionality is locked in the settings page, please unlock it to view your transcript",
-          icon: const Icon(Icons.lock),
+          icon: Icons.lock,
         );
       } else {
         Get.to(PdfViewer(

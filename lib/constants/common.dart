@@ -5,6 +5,7 @@ import 'package:academia/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:magnet/magnet.dart';
+import 'package:get/get.dart';
 
 const String urlPrefix = "https://daystar-backend.onrender.com";
 const String dbName = "appDB";
@@ -77,3 +78,18 @@ const TextStyle h6 = TextStyle(
   fontWeight: FontWeight.bold,
   fontSize: 15,
 );
+
+void showCustomSnackbar(
+  String title,
+  String message, {
+  IconData? icon,
+  Color? iconColor,
+}) {
+  Get.snackbar(
+    title,
+    message,
+    colorText: Colors.black,
+    backgroundColor: Colors.white,
+    icon: Icon(icon??Icons.info),
+  );
+}
