@@ -20,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     Get.put(SettingsController());
+    Get.put(TaskManagerController());
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       extendBodyBehindAppBar: true,
