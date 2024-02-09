@@ -340,6 +340,26 @@ class SettingsPage extends StatelessWidget {
                   ),
                   const Divider(),
 
+                  const Divider(),
+
+                  ListTile(
+                    title: Obx(
+                      () => controller.hasUpdates.value
+                          ? const Text("Updating")
+                          : Text("Update v 1.0.${controller.patch.value}"),
+                    ),
+                    trailing: controller.hasUpdates.value
+                        ? LoadingAnimationWidget.beat(
+                            color: Theme.of(context).primaryColor, size: 20)
+                        : IconButton(
+                            onPressed: () async {
+                              await controller.checkForUpdates();
+                            },
+                            icon:
+                                const Icon(CupertinoIcons.arrow_right_circle)),
+                  ),
+                  const Divider(),
+
                   // button to refresh all content
                   Padding(
                     padding:

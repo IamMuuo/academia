@@ -90,6 +90,6 @@ void showCustomSnackbar(
     message,
     colorText: Colors.black,
     backgroundColor: Colors.white,
-    icon: Icon(icon??Icons.info),
+    icon: Icon(icon ?? Icons.info),
   );
 }
