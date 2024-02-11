@@ -1,20 +1,27 @@
-import 'package:academia/constants/common.dart';
-import 'package:academia/notifications/notification_service.dart';
-import 'package:flutter/material.dart';
+import "package:academia/exports/barrel.dart";
 import 'package:get/get.dart';
 
 class NotificationsController extends GetxController {
   var isLoading = false.obs;
+  var hasNotifications = false.obs;
+  List notifications = [].obs;
 
-  NotificationsController() {
-    NotificationService().scheduleNotification(
-        0,
-        "Happy Birthday",
-        "We wish you a happy birthday and prosperous new year",
-        DateTime.now().add(const Duration(seconds: 10)));
-
+  @override
+  void onInit() async {
+    super.onInit();
+    //    NotificationService().scheduleNotification(
+    //   0,
+    //   "Happy Birthday",
+    //   "We wish you a happy birthday and prosperous new year",
+    //   DateTime.now().add(const Duration(seconds: 10)),
+    // );
+    //
+    notifications = await magnet.fetchNotifications();
+    debugPrint(notifications.toString());
+    hasNotifications.value = notifications.isNotEmpty;
     debugPrint("Notifications Done!");
   }
+
   // fetches the event calendar
   Future<void> fetchAcademicCalendar() async {
     var events = await magnet.fetchAcademicCalendar();
@@ -51,11 +58,11 @@ class NotificationsController extends GetxController {
     }
 
     // Schedule the notification
-    NotificationService().scheduleNotification(
-      notifications["course"]!,
-      "Class reminder⏱️⏱️",
-      "$className is about to begin",
-      scheduledDate,
-    );
+    // NotificationService().scheduleNotification(
+    //   notifications["course"]!,
+    //   "Class reminder⏱️⏱️",
+    //   "$className is about to begin",
+    //   scheduledDate,
+    // );
   }
 }
