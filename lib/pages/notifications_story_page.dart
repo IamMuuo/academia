@@ -33,6 +33,7 @@ class NotificationsStoryPage extends StatelessWidget {
             element["upload_url"],
             caption: element["contents"] ?? "By academia",
             controller: storyController,
+            duration: const Duration(seconds: 30),
           ));
           break;
 
@@ -41,6 +42,7 @@ class NotificationsStoryPage extends StatelessWidget {
             caption: element["contents"] ?? "Powered by academia",
             url: element["upload_url"],
             controller: storyController,
+            duration: const Duration(seconds: 10),
           ));
           break;
 
@@ -49,6 +51,7 @@ class NotificationsStoryPage extends StatelessWidget {
             StoryItem.text(
               title: element["contents"] ?? "Notifications powered by academia",
               backgroundColor: getRandomColor(),
+              duration: const Duration(seconds: 10),
             ),
           );
       }
