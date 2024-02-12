@@ -9,7 +9,7 @@ class CoursesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var dashBoardController = Get.find<DashboardController>();
-    var controller = Get.put(CoursesPageController());
+    var controller = Get.find<CoursesPageController>();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
