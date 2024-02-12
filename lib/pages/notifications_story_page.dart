@@ -30,21 +30,16 @@ class NotificationsStoryPage extends StatelessWidget {
       switch (element["file_type"].toString().replaceAll('"', "")) {
         case "video":
           items.add(StoryItem.pageVideo(
-            // element["upload_url"],
-            "https://youtu.be/TO-_3tck2tg?si=5qXx5ajeV7_aKqfD",
-            // caption: element["contents"],
-            caption: "Academia loves you",
+            element["upload_url"],
+            caption: element["contents"] ?? "By academia",
             controller: storyController,
           ));
           break;
 
         case "image":
           items.add(StoryItem.pageImage(
-            // caption: element["contents"],
-            caption: "Academia is for you by you",
-            // url: element["upload_url"],
-            url:
-                "https://i.pinimg.com/236x/87/94/51/87945156541bf6d116c5b5d5e49a6acf.jpg",
+            caption: element["contents"] ?? "Powered by academia",
+            url: element["upload_url"],
             controller: storyController,
           ));
           break;
@@ -52,8 +47,7 @@ class NotificationsStoryPage extends StatelessWidget {
         default:
           items.add(
             StoryItem.text(
-              // title: element["contents"],
-              title: "Wtf",
+              title: element["contents"] ?? "Notifications powered by academia",
               backgroundColor: getRandomColor(),
             ),
           );
@@ -91,27 +85,27 @@ class NotificationsStoryPage extends StatelessWidget {
                     backgroundColor: Colors.red,
                     roundedTop: false,
                   ),
-                  StoryItem.pageImage(
-                    // caption: element["contents"],
-                    caption: "Academia is for you by you",
-                    // url: element["upload_url"],
-                    url:
-                        "https://i.pinimg.com/236x/87/94/51/87945156541bf6d116c5b5d5e49a6acf.jpg",
-                    controller: storyController,
-                  ),
-                  StoryItem.text(
-                    // title: element["contents"],
-                    title: "It's magic",
-                    backgroundColor: getRandomColor(),
-                  ),
-                  StoryItem.pageVideo(
-                    // element["upload_url"],
-                    "https://dl207v.filemate16.shop/?file=M3R4SUNiN3JsOHJ6WWQ2a3NQS1Y5ZGlxVlZIOCtyZ0lsOUk5emg0a1NxSkM3WXdoMDYrc0xNNUlKNmtJaG9XM0JaVkgvVEhLWmNPMFlWL1I1b2hvVDJQVnNkQTB0VHJ3NDQ4MFVaUTBCRERobFBPM2d6Tnp6RlhUYzhpWlVPcHdPVElwaFZCVGd3ZWJ5Y0RWc1Qyc2pDejkveDJUSWlrYTVuME1PUHFOMnJvTzBISGJadVhoeDVrSXFIdk90Y29lamFQTDdGR2xoYUUzb3Rrb0R4QWtKTU1LZ2R6bXlhM0lweDQ9",
-                    // "https://youtu.be/dVq-lzhwmPw?si=XUpyU9zWPo10XoP5",
-                    // caption: element["contents"],
-                    caption: "Academia loves you",
-                    controller: storyController,
-                  ),
+                  // StoryItem.pageImage(
+                  //   // caption: element["contents"],
+                  //   caption: "Academia is for you by you",
+                  //   // url: element["upload_url"],
+                  //   url:
+                  //       "https://i.pinimg.com/236x/87/94/51/87945156541bf6d116c5b5d5e49a6acf.jpg",
+                  //   controller: storyController,
+                  // ),
+                  // StoryItem.text(
+                  //   // title: element["contents"],
+                  //   title: "It's magic",
+                  //   backgroundColor: getRandomColor(),
+                  // ),
+                  // StoryItem.pageVideo(
+                  //   // element["upload_url"],
+                  //   "https://dl207v.filemate16.shop/?file=M3R4SUNiN3JsOHJ6WWQ2a3NQS1Y5ZGlxVlZIOCtyZ0lsOUk5emg0a1NxSkM3WXdoMDYrc0xNNUlKNmtJaG9XM0JaVkgvVEhLWmNPMFlWL1I1b2hvVDJQVnNkQTB0VHJ3NDQ4MFVaUTBCRERobFBPM2d6Tnp6RlhUYzhpWlVPcHdPVElwaFZCVGd3ZWJ5Y0RWc1Qyc2pDejkveDJUSWlrYTVuME1PUHFOMnJvTzBISGJadVhoeDVrSXFIdk90Y29lamFQTDdGR2xoYUUzb3Rrb0R4QWtKTU1LZ2R6bXlhM0lweDQ9",
+                  //   // "https://youtu.be/dVq-lzhwmPw?si=XUpyU9zWPo10XoP5",
+                  //   // caption: element["contents"],
+                  //   caption: "Academia loves you",
+                  //   controller: storyController,
+                  // ),
                 ],
                 controller: storyController,
               ),

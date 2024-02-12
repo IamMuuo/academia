@@ -4,7 +4,10 @@
     <application
         android:label="academia"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon">
+      android:icon="@mipmap/launcher_icon"
+      android:allowBackup="false"
+      android:fullBackupOnly="false">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
