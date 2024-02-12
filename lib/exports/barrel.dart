@@ -51,3 +51,4 @@ export 'package:academia/widgets/tool_card.dart';
 export 'package:academia/pages/tasks_pages/edittask_page.dart';
 export 'package:academia/pages/tasks_pages/newtask_page.dart';
 export 'package:academia/pages/tasks_pages/taskinfo_page.dart';
+export 'package:magnet/src/magnet_utils.dart';
