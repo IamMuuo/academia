@@ -57,5 +57,6 @@ class SettingsController extends GetxController {
       // Download the new patch if it's available.
       await shorebirdCodePush.downloadUpdateIfAvailable();
     }
+    hasUpdates.value = false;
   }
 }
