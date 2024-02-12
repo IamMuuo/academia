@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
     Get.put(SettingsController());
     Get.put(TaskManagerController());
     Get.put(CoursesPageController());
+    Get.put(NotificationsController());
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       extendBodyBehindAppBar: true,
