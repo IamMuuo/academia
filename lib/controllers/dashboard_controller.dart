@@ -36,7 +36,7 @@ class DashboardController extends GetxController {
     } else if (daypercent > 0.25) {
       return "Its almost midday☀️";
     }
-    return "Make it or break it while its young!";
+    return "The early bird..!";
   }
 
   String get getWeekPercentQuote {
@@ -60,7 +60,7 @@ class DashboardController extends GetxController {
     } else if (semesterPercent > 0.25) {
       return "CATS CATS, cats all the way";
     }
-    return "Ready, aim shoot for the sky";
+    return "Ready, aim shoot!";
   }
 
   double get daypercent {

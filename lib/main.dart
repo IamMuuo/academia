@@ -1,19 +1,5 @@
-import 'package:academia/constants/common.dart';
-import 'package:academia/controllers/notifications_controller.dart';
-import 'package:academia/controllers/settings_controller.dart';
-import 'package:academia/controllers/taskmanager_controller.dart';
-import 'package:academia/models/courses.dart';
-import 'package:academia/models/schedule.dart';
-import 'package:academia/models/tasks.dart';
-import 'package:academia/models/user.dart';
-import 'package:academia/notifications/notification_service.dart';
-import 'package:academia/pages/home_page.dart';
-import 'package:academia/pages/intro_page.dart';
-import 'package:academia/themes/theme.dart';
-import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
-import 'package:magnet/magnet.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

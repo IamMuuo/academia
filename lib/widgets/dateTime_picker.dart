@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:intl/intl.dart';
 
 class DateTimePicker extends StatefulWidget {

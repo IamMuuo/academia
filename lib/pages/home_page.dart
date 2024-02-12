@@ -1,9 +1,4 @@
-import 'package:academia/controllers/settings_controller.dart';
-import 'package:academia/pages/courses_page.dart';
-import 'package:academia/pages/dashboard.dart';
-import 'package:academia/pages/settings_page.dart';
-import 'package:academia/pages/tool_page.dart';
-import 'package:flutter/material.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
@@ -25,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     Get.put(SettingsController());
+    Get.put(TaskManagerController());
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       extendBodyBehindAppBar: true,

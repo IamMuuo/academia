@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:flutter/cupertino.dart';
 
 class EventCard extends StatefulWidget {

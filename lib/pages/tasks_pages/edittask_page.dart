@@ -1,6 +1,4 @@
-import 'package:academia/controllers/taskmanager_controller.dart';
-import 'package:academia/models/tasks.dart';
-import 'package:flutter/material.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 

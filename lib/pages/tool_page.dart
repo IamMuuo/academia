@@ -1,10 +1,5 @@
-import 'package:academia/constants/common.dart';
-import 'package:academia/constants/tools.dart';
-import 'package:academia/controllers/settings_controller.dart';
-import 'package:academia/pages/birthday_page.dart';
-import 'package:academia/widgets/tool_card.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 

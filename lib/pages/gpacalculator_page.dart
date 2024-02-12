@@ -1,6 +1,4 @@
-import 'package:academia/constants/common.dart';
-import 'package:academia/controllers/gpacalculator_controller.dart';
-import 'package:flutter/material.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
 
 class GpaCalculator extends StatelessWidget {

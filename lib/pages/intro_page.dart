@@ -1,10 +1,7 @@
-import 'package:academia/constants/common.dart';
-import 'package:academia/pages/login_page.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 
 class IntroPage extends StatelessWidget {
   const IntroPage({super.key});

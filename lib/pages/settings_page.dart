@@ -1,18 +1,6 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
-import 'package:academia/controllers/settings_controller.dart';
-import 'package:academia/notifications/notification_service.dart';
-import 'package:academia/pages/webview_page.dart';
-import 'package:academia/widgets/info_card.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-
-import '../constants/common.dart';
-import 'intro_page.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -349,6 +337,26 @@ class SettingsPage extends StatelessWidget {
                               url: "https://dita.co.ke/#contact"));
                         },
                         icon: const Icon(CupertinoIcons.arrow_right_circle)),
+                  ),
+                  const Divider(),
+
+                  const Divider(),
+
+                  ListTile(
+                    title: Obx(
+                      () => controller.hasUpdates.value
+                          ? const Text("Updating")
+                          : Text("Update v 1.0.${controller.patch.value}"),
+                    ),
+                    trailing: controller.hasUpdates.value
+                        ? LoadingAnimationWidget.beat(
+                            color: Theme.of(context).primaryColor, size: 20)
+                        : IconButton(
+                            onPressed: () async {
+                              await controller.checkForUpdates();
+                            },
+                            icon:
+                                const Icon(CupertinoIcons.arrow_right_circle)),
                   ),
                   const Divider(),
 

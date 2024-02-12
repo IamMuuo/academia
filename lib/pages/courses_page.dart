@@ -1,11 +1,6 @@
-import 'package:academia/constants/common.dart';
-import 'package:academia/controllers/courses_page_controller.dart';
-import 'package:academia/controllers/dashboard_controller.dart';
-import 'package:academia/pages/attendance_page.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class CoursesPage extends StatelessWidget {
