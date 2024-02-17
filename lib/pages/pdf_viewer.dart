@@ -17,8 +17,7 @@ class PdfViewer extends StatefulWidget {
   State<PdfViewer> createState() => _PdfViewerState();
 }
 
-class _PdfViewerState extends State<PdfViewer> {
-  late PDFViewController _pdfViewerController;
+class _PdfViewerState extends State<PdfViewer> {  
   int currentPage = 0, totalPages = 0;
   bool isReady = false;
   String errorMessage = '';
