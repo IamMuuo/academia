@@ -40,7 +40,7 @@ Ensure that you fix the warnings and errors presented to you otherwise the tests
 
 ## 👥 Code Review and Merging
 
-1. The project maintainers will review your pull request.
+1. The project maintainers will review your pull request.Pull then push any changes.
 2. Address any feedback or comments provided during the code review process.
 3. Once your changes have been approved, they will be merged into the main repository.
 4. Congratulations! Your contributions are now part of the academia project.
