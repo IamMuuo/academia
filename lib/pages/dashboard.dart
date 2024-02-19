@@ -219,7 +219,8 @@ class DashBoard extends StatelessWidget {
                             )),
                         Obx(() => coursesController.hasCourses.value
                             ? Text(
-                                "${coursesController.userCourses.where((element) => DateFormat("EEEE").format(DateTime.now()) == element.dayOfTheWeek!.title()).length}",
+                                dashBoardController.classesTodayCount
+                                    .toString(),
                                 style: h3,
                               )
                             : Text(
