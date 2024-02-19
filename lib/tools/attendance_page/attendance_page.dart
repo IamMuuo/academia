@@ -1,4 +1,3 @@
-import 'package:academia/controllers/courses_page_controller.dart';
 import 'package:get/get.dart';
 import 'package:academia/exports/barrel.dart';
 

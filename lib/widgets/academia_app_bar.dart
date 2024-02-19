@@ -1,6 +1,4 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/pages/notifications_story_page.dart';
-import 'package:academia/pages/time_line_page.dart';
 import 'package:get/get.dart';
 import 'package:story_view/controller/story_controller.dart';
 
