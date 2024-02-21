@@ -217,17 +217,20 @@ class DashBoard extends StatelessWidget {
                                 width: 50,
                               ),
                             )),
-                        Obx(() => coursesController.hasCourses.value
-                            ? Text(
-                                "${coursesController.userCourses.where((element) => DateFormat("EEEE").format(DateTime.now()) == element.dayOfTheWeek!.title()).length}",
-                                style: h3,
-                              )
-                            : Text(
-                                "Unregistered",
-                                style: normal.copyWith(
-                                  color: Theme.of(context).primaryColorDark,
+                        Obx(
+                          () => coursesController.hasCourses.value
+                              ? Text(
+                                  dashBoardController.classesTodayCount
+                                      .toString(),
+                                  style: h3,
+                                )
+                              : Text(
+                                  "Unregistered",
+                                  style: normal.copyWith(
+                                    color: Theme.of(context).primaryColorDark,
+                                  ),
                                 ),
-                              )),
+                        ),
                         Text(
                           "Classes today",
                           style: normal.copyWith(
