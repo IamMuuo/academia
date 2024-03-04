@@ -1,4 +1,5 @@
 import 'package:academia/constants/common.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
@@ -14,7 +15,7 @@ class SettingsController extends GetxController {
   Rx<bool> hasUpdates = false.obs;
   Rx<String> patch = "0.0.0".obs;
   late Map<dynamic, dynamic> settings;
-  final ShorebirdCodePush shorebirdCodePush = ShorebirdCodePush();
+  late ShorebirdCodePush? shorebirdCodePush;
 
   @override
   void onInit() async {
@@ -30,12 +31,15 @@ class SettingsController extends GetxController {
     debugPrint("Settings loaded!");
     super.onInit();
 
-    shorebirdCodePush.currentPatchNumber().then((value) {
-      patch.value = value.toString();
-      debugPrint("Current patch number is: $value");
-    });
+    if (Platform.isAndroid) {
+      shorebirdCodePush = ShorebirdCodePush();
+      shorebirdCodePush?.currentPatchNumber().then((value) {
+        patch.value = value.toString();
+        debugPrint("Current patch number is: $value");
+      });
 
-    checkForUpdates();
+      checkForUpdates();
+    }
   }
 
   Future<void> saveSettings() async {
@@ -51,11 +55,12 @@ class SettingsController extends GetxController {
 
   Future<void> checkForUpdates() async {
     // Check whether a patch is available to install.
-    hasUpdates.value = await shorebirdCodePush.isNewPatchAvailableForDownload();
+    hasUpdates.value =
+        await shorebirdCodePush?.isNewPatchAvailableForDownload() ?? false;
 
     if (hasUpdates.value) {
       // Download the new patch if it's available.
-      await shorebirdCodePush.downloadUpdateIfAvailable();
+      await shorebirdCodePush?.downloadUpdateIfAvailable();
     }
     hasUpdates.value = false;
   }
