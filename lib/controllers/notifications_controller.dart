@@ -16,8 +16,7 @@ class NotificationsController extends GetxController {
     //   DateTime.now().add(const Duration(seconds: 10)),
     // );
     //
-    notifications = await magnet.fetchNotifications();
-    debugPrint(notifications.toString());
+    // notifications = await magnet.fetchNotifications();
     hasNotifications.value = notifications.isNotEmpty;
     debugPrint("Notifications Done!");
   }

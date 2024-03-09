@@ -86,10 +86,11 @@ final List<Map<String, dynamic>> allTools = [
           icon: Icons.lock,
         );
       } else {
+        final UserController userController = Get.find<UserController>();
         Get.to(PdfViewer(
           title: "Your audit",
           url:
-              "https://student.daystar.ac.ke/Downloads/STDAUDIT-${user.admno}.pdf",
+              "https://student.daystar.ac.ke/Downloads/STDAUDIT-${userController.user.value!.admno}.pdf",
         ));
       }
     },
@@ -109,10 +110,11 @@ final List<Map<String, dynamic>> allTools = [
           icon: Icons.lock,
         );
       } else {
+        final UserController userController = Get.find<UserController>();
         Get.to(PdfViewer(
           title: "Your Transcript",
           url:
-              "https://student.daystar.ac.ke/Downloads/PROVISIONAL%20RESULTS-${user.admno}.pdf",
+              "https://student.daystar.ac.ke/Downloads/PROVISIONAL%20RESULTS-${userController.user.value!.admno}.pdf",
         ));
       }
     },

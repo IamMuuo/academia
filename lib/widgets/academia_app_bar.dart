@@ -19,6 +19,7 @@ class AcademiaAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final settingsController = Get.find<SettingsController>();
     final notificationsController = Get.find<NotificationsController>();
+    final UserController userController = Get.find<UserController>();
     return Padding(
       padding: const EdgeInsets.only(top: 12, bottom: 12),
       child: Container(
@@ -33,7 +34,6 @@ class AcademiaAppBar extends StatelessWidget {
               () => GestureDetector(
                 onTap: notificationsController.hasNotifications.value
                     ? () {
-                        debugPrint("Has notifications");
                         Get.to(NotificationsStoryPage(
                           storyController: StoryController(),
                         ));
@@ -54,17 +54,27 @@ class AcademiaAppBar extends StatelessWidget {
                           Radius.circular(800),
                         ),
                         child: settingsController.showProfilePic.value
-                            ? Image.memory(
-                                Uint8List.fromList(
-                                  base64Decode(user.profile!.replaceFirst(
-                                      "data:image/gif;base64,", "")),
-                                ),
-                                fit: BoxFit.cover,
-                                width: 400,
-                                height: 400,
-                              )
+                            ? userController.user.value == null
+                                ? Image.asset(
+                                    "assets/icons/academia.png",
+                                    height: 400,
+                                    width: 400,
+                                    fit: BoxFit.fill,
+                                  )
+                                : Image.memory(
+                                    Uint8List.fromList(
+                                      base64Decode(
+                                        userController.user.value!.profile!
+                                            .replaceFirst(
+                                                "data:image/gif;base64,", ""),
+                                      ),
+                                    ),
+                                    fit: BoxFit.cover,
+                                    width: 400,
+                                    height: 400,
+                                  )
                             : Image.asset(
-                                user.gender == "male"
+                                userController.user.value!.gender == "male"
                                     ? "assets/images/male_student.png"
                                     : "assets/images/female_student.png",
                               ),

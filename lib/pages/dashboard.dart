@@ -14,6 +14,7 @@ class DashBoard extends StatelessWidget {
     final CoursesPageController coursesController =
         Get.find<CoursesPageController>();
 
+    final UserController userController = Get.find<UserController>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
@@ -22,7 +23,8 @@ class DashBoard extends StatelessWidget {
           children: [
             // Header
             AcademiaAppBar(
-              title: "Hi, ${(user.name!.split(" ")[0]).title().trim()}",
+              title:
+                  "Hi, ${(userController.user.value?.name ?? "user".split(" ")[0]).title().trim()}",
               subtitle:
                   "It's ${DateFormat.yMMMMEEEEd().format(DateTime.now())}",
             ),

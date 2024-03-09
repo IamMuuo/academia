@@ -5,10 +5,13 @@ import 'package:academia/pages/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:academia/controllers/controllers.dart';
 
 class LoginController extends GetxController {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  final UserController userController = Get.find<UserController>();
   var acceptTerms = false.obs;
   var showPassword = true.obs;
   var isloading = false.obs;
@@ -47,7 +50,7 @@ class LoginController extends GetxController {
     // auth the user
     bool authenticated = false;
     try {
-      authenticated = await user.login(
+      authenticated = await userController.login(
           usernameController.text.trim(), passwordController.text.trim());
     } catch (e) {
       Get.snackbar(
@@ -63,7 +66,7 @@ class LoginController extends GetxController {
       return;
     }
     if (authenticated) {
-      await user.getUserDetails(
+      await userController.getUserDetails(
           usernameController.text.trim(), passwordController.text.trim());
 
       isloading.value = false;

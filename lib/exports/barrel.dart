@@ -54,3 +54,4 @@ export 'package:academia/pages/tasks_pages/taskinfo_page.dart';
 export 'package:magnet/src/magnet_utils.dart';
 export 'package:academia/tools/time_line/time_line_page.dart';
 export 'package:academia/tools/stories/notifications_story_page.dart';
+export 'package:academia/controllers/controllers.dart';

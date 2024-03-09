@@ -8,6 +8,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.find<SettingsController>();
+    final UserController userController = Get.find<UserController>();
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -61,13 +62,16 @@ class SettingsPage extends StatelessWidget {
                               child: controller.showProfilePic.value
                                   ? Image.memory(
                                       Uint8List.fromList(
-                                        base64Decode(user.profile!.replaceFirst(
-                                            "data:image/gif;base64,", "")),
+                                        base64Decode(userController
+                                            .user.value!.profile!
+                                            .replaceFirst(
+                                                "data:image/gif;base64,", "")),
                                       ),
                                       fit: BoxFit.contain,
                                     )
                                   : Image.asset(
-                                      user.gender == "male"
+                                      userController.user.value!.gender ==
+                                              "male"
                                           ? "assets/images/male_student.png"
                                           : "assets/images/female_student.png",
                                     ),
@@ -88,7 +92,7 @@ class SettingsPage extends StatelessWidget {
                       height: 12,
                     ),
                     Text(
-                      user.name!.title(),
+                      userController.user.value!.name!.title(),
                       style: h4,
                     ),
                     const SizedBox(
@@ -96,34 +100,40 @@ class SettingsPage extends StatelessWidget {
                     ),
                     InfoCard(
                       title: "National ID",
-                      content: user.idno ?? "Unknown",
+                      content: userController.user.value!.idno ?? "Unknown",
                       icon: Icons.numbers,
                     ),
                     InfoCard(
                       title: "Admission Number",
-                      content: user.admno ?? "00-0000",
+                      content: userController.user.value!.admno ?? "00-0000",
                       icon: Icons.person,
                     ),
                     InfoCard(
                       title: "Gender",
-                      content: (user.gender ?? "unknown").title(),
-                      icon: (user.gender ?? "unknown").toLowerCase() == "male"
+                      content: (userController.user.value!.gender ?? "unknown")
+                          .title(),
+                      icon: (userController.user.value!.gender ?? "unknown")
+                                  .toLowerCase() ==
+                              "male"
                           ? Icons.male
                           : Icons.female,
                     ),
                     InfoCard(
                       title: "Email Address",
-                      content: user.email ?? "someone@example.com",
+                      content: userController.user.value!.email ??
+                          "someone@example.com",
                       icon: Icons.email,
                     ),
                     InfoCard(
                       title: "Address",
-                      content: user.address ?? "unknown",
+                      content: userController.user.value!.address ?? "unknown",
                       icon: Icons.mail,
                     ),
                     InfoCard(
                       title: "Birthday",
-                      content: (user.dateOfBirth ?? "unknown").title(),
+                      content:
+                          (userController.user.value!.dateOfBirth ?? "unknown")
+                              .title(),
                       icon: Icons.cake_sharp,
                     ),
                   ],
@@ -388,9 +398,10 @@ class SettingsPage extends StatelessWidget {
                         );
 
                         if (flag) {
-                          user.logout();
+                          userController
+                              .logout()
+                              .then((value) => Get.put(UserController()));
                           Get.offAll(const IntroPage());
-                          Get.deleteAll(); // Clear all the controllers
                           Get.snackbar(
                             "Logout success",
                             "Please take your time to let us know what we would have done to make you stay",

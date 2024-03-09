@@ -5,13 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:academia/controllers/controllers.dart';
 
 class DashboardController extends GetxController {
   TextEditingController searchBoxController = TextEditingController();
-
-  void getNotifications() {
-    debugPrint("${user.name}");
-  }
 
   double get weekPercent {
     int weekDay = DateTime.now().weekday;
@@ -109,7 +106,6 @@ class DashboardController extends GetxController {
         classes.add(course);
       }
     }
-    debugPrint(DateFormat("EEEE").format(DateTime.now()));
 
     return classes;
   }
