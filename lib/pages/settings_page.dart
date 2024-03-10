@@ -346,7 +346,7 @@ class SettingsPage extends StatelessWidget {
                     title: Obx(
                       () => controller.hasUpdates.value
                           ? const Text("Updating")
-                          : Text("Update v 1.0.${controller.patch.value}"),
+                          : Text("Update v2.0.${controller.patch.value}"),
                     ),
                     trailing: controller.hasUpdates.value
                         ? LoadingAnimationWidget.beat(

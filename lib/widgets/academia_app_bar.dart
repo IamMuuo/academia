@@ -38,7 +38,7 @@ class AcademiaAppBar extends StatelessWidget {
                           storyController: StoryController(),
                         ));
                       }
-                    : () {},
+                    : null,
                 child: Container(
                   padding: const EdgeInsets.all(2),
                   decoration: notificationsController.hasNotifications.value
