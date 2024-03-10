@@ -1,8 +1,4 @@
 import 'package:hive/hive.dart';
-import "package:academia/constants/common.dart";
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import "package:magnet/magnet.dart";
 
 part 'user.g.dart';
 

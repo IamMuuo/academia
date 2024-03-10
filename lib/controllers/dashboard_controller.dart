@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:academia/controllers/controllers.dart';
 
 class DashboardController extends GetxController {
   TextEditingController searchBoxController = TextEditingController();
