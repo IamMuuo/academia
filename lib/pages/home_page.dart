@@ -47,9 +47,9 @@ class _HomePageState extends State<HomePage> {
             label: 'Courses',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Ionicons.settings_outline),
-            activeIcon: Icon(Ionicons.settings),
-            label: 'Settings',
+            icon: Icon(Ionicons.grid_outline),
+            activeIcon: Icon(Ionicons.grid),
+            label: 'More',
           ),
         ],
       ),

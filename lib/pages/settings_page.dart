@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/pages/profile_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
@@ -13,8 +14,7 @@ class SettingsPage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          elevation: 0,
-          title: const Text("Settings"),
+          title: const Text("More"),
           actions: [
             IconButton(
               tooltip: "About this app",
@@ -33,124 +33,27 @@ class SettingsPage extends StatelessWidget {
           bottom: const TabBar(
             tabs: [
               Tab(
-                text: "Profile",
-                icon: Icon(Icons.person_4),
+                text: "My Profile",
+                icon: Icon(Ionicons.person_circle_outline),
               ),
               Tab(
                 text: "Settings",
-                icon: Icon(Icons.settings),
+                icon: Icon(Ionicons.settings_outline),
               ),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 70.0,
-                      child: Obx(
-                        () => Stack(
-                          children: [
-                            ClipRRect(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(800),
-                              ),
-                              child: controller.showProfilePic.value
-                                  ? Image.memory(
-                                      Uint8List.fromList(
-                                        base64Decode(userController
-                                            .user.value!.profile!
-                                            .replaceFirst(
-                                                "data:image/gif;base64,", "")),
-                                      ),
-                                      fit: BoxFit.contain,
-                                    )
-                                  : Image.asset(
-                                      userController.user.value!.gender ==
-                                              "male"
-                                          ? "assets/images/male_student.png"
-                                          : "assets/images/female_student.png",
-                                    ),
-                            ),
-                            Positioned(
-                              right: 3,
-                              bottom: 0,
-                              child: Icon(
-                                CupertinoIcons.checkmark_seal_fill,
-                                color: Theme.of(context).primaryColorDark,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Text(
-                      userController.user.value!.name!.title(),
-                      style: h4,
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    InfoCard(
-                      title: "National ID",
-                      content: userController.user.value!.idno ?? "Unknown",
-                      icon: Icons.numbers,
-                    ),
-                    InfoCard(
-                      title: "Admission Number",
-                      content: userController.user.value!.admno ?? "00-0000",
-                      icon: Icons.person,
-                    ),
-                    InfoCard(
-                      title: "Gender",
-                      content: (userController.user.value!.gender ?? "unknown")
-                          .title(),
-                      icon: (userController.user.value!.gender ?? "unknown")
-                                  .toLowerCase() ==
-                              "male"
-                          ? Icons.male
-                          : Icons.female,
-                    ),
-                    InfoCard(
-                      title: "Email Address",
-                      content: userController.user.value!.email ??
-                          "someone@example.com",
-                      icon: Icons.email,
-                    ),
-                    InfoCard(
-                      title: "Address",
-                      content: userController.user.value!.address ?? "unknown",
-                      icon: Icons.mail,
-                    ),
-                    InfoCard(
-                      title: "Birthday",
-                      content:
-                          (userController.user.value!.dateOfBirth ?? "unknown")
-                              .title(),
-                      icon: Icons.cake_sharp,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            const ProfilePage(),
             Obx(
               () => ListView(
                 children: [
-                  const Align(
+                  Align(
                     alignment: Alignment.center,
                     child: Text(
                       "Academia Contributors",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
 
@@ -168,10 +71,13 @@ class SettingsPage extends StatelessWidget {
                                   GestureDetector(
                                     onTap: () {
                                       Platform.isAndroid || Platform.isIOS
-                                          ? Get.to(WebviewPage(
-                                              url: snapshot.data![index]
-                                                  ["html_url"],
-                                              title: "Academia Contributor"))
+                                          ? Get.to(
+                                              WebviewPage(
+                                                url: snapshot.data![index]
+                                                    ["html_url"],
+                                                title: "Academia Contributor",
+                                              ),
+                                            )
                                           : showCustomSnackbar(
                                               "Missing Feature",
                                               "Webviews are not implemented on Desktop platforms!",
@@ -180,8 +86,6 @@ class SettingsPage extends StatelessWidget {
                                     },
                                     child: CircleAvatar(
                                       radius: 33,
-                                      backgroundColor:
-                                          Theme.of(context).primaryColorDark,
                                       child: ClipRRect(
                                         borderRadius: const BorderRadius.all(
                                             Radius.circular(50)),
@@ -196,37 +100,42 @@ class SettingsPage extends StatelessWidget {
                                   ),
                                   Text(
                                     snapshot.data![index]["login"],
-                                    style: normal.copyWith(fontSize: 8),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          fontSize: 8,
+                                        ),
                                   ),
                                 ],
                               ),
                             ),
                           )
                         : LoadingAnimationWidget.flickr(
-                            leftDotColor: Theme.of(context).primaryColor,
-                            rightDotColor: Theme.of(context).primaryColorDark,
+                            leftDotColor:
+                                Theme.of(context).colorScheme.tertiary,
+                            rightDotColor:
+                                Theme.of(context).colorScheme.primary,
                             size: 60),
                   ),
                   // Personal
-                  const Align(
+                  Align(
                     alignment: Alignment.center,
                     child: Text(
                       "Personal Settings",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
 
                   ListTile(
                     title: const Text("Show my profile picture"),
                     trailing: Switch(
-                        value: controller.showProfilePic.value,
-                        onChanged: (value) async {
-                          controller.showProfilePic.value = value;
-                          await controller.saveSettings();
-                        }),
+                      value: controller.showProfilePic.value,
+                      onChanged: (value) async {
+                        controller.showProfilePic.value = value;
+                        await controller.saveSettings();
+                      },
+                    ),
                   ),
                   const Divider(),
 
@@ -243,14 +152,11 @@ class SettingsPage extends StatelessWidget {
                   const Divider(),
 
                   // Todos
-                  const Align(
+                  Align(
                     alignment: Alignment.center,
                     child: Text(
                       "Tool Settings",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
 
@@ -287,14 +193,11 @@ class SettingsPage extends StatelessWidget {
                   // notifications
 
                   const Divider(),
-                  const Align(
+                  Align(
                     alignment: Alignment.center,
                     child: Text(
                       "Notifications",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   ListTile(
@@ -319,14 +222,11 @@ class SettingsPage extends StatelessWidget {
                   ),
                   const Divider(),
 
-                  const Align(
+                  Align(
                     alignment: Alignment.center,
                     child: Text(
                       "Features",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   ListTile(
@@ -346,7 +246,7 @@ class SettingsPage extends StatelessWidget {
                           icon: Icons.error,
                         );
                       },
-                      icon: const Icon(CupertinoIcons.arrow_right_circle),
+                      icon: const Icon(Ionicons.arrow_forward_circle_outline),
                     ),
                   ),
                   const Divider(),
@@ -369,7 +269,8 @@ class SettingsPage extends StatelessWidget {
                                     "https://github.com/IamMuuo/academia/blob/main/CONTRIBUTING.md"),
                           );
                         },
-                        icon: const Icon(CupertinoIcons.arrow_right_circle)),
+                        icon:
+                            const Icon(Ionicons.arrow_forward_circle_outline)),
                   ),
 
                   const Divider(),
@@ -386,7 +287,8 @@ class SettingsPage extends StatelessWidget {
                               title: "DITA Contact",
                               url: "https://dita.co.ke/#contact"));
                         },
-                        icon: const Icon(CupertinoIcons.arrow_right_circle)),
+                        icon:
+                            const Icon(Ionicons.arrow_forward_circle_outline)),
                   ),
                   const Divider(),
 
@@ -401,13 +303,15 @@ class SettingsPage extends StatelessWidget {
                     ),
                     trailing: controller.hasUpdates.value
                         ? LoadingAnimationWidget.beat(
-                            color: Theme.of(context).primaryColor, size: 20)
+                            color: Theme.of(context).colorScheme.tertiary,
+                            size: 20,
+                          )
                         : IconButton(
                             onPressed: () async {
                               await controller.checkForUpdates();
                             },
-                            icon:
-                                const Icon(CupertinoIcons.arrow_right_circle)),
+                            icon: const Icon(
+                                Ionicons.arrow_forward_circle_outline)),
                   ),
                   const Divider(),
 
@@ -415,7 +319,7 @@ class SettingsPage extends StatelessWidget {
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    child: ElevatedButton(
+                    child: FilledButton(
                       // log out the use
                       onPressed: () async {
                         bool flag = await Get.defaultDialog(
@@ -456,16 +360,7 @@ class SettingsPage extends StatelessWidget {
                           );
                         }
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueGrey,
-                        elevation: 0,
-                        minimumSize: const Size(300, 60),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(12),
-                          ),
-                        ),
-                      ),
+
                       child: const Text(
                         'Log out',
                         style: TextStyle(
