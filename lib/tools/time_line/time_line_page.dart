@@ -45,8 +45,8 @@ class TimeLinePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     LoadingAnimationWidget.flickr(
-                      rightDotColor: Theme.of(context).primaryColorLight,
-                      leftDotColor: Theme.of(context).primaryColorDark,
+                      rightDotColor: Theme.of(context).colorScheme.primary,
+                      leftDotColor: Theme.of(context).colorScheme.tertiary,
                       size: 60,
                     ),
                     const Padding(

@@ -26,7 +26,7 @@ class AcademiaAppBar extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-            color: Theme.of(context).primaryColorDark,
+            color: Theme.of(context).colorScheme.tertiaryContainer,
             borderRadius: const BorderRadius.all(Radius.circular(8))),
         child: Row(
           children: [
@@ -42,9 +42,13 @@ class AcademiaAppBar extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(2),
                   decoration: notificationsController.hasNotifications.value
-                      ? const BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.all(Radius.circular(50)))
+                      ? BoxDecoration(
+                          color:
+                              Theme.of(context).colorScheme.tertiaryContainer,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(50),
+                          ),
+                        )
                       : null,
                   child: CircleAvatar(
                     radius: 20.0,
@@ -94,24 +98,18 @@ class AcademiaAppBar extends StatelessWidget {
                 Text(
                   title,
                   overflow: TextOverflow.ellipsis,
-                  style: normal.copyWith(
-                    color: Theme.of(context).primaryColorLight,
-                  ),
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
                 Text(
                   subtitle,
-                  style: normal.copyWith(
-                    color: Theme.of(context).primaryColorLight,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
               ],
             ),
             const Spacer(),
             Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColorLight,
-                borderRadius: const BorderRadius.all(Radius.circular(50)),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(50)),
               ),
               child: IconButton(
                 onPressed: () {
@@ -119,7 +117,7 @@ class AcademiaAppBar extends StatelessWidget {
                       ? Get.to(const TimeLinePage())
                       : ontapped?.call();
                 },
-                icon: icon ?? const Icon(Icons.timeline),
+                icon: icon ?? const Icon(Ionicons.time_outline),
               ),
             )
           ],

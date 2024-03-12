@@ -165,18 +165,32 @@ class SettingsPage extends StatelessWidget {
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) => Column(
                                 children: [
-                                  CircleAvatar(
-                                    radius: 33,
-                                    backgroundColor:
-                                        Theme.of(context).primaryColorDark,
-                                    child: ClipRRect(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(50)),
-                                      child: CachedNetworkImage(
-                                        height: 65,
-                                        fit: BoxFit.contain,
-                                        imageUrl: snapshot.data![index]
-                                            ["avatar_url"],
+                                  GestureDetector(
+                                    onTap: () {
+                                      Platform.isAndroid || Platform.isIOS
+                                          ? Get.to(WebviewPage(
+                                              url: snapshot.data![index]
+                                                  ["html_url"],
+                                              title: "Academia Contributor"))
+                                          : showCustomSnackbar(
+                                              "Missing Feature",
+                                              "Webviews are not implemented on Desktop platforms!",
+                                              icon: Icons.error,
+                                            );
+                                    },
+                                    child: CircleAvatar(
+                                      radius: 33,
+                                      backgroundColor:
+                                          Theme.of(context).primaryColorDark,
+                                      child: ClipRRect(
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(50)),
+                                        child: CachedNetworkImage(
+                                          height: 65,
+                                          fit: BoxFit.contain,
+                                          imageUrl: snapshot.data![index]
+                                              ["avatar_url"],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -316,14 +330,35 @@ class SettingsPage extends StatelessWidget {
                     ),
                   ),
                   ListTile(
+                    onTap: () {
+                      showCustomSnackbar(
+                        "Missing Feature",
+                        "Feedback feature is yet to be implemented but you could still leave a feedback on the store",
+                        icon: Icons.error,
+                      );
+                    },
                     title: const Text("Report a bug or issue"),
                     trailing: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showCustomSnackbar(
+                          "Missing Feature",
+                          "Feedback feature is yet to be implemented but you could still leave a feedback on the store",
+                          icon: Icons.error,
+                        );
+                      },
                       icon: const Icon(CupertinoIcons.arrow_right_circle),
                     ),
                   ),
                   const Divider(),
                   ListTile(
+                    onTap: () {
+                      Get.to(
+                        const WebviewPage(
+                            title: "How to contribute",
+                            url:
+                                "https://github.com/IamMuuo/academia/blob/main/CONTRIBUTING.md"),
+                      );
+                    },
                     title: const Text("How to contribute to Academia"),
                     trailing: IconButton(
                         onPressed: () {
@@ -339,6 +374,11 @@ class SettingsPage extends StatelessWidget {
 
                   const Divider(),
                   ListTile(
+                    onTap: () {
+                      Get.to(const WebviewPage(
+                          title: "DITA Contact",
+                          url: "https://dita.co.ke/#contact"));
+                    },
                     title: const Text("How to contact us"),
                     trailing: IconButton(
                         onPressed: () {
@@ -350,13 +390,14 @@ class SettingsPage extends StatelessWidget {
                   ),
                   const Divider(),
 
-                  const Divider(),
-
                   ListTile(
+                    onTap: () async {
+                      await controller.checkForUpdates();
+                    },
                     title: Obx(
                       () => controller.hasUpdates.value
                           ? const Text("Updating")
-                          : Text("Update v2.0.${controller.patch.value}"),
+                          : Text("Update v2.${controller.patch.value}"),
                     ),
                     trailing: controller.hasUpdates.value
                         ? LoadingAnimationWidget.beat(

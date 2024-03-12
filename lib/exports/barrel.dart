@@ -1,5 +1,6 @@
 export 'package:flutter/material.dart';
 export 'package:academia/constants/common.dart';
+export 'package:ionicons/ionicons.dart';
 export 'package:academia/widgets/academia_app_bar.dart';
 export 'package:academia/controllers/notifications_controller.dart';
 export 'package:percent_indicator/percent_indicator.dart';

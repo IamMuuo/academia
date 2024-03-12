@@ -26,6 +26,7 @@ void main() async {
           ? const HomePage()
           : const IntroPage(),
       theme: lightModeTheme,
+      darkTheme: darkModeTheme,
     ),
   );
 }

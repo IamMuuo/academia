@@ -26,7 +26,7 @@ class DashboardController extends GetxController {
 
   String get getDayPercentQuote {
     if (daypercent > 0.75) {
-      return "Perhaps much is already done!";
+      return "Take a break!";
     } else if (daypercent > 0.5) {
       return "Sun down approaches";
     } else if (daypercent > 0.25) {
