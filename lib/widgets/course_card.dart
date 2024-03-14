@@ -42,7 +42,10 @@ class CourseCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: backGround,
-        border: Border.all(color: borderColor, width: 2),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline,
+          width: 2,
+        ),
         borderRadius: const BorderRadius.all(Radius.circular(16)),
       ),
       constraints: const BoxConstraints(minHeight: 150),

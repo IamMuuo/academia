@@ -21,15 +21,16 @@ class CoursesPage extends StatelessWidget {
           IconButton(
             onPressed: () {
               Get.defaultDialog(
-                  title: "Information",
-                  content: Column(
-                    children: [
-                      Image.asset("assets/images/bot_love.png", height: 100),
-                      const Text(
-                        "Here we will display your courses and everything in between",
-                      )
-                    ],
-                  ));
+                title: "Information",
+                content: Column(
+                  children: [
+                    Image.asset("assets/images/bot_love.png", height: 100),
+                    const Text(
+                      "Here we will display your courses and everything in between",
+                    )
+                  ],
+                ),
+              );
             },
             icon: const Icon(CupertinoIcons.info),
           )
@@ -89,7 +90,8 @@ class CoursesPage extends StatelessWidget {
                               Radius.circular(8),
                             ),
                             border: Border.all(
-                                color: Theme.of(context).primaryColor),
+                              color: Theme.of(context).colorScheme.outline,
+                            ),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -110,14 +112,12 @@ class CoursesPage extends StatelessWidget {
                               ),
                               Text(
                                 "${dashBoardController.classesTodayCount}",
-                                style: h3,
+                                style:
+                                    Theme.of(context).textTheme.displayMedium,
                               ),
-                              Text(
-                                "Classes today",
-                                style: normal.copyWith(
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              ),
+                              Text("Classes today",
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium),
                             ],
                           ),
                         ),
@@ -130,7 +130,8 @@ class CoursesPage extends StatelessWidget {
                               Radius.circular(8),
                             ),
                             border: Border.all(
-                                color: Theme.of(context).primaryColor),
+                              color: Theme.of(context).colorScheme.outline,
+                            ),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -151,14 +152,12 @@ class CoursesPage extends StatelessWidget {
                               ),
                               Text(
                                 "${controller.numOfClasses}",
-                                style: h3,
+                                style:
+                                    Theme.of(context).textTheme.displayMedium,
                               ),
-                              Text(
-                                "Classes weekly",
-                                style: normal.copyWith(
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              ),
+                              Text("Classes weekly",
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium),
                             ],
                           ),
                         ),
@@ -173,7 +172,9 @@ class CoursesPage extends StatelessWidget {
                       borderRadius: const BorderRadius.all(
                         Radius.circular(8),
                       ),
-                      border: Border.all(color: Theme.of(context).primaryColor),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -185,7 +186,8 @@ class CoursesPage extends StatelessWidget {
                               TextSpan(
                                 text:
                                     "${dashBoardController.classesTommorrowCount}",
-                                style: h3,
+                                style:
+                                    Theme.of(context).textTheme.displayMedium,
                               ),
                               const TextSpan(
                                 text: "\n Classes tommorrow",
