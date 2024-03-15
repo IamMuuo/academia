@@ -116,7 +116,7 @@ class AdmissionNumberFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    final oldValueText = oldValue.text;
+    // final oldValueText = oldValue.text;
     final newValueText = newValue.text;
 
     if (newValueText == '') {
