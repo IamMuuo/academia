@@ -299,7 +299,9 @@ class SettingsPage extends StatelessWidget {
                     title: Obx(
                       () => controller.hasUpdates.value
                           ? const Text("Updating")
-                          : Text("Update v2.${controller.patch.value}"),
+                          : Text(
+                              "Update v2.${controller.patch.value}",
+                            ),
                     ),
                     trailing: controller.hasUpdates.value
                         ? LoadingAnimationWidget.beat(
@@ -343,14 +345,14 @@ class SettingsPage extends StatelessWidget {
                         );
 
                         if (flag) {
-                          userController
-                              .logout()
-                              .then((value) => Get.put(UserController()));
+                          await userController.logout();
+                          Get.put(UserController());
+
+                          // Navigate to intro page
                           Get.offAll(const IntroPage());
                           Get.snackbar(
                             "Logout success",
                             "Please take your time to let us know what we would have done to make you stay",
-                            backgroundColor: Colors.white,
                             icon: const Icon(CupertinoIcons.checkmark_seal),
                           );
                           NotificationService().showNotification(

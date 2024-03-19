@@ -9,14 +9,16 @@ class NotificationsController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    //    NotificationService().scheduleNotification(
-    //   0,
-    //   "Happy Birthday",
-    //   "We wish you a happy birthday and prosperous new year",
-    //   DateTime.now().add(const Duration(seconds: 10)),
-    // );
-    //
-    // notifications = await magnet.fetchNotifications();
+    if (Platform.isIOS || Platform.isAndroid) {
+      NotificationService().scheduleNotification(
+        0,
+        "Happy Birthday",
+        "We wish you a happy birthday and prosperous new year",
+        DateTime.now().add(const Duration(seconds: 10)),
+      );
+    }
+
+    notifications = await magnet.fetchNotifications();
     hasNotifications.value = notifications.isNotEmpty;
     debugPrint("Notifications Done!");
   }

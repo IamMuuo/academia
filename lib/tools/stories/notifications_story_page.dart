@@ -25,13 +25,17 @@ class NotificationsStoryPage extends StatelessWidget {
 
   List<StoryItem> _buildStoryItems(NotificationsController notifications) {
     List<StoryItem> items = [];
+    print(notifications.notifications);
 
     for (var element in notifications.notifications) {
       switch (element["file_type"].toString().replaceAll('"', "")) {
         case "video":
           items.add(StoryItem.pageVideo(
             element["upload_url"],
-            caption: element["contents"] ?? "By academia",
+            caption: Text(
+              element["contents"] ?? "By academia",
+              textAlign: TextAlign.center,
+            ),
             controller: storyController,
             duration: const Duration(seconds: 30),
           ));
@@ -39,7 +43,10 @@ class NotificationsStoryPage extends StatelessWidget {
 
         case "image":
           items.add(StoryItem.pageImage(
-            caption: element["contents"] ?? "Powered by academia",
+            caption: Text(
+              element["contents"] ?? "Powered by academia",
+              textAlign: TextAlign.center,
+            ),
             url: element["upload_url"],
             controller: storyController,
             duration: const Duration(seconds: 10),

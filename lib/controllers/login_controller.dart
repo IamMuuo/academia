@@ -22,7 +22,6 @@ class LoginController extends GetxController {
       Get.snackbar(
         "Form Error",
         "Please ensure you fill in the form to continue",
-        backgroundColor: Colors.white,
         icon: const Icon(
           CupertinoIcons.xmark_circle,
           color: Colors.red,
@@ -37,7 +36,6 @@ class LoginController extends GetxController {
       Get.snackbar(
         "Terms and Conditions",
         "You must consent to the terms and conditions provided by Academia's License to continue",
-        backgroundColor: Colors.white,
         icon: const Icon(
           CupertinoIcons.xmark_circle,
           color: Colors.red,
@@ -56,7 +54,6 @@ class LoginController extends GetxController {
       Get.snackbar(
         "Error",
         e.toString(),
-        backgroundColor: Colors.white,
         icon: const Icon(
           CupertinoIcons.xmark_circle,
           color: Colors.red,
@@ -94,7 +91,6 @@ class LoginController extends GetxController {
       Get.snackbar(
         "Form Validation Error",
         "Login failure, Please check your admno and password",
-        backgroundColor: Colors.white,
         icon: const Icon(
           CupertinoIcons.xmark_circle,
           color: Colors.red,

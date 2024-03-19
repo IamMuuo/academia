@@ -9,7 +9,6 @@ class IntroPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         systemOverlayStyle: const SystemUiOverlayStyle(
@@ -44,7 +43,8 @@ class IntroPage extends StatelessWidget {
                   autoPlay: true,
                   enlargeCenterPage: false,
                   slideIndicator: CircularSlideIndicator(
-                    indicatorBackgroundColor: Theme.of(context).primaryColor,
+                    indicatorBackgroundColor:
+                        Theme.of(context).colorScheme.secondary,
                     indicatorRadius: 7,
                   ),
                 ),

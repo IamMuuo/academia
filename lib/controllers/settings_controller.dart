@@ -31,10 +31,12 @@ class SettingsController extends GetxController {
 
     if (Platform.isAndroid) {
       shorebirdCodePush = ShorebirdCodePush();
-      shorebirdCodePush?.currentPatchNumber().then((value) {
-        patch.value = value.toString();
-        debugPrint("Current patch number is: $value");
-      });
+      shorebirdCodePush?.currentPatchNumber().then(
+        (value) {
+          patch.value = value?.toString() ?? "monkey";
+          debugPrint("Current patch number is: $value");
+        },
+      );
 
       checkForUpdates();
     }

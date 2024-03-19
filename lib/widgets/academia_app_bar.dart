@@ -43,8 +43,7 @@ class AcademiaAppBar extends StatelessWidget {
                   padding: const EdgeInsets.all(2),
                   decoration: notificationsController.hasNotifications.value
                       ? BoxDecoration(
-                          color:
-                              Theme.of(context).colorScheme.tertiaryContainer,
+                          color: Theme.of(context).colorScheme.primary,
                           borderRadius: const BorderRadius.all(
                             Radius.circular(50),
                           ),

@@ -10,7 +10,6 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final LoginController loginController = Get.put(LoginController());
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: SingleChildScrollView(
@@ -99,7 +98,7 @@ class LoginPage extends StatelessWidget {
                       )
                     : Center(
                         child: LoadingAnimationWidget.threeArchedCircle(
-                          color: Theme.of(context).primaryColor,
+                          color: Theme.of(context).colorScheme.tertiary,
                           size: 30,
                         ),
                       ),
