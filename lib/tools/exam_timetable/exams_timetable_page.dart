@@ -13,9 +13,8 @@ class ExamTimeTablePage extends StatefulWidget {
 class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
   final userController = Get.find<UserController>();
   final settingsController = Get.find<SettingsController>();
-  final examtimetableController = Get.put(ExamsTimeTableController());
+  final controller = Get.put(ExamsTimeTableController());
   final _searchController = TextEditingController();
-
   bool _isSearching = false;
 
   @override
@@ -40,23 +39,45 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                   color: Theme.of(context).colorScheme.primaryContainer,
                 ),
                 padding: const EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SizedBox(height: 60),
-                    const Spacer(),
-                    Text(
-                      "The important thing is not to stop questioning. Curiosity has its own reason for existing",
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                            fontFamily: GoogleFonts.figtree().fontFamily,
-                          ),
-                    ),
-                    const Text(
-                      "~ Albert Einsten",
-                      textAlign: TextAlign.end,
-                    ),
-                  ],
+                child: GestureDetector(
+                  onPanUpdate: ((details) {
+                    if (details.delta.dx > 0) {
+                      controller.nextQuote();
+                    }
+
+                    if (details.delta.dx < 0) {
+                      controller.previousQuote();
+                    }
+                  }),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 60),
+                      const Spacer(),
+                      Obx(
+                        () => Text(
+                          controller.index > -1
+                              ? controller.quotes[controller.index.value]["q"]
+                              : "So long as we are being remembered, we remain alive.",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith(
+                                fontFamily: GoogleFonts.figtree().fontFamily,
+                              ),
+                        ),
+                      ),
+                      Obx(
+                        () => Text(
+                          controller.index > -1
+                              ? controller.quotes[controller.index.value]["a"]
+                              : "Carlos Ruiz Zafon",
+                          textAlign: TextAlign.end,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -120,7 +141,7 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                                   _isSearching = true;
                                 });
 
-                                await examtimetableController.fetchExams();
+                                // await examtimetableController.fetchExams();
                                 if (!mounted) {
                                   return;
                                 }
