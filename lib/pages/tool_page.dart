@@ -12,6 +12,7 @@ class ToolsPage extends StatefulWidget {
 
 class _ToolsPageState extends State<ToolsPage> {
   var settingsController = Get.find<SettingsController>();
+  final UserController userController = Get.find<UserController>();
   // all available tools
   final List<Map<String, dynamic>> _allTools = allTools;
 
@@ -45,7 +46,7 @@ class _ToolsPageState extends State<ToolsPage> {
 
   bool get isBirthDay {
     DateFormat inputFormat = DateFormat('dd/MM/yyyy');
-    var dob = inputFormat.parse(user.dateOfBirth!);
+    var dob = inputFormat.parse(userController.user.value!.dateOfBirth!);
 
     if (dob.day == DateTime.now().day && dob.month == DateTime.now().month) {
       return true;

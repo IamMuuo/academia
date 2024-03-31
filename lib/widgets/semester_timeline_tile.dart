@@ -25,41 +25,31 @@ class SemesterTimeLineTile extends StatelessWidget {
         isLast: isLast,
         beforeLineStyle: LineStyle(
           color: isPast
-              ? Theme.of(context).primaryColorDark
-              : Theme.of(context).primaryColorLight,
+              ? Theme.of(context).colorScheme.secondary
+              : Theme.of(context).colorScheme.tertiary,
         ),
         indicatorStyle: IndicatorStyle(
           width: 40,
           color: isPast
-              ? Theme.of(context).primaryColorDark
-              : Theme.of(context).primaryColorLight,
+              ? Theme.of(context).colorScheme.secondary
+              : Theme.of(context).colorScheme.tertiary,
           iconStyle: isPast
-              ? IconStyle(
-                  iconData: Icons.done,
-                  color: Colors.white,
-                )
-              : IconStyle(
-                  iconData: Icons.toll,
-                  color: Theme.of(context).primaryColorDark,
-                ),
+              ? IconStyle(iconData: Icons.check)
+              : IconStyle(iconData: Icons.alarm_sharp),
         ),
         endChild: Padding(
           padding: const EdgeInsets.all(12),
           child: Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).colorScheme.primaryContainer,
               borderRadius: const BorderRadius.all(Radius.circular(8)),
             ),
             child: ListTile(
               contentPadding: const EdgeInsets.all(12),
-              titleTextStyle: normal.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+              titleTextStyle: Theme.of(context).textTheme.titleMedium,
               title: Text(title.title()),
               subtitle: Text(
                 content,
-                style: normal.copyWith(color: Colors.grey[300]),
               ),
             ),
           ),

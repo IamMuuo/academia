@@ -1,5 +1,4 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,39 +23,33 @@ class _HomePageState extends State<HomePage> {
     Get.put(CoursesPageController());
     Get.put(NotificationsController());
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
-      extendBodyBehindAppBar: true,
       body: SafeArea(
         child: IndexedStack(index: currentIndex, children: pages),
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        showUnselectedLabels: true,
-        enableFeedback: true,
         currentIndex: currentIndex,
-        selectedItemColor: Theme.of(context).primaryColorDark,
-        unselectedItemColor: Theme.of(context).primaryColorLight,
         onTap: (index) => setState(() => currentIndex = index),
         items: const [
           BottomNavigationBarItem(
-            activeIcon: Icon(CupertinoIcons.house_fill),
-            icon: Icon(CupertinoIcons.home),
+            activeIcon: Icon(Ionicons.home),
+            icon: Icon(Ionicons.home_outline),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.hammer),
-            activeIcon: Icon(CupertinoIcons.hammer_fill),
+            icon: Icon(Ionicons.hammer_outline),
+            activeIcon: Icon(Ionicons.hammer),
             label: 'Tools',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.file_copy_outlined),
-            activeIcon: Icon(Icons.file_copy),
+            icon: Icon(Ionicons.golf_outline),
+            activeIcon: Icon(Ionicons.golf),
             label: 'Courses',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings_outlined),
-            activeIcon: Icon(Icons.settings),
-            label: 'Settings',
+            icon: Icon(Ionicons.grid_outline),
+            activeIcon: Icon(Ionicons.grid),
+            label: 'More',
           ),
         ],
       ),

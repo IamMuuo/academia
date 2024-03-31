@@ -45,8 +45,8 @@ class TimeLinePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     LoadingAnimationWidget.flickr(
-                      rightDotColor: Theme.of(context).primaryColorLight,
-                      leftDotColor: Theme.of(context).primaryColorDark,
+                      rightDotColor: Theme.of(context).colorScheme.primary,
+                      leftDotColor: Theme.of(context).colorScheme.tertiary,
                       size: 60,
                     ),
                     const Padding(
@@ -80,20 +80,14 @@ class TimeLinePage extends StatelessWidget {
                               "Darn you got us but we are working to provide your semester's timeline",
                               textAlign: TextAlign.center,
                             ),
-                            ElevatedButton.icon(
+                            FilledButton.icon(
                               onPressed: () async {
                                 controller.isLoading.value = true;
                                 await controller.fetchAcademicCalendar();
                                 controller.isLoading.value = false;
                               },
-                              icon: const Icon(Icons.touch_app_sharp),
+                              icon: const Icon(Ionicons.refresh),
                               label: const Text("Try again"),
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Theme.of(context).primaryColorDark,
-                                  elevation: 0,
-                                  maximumSize: const Size(120, 60),
-                                  minimumSize: const Size(120, 60)),
                             ),
                           ],
                         ),

@@ -1,8 +1,4 @@
 import 'package:hive/hive.dart';
-import "package:academia/constants/common.dart";
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import "package:magnet/magnet.dart";
 
 part 'user.g.dart';
 
@@ -91,46 +87,4 @@ class User {
   }
 
   User(); // Explicitly does nothing to silence warnings
-
-  // Login a user
-  Future<bool> login(String username, String password) async {
-    // Make API request to authenticate user
-    try {
-      magnet = Magnet(username, password);
-      return await magnet.login();
-    } catch (error) {
-      // Handle magnet exceptions
-      rethrow;
-    }
-  }
-
-  // Retrieves user details from magnet and stores it on disk
-  Future<void> getUserDetails(String username, String password) async {
-    // try {
-    debugPrint(username);
-    debugPrint(password);
-    appDB = await Hive.openBox(dbName);
-    var data = await magnet.fetchUserData();
-    user = User.fromJson(data);
-    user.password = password;
-    await appDB.put("user", user);
-    // } catch (e) {
-    // debugPrint("Error: ${e.toString()}");
-    // }
-  }
-
-  // Logout a user
-  Future<void> logout() async {
-    try {
-      // Close the Hive box
-      await appDB.close();
-      // Delete the Hive box directory to remove all data
-      await Hive.deleteBoxFromDisk(dbName);
-      // Clear the user instance
-      // ignore: cast_from_null_always_fails
-      user = null as User;
-    } catch (e) {
-      debugPrint("Error during logout: ${e.toString()}");
-    }
-  }
 }

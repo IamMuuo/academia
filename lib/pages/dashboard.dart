@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/widgets/stat.dart';
 import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -14,6 +15,7 @@ class DashBoard extends StatelessWidget {
     final CoursesPageController coursesController =
         Get.find<CoursesPageController>();
 
+    final UserController userController = Get.find<UserController>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
@@ -22,166 +24,30 @@ class DashBoard extends StatelessWidget {
           children: [
             // Header
             AcademiaAppBar(
-              title: "Hi, ${(user.name!.split(" ")[0]).title().trim()}",
+              title:
+                  "Hi, ${(userController.user.value?.name ?? "user".split(" ")[0]).title().trim()}",
               subtitle:
                   "It's ${DateFormat.yMMMMEEEEd().format(DateTime.now())}",
             ),
             // body
             Padding(
               padding: const EdgeInsets.only(bottom: 12),
-              child: FlutterCarousel(
-                items: [
-                  // Day Percent
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(8))),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CircularPercentIndicator(
-                          radius: 60,
-                          center: Text(
-                            "${(dashBoardController.daypercent * 100).floor()}%",
-                            style: h5,
-                          ),
-                          percent: dashBoardController.daypercent,
-                          lineWidth: 20,
-                          progressColor: Theme.of(context).primaryColorDark,
-                          animationDuration: 2000,
-                          animation: true,
-                          circularStrokeCap: CircularStrokeCap.round,
-                        ),
-                        Text.rich(
-                          TextSpan(children: [
-                            TextSpan(
-                              text: "The day is\n",
-                              style: h5.copyWith(
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                            TextSpan(
-                              text:
-                                  "${(dashBoardController.daypercent * 100).floor()}%",
-                              style: h3,
-                            ),
-                            const TextSpan(text: "\nGone\n", style: h6),
-                            TextSpan(
-                                text: dashBoardController.getDayPercentQuote,
-                                style: normal.copyWith(fontSize: 12))
-                          ]),
-                        ),
-                      ],
-                    ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Stat(
+                    title: "Day",
+                    percentage: dashBoardController.daypercent,
                   ),
-
-                  // Week percent
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(8))),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CircularPercentIndicator(
-                          radius: 60,
-                          center: Text(
-                            "${(dashBoardController.weekPercent * 100).floor()}%",
-                            style: h5,
-                          ),
-                          percent: dashBoardController.weekPercent,
-                          lineWidth: 20,
-                          progressColor: Theme.of(context).primaryColorDark,
-                          animationDuration: 2000,
-                          animation: true,
-                          circularStrokeCap: CircularStrokeCap.round,
-                        ),
-                        Text.rich(
-                          TextSpan(children: [
-                            TextSpan(
-                              text: "The week is\n",
-                              style: h5.copyWith(
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                            TextSpan(
-                              text:
-                                  "${(dashBoardController.weekPercent * 100).floor()}%",
-                              style: h3,
-                            ),
-                            const TextSpan(text: "\nVanished\n", style: h6),
-                            TextSpan(
-                                text: dashBoardController.getWeekPercentQuote,
-                                style: normal.copyWith(fontSize: 12))
-                          ]),
-                        ),
-                      ],
-                    ),
+                  Stat(
+                    title: "Week",
+                    percentage: dashBoardController.weekPercent,
                   ),
-                  //
-                  // // Semester
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(8))),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CircularPercentIndicator(
-                          radius: 60,
-                          center: Text(
-                            "${(dashBoardController.semesterPercent * 100).floor()}%",
-                            style: h5,
-                          ),
-                          percent: dashBoardController.semesterPercent,
-                          lineWidth: 20,
-                          progressColor: Theme.of(context).primaryColorDark,
-                          animationDuration: 2000,
-                          animation: true,
-                          circularStrokeCap: CircularStrokeCap.round,
-                        ),
-                        Text.rich(
-                          TextSpan(children: [
-                            TextSpan(
-                              text: "The semester is\n",
-                              style: h6.copyWith(
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                            TextSpan(
-                              text:
-                                  "${(dashBoardController.semesterPercent * 100).floor()}%",
-                              style: h3,
-                            ),
-                            const TextSpan(text: "\nGone!\n", style: h6),
-                            TextSpan(
-                                text:
-                                    dashBoardController.getSemesterPercentQuote,
-                                style: normal.copyWith(fontSize: 12))
-                          ]),
-                        ),
-                      ],
-                    ),
+                  Stat(
+                    title: "Semester",
+                    percentage: dashBoardController.semesterPercent,
                   ),
                 ],
-                options: CarouselOptions(
-                  autoPlay: true,
-                  enableInfiniteScroll: true,
-                  height: MediaQuery.of(context).size.height * 0.25,
-                  enlargeCenterPage: true,
-                  slideIndicator: CircularSlideIndicator(
-                    indicatorRadius: 6,
-                    itemSpacing: 12,
-                    indicatorBackgroundColor:
-                        Theme.of(context).primaryColorDark,
-                  ),
-                ),
               ),
             ),
             SizedBox(
@@ -193,12 +59,13 @@ class DashBoard extends StatelessWidget {
                   // Classes Today
                   Container(
                     width: MediaQuery.of(context).size.width * 0.45,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
                         Radius.circular(8),
                       ),
+                      border: Border.all(width: 1),
                       // color: Theme.of(context).primaryColorLight,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.surface,
                     ),
                     padding: const EdgeInsets.all(16),
                     child: Column(
@@ -222,20 +89,16 @@ class DashBoard extends StatelessWidget {
                               ? Text(
                                   dashBoardController.classesTodayCount
                                       .toString(),
-                                  style: h3,
+                                  style:
+                                      Theme.of(context).textTheme.displaySmall,
                                 )
-                              : Text(
-                                  "Unregistered",
-                                  style: normal.copyWith(
-                                    color: Theme.of(context).primaryColorDark,
-                                  ),
-                                ),
+                              : Text("Unregistered",
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium),
                         ),
                         Text(
                           "Classes today",
-                          style: normal.copyWith(
-                            color: Theme.of(context).primaryColorLight,
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
                     ),
@@ -244,20 +107,18 @@ class DashBoard extends StatelessWidget {
                   // Schedules today
                   Container(
                     width: MediaQuery.of(context).size.width * 0.45,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(8),
-                      ),
-                      // color: Theme.of(context).primaryColorLight,
-                      color: Colors.white,
-                    ),
+                    decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(8),
+                        ),
+                        border: Border.all(width: 1)),
                     padding: const EdgeInsets.all(16),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ClipRRect(
                           borderRadius: const BorderRadius.all(
-                            Radius.circular(90),
+                            Radius.circular(50),
                           ),
                           child: CircleAvatar(
                             radius: 40,
@@ -271,13 +132,11 @@ class DashBoard extends StatelessWidget {
                         ),
                         Text(
                           "${dashBoardController.numberofTasks}",
-                          style: h3,
+                          style: Theme.of(context).textTheme.displaySmall,
                         ),
                         Text(
                           "Events and Schedules",
-                          style: normal.copyWith(
-                            color: Theme.of(context).primaryColorLight,
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
                     ),
@@ -293,9 +152,11 @@ class DashBoard extends StatelessWidget {
               // height: 400,
               child: Column(
                 children: [
-                  const Text(
+                  Text(
                     "Today's activities and classes",
-                    style: h6,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   dashBoardController.classesTodayCount == 0
                       ? Column(
@@ -316,9 +177,10 @@ class DashBoard extends StatelessWidget {
                                 padding: const EdgeInsets.all(8),
                                 child: Container(
                                   padding: const EdgeInsets.all(8),
-                                  decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
+                                  decoration: BoxDecoration(
+                                      color:
+                                          Theme.of(context).colorScheme.surface,
+                                      borderRadius: const BorderRadius.all(
                                           Radius.circular(12))),
                                   child: ListTile(
                                     leading: const Icon(CupertinoIcons.timer),
@@ -337,7 +199,13 @@ class DashBoard extends StatelessWidget {
                           ),
                         ),
                   const SizedBox(height: 12),
-                  const Text("Upcoming events and classes", style: h6),
+                  Text(
+                    "Upcoming events and classes",
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
                   SizedBox(
                     height: 120,
                     child: dashBoardController.classesTommorrow.isNotEmpty

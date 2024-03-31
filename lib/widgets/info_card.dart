@@ -17,8 +17,9 @@ class InfoCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Container(
         decoration: BoxDecoration(
+          border: Border.all(color: Theme.of(context).colorScheme.outline),
           borderRadius: const BorderRadius.all(Radius.circular(12)),
-          color: Theme.of(context).cardColor,
+          color: Theme.of(context).colorScheme.secondaryContainer,
         ),
         padding: const EdgeInsets.all(6),
         child: ListTile(
@@ -27,12 +28,12 @@ class InfoCard extends StatelessWidget {
           leading: Container(
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(12)),
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             padding: const EdgeInsets.all(12),
             child: Icon(
               icon,
-              color: Theme.of(context).primaryColorLight,
+              color: Theme.of(context).colorScheme.onSecondary,
             ),
           ),
         ),

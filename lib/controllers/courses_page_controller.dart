@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import "package:academia/constants/common.dart";
 import 'package:intl/intl.dart';
+import 'package:academia/controllers/controllers.dart';
 
 class CoursesPageController extends GetxController {
   var userCourses = <Courses>[];
   var hasCourses = true.obs;
   var hasProgress = true.obs;
+  final UserController userController = Get.find<UserController>();
 
   Future<bool> updateCourses() async {
     try {
@@ -39,12 +41,13 @@ class CoursesPageController extends GetxController {
   }
 
   List<Widget> buildElements() {
-    var courses = appDB.get("timetable") ?? [];
+    var courses = appDB.isOpen ? appDB.get("timetable") ?? [] : [];
 
     var userCourses = <Widget>[];
 
     for (Courses course in courses) {
-      userCourses.add(CourseCard(
+      userCourses.add(
+        CourseCard(
           backGround: DateFormat("EEEE").format(DateTime.now()) ==
                   course.dayOfTheWeek!.title()
               ? Colors.blueGrey
@@ -86,7 +89,10 @@ class CoursesPageController extends GetxController {
           period: course.period.toString().title(),
           venue: course.room.toString(),
           lecturer: course.lecturer.toString().title(),
-          campus: user.campus.toString().title()));
+          campus:
+              userController.user.value?.campus.toString().title() ?? "athi",
+        ),
+      );
     }
     if (userCourses.isEmpty) {
       hasCourses.value = false;

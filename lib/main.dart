@@ -12,14 +12,8 @@ void main() async {
   Hive.registerAdapter(TaskAdapter());
   appDB = await Hive.openBox(dbName);
 
-  bool isLoggedIn = false;
-  if (appDB.containsKey("user")) {
-    user = await appDB.get("user");
-    isLoggedIn = true;
-    magnet = Magnet(user.admno!, user.password!);
-  }
-
   // Init settings controller
+  final userController = Get.put(UserController());
   Get.put(SettingsController());
   Get.put(NotificationsController());
 
@@ -28,8 +22,11 @@ void main() async {
 
   runApp(
     GetMaterialApp(
-      home: isLoggedIn ? const HomePage() : const IntroPage(),
+      home: userController.isLoggedIn.value
+          ? const HomePage()
+          : const IntroPage(),
       theme: lightModeTheme,
+      darkTheme: darkModeTheme,
     ),
   );
 }

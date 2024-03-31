@@ -7,13 +7,15 @@ class BirthDayPage extends StatelessWidget {
   const BirthDayPage({super.key});
 
   int get years {
+    final UserController userController = Get.find<UserController>();
     DateFormat inputFormat = DateFormat('dd/MM/yyyy');
-    var dob = inputFormat.parse(user.dateOfBirth!);
+    var dob = inputFormat.parse(userController.user.value!.dateOfBirth!);
     return DateTime.now().year - dob.year;
   }
 
   @override
   Widget build(BuildContext context) {
+    final UserController userController = Get.find<UserController>();
     var settingsController = Get.find<SettingsController>();
     ScreenshotController screenshotController = ScreenshotController();
     return Scaffold(
@@ -87,13 +89,16 @@ class BirthDayPage extends StatelessWidget {
                             child: settingsController.showProfilePic.value
                                 ? Image.memory(
                                     Uint8List.fromList(
-                                      base64Decode(user.profile!.replaceFirst(
-                                          "data:image/gif;base64,", "")),
+                                      base64Decode(userController
+                                          .user.value!.profile!
+                                          .replaceFirst(
+                                              "data:image/gif;base64,", "")),
                                     ),
                                   )
-                                : Image.asset(user.gender == "male"
-                                    ? "assets/images/male_student.png"
-                                    : "assets/images/female_student.png"),
+                                : Image.asset(
+                                    userController.user.value!.gender == "male"
+                                        ? "assets/images/male_student.png"
+                                        : "assets/images/female_student.png"),
                           ),
                         ),
                         Positioned(
@@ -116,7 +121,10 @@ class BirthDayPage extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.center,
                     child: Text(
-                      user.name!.toString().title().split(" ")[0],
+                      userController.user.value!.name!
+                          .toString()
+                          .title()
+                          .split(" ")[0],
                       style: const TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,

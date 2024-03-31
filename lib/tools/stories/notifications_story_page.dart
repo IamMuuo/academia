@@ -25,13 +25,17 @@ class NotificationsStoryPage extends StatelessWidget {
 
   List<StoryItem> _buildStoryItems(NotificationsController notifications) {
     List<StoryItem> items = [];
+    print(notifications.notifications);
 
     for (var element in notifications.notifications) {
       switch (element["file_type"].toString().replaceAll('"', "")) {
         case "video":
           items.add(StoryItem.pageVideo(
             element["upload_url"],
-            caption: element["contents"] ?? "By academia",
+            caption: Text(
+              element["contents"] ?? "By academia",
+              textAlign: TextAlign.center,
+            ),
             controller: storyController,
             duration: const Duration(seconds: 30),
           ));
@@ -39,7 +43,10 @@ class NotificationsStoryPage extends StatelessWidget {
 
         case "image":
           items.add(StoryItem.pageImage(
-            caption: element["contents"] ?? "Powered by academia",
+            caption: Text(
+              element["contents"] ?? "Powered by academia",
+              textAlign: TextAlign.center,
+            ),
             url: element["upload_url"],
             controller: storyController,
             duration: const Duration(seconds: 10),
@@ -62,6 +69,7 @@ class NotificationsStoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var notifications = Get.find<NotificationsController>();
+    final UserController userController = Get.find<UserController>();
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -69,7 +77,7 @@ class NotificationsStoryPage extends StatelessWidget {
           onPressed: () => Get.back(),
           icon: const Icon(Icons.arrow_left),
         ),
-        title: Text(user.name!.split(" ")[0].title()),
+        title: Text(userController.user.value!.name!.split(" ")[0].title()),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -88,27 +96,6 @@ class NotificationsStoryPage extends StatelessWidget {
                     backgroundColor: Colors.red,
                     roundedTop: false,
                   ),
-                  // StoryItem.pageImage(
-                  //   // caption: element["contents"],
-                  //   caption: "Academia is for you by you",
-                  //   // url: element["upload_url"],
-                  //   url:
-                  //       "https://i.pinimg.com/236x/87/94/51/87945156541bf6d116c5b5d5e49a6acf.jpg",
-                  //   controller: storyController,
-                  // ),
-                  // StoryItem.text(
-                  //   // title: element["contents"],
-                  //   title: "It's magic",
-                  //   backgroundColor: getRandomColor(),
-                  // ),
-                  // StoryItem.pageVideo(
-                  //   // element["upload_url"],
-                  //   "https://dl207v.filemate16.shop/?file=M3R4SUNiN3JsOHJ6WWQ2a3NQS1Y5ZGlxVlZIOCtyZ0lsOUk5emg0a1NxSkM3WXdoMDYrc0xNNUlKNmtJaG9XM0JaVkgvVEhLWmNPMFlWL1I1b2hvVDJQVnNkQTB0VHJ3NDQ4MFVaUTBCRERobFBPM2d6Tnp6RlhUYzhpWlVPcHdPVElwaFZCVGd3ZWJ5Y0RWc1Qyc2pDejkveDJUSWlrYTVuME1PUHFOMnJvTzBISGJadVhoeDVrSXFIdk90Y29lamFQTDdGR2xoYUUzb3Rrb0R4QWtKTU1LZ2R6bXlhM0lweDQ9",
-                  //   // "https://youtu.be/dVq-lzhwmPw?si=XUpyU9zWPo10XoP5",
-                  //   // caption: element["contents"],
-                  //   caption: "Academia loves you",
-                  //   controller: storyController,
-                  // ),
                 ],
                 controller: storyController,
               ),

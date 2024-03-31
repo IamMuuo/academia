@@ -9,10 +9,6 @@ import 'package:intl/intl.dart';
 class DashboardController extends GetxController {
   TextEditingController searchBoxController = TextEditingController();
 
-  void getNotifications() {
-    debugPrint("${user.name}");
-  }
-
   double get weekPercent {
     int weekDay = DateTime.now().weekday;
     return weekDay / 7;
@@ -30,7 +26,7 @@ class DashboardController extends GetxController {
 
   String get getDayPercentQuote {
     if (daypercent > 0.75) {
-      return "Perhaps much is already done!";
+      return "Take a break!";
     } else if (daypercent > 0.5) {
       return "Sun down approaches";
     } else if (daypercent > 0.25) {
@@ -109,7 +105,6 @@ class DashboardController extends GetxController {
         classes.add(course);
       }
     }
-    debugPrint(DateFormat("EEEE").format(DateTime.now()));
 
     return classes;
   }
