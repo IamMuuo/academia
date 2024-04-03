@@ -1,7 +1,10 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:academia/tools/exam_timetable/exams_timetable_controller.dart';
+import 'package:academia/tools/exam_timetable/widgets/exam_card.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'widgets/count_down_widget.dart';
 
 class ExamTimeTablePage extends StatefulWidget {
   const ExamTimeTablePage({super.key});
@@ -28,8 +31,15 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
             ),
             actions: [
               IconButton(
-                onPressed: () {},
-                icon: Icon(Ionicons.help),
+                onPressed: () {
+                  Get.defaultDialog(
+                    title: "Academia Help",
+                    content: const Text(
+                      "Never miss an exam again with the intuitive exam timetable",
+                    ),
+                  );
+                },
+                icon: const Icon(Ionicons.help),
               ),
             ],
             expandedHeight: 250,
@@ -40,15 +50,8 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                 ),
                 padding: const EdgeInsets.all(12),
                 child: GestureDetector(
-                  onPanUpdate: ((details) {
-                    if (details.delta.dx > 0) {
-                      controller.nextQuote();
-                    }
-
-                    if (details.delta.dx < 0) {
-                      controller.previousQuote();
-                    }
-                  }),
+                  onTap: () => controller.previousQuote(),
+                  onDoubleTap: () => controller.nextQuote(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -58,7 +61,7 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                         () => Text(
                           controller.index > -1
                               ? controller.quotes[controller.index.value]["q"]
-                              : "So long as we are being remembered, we remain alive.",
+                              : "Fool me once shame on you; fool me twice, shame on me.",
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme
@@ -72,7 +75,7 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                         () => Text(
                           controller.index > -1
                               ? controller.quotes[controller.index.value]["a"]
-                              : "Carlos Ruiz Zafon",
+                              : "Chinese Proverb",
                           textAlign: TextAlign.end,
                         ),
                       ),
@@ -82,21 +85,43 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
               ),
             ),
           ),
+          SliverToBoxAdapter(
+            child: Obx(
+              () => controller.hasExams.value
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: ExamCountDownWidget(
+                        examCount: controller.exams.length,
+                        exam: controller.exams[0],
+                        endtime: getExamDate(controller.exams[0]),
+                      ),
+                    )
+                  : const SizedBox(),
+            ),
+          ),
           SliverFillRemaining(
             hasScrollBody: true,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Seems you have no exams at the moment",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          fontFamily: GoogleFonts.figtree().fontFamily,
+              child: Obx(
+                () => controller.hasExams.value
+                    ? ListView.builder(
+                        itemCount: controller.exams.length,
+                        itemBuilder: (context, index) =>
+                            ExamCard(exam: controller.exams[index]),
+                      )
+                    : Center(
+                        child: Text(
+                          "Seems you have no exams at the moment 🤞",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith(
+                                fontFamily: GoogleFonts.figtree().fontFamily,
+                              ),
                         ),
-                  ),
-                ],
+                      ),
               ),
             ),
           )
@@ -105,7 +130,6 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
-            isDismissible: false,
             context: context,
             builder: (context) => StatefulBuilder(
               builder: (context, StateSetter setState) {
@@ -135,7 +159,6 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                                 );
                                 return;
                               }
-                              print("Here");
                               if (mounted) {
                                 setState(() {
                                   _isSearching = true;
@@ -185,9 +208,14 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
           );
         },
         child: const Icon(
-          Ionicons.add,
+          Ionicons.search,
         ),
       ),
     );
+  }
+
+  DateTime getExamDate(Exam exam) {
+    final formatter = DateFormat('EEEE dd/MM/yy');
+    return formatter.parse(exam.day.title());
   }
 }

@@ -67,6 +67,7 @@ dependencies:
   story_view: ^0.16.0
   ionicons: ^0.2.2
   google_fonts: ^6.2.1
+  flutter_timer_countdown: ^1.0.7
   
 
 

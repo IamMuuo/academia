@@ -10,6 +10,7 @@ void main() async {
   Hive.registerAdapter(ScheduleAdapter());
   Hive.registerAdapter(CoursesAdapter());
   Hive.registerAdapter(TaskAdapter());
+  Hive.registerAdapter(ExamAdapter());
   appDB = await Hive.openBox(dbName);
 
   // Init settings controller

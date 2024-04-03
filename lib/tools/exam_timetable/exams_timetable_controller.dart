@@ -1,9 +1,12 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class ExamsTimeTableController extends GetxController {
   var index = (-1).obs;
+  var hasExams = false.obs;
   late List<Map<String, dynamic>> quotes = [];
+  List<Exam> exams = [];
 
   Future<void> fetchRandomQuote() async {
     try {
@@ -35,23 +38,59 @@ class ExamsTimeTableController extends GetxController {
     }
   }
 
-  Future<void> fetchExams() async {
-    await Future.delayed(const Duration(seconds: 10));
-    return;
+  Future<List<Exam>> fetchExams(List<String> units) async {
+    exams = (await magnet.fetchExam(units))
+        .map((e) => Exam.fromJson(e))
+        .toList()
+        .cast<Exam>();
+
+    exams.sort((a, b) {
+      final formatter = DateFormat('EEEE dd/MM/yy');
+      final aDate = formatter.parse(a.day.title());
+      final bDate = formatter.parse(b.day.title());
+
+      // Compare the dates first
+      final dateComparison = aDate.compareTo(bDate);
+      if (dateComparison != 0) return dateComparison;
+
+      // If the dates are the same, compare the times
+      final aTimeRange = a.time.split('-');
+      final bTimeRange = b.time.split('-');
+      final aStartTime = DateFormat('h:mma').parse(aTimeRange[0]);
+      final bStartTime = DateFormat('h:mma').parse(bTimeRange[0]);
+
+      return aStartTime.compareTo(bStartTime);
+    });
+
+    await appDB.put("exams", exams);
+
+    return exams;
   }
 
-  List<Courses> userCourses = <Courses>[];
   @override
   Future<void> onInit() async {
     await fetchRandomQuote();
-    // Load user courses
-    debugPrint(appDB.keys.toString());
-    final List coursesData = await appDB.get("timetable");
-    coursesData.forEach((element) {
-      if (element != null) {
-        userCourses.add(element);
-      }
-    });
+    hasExams.value = false;
+
+    // Check if the local database has exams
+    if (appDB.containsKey("exams")) {
+      hasExams.value = true;
+      // load the exams
+      exams = await appDB.get("exams").toList().cast<Exam>();
+    } else {
+      // load the units
+      final List<Courses> courses =
+          await appDB.get("timetable").toList().cast<Courses>();
+      List<String> courseTitles = courses
+          .map((e) =>
+              "${e.name?.replaceAll('-', '')}${e.section?.split('-')[0]}")
+          .toList();
+      print(courseTitles);
+
+      // fetch from server
+      exams = await fetchExams(courseTitles);
+      hasExams.value = exams.isNotEmpty;
+    }
     super.onInit();
   }
 }
