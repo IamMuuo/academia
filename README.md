@@ -22,7 +22,7 @@ Academia is powered by magnet for scraping data
 
 ## Screenshots 📷
 
-![Screenshot](screenshots/shot.png){:height="600px"}
+![Screenshot](screenshots/shot.png)
 
 ## Getting Started 🚀
 
