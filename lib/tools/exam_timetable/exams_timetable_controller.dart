@@ -1,61 +1,139 @@
-import 'package:academia/constants/common.dart';
-import 'package:academia/models/courses.dart';
-import 'package:flutter/material.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class ExamsTimeTableController extends GetxController {
+  var index = (-1).obs;
   var hasExams = false.obs;
-  var isLoading = false.obs;
+  late List<Map<String, dynamic>> quotes = [];
+  List<Exam> exams = [];
 
-  Future<List<dynamic>> fetchExamTimeTable(String units,
-      {bool athi = true}) async {
-    isLoading.value = true;
-
+  Future<void> fetchRandomQuote() async {
     try {
-      var fetchedUnits = await magnet.fetchExamTimeTabale(units);
-      isLoading.value = false;
-
-      return fetchedUnits;
+      quotes = await magnet.fetchRandomQuotes();
+      index.value = 0;
     } catch (e) {
-      Get.snackbar(
-        "Oh Snap!",
-        "Something went wrong while attempting to fetch your exam timetable, please check your network connection and try again",
-        icon: const Icon(
-          Icons.network_ping,
-        ),
-        maxWidth: 500,
+      showCustomSnackbar(
+        "Error",
+        e.toString(),
+        colorText: Colors.red,
+        backgroundColor: Colors.grey,
       );
-      debugPrint(e.toString());
     }
-
-    isLoading.value = false;
-    return [];
   }
 
-  Future<void> addFetchedUnits(List<dynamic> fetchedUnits) async {
-    await appDB.put("exam_timetable", fetchedUnits);
+  void nextQuote() {
+    if (quotes.isNotEmpty && index.value < 49) {
+      index.value++;
+    } else if (index.value == 49) {
+      fetchRandomQuote().then((value) => value); // Do nothing
+    }
+  }
+
+  void previousQuote() {
+    if (quotes.isNotEmpty && index.value > 0) {
+      index.value--;
+    } else if (index.value == 0) {
+      fetchRandomQuote().then((value) => value); // Do nothing
+    }
+  }
+
+  Future<List<Exam>> fetchExams(List<String> units) async {
+    final examData = (await magnet.fetchExam(units))
+        .map((e) => Exam.fromJson(e))
+        .toList()
+        .cast<Exam>();
+
+    examData.sort((a, b) {
+      final formatter = DateFormat('EEEE dd/MM/yy');
+      final aDate = formatter.parse(a.day.title());
+      final bDate = formatter.parse(b.day.title());
+
+      // Compare the dates first
+      final dateComparison = aDate.compareTo(bDate);
+      if (dateComparison != 0) return dateComparison;
+
+      // If the dates are the same, compare the times
+      final aTimeRange = a.time.split('-');
+      final bTimeRange = b.time.split('-');
+      final aStartTime = DateFormat('h:mma').parse(aTimeRange[0]);
+      final bStartTime = DateFormat('h:mma').parse(bTimeRange[0]);
+
+      return aStartTime.compareTo(bStartTime);
+    });
+
+    return examData;
+  }
+
+  Future<void> addExamToStorage(Exam exam) async {
+    exams = await appDB.get("exams").toList().cast<Exam>();
+    exams.add(exam);
+    exams.sort((a, b) {
+      final formatter = DateFormat('EEEE dd/MM/yy');
+      final aDate = formatter.parse(a.day.title());
+      final bDate = formatter.parse(b.day.title());
+
+      // Compare the dates first
+      final dateComparison = aDate.compareTo(bDate);
+      if (dateComparison != 0) return dateComparison;
+
+      // If the dates are the same, compare the times
+      final aTimeRange = a.time.split('-');
+      final bTimeRange = b.time.split('-');
+      final aStartTime = DateFormat('h:mma').parse(aTimeRange[0]);
+      final bStartTime = DateFormat('h:mma').parse(bTimeRange[0]);
+
+      return aStartTime.compareTo(bStartTime);
+    });
+
+    await appDB.put("exams", exams);
+
+    // trigger a data refersh
+    hasExams.value = false;
+    hasExams.value = true;
+  }
+
+  Future<void> removeExamFromStorage(Exam exam) async {
+    exams = await appDB.get("exams").toList().cast<Exam>();
+    exams.remove(exam);
+
+    if (exams.isEmpty) {
+      await appDB.delete("exams");
+      // trigger a data refersh
+      hasExams.value = false;
+    } else {
+      await appDB.put("exams", exams);
+      // trigger a data refersh
+      hasExams.value = false;
+      hasExams.value = true;
+    }
   }
 
   @override
-  void onInit() async {
-    debugPrint(appDB.get("exam_timetable").toString());
+  Future<void> onInit() async {
+    await fetchRandomQuote();
+    hasExams.value = false;
 
-    if (true) {
-      var courses = appDB.get("timetable");
-      String payload = "";
-      for (Courses c in courses) {
-        payload =
-            "$payload ${c.name!.replaceAll("-", " ")}${c.section!.split('-')[0]},";
-      }
+    // Check if the local database has exams
+    if (appDB.containsKey("exams")) {
+      hasExams.value = true;
+      // load the exams
+      exams = await appDB.get("exams").toList().cast<Exam>();
+    } else {
+      // load the units
+      final List<Courses> courses =
+          await appDB.get("timetable").toList().cast<Courses>();
+      List<String> courseTitles = courses
+          .map((e) =>
+              "${e.name?.replaceAll('-', '')}${e.section?.split('-')[0]}")
+          .toList();
+      print(courseTitles);
 
-      debugPrint(payload);
-      var fetchedUnits = await fetchExamTimeTable(payload.trim());
-      await addFetchedUnits(fetchedUnits);
-      hasExams.value = fetchedUnits.isNotEmpty;
+      // fetch from server
+      exams = await fetchExams(courseTitles);
+      await appDB.put("exams", exams);
+      hasExams.value = exams.isNotEmpty;
     }
-
-    debugPrint("do I have exams : ${hasExams.value}");
-
     super.onInit();
   }
 }

@@ -82,12 +82,14 @@ void showCustomSnackbar(
   String message, {
   IconData? icon,
   Color? iconColor,
+  Color? backgroundColor = Colors.white,
+  Color? colorText = Colors.black,
 }) {
   Get.snackbar(
     title,
     message,
-    colorText: Colors.black,
-    backgroundColor: Colors.white,
+    colorText: colorText,
+    backgroundColor: backgroundColor,
     icon: Icon(icon ?? Icons.info),
   );
 }
