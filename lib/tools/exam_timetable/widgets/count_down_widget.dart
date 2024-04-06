@@ -68,7 +68,7 @@ class _ExamCountDownWidgetState extends State<ExamCountDownWidget> {
             : ExamCard(exam: widget.exam!),
         Container(
           decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primaryContainer,
+              color: Theme.of(context).colorScheme.tertiaryContainer,
               borderRadius: BorderRadius.circular(8)),
           width: MediaQuery.of(context).size.width * 0.8,
           child: Center(

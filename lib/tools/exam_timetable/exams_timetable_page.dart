@@ -19,6 +19,8 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
   final controller = Get.put(ExamsTimeTableController());
   final _searchController = TextEditingController();
   bool _isSearching = false;
+  bool _searchComplete = false;
+  List<Exam> searchedExams = [];
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,9 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            floating: true,
+            snap: true,
+            pinned: true,
             title: Text(
               "Hi ${userController.user.value!.name!.split(' ')[0].title()}",
             ),
@@ -35,7 +40,7 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                   Get.defaultDialog(
                     title: "Academia Help",
                     content: const Text(
-                      "Never miss an exam again with the intuitive exam timetable",
+                      "Never miss an exam again with the intuitive exam timetable\nDouble tap an exam card to remove it",
                     ),
                   );
                 },
@@ -46,7 +51,7 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primaryContainer,
+                  color: Theme.of(context).colorScheme.tertiaryContainer,
                 ),
                 padding: const EdgeInsets.all(12),
                 child: GestureDetector(
@@ -107,12 +112,17 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                 () => controller.hasExams.value
                     ? ListView.builder(
                         itemCount: controller.exams.length,
-                        itemBuilder: (context, index) =>
-                            ExamCard(exam: controller.exams[index]),
+                        itemBuilder: (context, index) => GestureDetector(
+                          onDoubleTap: () async {
+                            await controller
+                                .removeExamFromStorage(controller.exams[index]);
+                          },
+                          child: ExamCard(exam: controller.exams[index]),
+                        ),
                       )
                     : Center(
                         child: Text(
-                          "Seems you have no exams at the moment 🤞",
+                          "Who dares summon me?🧞",
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme
@@ -162,7 +172,17 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                               if (mounted) {
                                 setState(() {
                                   _isSearching = true;
+                                  _searchComplete = false;
                                 });
+                                searchedExams = await controller.fetchExams(
+                                  _searchController.text.split(","),
+                                );
+
+                                if (searchedExams.isNotEmpty) {
+                                  setState(() {
+                                    _searchComplete = true;
+                                  });
+                                }
 
                                 // await examtimetableController.fetchExams();
                                 if (!mounted) {
@@ -179,8 +199,7 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                       ),
                       const SizedBox(height: 12),
                       _isSearching
-                          ? const Text("Loading")
-                          : Container(
+                          ? Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(4),
@@ -189,7 +208,7 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                                     .tertiaryContainer,
                               ),
                               child: Text(
-                                "Please input your units seperated with commas and wait for the magic to happen🪄",
+                                "Your wish is my command. Performing forbidden magic 🧞\n Double Tap a course to add it",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context)
                                     .textTheme
@@ -199,7 +218,48 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                                           GoogleFonts.figtree().fontFamily,
                                     ),
                               ),
-                            ),
+                            )
+                          : _searchComplete
+                              ? SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.4,
+                                  child: ListView.builder(
+                                      itemCount: searchedExams.length,
+                                      itemBuilder: (context, index) =>
+                                          GestureDetector(
+                                            onDoubleTap: () async {
+                                              // Add exam
+                                              await controller.addExamToStorage(
+                                                  searchedExams[index]);
+                                              searchedExams
+                                                  .remove(searchedExams[index]);
+                                              setState(() {});
+                                            },
+                                            child: ExamCard(
+                                              exam: searchedExams[index],
+                                            ),
+                                          )),
+                                )
+                              : Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .tertiaryContainer,
+                                  ),
+                                  child: Text(
+                                    "Please input your units seperated with commas and let the genie work his forbidden magic!",
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge!
+                                        .copyWith(
+                                          fontFamily:
+                                              GoogleFonts.figtree().fontFamily,
+                                        ),
+                                  ),
+                                ),
                     ],
                   ),
                 );

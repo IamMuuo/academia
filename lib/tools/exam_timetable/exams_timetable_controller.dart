@@ -39,11 +39,35 @@ class ExamsTimeTableController extends GetxController {
   }
 
   Future<List<Exam>> fetchExams(List<String> units) async {
-    exams = (await magnet.fetchExam(units))
+    final examData = (await magnet.fetchExam(units))
         .map((e) => Exam.fromJson(e))
         .toList()
         .cast<Exam>();
 
+    examData.sort((a, b) {
+      final formatter = DateFormat('EEEE dd/MM/yy');
+      final aDate = formatter.parse(a.day.title());
+      final bDate = formatter.parse(b.day.title());
+
+      // Compare the dates first
+      final dateComparison = aDate.compareTo(bDate);
+      if (dateComparison != 0) return dateComparison;
+
+      // If the dates are the same, compare the times
+      final aTimeRange = a.time.split('-');
+      final bTimeRange = b.time.split('-');
+      final aStartTime = DateFormat('h:mma').parse(aTimeRange[0]);
+      final bStartTime = DateFormat('h:mma').parse(bTimeRange[0]);
+
+      return aStartTime.compareTo(bStartTime);
+    });
+
+    return examData;
+  }
+
+  Future<void> addExamToStorage(Exam exam) async {
+    exams = await appDB.get("exams").toList().cast<Exam>();
+    exams.add(exam);
     exams.sort((a, b) {
       final formatter = DateFormat('EEEE dd/MM/yy');
       final aDate = formatter.parse(a.day.title());
@@ -64,7 +88,25 @@ class ExamsTimeTableController extends GetxController {
 
     await appDB.put("exams", exams);
 
-    return exams;
+    // trigger a data refersh
+    hasExams.value = false;
+    hasExams.value = true;
+  }
+
+  Future<void> removeExamFromStorage(Exam exam) async {
+    exams = await appDB.get("exams").toList().cast<Exam>();
+    exams.remove(exam);
+
+    if (exams.isEmpty) {
+      await appDB.delete("exams");
+      // trigger a data refersh
+      hasExams.value = false;
+    } else {
+      await appDB.put("exams", exams);
+      // trigger a data refersh
+      hasExams.value = false;
+      hasExams.value = true;
+    }
   }
 
   @override
@@ -89,6 +131,7 @@ class ExamsTimeTableController extends GetxController {
 
       // fetch from server
       exams = await fetchExams(courseTitles);
+      await appDB.put("exams", exams);
       hasExams.value = exams.isNotEmpty;
     }
     super.onInit();
