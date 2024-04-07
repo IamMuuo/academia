@@ -49,18 +49,23 @@ class ExamCard extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               exam.coordinator != null && exam.invigilator != null
-                  ? Row(children: [
-                      const Icon(Ionicons.person_circle),
-                      const SizedBox(width: 4),
-                      Text(
-                        exam.coordinator.toString(),
+                  ? Column(children: [
+                      Row(
+                        children: [
+                          Text(
+                            "Coordiator: ${exam.coordinator.toString().title()}",
+                          ),
+                        ],
                       ),
-                      const Spacer(),
-                      const Icon(Ionicons.people_circle),
-                      const SizedBox(width: 4),
-                      Text(
-                        exam.coordinator.toString(),
-                      )
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          Text(
+                            "Invigilator ${exam.invigilator.toString().title()}",
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        ],
+                      ),
                     ])
                   : const SizedBox()
             ],
