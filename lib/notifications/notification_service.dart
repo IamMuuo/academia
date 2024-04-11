@@ -47,6 +47,7 @@ class NotificationService {
         InitializationSettings(
       android: initializationSettingsAndroid,
       linux: linuxInitializationSettings,
+      iOS: const DarwinInitializationSettings(),
     );
 
     platformChannelSpecifics =
