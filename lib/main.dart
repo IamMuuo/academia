@@ -16,7 +16,7 @@ void main() async {
   // Init settings controller
   final userController = Get.put(UserController());
   Get.put(SettingsController());
-  Get.put(NotificationsController());
+  //Get.put(NotificationsController());
 
   // Init TasksManager controller
   Get.put(TaskManagerController());
