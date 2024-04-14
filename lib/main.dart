@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/services/services.dart';
 import 'package:get/get.dart';
 
 void main() async {
@@ -13,13 +14,21 @@ void main() async {
   Hive.registerAdapter(ExamAdapter());
   appDB = await Hive.openBox(dbName);
 
-  // Init settings controller
-  final userController = Get.put(UserController());
-  Get.put(SettingsController());
-  Get.put(NotificationsController());
+  // Initialize the various controllers
+  // once you append the controller onto the list don't inject it again
+  // since it will be placed in the context
+  ControllerService().injectMultipleControllers(
+    <GetxController>[
+      SettingsController(),
+      NotificationsController(),
+      TaskManagerController(),
+    ],
+  );
 
-  // Init TasksManager controller
-  Get.put(TaskManagerController());
+  /// The user controller is injected seperately since its used in this file
+  /// and a reference to it is needed to check for login
+  final userController =
+      ControllerService().injectController(UserController()) as UserController;
 
   runApp(
     GetMaterialApp(
