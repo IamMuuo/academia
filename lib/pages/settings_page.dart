@@ -355,11 +355,6 @@ class SettingsPage extends StatelessWidget {
                             "Please take your time to let us know what we would have done to make you stay",
                             icon: const Icon(CupertinoIcons.checkmark_seal),
                           );
-                          NotificationService().showNotification(
-                            id: notifications["user"] ?? 0,
-                            body: "Goodbye friend see you maybe",
-                            title: "Goodbye",
-                          );
                         }
                       },
 

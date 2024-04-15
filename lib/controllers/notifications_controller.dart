@@ -9,14 +9,7 @@ class NotificationsController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    if (Platform.isIOS || Platform.isAndroid) {
-      NotificationService().scheduleNotification(
-        0,
-        "Happy Birthday",
-        "We wish you a happy birthday and prosperous new year",
-        DateTime.now().add(const Duration(seconds: 10)),
-      );
-    }
+    if (Platform.isIOS || Platform.isAndroid) {}
 
     notifications = await magnet.fetchNotifications();
     hasNotifications.value = notifications.isNotEmpty;
@@ -57,13 +50,5 @@ class NotificationsController extends GetxController {
     if (now.isAfter(scheduledDate)) {
       scheduledDate = scheduledDate.add(const Duration(days: 7));
     }
-
-    // Schedule the notification
-    // NotificationService().scheduleNotification(
-    //   notifications["course"]!,
-    //   "Class reminder⏱️⏱️",
-    //   "$className is about to begin",
-    //   scheduledDate,
-    // );
   }
 }

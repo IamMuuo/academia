@@ -1,6 +1,5 @@
 import 'package:academia/constants/common.dart';
 import 'package:academia/constants/settings.dart';
-import 'package:academia/notifications/notification_service.dart';
 import 'package:academia/pages/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -74,12 +73,6 @@ class LoginController extends GetxController {
         await appDB.put("settings", settings);
       }
 
-      // Say hello to the user
-      NotificationService().showNotification(
-        title: "Hello,👋👋",
-        body: "With academia, your fun has just began!",
-        id: notifications["greetings"]!,
-      );
       // Navigate to home page
       Get.off(
         const HomePage(),

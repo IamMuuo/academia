@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await NotificationService().initNotifications();
-  // Init flutter
+
+  /// Init the type adapters for storage
   await Hive.initFlutter();
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(ScheduleAdapter());
