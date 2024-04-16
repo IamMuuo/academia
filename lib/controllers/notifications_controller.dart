@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import "package:academia/exports/barrel.dart";
 import 'package:get/get.dart';
 
@@ -35,20 +37,33 @@ class NotificationsController extends GetxController {
     return [];
   }
 
-  void scheduleNotificationForWeeklyClass(
-      String className, TimeOfDay classTime, int dayOfWeek) {
-    DateTime now = DateTime.now();
-    DateTime scheduledDate = DateTime(
-      now.year,
-      now.month,
-      now.day + (dayOfWeek - now.weekday + 7) % 7,
-      classTime.hour,
-      classTime.minute,
-    );
+  int _generateRandomIntId({int min = 100000, int max = 999999}) {
+    final random = Random();
+    return min + random.nextInt(max - min);
+  }
 
-    // If the scheduled date is in the past, add a week to it
-    if (now.isAfter(scheduledDate)) {
-      scheduledDate = scheduledDate.add(const Duration(days: 7));
-    }
+  Future<void> createInstantNotification(
+    String title,
+    String content, {
+    NotificationLayout layout = NotificationLayout.BigPicture,
+  }) async {
+    await AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: _generateRandomIntId(),
+        channelKey: 'basic_channel',
+        title: "${Emojis.building_school} $title",
+        body: content,
+        bigPicture: "asset://assets/images/bot_wave.png",
+        notificationLayout: layout,
+      ),
+    );
+  }
+
+  /// Cancel all scheduled schedules
+  ///
+  /// Waring beware of cancelling all schedules it might result 
+  /// to deleting all schedules which might be unintended
+  Future<void> cancelScheduledNotifications() async {
+    await AwesomeNotifications().cancelAllSchedules();
   }
 }
