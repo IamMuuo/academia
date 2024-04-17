@@ -50,7 +50,7 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   magnet:
     git:
-      url: https://github.com/IamMuuo/magnet.git
+      url: https://github.com/IamMuuo/magnet
       ref: master
   liquid_pull_to_refresh: ^3.0.1
   cached_network_image: ^3.2.3

@@ -61,7 +61,7 @@ class NotificationsController extends GetxController {
 
   /// Cancel all scheduled schedules
   ///
-  /// Waring beware of cancelling all schedules it might result 
+  /// Waring beware of cancelling all schedules it might result
   /// to deleting all schedules which might be unintended
   Future<void> cancelScheduledNotifications() async {
     await AwesomeNotifications().cancelAllSchedules();

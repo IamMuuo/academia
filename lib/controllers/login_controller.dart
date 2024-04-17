@@ -1,6 +1,7 @@
 import 'package:academia/constants/settings.dart';
 import 'package:academia/controllers/notifications_controller.dart';
 import 'package:academia/exports/barrel.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
@@ -70,14 +71,6 @@ class LoginController extends GetxController {
       if (!appDB.containsKey("settings")) {
         await appDB.put("settings", settings);
       }
-
-      final notificationsController = Get.find<NotificationsController>();
-      notificationsController.createInstantNotification(
-        "Hi ${userController.user.value?.name?.split(' ')[0].toString()}",
-        "Welcome to academia we have everything setup for you",
-        layout: NotificationLayout.Messaging,
-      );
-
       // Navigate to home page
       Get.off(
         const HomePage(),
