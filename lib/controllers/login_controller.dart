@@ -1,11 +1,9 @@
-import 'package:academia/constants/common.dart';
 import 'package:academia/constants/settings.dart';
-import 'package:academia/notifications/notification_service.dart';
-import 'package:academia/pages/home_page.dart';
+import 'package:academia/controllers/notifications_controller.dart';
+import 'package:academia/exports/barrel.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:academia/controllers/controllers.dart';
 
 class LoginController extends GetxController {
   final TextEditingController usernameController = TextEditingController();
@@ -73,13 +71,6 @@ class LoginController extends GetxController {
       if (!appDB.containsKey("settings")) {
         await appDB.put("settings", settings);
       }
-
-      // Say hello to the user
-      NotificationService().showNotification(
-        title: "Hello,👋👋",
-        body: "With academia, your fun has just began!",
-        id: notifications["greetings"]!,
-      );
       // Navigate to home page
       Get.off(
         const HomePage(),
