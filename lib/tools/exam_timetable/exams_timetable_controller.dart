@@ -127,7 +127,6 @@ class ExamsTimeTableController extends GetxController {
           .map((e) =>
               "${e.name?.replaceAll('-', '')}${e.section?.split('-')[0]}")
           .toList();
-      print(courseTitles);
 
       // fetch from server
       exams = await fetchExams(courseTitles);

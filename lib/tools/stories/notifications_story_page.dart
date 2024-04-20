@@ -25,7 +25,6 @@ class NotificationsStoryPage extends StatelessWidget {
 
   List<StoryItem> _buildStoryItems(NotificationsController notifications) {
     List<StoryItem> items = [];
-    print(notifications.notifications);
 
     for (var element in notifications.notifications) {
       switch (element["file_type"].toString().replaceAll('"', "")) {

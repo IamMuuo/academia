@@ -1,7 +1,5 @@
 import 'package:academia/constants/settings.dart';
-import 'package:academia/controllers/notifications_controller.dart';
 import 'package:academia/exports/barrel.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
