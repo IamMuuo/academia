@@ -18,6 +18,13 @@ chat:
 base_branches:
   - "main"
   - "dev"
-# path_filters:
-#   - !**/.git/**
-#   - !**/generated/**
+review_triggers:
+  - pull_request_update
+  - push_to_branch:
+      branches:
+        - main
+        - dev
+chat_auto_reply:
+  enabled: true
+  responses:
+    - "Thank you for your message! We will get back to you shortly."
