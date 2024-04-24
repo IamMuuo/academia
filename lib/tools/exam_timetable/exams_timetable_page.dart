@@ -120,18 +120,41 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                           child: ExamCard(exam: controller.exams[index]),
                         ),
                       )
-                    : Center(
-                        child: Text(
-                          "Who dares summon me?🧞",
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge!
-                              .copyWith(
-                                fontFamily: GoogleFonts.figtree().fontFamily,
+                    : controller.isLoading.value
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Your wish is my command🧞",
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge!
+                                    .copyWith(
+                                      fontFamily:
+                                          GoogleFonts.figtree().fontFamily,
+                                    ),
                               ),
-                        ),
-                      ),
+                              const SizedBox(height: 12),
+                              LoadingAnimationWidget.beat(
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 60,
+                              )
+                            ],
+                          )
+                        : Center(
+                            child: Text(
+                              "Youre out of wishes, try searching for your exams 🕵️",
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(
+                                    fontFamily:
+                                        GoogleFonts.figtree().fontFamily,
+                                  ),
+                            ),
+                          ),
               ),
             ),
           )

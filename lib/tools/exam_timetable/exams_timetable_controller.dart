@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 class ExamsTimeTableController extends GetxController {
   var index = (-1).obs;
   var hasExams = false.obs;
+  var isLoading = true.obs;
   late List<Map<String, dynamic>> quotes = [];
   List<Exam> exams = [];
 
@@ -111,14 +112,16 @@ class ExamsTimeTableController extends GetxController {
 
   @override
   Future<void> onInit() async {
+    isLoading.value = true;
     await fetchRandomQuote();
     hasExams.value = false;
 
     // Check if the local database has exams
     if (appDB.containsKey("exams")) {
-      hasExams.value = true;
       // load the exams
       exams = await appDB.get("exams").toList().cast<Exam>();
+
+      hasExams.value = exams.isNotEmpty;
     } else {
       // load the units
       final List<Courses> courses =
@@ -133,6 +136,8 @@ class ExamsTimeTableController extends GetxController {
       await appDB.put("exams", exams);
       hasExams.value = exams.isNotEmpty;
     }
+
+    isLoading.value = false;
     super.onInit();
   }
 }
