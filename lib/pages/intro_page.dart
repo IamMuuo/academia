@@ -1,5 +1,4 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
@@ -51,12 +50,12 @@ class IntroPage extends StatelessWidget {
               ),
 
               // Welcoming message
-              const Padding(
-                padding: EdgeInsets.all(16),
+              Padding(
+                padding: const EdgeInsets.all(16),
                 child: Text(
-                  "Your school life assistant awaits",
+                  "Your school life bud awaits",
                   textAlign: TextAlign.center,
-                  style: h1,
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
               ),
 
@@ -64,7 +63,7 @@ class IntroPage extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.all(16),
                 child: Text(
-                  'Academia is for you by you',
+                  'Academia is for you by you ${Emojis.game_heart_suit}',
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -81,7 +80,7 @@ class IntroPage extends StatelessWidget {
           );
         },
         tooltip: "Get Started",
-        child: const Icon(CupertinoIcons.arrow_right),
+        child: const Icon(Ionicons.arrow_forward),
       ),
     );
   }

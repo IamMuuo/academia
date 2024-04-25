@@ -1,109 +1,181 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final LoginController loginController = Get.put(LoginController());
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // image
-              Image.asset(
-                'assets/images/bot_search.png',
-                height: MediaQuery.of(context).size.height * 0.4,
-              ),
-              // Welcome  text
-              const Text('Welcome', textAlign: TextAlign.left, style: h2),
-              Padding(
-                padding: const EdgeInsets.only(top: 1, bottom: 20),
-                child: Text('Lets find you and setup things for you',
-                    style: normal.copyWith(fontSize: 12)),
-              ),
+  State<LoginPage> createState() => _LoginPageState();
+}
 
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: TextField(
-                  controller: loginController.usernameController,
-                  textAlign: TextAlign.center,
-                  inputFormatters: [AdmissionNumberFormatter()],
-                  decoration: const InputDecoration(
-                    hintText: 'Your admission number',
+class _LoginPageState extends State<LoginPage> {
+  final formKey = GlobalKey<FormState>();
+  final LoginController loginController = Get.put(LoginController());
+
+  // Loadind state
+  bool _isLoading = false;
+  bool _hidePassword = true;
+  bool _acceptTerms = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        minimum: const EdgeInsets.all(8),
+        child: SingleChildScrollView(
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // image
+                Image.asset(
+                  'assets/images/bot_search.png',
+                  height: MediaQuery.of(context).size.height * 0.4,
+                ),
+                // Welcome  text
+                Text(
+                  'Welcome',
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.displaySmall,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 1, bottom: 20),
+                  child: Text(
+                    'Lets find you and setup things for you',
+                    style: normal.copyWith(fontSize: 12),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Obx(
-                  () => TextField(
+
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: TextFormField(
+                    controller: loginController.usernameController,
+                    textAlign: TextAlign.center,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      AdmissionNumberFormatter(),
+                    ],
+                    validator: (value) {
+                      if ((value?.length ?? 0) != 7) {
+                        return "Please enter your admission numer ${Emojis.smile_angry_face}";
+                      }
+
+                      return null;
+                    },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: InputDecoration(
+                      hintText: 'xx-xxxx',
+                      label: const Text("Your admission number"),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: TextFormField(
                     controller: loginController.passwordController,
-                    obscureText: loginController.showPassword.value,
+                    obscureText: _hidePassword,
+                    validator: (value) {
+                      if ((value?.length ?? 0) <= 3) {
+                        return "Please enter a valid password ${Emojis.smile_angry_face}";
+                      }
+                      return null;
+                    },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
-                      hintText: 'Your password',
+                      hintText: 'Your school portal password',
+                      label: const Text("Your password"),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                       suffixIcon: IconButton(
                         onPressed: () {
-                          loginController.showPassword.value =
-                              !loginController.showPassword.value;
+                          setState(() {
+                            _hidePassword = !_hidePassword;
+                          });
                         },
-                        icon: const Icon(CupertinoIcons.eye),
+                        icon: Icon(
+                          _hidePassword
+                              ? Ionicons.eye_outline
+                              : Ionicons.eye_off_outline,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
 
-              // terms and conditions
-              Padding(
-                padding: const EdgeInsets.only(bottom: 30, top: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Obx(
-                      () => Checkbox(
-                        value: loginController.acceptTerms.value,
-                        onChanged: (value) {
-                          loginController.acceptTerms.value = value!;
-                        },
-                      ),
-                    ),
-                    const Text(
-                      'I agree to the terms and conditions',
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                    ),
-                  ],
-                ),
-              ),
+                const SizedBox(height: 50),
 
-              Obx(
-                () => !loginController.isloading.value
-                    ? ElevatedButton(
-                        onPressed: () async {
-                          await loginController.login();
-                        },
-                        child: const Text(
-                          'Get started',
-                          style: h6,
-                        ),
+                _isLoading
+                    ? LoadingAnimationWidget.threeArchedCircle(
+                        color: Theme.of(context).colorScheme.primary,
+                        size: 40,
                       )
-                    : Center(
-                        child: LoadingAnimationWidget.threeArchedCircle(
-                          color: Theme.of(context).colorScheme.tertiary,
-                          size: 30,
-                        ),
+                    : FilledButton.icon(
+                        onPressed: () {
+                          if (!formKey.currentState!.validate()) {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text("Form Validation error"),
+                                content: const Text(
+                                  "Please ensure the fields are well filled to continue",
+                                ),
+                                actions: [
+                                  FilledButton.tonal(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text("Try again"),
+                                  ),
+                                ],
+                              ),
+                            );
+                            return;
+                          }
+
+                          if (!_acceptTerms) {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text("Terms of Service"),
+                                    content: const Text(
+                                      "To continue you must agree to our terms and conditions of service",
+                                    ),
+                                    actions: [
+                                      FilledButton(
+                                        onPressed: () {
+                                          _acceptTerms = true;
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text("I agree"),
+                                      ),
+                                      FilledButton.tonal(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text("Cancel"),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          }
+                          // send request
+
+                          // route to dashboard
+                        },
+                        icon: const Icon(Ionicons.log_in),
+                        label: const Text("Get Started"),
                       ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
