@@ -6,3 +6,4 @@
 /// since they have been thorougly tested
 
 export 'package:academia/services/controller_service.dart';
+export 'package:academia/services/storage_service.dart';

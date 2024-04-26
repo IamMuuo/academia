@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/services/services.dart';
 import 'package:get/get.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
 
@@ -17,7 +18,7 @@ class SettingsController extends GetxController {
 
   @override
   void onInit() async {
-    settings = await appDB.get("settings") ?? {};
+    settings = await StorageService().appDB.get("settings") ?? {};
     showGPA.value = settings["show_gpa"] ?? true;
     showProfilePic.value = settings["show_profile_pic"] ?? true;
     showExamTimeTable.value = settings["show_exam_timetable"] ?? true;
@@ -50,7 +51,7 @@ class SettingsController extends GetxController {
     settings["show_audit"] = showAudit.value;
     settings["show_fees"] = showFees.value;
     settings["birthday_notify"] = birthdayNotify.value;
-    await appDB.put("settings", settings);
+    await StorageService().appDB.put("settings", settings);
   }
 
   Future<void> checkForUpdates() async {

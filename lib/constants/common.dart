@@ -2,13 +2,9 @@
 // For local development
 
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:magnet/magnet.dart';
 import 'package:get/get.dart';
 
-const String urlPrefix = "https://daystar-backend.onrender.com";
-const String dbName = "appDB";
-late Box appDB;
 late Magnet magnet;
 
 extension StringExtension on String {
@@ -23,21 +19,6 @@ extension StringExtension on String {
     // return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
   }
 }
-
-Map<String, int> notifications = {
-  "user": 1,
-  "course": 2,
-  "course_begins": 3,
-  "course_ends": 4,
-  "tips": 5,
-  "greetings": 6,
-  "exam_done": 7,
-  "exam_upcoming": 8,
-  "exam_in_progress": 9,
-  "fee_balance": 10,
-  "semester_timeLine": 11,
-  "birthday": 12,
-};
 
 const TextStyle normal = TextStyle(); // Default font
 

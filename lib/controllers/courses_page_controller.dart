@@ -1,4 +1,5 @@
 import 'package:academia/models/courses.dart';
+import 'package:academia/services/storage_service.dart';
 import 'package:academia/widgets/course_attendance_widget.dart';
 import 'package:academia/widgets/course_card.dart';
 import 'package:flutter/material.dart';
@@ -21,13 +22,13 @@ class CoursesPageController extends GetxController {
         hasCourses.value = false;
         return false;
       }
-      await appDB.delete("timetable");
+      await StorageService().appDB.delete("timetable");
       userCourses.clear();
 
       for (var i = 0; i < courses.length; i++) {
         userCourses.add(Courses.fromJson(courses[i]));
       }
-      await appDB.put("timetable", userCourses);
+      await StorageService().appDB.put("timetable", userCourses);
       hasCourses.value = true;
 
       await updateProgress();
@@ -41,7 +42,9 @@ class CoursesPageController extends GetxController {
   }
 
   List<Widget> buildElements() {
-    var courses = appDB.isOpen ? appDB.get("timetable") ?? [] : [];
+    var courses = StorageService().appDB.isOpen
+        ? StorageService().appDB.get("timetable") ?? []
+        : [];
 
     var userCourses = <Widget>[];
 
@@ -101,7 +104,7 @@ class CoursesPageController extends GetxController {
   }
 
   List<Widget> buildProgressCards() {
-    var progress = appDB.get("attendance") ?? [];
+    var progress = StorageService().appDB.get("attendance") ?? [];
 
     if (progress == []) {
       hasProgress.value = false;
@@ -120,8 +123,8 @@ class CoursesPageController extends GetxController {
   }
 
   int get numOfClasses {
-    if (appDB.containsKey("timetable")) {
-      var courses = appDB.get("timetable") ?? [];
+    if (StorageService().appDB.containsKey("timetable")) {
+      var courses = StorageService().appDB.get("timetable") ?? [];
       return courses.length;
     }
     return 0;
@@ -129,14 +132,14 @@ class CoursesPageController extends GetxController {
 
   Future<bool> updateProgress() async {
     var courseProgress = await magnet.fetchUserClassAttendance();
-    await appDB.put("attendance", courseProgress);
+    await StorageService().appDB.put("attendance", courseProgress);
     return true;
   }
 
   @override
   void onInit() async {
     try {
-      if (!appDB.containsKey("timetable")) {
+      if (!StorageService().appDB.containsKey("timetable")) {
         hasCourses.value = false;
         var isUpdated = await updateCourses();
         if (isUpdated) {
@@ -144,7 +147,7 @@ class CoursesPageController extends GetxController {
         }
       }
 
-      if (!appDB.containsKey("attendance")) {
+      if (!StorageService().appDB.containsKey("attendance")) {
         hasProgress.value = false;
         var updatedProgress = await updateProgress();
         if (updatedProgress) {

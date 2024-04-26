@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/services/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -67,7 +68,7 @@ class ExamsTimeTableController extends GetxController {
   }
 
   Future<void> addExamToStorage(Exam exam) async {
-    exams = await appDB.get("exams").toList().cast<Exam>();
+    exams = await StorageService().appDB.get("exams").toList().cast<Exam>();
     exams.add(exam);
     exams.sort((a, b) {
       final formatter = DateFormat('EEEE dd/MM/yy');
@@ -87,7 +88,7 @@ class ExamsTimeTableController extends GetxController {
       return aStartTime.compareTo(bStartTime);
     });
 
-    await appDB.put("exams", exams);
+    await StorageService().appDB.put("exams", exams);
 
     // trigger a data refersh
     hasExams.value = false;
@@ -95,15 +96,15 @@ class ExamsTimeTableController extends GetxController {
   }
 
   Future<void> removeExamFromStorage(Exam exam) async {
-    exams = await appDB.get("exams").toList().cast<Exam>();
+    exams = await StorageService().appDB.get("exams").toList().cast<Exam>();
     exams.remove(exam);
 
     if (exams.isEmpty) {
-      await appDB.delete("exams");
+      await StorageService().appDB.delete("exams");
       // trigger a data refersh
       hasExams.value = false;
     } else {
-      await appDB.put("exams", exams);
+      await StorageService().appDB.put("exams", exams);
       // trigger a data refersh
       hasExams.value = false;
       hasExams.value = true;
@@ -117,15 +118,18 @@ class ExamsTimeTableController extends GetxController {
     hasExams.value = false;
 
     // Check if the local database has exams
-    if (appDB.containsKey("exams")) {
+    if (StorageService().appDB.containsKey("exams")) {
       // load the exams
-      exams = await appDB.get("exams").toList().cast<Exam>();
+      exams = await StorageService().appDB.get("exams").toList().cast<Exam>();
 
       hasExams.value = exams.isNotEmpty;
     } else {
       // load the units
-      final List<Courses> courses =
-          await appDB.get("timetable").toList().cast<Courses>();
+      final List<Courses> courses = await StorageService()
+          .appDB
+          .get("timetable")
+          .toList()
+          .cast<Courses>();
       List<String> courseTitles = courses
           .map((e) =>
               "${e.name?.replaceAll('-', '')}${e.section?.split('-')[0]}")
@@ -133,7 +137,7 @@ class ExamsTimeTableController extends GetxController {
 
       // fetch from server
       exams = await fetchExams(courseTitles);
-      await appDB.put("exams", exams);
+      await StorageService().appDB.put("exams", exams);
       hasExams.value = exams.isNotEmpty;
     }
 

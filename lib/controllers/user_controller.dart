@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/services/services.dart';
 import 'package:get/get.dart';
 
 ///  # UserController
@@ -14,8 +15,8 @@ class UserController extends GetxController {
   /// Load the user from disk and initialize the controller
   void onInit() {
     // load the user from local storage
-    if (appDB.containsKey("user")) {
-      user.value = appDB.get("user");
+    if (StorageService().appDB.containsKey("user")) {
+      user.value = StorageService().appDB.get("user");
       isLoggedIn.value = true;
       magnet = Magnet(user.value!.admno!, user.value!.password!);
     }
@@ -37,11 +38,10 @@ class UserController extends GetxController {
   /// Retrieves user details from magnet and stores it on disk
   Future<void> getUserDetails(String username, String password) async {
     try {
-      appDB = await Hive.openBox(dbName);
       var data = await magnet.fetchUserData();
       user.value = User.fromJson(data);
       user.value!.password = password;
-      await appDB.put("user", user.value);
+      await StorageService().appDB.put("user", user.value);
     } catch (e) {
       debugPrint("Error: ${e.toString()}");
     }
@@ -52,7 +52,7 @@ class UserController extends GetxController {
     try {
       // Close the Hive box
       // await appDB.close();
-      await appDB.deleteAll(["user"]);
+      await StorageService().appDB.deleteAll(["user"]);
       // Delete the Hive box directory to remove all data
       // await Hive.deleteBoxFromDisk(dbName);
       Get.deleteAll(); // Clear all the controllers

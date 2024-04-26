@@ -23,14 +23,13 @@ void main() async {
     ],
   );
 
-  /// Init the type adapters for storage
-  await Hive.initFlutter();
-  Hive.registerAdapter(UserAdapter());
-  Hive.registerAdapter(ScheduleAdapter());
-  Hive.registerAdapter(CoursesAdapter());
-  Hive.registerAdapter(TaskAdapter());
-  Hive.registerAdapter(ExamAdapter());
-  appDB = await Hive.openBox(dbName);
+  // Init the storage service
+  await StorageService().init();
+  StorageService().registerAdapters<User>(UserAdapter());
+  StorageService().registerAdapters<Schedule>(ScheduleAdapter());
+  StorageService().registerAdapters<Courses>(CoursesAdapter());
+  StorageService().registerAdapters<Task>(TaskAdapter());
+  StorageService().registerAdapters<Exam>(ExamAdapter());
 
   // Initialize the various controllers
   // once you append the controller onto the list don't inject it again

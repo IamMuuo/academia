@@ -1,6 +1,7 @@
 import 'package:academia/constants/common.dart';
 import 'package:academia/controllers/taskmanager_controller.dart';
 import 'package:academia/models/courses.dart';
+import 'package:academia/services/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -66,7 +67,7 @@ class DashboardController extends GetxController {
 
   int get classesTodayCount {
     int classes = 0;
-    var courses = appDB.get("timetable") ?? [];
+    var courses = StorageService().appDB.get("timetable") ?? [];
     for (Courses course in courses) {
       if (course.dayOfTheWeek!.title() ==
           DateFormat("EEEE").format(DateTime.now())) {
@@ -84,7 +85,7 @@ class DashboardController extends GetxController {
 
   int get classesTommorrowCount {
     int classes = 0;
-    var courses = appDB.get("timetable") ?? [];
+    var courses = StorageService().appDB.get("timetable") ?? [];
     for (Courses course in courses) {
       if (course.dayOfTheWeek!.title() ==
           DateFormat("EEEE")
@@ -98,7 +99,7 @@ class DashboardController extends GetxController {
   List<Courses> get classesToday {
     List<Courses> classes = <Courses>[];
 
-    var courses = appDB.get("timetable") ?? [];
+    var courses = StorageService().appDB.get("timetable") ?? [];
     for (Courses course in courses) {
       if (course.dayOfTheWeek!.title() ==
           DateFormat("EEEE").format(DateTime.now())) {
@@ -111,7 +112,7 @@ class DashboardController extends GetxController {
 
   List<Courses> get classesTommorrow {
     List<Courses> classes = <Courses>[];
-    var courses = appDB.get("timetable") ?? [];
+    var courses = StorageService().appDB.get("timetable") ?? [];
     for (Courses course in courses) {
       if (course.dayOfTheWeek!.title() ==
           DateFormat("EEEE")

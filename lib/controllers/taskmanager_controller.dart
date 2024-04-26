@@ -1,6 +1,6 @@
-import 'package:academia/constants/common.dart';
 import 'package:academia/models/courses.dart';
 import 'package:academia/models/tasks.dart';
+import 'package:academia/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -45,7 +45,7 @@ class TaskManagerController extends GetxController
 
   Future<void> getTasks() async {
     tasks.clear();
-    final tasksList = await appDB.get("tasks") ?? [];
+    final tasksList = await StorageService().appDB.get("tasks") ?? [];
     for (final task in tasksList) {
       tasks.add(task);
     }
@@ -91,21 +91,21 @@ class TaskManagerController extends GetxController
     progress.value = newProgress;
 
     // Update the progress of the task in the database
-    final tasksList = appDB.get("tasks") ?? [];
+    final tasksList = StorageService().appDB.get("tasks") ?? [];
     for (final task in tasksList) {
       if (task.title == taskTitle.value) {
         task.progress = newProgress;
         break;
       }
     }
-    appDB.put("tasks", tasksList);
+    StorageService().appDB.put("tasks", tasksList);
     getTasks();
   }
 
   Future<void> addTask() async {
     // debugPrint(taskTitle.value);
     // appDB.delete("tasks");
-    var list = appDB.get("tasks") ?? [];
+    var list = StorageService().appDB.get("tasks") ?? [];
     list.add(Task(
         deadline: selectedDeadline.value,
         unit: selectedUnit.value,
@@ -113,8 +113,8 @@ class TaskManagerController extends GetxController
         title: taskTitle.value,
         description: taskDescription.value));
 
-    await appDB.put("tasks", list);
-    var tasks = await appDB.get("tasks") ?? [];
+    await StorageService().appDB.put("tasks", list);
+    var tasks = await StorageService().appDB.get("tasks") ?? [];
     for (Task task in tasks) {
       debugPrint(task.title);
     }
@@ -124,7 +124,7 @@ class TaskManagerController extends GetxController
   }
 
   void loadRegisteredUnits() {
-    final courses = appDB.get("timetable");
+    final courses = StorageService().appDB.get("timetable");
     if (courses != null && coursesList.isEmpty) {
       for (final course in courses) {
         Unit unit = Unit(name: course.name, creditHours: 0, grade: 'A');
@@ -152,7 +152,7 @@ class TaskManagerController extends GetxController
       String newTaskUnit,
       DateTime newTaskDeadline,
       int newTaskProgress) async {
-    final tasksList = appDB.get("tasks") ?? [];
+    final tasksList = StorageService().appDB.get("tasks") ?? [];
     for (final task in tasksList) {
       if (task.title == taskTitle.value) {
         task.title = newTaskTitle;
@@ -164,7 +164,7 @@ class TaskManagerController extends GetxController
         break;
       }
     }
-    await appDB.put("tasks", tasksList);
+    await StorageService().appDB.put("tasks", tasksList);
     getTasks();
     // update all the other variables
     taskTitle.value = newTaskTitle;
@@ -176,9 +176,9 @@ class TaskManagerController extends GetxController
   }
 
   Future<void> deleteTask(Task task) async {
-    final tasksList = appDB.get("tasks") ?? [];
+    final tasksList = StorageService().appDB.get("tasks") ?? [];
     tasksList.remove(task);
-    await appDB.put("tasks", tasksList);
+    await StorageService().appDB.put("tasks", tasksList);
     getTasks();
   }
 }

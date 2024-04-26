@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/services/services.dart';
 import 'package:get/get.dart';
 
 class GpaCalculator extends StatelessWidget {
@@ -376,7 +377,7 @@ class GpaCalculator extends StatelessWidget {
 
   void loadRegisteredUnits() {
     unitController.courseList.clear();
-    final courses = appDB.get("timetable");
+    final courses = StorageService().appDB.get("timetable");
     if (courses == null) {
       Get.defaultDialog(
         title: "No courses found",

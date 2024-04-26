@@ -1,5 +1,6 @@
 import 'package:academia/constants/settings.dart';
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/services/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
@@ -63,11 +64,11 @@ class LoginController extends GetxController {
           usernameController.text.trim(), passwordController.text.trim());
 
       isloading.value = false;
-      debugPrint("User details: ${appDB.get('user')}");
+      debugPrint("User details: ${StorageService().appDB.get('user')}");
 
       // append the default settings if not exists
-      if (!appDB.containsKey("settings")) {
-        await appDB.put("settings", settings);
+      if (!StorageService().appDB.containsKey("settings")) {
+        await StorageService().appDB.put("settings", settings);
       }
       // Navigate to home page
       Get.off(

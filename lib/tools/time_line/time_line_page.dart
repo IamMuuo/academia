@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/services/services.dart';
 import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:intl/intl.dart';
@@ -9,7 +10,7 @@ class TimeLinePage extends StatelessWidget {
   Widget buildEventsWidget() {
     List<Widget> eventWidgets = <Widget>[];
 
-    var events = appDB.get("academic_calendar");
+    var events = StorageService().appDB.get("academic_calendar");
     DateFormat inputFormat = DateFormat('dd/MM/yyyy');
 
     for (var event in events) {
