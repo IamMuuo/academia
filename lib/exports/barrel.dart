@@ -40,7 +40,6 @@ export 'package:academia/pages/dashboard.dart';
 export 'package:academia/pages/settings_page.dart';
 export 'package:academia/pages/tool_page.dart';
 export 'package:academia/pages/login_page.dart';
-export 'package:academia/controllers/login_controller.dart';
 export 'package:flutter_pdfview/flutter_pdfview.dart';
 export 'package:academia/widgets/info_card.dart';
 export 'package:cached_network_image/cached_network_image.dart';

@@ -11,7 +11,9 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
-  final LoginController loginController = Get.put(LoginController());
+  final userController = Get.find<UserController>();
+  TextEditingController admnoEditingController = TextEditingController();
+  TextEditingController passwordEditingController = TextEditingController();
 
   // Loadind state
   bool _isLoading = false;
@@ -52,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: TextFormField(
-                    controller: loginController.usernameController,
+                    controller: admnoEditingController,
                     textAlign: TextAlign.center,
                     keyboardType: TextInputType.number,
                     inputFormatters: [
@@ -78,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: TextFormField(
-                    controller: loginController.passwordController,
+                    controller: passwordEditingController,
                     obscureText: _hidePassword,
                     validator: (value) {
                       if ((value?.length ?? 0) <= 3) {
@@ -118,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                         size: 40,
                       )
                     : FilledButton.icon(
-                        onPressed: () {
+                        onPressed: () async {
                           if (!formKey.currentState!.validate()) {
                             showDialog(
                               context: context,
@@ -168,8 +170,39 @@ class _LoginPageState extends State<LoginPage> {
                                 });
                           }
                           // send request
+                          setState(() {
+                            _isLoading = true;
+                          });
+
+                          try {
+                            final auth = await userController.login(
+                              admnoEditingController.text,
+                              passwordEditingController.text.trim(),
+                            );
+                            if (!auth) {
+                              throw ("Please check your admission number and password");
+                            }
+                            await userController.getUserDetails(
+                                admnoEditingController.text.trim(),
+                                passwordEditingController.text.trim());
+                          } catch (e) {
+                            if (mounted) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text("Error"),
+                                      content: Text(e.toString()),
+                                    );
+                                  });
+                            }
+                            debugPrint(e.toString());
+                          }
 
                           // route to dashboard
+                          setState(() {
+                            _isLoading = false;
+                          });
                         },
                         icon: const Icon(Ionicons.log_in),
                         label: const Text("Get Started"),

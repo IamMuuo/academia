@@ -55,7 +55,7 @@ class UserController extends GetxController {
       await StorageService().appDB.deleteAll(["user"]);
       // Delete the Hive box directory to remove all data
       // await Hive.deleteBoxFromDisk(dbName);
-      Get.deleteAll(); // Clear all the controllers
+      Get.reloadAll(); // Clear all the controllers
     } catch (e) {
       debugPrint("Error during logout: ${e.toString()}");
     }
