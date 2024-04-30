@@ -68,6 +68,8 @@ dependencies:
   flutter_timer_countdown: ^1.0.7
   awesome_notifications_core: ^0.9.3
   awesome_notifications: ^0.8.2
+  sqflite: ^2.3.3
+  path: ^1.9.0
   
 
 
