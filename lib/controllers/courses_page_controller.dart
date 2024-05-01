@@ -1,3 +1,4 @@
+import 'package:academia/exports/barrel.dart';
 import 'package:academia/models/courses.dart';
 import 'package:academia/services/storage_service.dart';
 import 'package:academia/widgets/course_attendance_widget.dart';
@@ -16,6 +17,7 @@ class CoursesPageController extends GetxController {
 
   Future<bool> updateCourses() async {
     try {
+      magnet = magnet ?? Magnet("", "");
       var courses = await magnet.fetchTimeTable();
 
       if (courses.isEmpty) {

@@ -67,7 +67,7 @@ class ProfilePage extends StatelessWidget {
             ),
             InfoCard(
               title: "Admission Number",
-              content: userController.user.value!.admno ?? "00-0000",
+              content: userController.user.value!.regno ?? "00-0000",
               icon: Ionicons.at_circle,
             ),
             InfoCard(

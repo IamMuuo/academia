@@ -1,5 +1,4 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -34,7 +33,7 @@ class DatabaseHelper {
   /// then returns the connection instance that was established
   Future<Database> get database async {
     if (_database != null) return _database!;
-    _database = await _initDatabase();
+    _database = await initDatabase();
     return _database!;
   }
 
@@ -45,12 +44,15 @@ class DatabaseHelper {
   /// _initDatabase attempts to create a database connection
   /// and returns it if it was successful.
   ///
-  Future<Database> _initDatabase() async {
+  Future<Database> initDatabase() async {
     String path = join(
-      (await getApplicationDocumentsDirectory()).path,
+      await getDatabasesPath(),
       databaseName,
     );
-    return await openDatabase(path, version: 1);
+    return await openDatabase(
+      path,
+      version: 1,
+    );
   }
 
   /// [registerModel]

@@ -1,6 +1,7 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:academia/services/services.dart';
 import 'package:get/get.dart';
+import 'package:academia/storage/storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,9 +24,11 @@ void main() async {
     ],
   );
 
+  await DatabaseHelper().initDatabase();
+
   // Init the storage service
   await StorageService().init();
-  StorageService().registerAdapters<User>(UserAdapter());
+  // StorageService().registerAdapters<User>(UserAdapter());
   StorageService().registerAdapters<Schedule>(ScheduleAdapter());
   StorageService().registerAdapters<Courses>(CoursesAdapter());
   StorageService().registerAdapters<Task>(TaskAdapter());
@@ -34,15 +37,14 @@ void main() async {
   // Initialize the various controllers
   // once you append the controller onto the list don't inject it again
   // since it will be placed in the context
-  ControllerService().injectMultipleControllers(
-    <GetxController>[
-      SettingsController(),
-      NotificationsController(),
-      TaskManagerController(),
-    ],
-  );
+  // ControllerService().injectMultipleControllers(
+  //   <GetxController>[
+  //     SettingsController(),
+  //     NotificationsController(),
+  //     TaskManagerController(),
+  //   ],
+  // );
 
-  ControllerService().injectController(UserController());
   runApp(
     GetMaterialApp(
       home: const Academia(),
@@ -57,6 +59,13 @@ class Academia extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// Init the controllers here
+    final userController = Get.put(UserController());
+    Get.put(NotificationsController());
+    Get.put(SettingsController());
+    Get.put(TaskManagerController());
+
+    // Prompt for permission
     AwesomeNotifications().isNotificationAllowed().then((value) {
       if ((!value) && (Platform.isAndroid || Platform.isIOS)) {
         showDialog(
@@ -88,7 +97,7 @@ class Academia extends StatelessWidget {
             });
       }
     });
-    final UserController userController = Get.find<UserController>();
+
     return userController.isLoggedIn.value
         ? const HomePage()
         : const IntroPage();

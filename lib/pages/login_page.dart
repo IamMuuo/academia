@@ -183,19 +183,28 @@ class _LoginPageState extends State<LoginPage> {
                               throw ("Please check your admission number and password");
                             }
                             await userController.getUserDetails(
-                                admnoEditingController.text.trim(),
-                                passwordEditingController.text.trim());
+                              admnoEditingController.text.trim(),
+                              passwordEditingController.text.trim(),
+                            );
+
+                            if (!context.mounted) return;
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const HomePage(),
+                              ),
+                            );
                           } catch (e) {
-                            if (mounted) {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: const Text("Error"),
-                                      content: Text(e.toString()),
-                                    );
-                                  });
-                            }
+                            if (!context.mounted) return;
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                        "Error ${Emojis.smile_downcast_face_with_sweat}"),
+                                    content: Text(e.toString()),
+                                  );
+                                });
+
                             debugPrint(e.toString());
                           }
 

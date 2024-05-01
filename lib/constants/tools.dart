@@ -13,7 +13,6 @@ final List<Map<String, dynamic>> allTools = [
     "description":
         "Exams around the corner? Don't panic we've got you covered with the timetable",
   },
-
   {
     "id": 1,
     "name": "GPA Calculator",
@@ -110,7 +109,7 @@ final List<Map<String, dynamic>> allTools = [
         Get.to(PdfViewer(
           title: "Your audit",
           url:
-              "https://student.daystar.ac.ke/Downloads/STDAUDIT-${userController.user.value!.admno}.pdf",
+              "https://student.daystar.ac.ke/Downloads/STDAUDIT-${userController.user.value!.regno}.pdf",
         ));
       }
     },
@@ -134,7 +133,7 @@ final List<Map<String, dynamic>> allTools = [
         Get.to(PdfViewer(
           title: "Your Transcript",
           url:
-              "https://student.daystar.ac.ke/Downloads/PROVISIONAL%20RESULTS-${userController.user.value!.admno}.pdf",
+              "https://student.daystar.ac.ke/Downloads/PROVISIONAL%20RESULTS-${userController.user.value!.regno}.pdf",
         ));
       }
     },

@@ -19,4 +19,8 @@ abstract class DatabaseOperations {
   /// Delete.
   /// Should delete an entity from a table.
   Future<int> delete(int id);
+
+  // Trucncate.
+  /// Should truncate all entities in the table
+  Future<void> truncate();
 }

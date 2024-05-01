@@ -1,10 +1,11 @@
-import 'package:academia/exports/barrel.dart';
-import 'package:academia/services/services.dart';
-import 'package:get/get.dart';
-
 ///  # UserController
 ///  Author: Erick
 ///  File: Defines a controller that manages user info state across the application
+
+import 'package:academia/exports/barrel.dart';
+import 'package:academia/services/services.dart';
+import 'package:get/get.dart';
+import 'package:academia/models/models.dart';
 
 class UserController extends GetxController {
   Rx<User?> user = Rxn<User>();
@@ -13,14 +14,15 @@ class UserController extends GetxController {
   @override
 
   /// Load the user from disk and initialize the controller
-  void onInit() {
+  Future<void> onInit() async {
     // load the user from local storage
-    if (StorageService().appDB.containsKey("user")) {
-      user.value = StorageService().appDB.get("user");
-      isLoggedIn.value = true;
-      magnet = Magnet(user.value!.admno!, user.value!.password!);
-    }
     super.onInit();
+    final storedUsers = await UserModelHelper().queryAll();
+
+    if (storedUsers.isNotEmpty) {
+      user.value = User.fromJson(storedUsers[0]);
+      isLoggedIn.value = true;
+    }
   }
 
   /// Perform a request to login a user
@@ -38,12 +40,23 @@ class UserController extends GetxController {
   /// Retrieves user details from magnet and stores it on disk
   Future<void> getUserDetails(String username, String password) async {
     try {
-      var data = await magnet.fetchUserData();
+      final rawdata = await magnet.fetchUserData();
+
+      final data = <String, dynamic>{};
+
+      rawdata.forEach((key, value) {
+        if (key is String) {
+          data[key] = rawdata[key];
+        }
+      });
+
       user.value = User.fromJson(data);
       user.value!.password = password;
-      await StorageService().appDB.put("user", user.value);
+
+      await UserModelHelper().create(user.value!.toJson());
     } catch (e) {
       debugPrint("Error: ${e.toString()}");
+      rethrow;
     }
   }
 

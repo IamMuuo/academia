@@ -14,7 +14,7 @@ class NotificationsController extends GetxController {
     super.onInit();
     if (Platform.isIOS || Platform.isAndroid) {}
 
-    notifications = await magnet.fetchNotifications();
+    // notifications = await magnet.fetchNotifications();
     hasNotifications.value = notifications.isNotEmpty;
     debugPrint("Notifications Done!");
   }
