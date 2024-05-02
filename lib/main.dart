@@ -30,7 +30,6 @@ void main() async {
   await StorageService().init();
   // StorageService().registerAdapters<User>(UserAdapter());
   StorageService().registerAdapters<Schedule>(ScheduleAdapter());
-  StorageService().registerAdapters<Courses>(CoursesAdapter());
   StorageService().registerAdapters<Task>(TaskAdapter());
   StorageService().registerAdapters<Exam>(ExamAdapter());
 
@@ -63,7 +62,6 @@ class Academia extends StatelessWidget {
     final userController = Get.put(UserController());
     Get.put(NotificationsController());
     Get.put(SettingsController());
-    Get.put(TaskManagerController());
 
     // Prompt for permission
     AwesomeNotifications().isNotificationAllowed().then((value) {

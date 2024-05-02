@@ -18,9 +18,7 @@ final List<Map<String, dynamic>> allTools = [
     "name": "GPA Calculator",
     "action": "Calculate GPA",
     "image": "assets/images/calculator.png",
-    "ontap": () {
-      Get.to(GpaCalculator());
-    },
+    "ontap": () {},
     "description": "Wanna calculate your GPA? try it here"
   },
   {
@@ -144,9 +142,7 @@ final List<Map<String, dynamic>> allTools = [
     "name": "Class Attendance",
     "action": "View class Attendance",
     "image": "assets/images/girl_sitted.png",
-    "ontap": () {
-      Get.to(const AttendancePage());
-    },
+    "ontap": () {},
     "description":
         "Curious to know how many classes you have missed this semester, this might be the tool",
   },
@@ -155,9 +151,7 @@ final List<Map<String, dynamic>> allTools = [
     "name": "Task Manager",
     "action": "Manage your tasks",
     "image": "assets/images/tasks_manager.png",
-    "ontap": () {
-      Get.to(TaskManagerPage());
-    },
+    "ontap": () {},
     "description":
         "Having trouble keeping track of your Assignments? We've got you covered",
   }

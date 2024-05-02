@@ -12,8 +12,6 @@ class DashBoard extends StatelessWidget {
     Get.put(SettingsController());
     final DashboardController dashBoardController =
         Get.put(DashboardController());
-    final CoursesPageController coursesController =
-        Get.find<CoursesPageController>();
 
     final UserController userController = Get.find<UserController>();
     return Scaffold(
@@ -85,7 +83,7 @@ class DashBoard extends StatelessWidget {
                               ),
                             )),
                         Obx(
-                          () => coursesController.hasCourses.value
+                          () => userController.user.value!.name!.isEmpty
                               ? Text(
                                   dashBoardController.classesTodayCount
                                       .toString(),

@@ -19,8 +19,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     Get.put(SettingsController());
-    Get.put(TaskManagerController());
-    Get.put(CoursesPageController());
     Get.put(NotificationsController());
     return Scaffold(
       body: SafeArea(

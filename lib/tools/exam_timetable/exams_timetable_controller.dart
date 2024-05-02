@@ -125,18 +125,9 @@ class ExamsTimeTableController extends GetxController {
       hasExams.value = exams.isNotEmpty;
     } else {
       // load the units
-      final List<Courses> courses = await StorageService()
-          .appDB
-          .get("timetable")
-          .toList()
-          .cast<Courses>();
-      List<String> courseTitles = courses
-          .map((e) =>
-              "${e.name?.replaceAll('-', '')}${e.section?.split('-')[0]}")
-          .toList();
 
       // fetch from server
-      exams = await fetchExams(courseTitles);
+      exams = await fetchExams(["BIL"]);
       await StorageService().appDB.put("exams", exams);
       hasExams.value = exams.isNotEmpty;
     }

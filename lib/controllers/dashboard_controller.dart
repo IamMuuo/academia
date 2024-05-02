@@ -1,15 +1,7 @@
-import 'package:academia/constants/common.dart';
-import 'package:academia/controllers/taskmanager_controller.dart';
-import 'package:academia/models/courses.dart';
-import 'package:academia/services/services.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import 'package:academia/models/models.dart';
 
 class DashboardController extends GetxController {
-  TextEditingController searchBoxController = TextEditingController();
-
   double get weekPercent {
     int weekDay = DateTime.now().weekday;
     return weekDay / 7;
@@ -66,60 +58,22 @@ class DashboardController extends GetxController {
   }
 
   int get classesTodayCount {
-    int classes = 0;
-    var courses = StorageService().appDB.get("timetable") ?? [];
-    for (Courses course in courses) {
-      if (course.dayOfTheWeek!.title() ==
-          DateFormat("EEEE").format(DateTime.now())) {
-        classes++;
-      }
-    }
-    return classes;
+    return 0;
   }
 
   int get numberofTasks {
-    var taskscontroller = Get.find<TaskManagerController>();
-    taskscontroller.getTasks();
-    return taskscontroller.tasks.length;
+    return 0;
   }
 
   int get classesTommorrowCount {
-    int classes = 0;
-    var courses = StorageService().appDB.get("timetable") ?? [];
-    for (Courses course in courses) {
-      if (course.dayOfTheWeek!.title() ==
-          DateFormat("EEEE")
-              .format(DateTime.now().add(const Duration(hours: 24)))) {
-        classes++;
-      }
-    }
-    return classes;
+    return 0;
   }
 
-  List<Courses> get classesToday {
-    List<Courses> classes = <Courses>[];
-
-    var courses = StorageService().appDB.get("timetable") ?? [];
-    for (Courses course in courses) {
-      if (course.dayOfTheWeek!.title() ==
-          DateFormat("EEEE").format(DateTime.now())) {
-        classes.add(course);
-      }
-    }
-
-    return classes;
+  List<Course> get classesToday {
+    return List.empty();
   }
 
-  List<Courses> get classesTommorrow {
-    List<Courses> classes = <Courses>[];
-    var courses = StorageService().appDB.get("timetable") ?? [];
-    for (Courses course in courses) {
-      if (course.dayOfTheWeek!.title() ==
-          DateFormat("EEEE")
-              .format(DateTime.now().add(const Duration(hours: 24)))) {
-        classes.add(course);
-      }
-    }
-    return classes;
+  List<Course> get classesTommorrow {
+    return List.empty();
   }
 }

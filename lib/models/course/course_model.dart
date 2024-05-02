@@ -1,35 +1,15 @@
-import 'package:hive/hive.dart';
-
-part 'courses.g.dart';
-
-@HiveType(typeId: 2)
-class Courses {
-  @HiveField(0)
+class Course {
   String? name;
-
-  @HiveField(1)
   String? venue;
-
-  @HiveField(2)
   String? section;
-
-  @HiveField(3)
   String? time;
-
-  @HiveField(4)
   String? dayOfTheWeek;
-
-  @HiveField(5)
   String? period;
-
-  @HiveField(6)
   String? room;
-
-  @HiveField(7)
   String? lecturer;
 
   // Constructor for the Courses class
-  Courses({
+  Course({
     this.name,
     this.venue,
     this.section,
@@ -41,8 +21,8 @@ class Courses {
   });
 
   // Factory constructor to create a Courses object from a JSON string
-  factory Courses.fromJson(Map json) {
-    return Courses(
+  factory Course.fromJson(Map json) {
+    return Course(
       name: json['Unit'],
       venue: json['Venue'],
       section: json['Section'],
@@ -56,28 +36,14 @@ class Courses {
 
   Map toJson() {
     return {
-      'Unit': name,
-      'Venue': venue,
-      'Section': section,
+      'unit': name,
+      'venue': venue,
+      'section': section,
       'time': time,
-      'Day of Week': dayOfTheWeek,
-      'Period': period,
-      'Lecture Room': room,
-      'Lecturer': lecturer,
+      'day_of_week': dayOfTheWeek,
+      'period': period,
+      'lecture_room': room,
+      'lecturer': lecturer,
     };
   }
-}
-
-class Unit {
-  String name;
-  // String code;
-  double creditHours;
-  String grade;
-
-  Unit({
-    required this.name,
-    // required this.code,
-    required this.creditHours,
-    required this.grade,
-  });
 }
