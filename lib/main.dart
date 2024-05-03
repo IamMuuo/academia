@@ -28,7 +28,6 @@ void main() async {
 
   // Init the storage service
   await StorageService().init();
-  // StorageService().registerAdapters<User>(UserAdapter());
   StorageService().registerAdapters<Schedule>(ScheduleAdapter());
   StorageService().registerAdapters<Task>(TaskAdapter());
   StorageService().registerAdapters<Exam>(ExamAdapter());
@@ -96,8 +95,10 @@ class Academia extends StatelessWidget {
       }
     });
 
-    return userController.isLoggedIn.value
-        ? const HomePage()
-        : const IntroPage();
+    return Obx(
+      () => userController.isLoggedIn.value
+          ? const HomePage()
+          : const IntroPage(),
+    );
   }
 }
