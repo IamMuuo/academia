@@ -1,3 +1,4 @@
+import 'package:academia/tools/todo/todo.dart';
 import 'package:get/get.dart';
 import 'package:academia/exports/barrel.dart';
 
@@ -151,7 +152,9 @@ final List<Map<String, dynamic>> allTools = [
     "name": "Task Manager",
     "action": "Manage your tasks",
     "image": "assets/images/tasks_manager.png",
-    "ontap": () {},
+    "ontap": () {
+      Get.to(const TodoPage());
+    },
     "description":
         "Having trouble keeping track of your Assignments? We've got you covered",
   }
