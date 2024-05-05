@@ -1,6 +1,6 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
 
 class TodoViewPage extends StatefulWidget {
   const TodoViewPage({super.key});
@@ -9,35 +9,30 @@ class TodoViewPage extends StatefulWidget {
   State<TodoViewPage> createState() => _TodoViewPageState();
 }
 
-enum _NotificationFrequency {
-  everyDay,
-  dayBefore,
-}
-
 class _TodoViewPageState extends State<TodoViewPage> {
   TextEditingController titleController = TextEditingController();
   TextEditingController noteController = TextEditingController();
   DateTime? _selectedDate;
   TimeOfDay? _notificationTime;
+  Color? _selectedColor;
+  bool _completed = false;
+  bool _selectedFrequency = false;
 
   final formKey = GlobalKey<FormState>();
   final DateFormat formatter = DateFormat('EEEE, MMM yyyy');
   final DateFormat timeformatter = DateFormat('HH:mm');
 
   void _presentDatePicker() {
-    // showDatePicker is a pre-made funtion of Flutter
     showDatePicker(
             context: context,
             initialDate: DateTime.now(),
             firstDate: DateTime(2020),
             lastDate: DateTime(2030))
         .then((pickedDate) {
-      // Check if no date is selected
       if (pickedDate == null) {
         return;
       }
       setState(() {
-        // using state so that the UI will be rerendered when date is picked
         _selectedDate = pickedDate;
       });
     });
@@ -59,22 +54,70 @@ class _TodoViewPageState extends State<TodoViewPage> {
 
   void _presentFrequencyPicker() {
     showDialog(
-        context: context,
-        builder: (context) {
-          return SimpleDialog(
-            title: Text("Reminder Frequency"),
-            children: <Widget>[
-              SimpleDialogOption(
-                child: Text("Every Day"),
-                onPressed: () {},
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Notification Frequency"),
+        actions: [
+          FilledButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _presentTimePicker();
+              },
+              child: const Text("Confirm")),
+          FilledButton.tonal(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Cancel")),
+        ],
+        content: StatefulBuilder(
+          builder: (context, StateSetter setState) {
+            return SizedBox(
+              height: 150,
+              child: Column(
+                children: [
+                  RadioListTile<bool>(
+                    title: const Text("Every Day"),
+                    value: true,
+                    groupValue:
+                        _selectedFrequency, // Assuming you have a variable to hold the selected frequency
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _selectedFrequency = value!;
+                      });
+                    },
+                  ),
+                  RadioListTile<bool>(
+                    title: const Text("Day Before"),
+                    value: false,
+                    groupValue:
+                        _selectedFrequency, // Assuming you have a variable to hold the selected frequency
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _selectedFrequency = value!;
+                      });
+                    },
+                  ),
+                ],
               ),
-              SimpleDialogOption(
-                child: Text("Every Day"),
-                onPressed: () {},
-              )
-            ],
-          );
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  void _presentColorPicker() {
+    ColorPicker(
+      color: Colors.teal,
+      onColorChanged: (Color color) {
+        setState(() {
+          _selectedColor = color;
         });
+      },
+    ).showPickerDialog(
+      context,
+    );
   }
 
   @override
@@ -83,7 +126,8 @@ class _TodoViewPageState extends State<TodoViewPage> {
       appBar: AppBar(
         title: const Text("Agenda Item"),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Ionicons.save_outline))
+          IconButton(onPressed: () {}, icon: const Icon(Ionicons.trash)),
+          IconButton(onPressed: () {}, icon: const Icon(Ionicons.save_outline)),
         ],
         leading: IconButton(
           onPressed: () {
@@ -99,34 +143,23 @@ class _TodoViewPageState extends State<TodoViewPage> {
             key: formKey,
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Radio(
-                      value: false,
-                      groupValue: "Completed",
-                      onChanged: (value) {},
-                    ),
-                    Expanded(
-                      child: TextFormField(
-                        controller: titleController,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (value) {
-                          if ((value?.length ?? 0) < 3) {
-                            return "Please specify a valid title";
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          hintText: "Add task name",
-                          hintStyle: Theme.of(context)
-                              .textTheme
-                              .titleLarge
-                              ?.copyWith(color: Colors.grey),
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    )
-                  ],
+                TextFormField(
+                  controller: titleController,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) {
+                    if ((value?.length ?? 0) < 3) {
+                      return "Please specify a valid title";
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Add agenda title",
+                    hintStyle: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(color: Colors.grey),
+                    border: InputBorder.none,
+                  ),
                 ),
                 const Divider(),
                 Padding(
@@ -157,7 +190,9 @@ class _TodoViewPageState extends State<TodoViewPage> {
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     subtitle: Text(
-                      "Day before",
+                      _selectedFrequency
+                          ? "Every day to that day"
+                          : "Just day before",
                       style: Theme.of(context)
                           .textTheme
                           .titleSmall
@@ -169,10 +204,14 @@ class _TodoViewPageState extends State<TodoViewPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: ListTile(
-                    onTap: () {},
-                    leading: const CircleAvatar(
+                    onTap: () {
+                      _presentColorPicker();
+                    },
+                    leading: CircleAvatar(
                       radius: 10,
-                      backgroundColor: Colors.red,
+                      backgroundColor: _selectedColor == null
+                          ? Colors.teal
+                          : _selectedColor!,
                     ),
                     title: Text(
                       "Pick a color",
@@ -183,6 +222,13 @@ class _TodoViewPageState extends State<TodoViewPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if ((value?.length ?? 0) < 5) {
+                        return "Please describe this task to make it memorable";
+                      }
+                      return null;
+                    },
                     controller: noteController,
                     maxLines: 7,
                     decoration: InputDecoration(
@@ -195,6 +241,16 @@ class _TodoViewPageState extends State<TodoViewPage> {
                     ),
                   ),
                 ),
+                const Divider(height: 20),
+                FilledButton.icon(
+                  onPressed: () {},
+                  icon: Icon(
+                    _completed ? Ionicons.pricetag_outline : Ionicons.checkmark,
+                  ),
+                  label: Text(
+                    _completed ? "Umark as complete" : "Mark as complete",
+                  ),
+                )
               ],
             ),
           ),

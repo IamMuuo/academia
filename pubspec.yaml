@@ -70,6 +70,7 @@ dependencies:
   awesome_notifications: ^0.8.2
   sqflite: ^2.3.3
   path: ^1.9.0
+  flex_color_picker: ^3.4.1
   
 
 
