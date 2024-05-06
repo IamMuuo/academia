@@ -32,17 +32,6 @@ void main() async {
   StorageService().registerAdapters<Task>(TaskAdapter());
   StorageService().registerAdapters<Exam>(ExamAdapter());
 
-  // Initialize the various controllers
-  // once you append the controller onto the list don't inject it again
-  // since it will be placed in the context
-  // ControllerService().injectMultipleControllers(
-  //   <GetxController>[
-  //     SettingsController(),
-  //     NotificationsController(),
-  //     TaskManagerController(),
-  //   ],
-  // );
-
   runApp(
     GetMaterialApp(
       home: const Academia(),
@@ -61,6 +50,7 @@ class Academia extends StatelessWidget {
     final userController = Get.put(UserController());
     Get.put(NotificationsController());
     Get.put(SettingsController());
+    Get.put(TodoController());
 
     // Prompt for permission
     AwesomeNotifications().isNotificationAllowed().then((value) {

@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 
@@ -10,6 +11,7 @@ class TodoViewPage extends StatefulWidget {
 }
 
 class _TodoViewPageState extends State<TodoViewPage> {
+  final todoController = Get.find<TodoController>();
   TextEditingController titleController = TextEditingController();
   TextEditingController noteController = TextEditingController();
   DateTime? _selectedDate;
@@ -21,6 +23,26 @@ class _TodoViewPageState extends State<TodoViewPage> {
   final formKey = GlobalKey<FormState>();
   final DateFormat formatter = DateFormat('EEEE, MMM yyyy');
   final DateFormat timeformatter = DateFormat('HH:mm');
+
+  Future<void> saveTodo() async {
+    if (formKey.currentState!.validate()) {
+      final newTodo = Todo(
+        name: titleController.text,
+        date: _selectedDate!,
+        notificationTime: _notificationTime.toString(),
+        notificationFrequency: _selectedFrequency,
+        color: _selectedColor!.value.toString(),
+        description: noteController.text,
+        complete: _completed,
+      );
+
+      await todoController.createTodo(newTodo);
+      debugPrint("Todo created successfully");
+
+      if (!mounted) return;
+      Navigator.of(context).pop();
+    }
+  }
 
   void _presentDatePicker() {
     showDatePicker(
@@ -127,7 +149,11 @@ class _TodoViewPageState extends State<TodoViewPage> {
         title: const Text("Agenda Item"),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Ionicons.trash)),
-          IconButton(onPressed: () {}, icon: const Icon(Ionicons.save_outline)),
+          IconButton(
+              onPressed: () async {
+                await saveTodo();
+              },
+              icon: const Icon(Ionicons.save_outline)),
         ],
         leading: IconButton(
           onPressed: () {
@@ -243,7 +269,11 @@ class _TodoViewPageState extends State<TodoViewPage> {
                 ),
                 const Divider(height: 20),
                 FilledButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      _completed = !_completed;
+                    });
+                  },
                   icon: Icon(
                     _completed ? Ionicons.pricetag_outline : Ionicons.checkmark,
                   ),

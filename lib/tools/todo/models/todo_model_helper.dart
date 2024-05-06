@@ -1,71 +1,72 @@
 import 'package:academia/storage/storage.dart';
-import 'todo_model.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:sqflite/sqflite.dart';
 
-class TodoModelHelper {
+class TodoModelHelper implements DatabaseOperations {
   static final TodoModelHelper _instance = TodoModelHelper._internal();
 
   factory TodoModelHelper() {
+    DatabaseHelper().registerModel('todos', '''
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        date TEXT NOT NULL,
+        notification_time TEXT NOT NULL,
+        notification_frequency TEXT NOT NULL,
+        color TEXT NOT NULL,
+        description TEXT,
+        complete INTEGER NOT NULL,
+        date_added TEXT NOT NULL,
+        date_completed TEXT
+    ''');
+
     return _instance;
   }
 
   TodoModelHelper._internal();
 
-  // Register the table schema
-  void registerModel(Database db) {
-    db.execute('''
-      CREATE TABLE IF NOT EXISTS todos (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        date TEXT NOT NULL,
-        notificationTime TEXT NOT NULL,
-        notificationFrequency TEXT NOT NULL,
-        color TEXT NOT NULL,
-        description TEXT,
-        complete INTEGER NOT NULL,
-        dateAdded TEXT NOT NULL
-      )
-    ''');
-  }
+  @override
 
-  // Insert a new Todo
-  Future<int> insert(Todo todo) async {
+  /// Inserts a new todo on the local database specified by [data]
+  Future<int> create(Map<String, dynamic> data) async {
     final db = await DatabaseHelper().database;
-    return await db.insert(
+    final id = await db.insert(
       'todos',
-      todo.toJson(),
+      data,
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+
+    debugPrint("[+] Todo written successfully");
+    return id;
   }
 
-  // Get all Todos
-  Future<List<Todo>> getAllTodos() async {
+  @override
+
+  /// Queries for all todos stored in the local database
+  Future<List<Map<String, dynamic>>> queryAll() async {
     final db = await DatabaseHelper().database;
-    final List<Map<String, dynamic>> maps = await db.query('todos');
-
-    return List.generate(maps.length, (i) {
-      return Todo.fromJson(maps[i]);
-    });
+    final users = await db.query('todos');
+    return users;
   }
 
-  // Update a Todo
-  Future<int> update(Todo todo) async {
+  @override
+  Future<int> update(Map<String, dynamic> data) async {
     final db = await DatabaseHelper().database;
-    return await db.update(
-      'todos',
-      todo.toJson(),
-      where: 'id =?',
-      whereArgs: [todo.id],
-    );
+    return await db
+        .update('todos', data, where: 'id =?', whereArgs: [data['id']]);
   }
 
-  // Delete a Todo
+  @override
+
+  /// Deletes a todo specified with id [id]
   Future<int> delete(int id) async {
     final db = await DatabaseHelper().database;
-    return await db.delete(
-      'todos',
-      where: 'id =?',
-      whereArgs: [id],
-    );
+    return await db.delete('todos', where: 'id =?', whereArgs: [id]);
+  }
+
+  @override
+  Future<void> truncate() async {
+    final db = await DatabaseHelper().database;
+
+    await db.execute('DROP TABLE todos');
   }
 }
