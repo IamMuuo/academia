@@ -37,4 +37,30 @@ class TodoController extends GetxController {
     TodoModelHelper().queryAll().then(
         (value) => todos.value = value.map((e) => Todo.fromJson(e)).toList());
   }
+
+  List<Todo> filterTodosByDate(String filterOption) {
+    DateTime now = DateTime.now();
+    DateTime tomorrow = now.add(const Duration(days: 1));
+
+    switch (filterOption.toLowerCase()) {
+      case "today":
+        return todos.where((todo) => todo.date.isAtSameMomentAs(now)).toList();
+      case "tomorrow":
+        return todos
+            .where((todo) => todo.date.isAtSameMomentAs(tomorrow))
+            .toList();
+      case "week":
+        return todos
+            .where((todo) =>
+                todo.date.isAfter(now.subtract(const Duration(days: 7))))
+            .toList();
+      case "month":
+        return todos
+            .where((todo) =>
+                todo.date.isAfter(now.subtract(const Duration(days: 30))))
+            .toList();
+      default:
+        return todos; // Return all todos if no valid filter option is provided
+    }
+  }
 }
