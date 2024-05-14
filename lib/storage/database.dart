@@ -1,6 +1,6 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 /// Defines a singleton class that will handles database connection.
 ///
@@ -46,9 +46,15 @@ class DatabaseHelper {
   ///
   Future<Database> initDatabase() async {
     String path = join(
-      await getDatabasesPath(),
+      (await getApplicationDocumentsDirectory()).path,
       databaseName,
     );
+
+    if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+      sqfliteFfiInit();
+      databaseFactory = databaseFactoryFfi;
+      return await databaseFactoryFfi.openDatabase(path);
+    }
     return await openDatabase(
       path,
       version: 1,

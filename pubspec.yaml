@@ -71,6 +71,7 @@ dependencies:
   sqflite: ^2.3.3
   path: ^1.9.0
   flex_color_picker: ^3.4.1
+  sqflite_common_ffi: ^2.3.3
   
 
 

@@ -26,12 +26,6 @@ void main() async {
 
   await DatabaseHelper().initDatabase();
 
-  // Init the storage service
-  await StorageService().init();
-  StorageService().registerAdapters<Schedule>(ScheduleAdapter());
-  StorageService().registerAdapters<Task>(TaskAdapter());
-  StorageService().registerAdapters<Exam>(ExamAdapter());
-
   runApp(
     GetMaterialApp(
       home: const Academia(),
