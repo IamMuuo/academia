@@ -130,25 +130,14 @@ class SettingsPage extends StatelessWidget {
                   ListTile(
                     title: const Text("Show my profile picture"),
                     trailing: Switch(
-                      value: controller.showProfilePic.value,
+                      value: controller.settings.value!.showProfilePicture ??
+                          false,
                       onChanged: (value) async {
-                        controller.showProfilePic.value = value;
+                        controller.settings.value!.showProfilePicture = value;
                         await controller.saveSettings();
                       },
                     ),
                   ),
-                  const Divider(),
-
-                  ListTile(
-                    title: const Text("Show GPA"),
-                    trailing: Switch(
-                        value: controller.showGPA.value,
-                        onChanged: (value) async {
-                          controller.showGPA.value = value;
-                          await controller.saveSettings();
-                        }),
-                  ),
-
                   const Divider(),
 
                   // Todos
@@ -163,9 +152,9 @@ class SettingsPage extends StatelessWidget {
                   ListTile(
                     title: const Text("Lock showing audit tool"),
                     trailing: Switch(
-                        value: controller.showAudit.value,
+                        value: controller.settings.value!.enableAudit ?? false,
                         onChanged: (value) async {
-                          controller.showAudit.value = value;
+                          controller.settings.value!.enableAudit = value;
                           await controller.saveSettings();
                         }),
                   ),
@@ -173,9 +162,10 @@ class SettingsPage extends StatelessWidget {
                   ListTile(
                     title: const Text("Lock showing transcript tool"),
                     trailing: Switch(
-                        value: controller.showTranscript.value,
+                        value: controller.settings.value!.enableTranscript ??
+                            false,
                         onChanged: (value) async {
-                          controller.showTranscript.value = value;
+                          controller.settings.value!.enableTranscript = value;
                           await controller.saveSettings();
                         }),
                   ),
@@ -183,9 +173,10 @@ class SettingsPage extends StatelessWidget {
                   ListTile(
                     title: const Text("Show fees statistics"),
                     trailing: Switch(
-                        value: controller.showFees.value,
+                        value: controller.settings.value!.showFeeStatistics ??
+                            false,
                         onChanged: (value) async {
-                          controller.showFees.value = value;
+                          controller.settings.value!.showFeeStatistics = value;
                           await controller.saveSettings();
                         }),
                   ),
@@ -200,26 +191,26 @@ class SettingsPage extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
-                  ListTile(
-                    title: const Text("Show exam timetable during exam period"),
-                    trailing: Switch(
-                        value: controller.showExamTimeTable.value,
-                        onChanged: (value) async {
-                          controller.showExamTimeTable.value = value;
-                          await controller.saveSettings();
-                        }),
-                  ),
+                  // ListTile(
+                  //   title: const Text("Show exam timetable during exam period"),
+                  //   trailing: Switch(
+                  //       value: controller.showExamTimeTable.value,
+                  //       onChanged: (value) async {
+                  //         controller.showExamTimeTable.value = value;
+                  //         await controller.saveSettings();
+                  //       }),
+                  // ),
                   const Divider(),
 
-                  ListTile(
-                    title: const Text("Wish me happy birthday"),
-                    trailing: Switch(
-                        value: controller.birthdayNotify.value,
-                        onChanged: (value) async {
-                          controller.birthdayNotify.value = value;
-                          await controller.saveSettings();
-                        }),
-                  ),
+                  // ListTile(
+                  //   title: const Text("Wish me happy birthday"),
+                  //   trailing: Switch(
+                  //       value: controller.birthdayNotify.value,
+                  //       onChanged: (value) async {
+                  //         controller.birthdayNotify.value = value;
+                  //         await controller.saveSettings();
+                  //       }),
+                  // ),
                   const Divider(),
 
                   Align(
@@ -291,32 +282,6 @@ class SettingsPage extends StatelessWidget {
                             const Icon(Ionicons.arrow_forward_circle_outline)),
                   ),
                   const Divider(),
-
-                  ListTile(
-                    onTap: () async {
-                      await controller.checkForUpdates();
-                    },
-                    title: Obx(
-                      () => controller.hasUpdates.value
-                          ? const Text("Updating")
-                          : Text(
-                              "Update v2.${controller.patch.value}",
-                            ),
-                    ),
-                    trailing: controller.hasUpdates.value
-                        ? LoadingAnimationWidget.beat(
-                            color: Theme.of(context).colorScheme.tertiary,
-                            size: 20,
-                          )
-                        : IconButton(
-                            onPressed: () async {
-                              await controller.checkForUpdates();
-                            },
-                            icon: const Icon(
-                                Ionicons.arrow_forward_circle_outline)),
-                  ),
-                  const Divider(),
-
                   // button to refresh all content
                   Padding(
                     padding:

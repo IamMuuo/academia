@@ -1,5 +1,4 @@
 export 'package:flutter/material.dart';
-export 'package:academia/models/exam.dart';
 export 'package:academia/constants/common.dart';
 export 'package:ionicons/ionicons.dart';
 export 'package:academia/widgets/academia_app_bar.dart';
@@ -8,12 +7,9 @@ export 'package:percent_indicator/percent_indicator.dart';
 export 'package:academia/widgets/count_down_widget.dart';
 export 'package:academia/widgets/exam_course_card.dart';
 export 'package:academia/controllers/settings_controller.dart';
-export 'package:academia/models/schedule.dart';
-export 'package:academia/models/tasks.dart';
 export 'package:academia/pages/home_page.dart';
 export 'package:academia/pages/intro_page.dart';
 export 'package:academia/themes/theme.dart';
-export 'package:hive_flutter/hive_flutter.dart';
 export 'package:magnet/magnet.dart';
 export 'package:loading_animation_widget/loading_animation_widget.dart';
 export 'package:screenshot/screenshot.dart';

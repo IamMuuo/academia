@@ -1,19 +1,18 @@
-import 'package:academia/tools/todo/todo.dart';
 import 'package:get/get.dart';
 import 'package:academia/exports/barrel.dart';
 
 final List<Map<String, dynamic>> allTools = [
-  {
-    "id": 8,
-    "name": "Exam Timetable",
-    "action": "Show exam timetable",
-    "image": "assets/images/exam_timetable.png",
-    "ontap": () {
-      Get.to(const ExamTimeTablePage());
-    },
-    "description":
-        "Exams around the corner? Don't panic we've got you covered with the timetable",
-  },
+  // {
+  //   "id": 8,
+  //   "name": "Exam Timetable",
+  //   "action": "Show exam timetable",
+  //   "image": "assets/images/exam_timetable.png",
+  //   "ontap": () {
+  //     Get.to(const ExamTimeTablePage());
+  //   },
+  //   "description":
+  //       "Exams around the corner? Don't panic we've got you covered with the timetable",
+  // },
   {
     "id": 1,
     "name": "GPA Calculator",
@@ -47,7 +46,7 @@ final List<Map<String, dynamic>> allTools = [
     "image": "assets/images/fees.png",
     "ontap": () async {
       var controller = Get.find<SettingsController>();
-      if (!controller.showFees.value) {
+      if (!(controller.settings.value!.showFeeStatistics ?? false)) {
         showCustomSnackbar(
           "Tool locked",
           "Fees functionality is locked in the settings page, please unlock it to view your fees statement",
@@ -97,7 +96,7 @@ final List<Map<String, dynamic>> allTools = [
     "image": "assets/images/view.png",
     "ontap": () async {
       var controller = Get.find<SettingsController>();
-      if (controller.showAudit.value) {
+      if ((controller.settings.value!.enableAudit ?? false)) {
         showCustomSnackbar(
           "Tool locked",
           "Student Audit functionality is locked in the settings page, please unlock it to view your student audit",
@@ -121,7 +120,7 @@ final List<Map<String, dynamic>> allTools = [
     "image": "assets/images/graduating.png",
     "ontap": () async {
       var controller = Get.find<SettingsController>();
-      if (controller.showTranscript.value) {
+      if (controller.settings.value!.enableTranscript ?? false) {
         showCustomSnackbar(
           "Tool locked",
           "Transcript functionality is locked in the settings page, please unlock it to view your transcript",

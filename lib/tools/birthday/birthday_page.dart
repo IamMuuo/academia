@@ -86,7 +86,9 @@ class BirthDayPage extends StatelessWidget {
                             borderRadius: const BorderRadius.all(
                               Radius.circular(800),
                             ),
-                            child: settingsController.showProfilePic.value
+                            child: settingsController
+                                        .settings.value!.showProfilePicture ??
+                                    false
                                 ? Image.memory(
                                     Uint8List.fromList(
                                       base64Decode(userController

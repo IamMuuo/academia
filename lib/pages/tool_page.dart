@@ -60,7 +60,7 @@ class _ToolsPageState extends State<ToolsPage> {
       appBar: AppBar(
         title: const Text("Tools"),
         centerTitle: true,
-        leading: settingsController.birthdayNotify.value
+        leading: settingsController.settings.value!.showProfilePicture ?? false
             ? isBirthDay
                 ? IconButton(
                     onPressed: () {

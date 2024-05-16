@@ -3,7 +3,6 @@
 ///  File: Defines a controller that manages user info state across the application
 
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/services/services.dart';
 import 'package:get/get.dart';
 import 'package:academia/models/models.dart';
 
@@ -22,6 +21,9 @@ class UserController extends GetxController {
     if (storedUsers.isNotEmpty) {
       user.value = User.fromJson(storedUsers[0]);
       isLoggedIn.value = true;
+
+      // initialize magnet
+      magnet = Magnet(user.value!.regno!, user.value!.password!);
     }
   }
 
@@ -65,7 +67,6 @@ class UserController extends GetxController {
     try {
       // Close the Hive box
       // await appDB.close();
-      await StorageService().appDB.deleteAll(["user"]);
       // Delete the Hive box directory to remove all data
       // await Hive.deleteBoxFromDisk(dbName);
       Get.reloadAll(); // Clear all the controllers

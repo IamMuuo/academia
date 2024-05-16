@@ -38,6 +38,7 @@ class User {
         dateOfBirth: json['dateofbirth'],
         campus: json['campus'],
         profile: json['profile'],
+        password: json["password"],
       );
 
   /// Serializes a user object to a map that

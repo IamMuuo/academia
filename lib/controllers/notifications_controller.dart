@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import "package:academia/exports/barrel.dart";
-import 'package:academia/services/services.dart';
 import 'package:get/get.dart';
 
 class NotificationsController extends GetxController {
@@ -17,27 +16,6 @@ class NotificationsController extends GetxController {
     // notifications = await magnet.fetchNotifications();
     hasNotifications.value = notifications.isNotEmpty;
     debugPrint("Notifications Done!");
-  }
-
-  // fetches the event calendar
-  Future<void> fetchAcademicCalendar() async {
-    var events = await magnet.fetchAcademicCalendar();
-    if (events.isNotEmpty) {
-      await StorageService().appDB.put("academic_calendar", events);
-    }
-  }
-
-  bool get hasCalendar {
-    return StorageService().appDB.containsKey("academic_calendar")
-        ? true
-        : false;
-  }
-
-  Future<List<Map<String, dynamic>>> get events async {
-    if (StorageService().appDB.containsKey("academic_calendar")) {
-      return await StorageService().appDB.get("academic_calendar");
-    }
-    return [];
   }
 
   int _generateRandomIntId({int min = 100000, int max = 999999}) {

@@ -56,7 +56,9 @@ class AcademiaAppBar extends StatelessWidget {
                         borderRadius: const BorderRadius.all(
                           Radius.circular(800),
                         ),
-                        child: settingsController.showProfilePic.value
+                        child: settingsController
+                                    .settings.value!.showProfilePicture ??
+                                false
                             ? userController.user.value == null
                                 ? Image.asset(
                                     "assets/icons/academia.png",
