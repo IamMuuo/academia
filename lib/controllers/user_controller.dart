@@ -14,17 +14,27 @@ class UserController extends GetxController {
 
   /// Load the user from disk and initialize the controller
   Future<void> onInit() async {
-    // load the user from local storage
     super.onInit();
+    final loadedUser = await loadUserFromDisk();
+
+    if (loadedUser != null) {
+      user.value = loadedUser;
+      isLoggedIn.value = true;
+    }
+  }
+
+  Future<User?> loadUserFromDisk() async {
+    // load the user from local storage
     final storedUsers = await UserModelHelper().queryAll();
 
     if (storedUsers.isNotEmpty) {
       user.value = User.fromJson(storedUsers[0]);
-      isLoggedIn.value = true;
 
       // initialize magnet
       magnet = Magnet(user.value!.regno!, user.value!.password!);
+      return user.value;
     }
+    return null;
   }
 
   /// Perform a request to login a user

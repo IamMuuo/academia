@@ -78,10 +78,39 @@ class Academia extends StatelessWidget {
       }
     });
 
-    return Obx(
-      () => userController.isLoggedIn.value
-          ? const HomePage()
-          : const IntroPage(),
+    return FutureBuilder(
+      future: userController.loadUserFromDisk(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return Scaffold(
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Image.asset(
+                    "assets/icons/academia.png",
+                    height: 200,
+                  ),
+                  const SizedBox(height: 22),
+                  LoadingAnimationWidget.fourRotatingDots(
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 40,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    "Let the past die, kill it if you have to ~ The Last Jedi",
+                    style: Theme.of(context).textTheme.titleLarge,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        return snapshot.hasData ? const HomePage() : const IntroPage();
+      },
     );
   }
 }
