@@ -29,7 +29,7 @@ void main() async {
     GetMaterialApp(
       home: const Academia(),
       theme: lightModeTheme,
-      darkTheme: darkModeTheme,
+      // darkTheme: darkModeTheme,
     ),
   );
 }
