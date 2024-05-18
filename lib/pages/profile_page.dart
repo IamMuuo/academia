@@ -18,12 +18,15 @@ class ProfilePage extends StatelessWidget {
           centerTitle: true,
           leading: IconButton(
             onPressed: () {},
-            icon: const Icon(Ionicons.refresh),
+            icon: const Icon(Ionicons.terminal_outline),
           ),
           title: const Text("Your profile"),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const SettingsPage()));
+              },
               icon: const Icon(Ionicons.menu_outline),
             ),
           ],
