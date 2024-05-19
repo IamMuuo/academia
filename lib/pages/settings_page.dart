@@ -1,6 +1,5 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
-import 'package:path/path.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});

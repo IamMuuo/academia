@@ -104,6 +104,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - assets/logos/
     - shorebird.yaml
   #   - images/a_dot_ham.jpeg
 

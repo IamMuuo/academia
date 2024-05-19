@@ -37,7 +37,14 @@ class InfoCard extends StatelessWidget {
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(width: 8),
-            Text(content),
+            Expanded(
+              child: Text(
+                content,
+                style: const TextStyle(
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
           ],
         ),
       ),

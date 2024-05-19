@@ -45,26 +45,26 @@ final List<Map<String, dynamic>> allTools = [
     "action": "Get my fee statement",
     "image": "assets/images/fees.png",
     "ontap": () async {
-      var controller = Get.find<SettingsController>();
-      if (!(controller.settings.value!.showFeeStatistics ?? false)) {
+      // var controller = Get.find<SettingsController>();
+      // if (!(controller.settings.value!.showFeeStatistics ?? false)) {
+      //   showCustomSnackbar(
+      //     "Tool locked",
+      //     "Fees functionality is locked in the settings page, please unlock it to view your fees statement",
+      //     icon: Icons.lock,
+      //   );
+      // } else {
+      try {
+        var statements = await magnet.fetchFeeStatement();
+        Get.to(FeesPage(allStatements: statements));
+      } catch (e) {
         showCustomSnackbar(
-          "Tool locked",
-          "Fees functionality is locked in the settings page, please unlock it to view your fees statement",
-          icon: Icons.lock,
+          "Error",
+          "Please check your internet connection and try again!",
+          icon: Icons.network_check,
         );
-      } else {
-        try {
-          var statements = await magnet.fetchFeeStatement();
-          Get.to(FeesPage(allStatements: statements));
-        } catch (e) {
-          showCustomSnackbar(
-            "Error",
-            "Please check your internet connection and try again!",
-            icon: Icons.network_check,
-          );
-        }
       }
     },
+    // },
     "description": "Not sure about finances? We are here for you"
   },
   {

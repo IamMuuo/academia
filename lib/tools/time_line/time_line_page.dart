@@ -5,8 +5,13 @@ class TimeLinePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Timeline coming soon!"),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Your semester timeline"),
+      ),
+      body: const Center(
+        child: Text("Your semester timeline"),
+      ),
     );
   }
 }

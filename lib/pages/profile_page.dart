@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/pages/membership_pages.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -99,9 +100,18 @@ class ProfilePage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text("Preview school ID"),
+                Hero(
+                  tag: "membership",
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const MembershipPage(),
+                        ),
+                      );
+                    },
+                    child: const Text("Preview school ID"),
+                  ),
                 ),
                 const SizedBox(height: 16),
               ],

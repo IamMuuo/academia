@@ -1,4 +1,5 @@
 export 'package:flutter/material.dart';
+export 'package:academia/widgets/widgets.dart';
 export 'package:academia/constants/common.dart';
 export 'package:ionicons/ionicons.dart';
 export 'package:academia/widgets/academia_app_bar.dart';
