@@ -42,6 +42,7 @@ class Academia extends StatelessWidget {
     /// Init the controllers here
     final userController = Get.put(UserController());
     Get.put(NotificationsController());
+    Get.put(NetworkController());
     Get.put(SettingsController());
     Get.put(TodoController());
 
