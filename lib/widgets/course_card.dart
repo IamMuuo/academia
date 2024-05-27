@@ -1,160 +1,121 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/models/models.dart';
 
 class CourseCard extends StatelessWidget {
   const CourseCard({
     super.key,
-    required this.courseTitle,
-    required this.dayOfWeek,
-    required this.period,
-    required this.venue,
-    required this.lecturer,
-    required this.campus,
-    this.icon = const Icon(Icons.school_sharp),
-    this.backGround = Colors.white,
-    this.borderColor = Colors.grey,
-    this.keyStyle = const TextStyle(
-      color: Colors.white,
-      fontWeight: FontWeight.bold,
-      fontSize: 12,
-    ),
-    this.valueStyle = const TextStyle(
-      color: Colors.white,
-      fontWeight: FontWeight.bold,
-      fontSize: 12,
-    ),
-    this.titleColor = Colors.white,
+    required this.course,
+    required this.progress,
   });
-  final String courseTitle;
-  final String dayOfWeek;
-  final String period;
-  final String campus;
-  final String venue;
-  final String lecturer;
-  final Color backGround;
-  final Color borderColor;
-  final Color titleColor;
-  final TextStyle valueStyle;
-  final TextStyle keyStyle;
-  final Icon icon;
+  final Course course;
+  final int progress;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: backGround,
-        border: Border.all(
-          color: Theme.of(context).colorScheme.outline,
-          width: 2,
-        ),
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        border: Border.all(color: Theme.of(context).colorScheme.shadow),
+        borderRadius: BorderRadius.circular(8),
       ),
-      constraints: const BoxConstraints(minHeight: 150),
-      padding: const EdgeInsets.all(12),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          // header
           Row(
             children: [
-              icon,
-              const Spacer(),
-              Text(
-                courseTitle,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: titleColor,
-                ),
-              ),
-            ],
-          ),
-
-          // Date and time
-          Row(
-            children: [
-              RichText(
-                text: TextSpan(
+              Flexible(
+                flex: 1,
+                child: Column(
                   children: [
-                    TextSpan(
-                      text: "Every : ",
-                      style: keyStyle,
+                    Text(
+                      course.name!,
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
-                    TextSpan(
-                      text: dayOfWeek.title(),
-                      style: valueStyle,
+                    const SizedBox(height: 8),
+                    Text(
+                      "Time & Day",
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                     ),
-                  ],
-                ),
-              ),
-              const Spacer(),
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: "Period : ",
-                      style: keyStyle,
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const Icon(Ionicons.time_outline),
+                        const SizedBox(width: 2),
+                        Flexible(
+                          child: Text(
+                            course.period ?? "uknown time",
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      overflow: TextOverflow.fade,
+                                    ),
+                          ),
+                        ),
+                      ],
                     ),
-                    TextSpan(
-                      text: period,
-                      style: valueStyle,
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          // Venues
-          Row(
-            children: [
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: "Campus: ",
-                      style: keyStyle,
-                    ),
-                    TextSpan(
-                      text: campus,
-                      style: valueStyle,
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const Icon(Ionicons.calendar_number_outline),
+                        const SizedBox(width: 2),
+                        Text(
+                          course.dayOfTheWeek?.title() ?? "uknown day",
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
               const Spacer(),
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: "Venue: ",
-                      style: keyStyle,
-                    ),
-                    TextSpan(
-                      text: venue,
-                      style: valueStyle,
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: "Lecturer: ",
-                      style: keyStyle,
-                    ),
-                    TextSpan(
-                      text: lecturer,
-                      style: valueStyle,
-                    ),
-                  ],
+              Flexible(
+                flex: 1,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(4)),
+                  padding: const EdgeInsets.all(4),
+                  child: Column(
+                    children: [
+                      const CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        child: Icon(
+                          Ionicons.person_circle_outline,
+                        ),
+                      ),
+                      Text(
+                        course.lecturer!,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        "Location info",
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          const Icon(Ionicons.location_outline),
+                          Text(
+                            course.room ?? "uknown venue",
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ],
           ),
+          const SizedBox(height: 12),
+          LinearProgressIndicator(
+            value: progress.toDouble(),
+          )
         ],
       ),
     );

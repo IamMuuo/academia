@@ -34,7 +34,7 @@ class Course {
     );
   }
 
-  Map toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'unit': name,
       'venue': venue,

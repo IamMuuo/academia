@@ -14,14 +14,14 @@ class Stat extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: CircularPercentIndicator(
-        header: Text(title),
+        footer: Text(title),
         center: Text("${(percentage * 100).toStringAsPrecision(2)}%"),
         curve: Curves.elasticIn,
-        lineWidth: 12,
+        lineWidth: 18,
         animation: true,
         percent: percentage,
         startAngle: 40,
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         progressColor: Theme.of(context).colorScheme.primary,
         animationDuration: 2000,
         animateFromLastPercent: true,

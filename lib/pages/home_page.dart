@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Get.put(SettingsController());
     Get.put(NotificationsController());
+    Get.put(CoursesController());
     return Scaffold(
       body: SafeArea(
         child: IndexedStack(index: currentIndex, children: pages),
