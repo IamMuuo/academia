@@ -71,14 +71,17 @@ class CoursesPage extends StatelessWidget {
                           ),
                         ],
                       )
-                    : ListView.builder(
-                        itemCount: coursesController.courses.length,
-                        itemBuilder: (context, index) {
-                          return CourseCard(
-                            course: coursesController.courses[index],
-                            progress: 9,
-                          );
-                        },
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: ListView.builder(
+                          itemCount: coursesController.courses.length,
+                          itemBuilder: (context, index) {
+                            return CourseCard(
+                              course: coursesController.courses[index],
+                              progress: 9,
+                            );
+                          },
+                        ),
                       ),
           ),
         ),

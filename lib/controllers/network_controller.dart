@@ -22,8 +22,9 @@ class NetworkController extends GetxController {
             color: Colors.white,
           ),
         ),
+        snackPosition: SnackPosition.TOP,
         isDismissible: false,
-        duration: const Duration(days: 1),
+        duration: const Duration(seconds: 5),
         backgroundColor: Colors.red[400]!,
         icon: const Icon(Ionicons.cloud_offline_outline, color: Colors.white),
       );
