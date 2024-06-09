@@ -10,14 +10,14 @@ class CoursesController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    // await loadCourses();
+    await loadCourses();
   }
 
   /// Loads all courses stored in the local DB
   Future<List<Course>> loadCourses() async {
     isLoading.value = true;
     final rawCourses = await CourseModelHelper().queryAll();
-    courses.value = rawCourses.map((e) => Course.fromJson(e)).toList();
+    courses.value = rawCourses.map((e) => Course.fromDB(e)).toList();
     if (courses.value.isEmpty) {
       hasCourses.value = false;
     } else {

@@ -7,7 +7,7 @@ class CourseModelHelper implements DatabaseOperations {
 
   factory CourseModelHelper() {
     DatabaseHelper().registerModel('courses', '''
-    name TEXT PRIMARY KEY,
+    unit TEXT PRIMARY KEY,
     venue TEXT,
     section TEXT,
     time TEXT,

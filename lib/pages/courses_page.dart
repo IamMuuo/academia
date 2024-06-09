@@ -10,6 +10,9 @@ class CoursesPage extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
+          floating: true,
+          snap: true,
+          pinned: true,
           title: const Text("Courses"),
           actions: [
             IconButton(
@@ -19,13 +22,15 @@ class CoursesPage extends StatelessWidget {
                   builder: (context) => AlertDialog(
                     title: const Text("Courses"),
                     content: const Text(
-                        "Here you can view your courses and everything in between"),
+                      "Here you can view your courses and everything in between",
+                    ),
                     actions: [
                       FilledButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text("Cool"))
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text("Cool"),
+                      )
                     ],
                   ),
                 );
@@ -33,6 +38,45 @@ class CoursesPage extends StatelessWidget {
               icon: const Icon(Ionicons.information_circle_outline),
             )
           ],
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          sliver: SliverGrid(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              childCount: 2,
+              (context, index) => Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      width: 2,
+                      color: Theme.of(context).colorScheme.primary,
+                    )),
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "${Emojis.flag_Kenya}",
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Container(
+            color: Theme.of(context).colorScheme.tertiaryContainer,
+            padding: const EdgeInsets.all(12),
+            child: const Text(
+              "${Emojis.symbols_information} You have no courses today",
+            ),
+          ),
         ),
         SliverFillRemaining(
           child: Obx(
@@ -76,9 +120,12 @@ class CoursesPage extends StatelessWidget {
                         child: ListView.builder(
                           itemCount: coursesController.courses.length,
                           itemBuilder: (context, index) {
-                            return CourseCard(
-                              course: coursesController.courses[index],
-                              progress: 9,
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 12),
+                              child: CourseCard(
+                                course: coursesController.courses[index],
+                                progress: 9,
+                              ),
                             );
                           },
                         ),

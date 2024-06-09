@@ -34,15 +34,28 @@ class Course {
     );
   }
 
+  factory Course.fromDB(Map<String, dynamic> json) {
+    return Course(
+      name: json['unit'],
+      venue: json['venue'],
+      section: json['section'],
+      time: json['time'],
+      dayOfTheWeek: json['day_of_the_week'],
+      period: json['period'],
+      room: json['room'],
+      lecturer: json['lecturer'],
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'unit': name,
       'venue': venue,
       'section': section,
       'time': time,
-      'day_of_week': dayOfTheWeek,
+      'day_of_the_week': dayOfTheWeek,
       'period': period,
-      'lecture_room': room,
+      'room': room,
       'lecturer': lecturer,
     };
   }

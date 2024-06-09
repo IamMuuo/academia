@@ -1,7 +1,6 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:academia/widgets/post_card.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 class DashBoard extends StatelessWidget {
   const DashBoard({super.key});
@@ -16,16 +15,19 @@ class DashBoard extends StatelessWidget {
         slivers: [
           SliverAppBar(
             elevation: 0,
-            leading:
-                IconButton(onPressed: () {}, icon: const Icon(Ionicons.menu)),
+            leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const LeaderBoardPage()));
+              },
+              icon: const Icon(Ionicons.trophy_outline),
+            ),
             title: const Text("Academia"),
             pinned: true,
             floating: false,
             snap: false,
-            actions: [
-              IconButton(onPressed: () {}, icon: const Icon(Ionicons.add)),
-              const ProfilePictureWidget(),
-              const SizedBox(width: 8)
+            actions: const [
+              ProfilePictureWidget(),
             ],
           ),
           SliverToBoxAdapter(
