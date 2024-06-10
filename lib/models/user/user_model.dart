@@ -2,6 +2,7 @@
 /// Represents a user's model as well as provides
 /// JSON to and fro serialization functionality
 class User {
+  String? id;
   String? regno;
   String? name;
   String? idno;

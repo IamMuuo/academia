@@ -1,7 +1,6 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:academia/models/user/user.dart';
 import 'package:academia/tools/leaderboard/widgets/top_three_widget.dart';
-import 'package:flutter/material.dart';
 import 'widgets/personal_rating_widget.dart';
 
 class LeaderBoardPage extends StatefulWidget {
@@ -104,7 +103,7 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                                   ),
                                 ],
                               ),
-                              PersonalRatingWidget(),
+                              const PersonalRatingWidget(),
                             ],
                           ),
                         ),
