@@ -135,47 +135,47 @@ class _FeesPageState extends State<FeesPage> {
                                     children: [
                                       Text(
                                         "Debit ",
-                                        style: normal.copyWith(
-                                            color: Colors.red, fontSize: 10),
+                                        // style: normal.copyWith(
+                                        //     color: Colors.red, fontSize: 10),
                                       ),
                                       Text(
                                         _statements[index]["debit"]
                                             .toString()
                                             .trim(),
-                                        style: normal.copyWith(
-                                            color: Colors.black,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold),
+                                        // style: normal.copyWith(
+                                        //     color: Colors.black,
+                                        //     fontSize: 10,
+                                        //     fontWeight: FontWeight.bold),
                                       ),
                                       const Spacer(),
                                       Text(
                                         "Credit ",
-                                        style: normal.copyWith(
-                                            color: Colors.green, fontSize: 10),
+                                        // style: normal.copyWith(
+                                        //     color: Colors.green, fontSize: 10),
                                       ),
                                       Text(
                                         _statements[index]["credit"]
                                             .toString()
                                             .trim(),
-                                        style: normal.copyWith(
-                                            color: Colors.black,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold),
+                                        // style: normal.copyWith(
+                                        //     color: Colors.black,
+                                        //     fontSize: 10,
+                                        //     fontWeight: FontWeight.bold),
                                       ),
                                       const Spacer(),
                                       Text(
                                         "Balance ",
-                                        style: normal.copyWith(
-                                            color: Colors.blue, fontSize: 10),
+                                        // style: normal.copyWith(
+                                        //     color: Colors.blue, fontSize: 10),
                                       ),
                                       Text(
                                         _statements[index]["running_balance"]
                                             .toString()
                                             .trim(),
-                                        style: normal.copyWith(
-                                            color: Colors.black,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold),
+                                        // style: normal.copyWith(
+                                        //     color: Colors.black,
+                                        //     fontSize: 10,
+                                        //     fontWeight: FontWeight.bold),
                                       ),
                                     ],
                                   ),
@@ -188,10 +188,10 @@ class _FeesPageState extends State<FeesPage> {
                                         _statements[index]["posting_date"]
                                             .toString()
                                             .trim(),
-                                        style: normal.copyWith(
-                                            color: Colors.black,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold),
+                                        // style: normal.copyWith(
+                                        //     color: Colors.black,
+                                        //     fontSize: 10,
+                                        //     fontWeight: FontWeight.bold),
                                       ),
                                     ],
                                   )
@@ -228,7 +228,7 @@ class _FeesPageState extends State<FeesPage> {
                               _isLoading = true;
                             });
 
-                            _statements = await magnet.fetchFeeStatement();
+                            // _statements = await magnet.fetchFeeStatement();
                             setState(() {
                               _hasStatement = _statements.isNotEmpty;
                               _isLoading = false;

@@ -69,6 +69,7 @@ dependencies:
   flex_color_picker: ^3.4.1
   sqflite_common_ffi: ^2.3.3
   connectivity_plus: ^6.0.3
+  dartz: ^0.10.1
   
 
 

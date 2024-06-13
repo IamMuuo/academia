@@ -39,8 +39,10 @@ class CoursesController extends GetxController {
   Future<List<Course>> fetchCourses() async {
     isLoading.value = true;
     try {
-      final rawData = await magnet.fetchTimeTable();
-      final rawCourses = rawData.cast<Map<String, dynamic>>();
+      final result = await magnet.fetchTimeTable();
+
+      // final rawCourses = rawData.cast<Map<String, dynamic>>();
+      final rawCourses = [];
       courses.value = rawCourses.map((e) => Course.fromJson(e)).toList();
       _saveCourses(courses);
       if (courses.value.isEmpty) {

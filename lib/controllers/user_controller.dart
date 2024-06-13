@@ -4,6 +4,7 @@
 
 import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
+import 'package:dartz/dartz.dart';
 import 'package:academia/models/models.dart';
 
 class UserController extends GetxController {
@@ -38,50 +39,34 @@ class UserController extends GetxController {
   }
 
   /// Perform a request to login a user
-  Future<bool> login(String username, String password) async {
+  Future<Either<Exception, String>> login(
+      String username, String password) async {
     // Make API request to authenticate user
-    try {
-      magnet = Magnet(username, password);
-      return await magnet.login();
-    } catch (error) {
-      // Handle magnet exceptions
-      rethrow;
-    }
+    magnet = Magnet(username, password);
+    return await magnet.login();
   }
+}
 
-  /// Retrieves user details from magnet and stores it on disk
-  Future<void> getUserDetails(String username, String password) async {
-    try {
-      final rawdata = await magnet.fetchUserData();
+/// Retrieves user details from magnet and stores it on disk
+Future<Either<Exception, User>> getUserFromMagnet() async {
+  final result = await magnet.fetchUserDetails();
 
-      final data = <String, dynamic>{};
+  return result.fold((l) => Left(l), (r) {
+    final u = User.fromJson(r);
+    UserModelHelper().create(r).then((value) => null);
+    return Right(u);
+  });
+}
 
-      rawdata.forEach((key, value) {
-        if (key is String) {
-          data[key] = rawdata[key];
-        }
-      });
-
-      user.value = User.fromJson(data);
-      user.value!.password = password;
-
-      await UserModelHelper().create(user.value!.toJson());
-    } catch (e) {
-      debugPrint("Error: ${e.toString()}");
-      rethrow;
-    }
-  }
-
-  /// Logout a user
-  Future<void> logout() async {
-    try {
-      // Close the Hive box
-      // await appDB.close();
-      // Delete the Hive box directory to remove all data
-      // await Hive.deleteBoxFromDisk(dbName);
-      Get.reloadAll(); // Clear all the controllers
-    } catch (e) {
-      debugPrint("Error during logout: ${e.toString()}");
-    }
+/// Logout a user
+Future<void> logout() async {
+  try {
+    // Close the Hive box
+    // await appDB.close();
+    // Delete the Hive box directory to remove all data
+    // await Hive.deleteBoxFromDisk(dbName);
+    Get.reloadAll(); // Clear all the controllers
+  } catch (e) {
+    debugPrint("Error during logout: ${e.toString()}");
   }
 }

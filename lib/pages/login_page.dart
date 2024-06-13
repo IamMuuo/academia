@@ -43,11 +43,10 @@ class _LoginPageState extends State<LoginPage> {
                   textAlign: TextAlign.left,
                   style: Theme.of(context).textTheme.displaySmall,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 1, bottom: 20),
+                const Padding(
+                  padding: EdgeInsets.only(top: 1, bottom: 20),
                   child: Text(
                     'Lets find you and setup things for you',
-                    style: normal.copyWith(fontSize: 12),
                   ),
                 ),
 
@@ -179,13 +178,13 @@ class _LoginPageState extends State<LoginPage> {
                               admnoEditingController.text,
                               passwordEditingController.text.trim(),
                             );
-                            if (!auth) {
-                              throw ("Please check your admission number and password");
-                            }
-                            await userController.getUserDetails(
-                              admnoEditingController.text.trim(),
-                              passwordEditingController.text.trim(),
-                            );
+                            // if (!auth) {
+                            //   throw ("Please check your admission number and password");
+                            // }
+                            // await userController(
+                            //   admnoEditingController.text.trim(),
+                            //   passwordEditingController.text.trim(),
+                            // );
 
                             if (!context.mounted) return;
                             Navigator.of(context).pushReplacement(
