@@ -76,7 +76,7 @@ class NotificationsStoryPage extends StatelessWidget {
           onPressed: () => Get.back(),
           icon: const Icon(Icons.arrow_left),
         ),
-        title: Text(userController.user.value!.name!.split(" ")[0].title()),
+        title: Text(userController.user.value!.firstName.title()),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),

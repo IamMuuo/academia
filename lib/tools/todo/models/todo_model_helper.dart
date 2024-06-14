@@ -58,9 +58,9 @@ class TodoModelHelper implements DatabaseOperations {
   @override
 
   /// Deletes a todo specified with id [id]
-  Future<int> delete(int id) async {
+  Future<int> delete(Map<String, dynamic> data) async {
     final db = await DatabaseHelper().database;
-    return await db.delete('todos', where: 'id =?', whereArgs: [id]);
+    return await db.delete('todos', where: 'id =?', whereArgs: [data["id"]]);
   }
 
   @override

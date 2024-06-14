@@ -18,7 +18,7 @@ abstract class DatabaseOperations {
 
   /// Delete.
   /// Should delete an entity from a table.
-  Future<int> delete(int id);
+  Future<int> delete(Map<String, dynamic> data);
 
   // Trucncate.
   /// Should truncate all entities in the table

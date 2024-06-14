@@ -46,7 +46,9 @@ class _ToolsPageState extends State<ToolsPage> {
 
   bool get isBirthDay {
     DateFormat inputFormat = DateFormat('dd/MM/yyyy');
-    var dob = inputFormat.parse(userController.user.value!.dateOfBirth!);
+    var dob = inputFormat.parse(
+      userController.user.value!.dateOfBirth.toString(),
+    );
 
     if (dob.day == DateTime.now().day && dob.month == DateTime.now().month) {
       return true;

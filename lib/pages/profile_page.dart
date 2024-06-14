@@ -50,7 +50,7 @@ class ProfilePage extends StatelessWidget {
                             false)
                         ? Image.memory(
                             Uint8List.fromList(
-                              base64Decode(userController.user.value!.profile!
+                              base64Decode(userController.user.value!.profileUrl
                                   .replaceFirst("data:image/gif;base64,", "")),
                             ),
                             fit: BoxFit.contain,
@@ -64,7 +64,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  "@${userController.user.value!.name!.split(' ')[0]}",
+                  "@${userController.user.value!.firstName}",
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -79,7 +79,7 @@ class ProfilePage extends StatelessWidget {
                           const Icon(Ionicons.id_card_outline),
                           const SizedBox(height: 4),
                           Text(
-                            userController.user.value!.regno!,
+                            userController.user.value!.admissionNumber,
                             style: GoogleFonts.jetBrainsMono(),
                           ),
                         ],
@@ -91,7 +91,7 @@ class ProfilePage extends StatelessWidget {
                           const Icon(Ionicons.person_outline),
                           const SizedBox(height: 4),
                           Text(
-                            userController.user.value!.idno!,
+                            userController.user.value!.nationalId,
                             style: GoogleFonts.jetBrainsMono(),
                           ),
                         ],
@@ -124,33 +124,33 @@ class ProfilePage extends StatelessWidget {
             children: [
               InfoCard(
                 title: "Official Name",
-                content: userController.user.value!.name!.title(),
+                content: userController.user.value!.firstName.title() +
+                    userController.user.value!.lastName.title(),
                 icon: Ionicons.person,
               ),
               InfoCard(
                 title: "Gender",
-                content:
-                    (userController.user.value!.gender ?? "unkown").title(),
+                content: (userController.user.value!.gender).title(),
                 icon: Ionicons.male_female,
               ),
               InfoCard(
                 title: "Address",
-                content: userController.user.value!.address ?? "unkown",
+                content: userController.user.value!.address,
                 icon: Ionicons.compass,
               ),
               InfoCard(
                 title: "Email",
-                content: userController.user.value!.email ?? "unkown",
+                content: userController.user.value!.email,
                 icon: Ionicons.mail,
               ),
               InfoCard(
                 title: "Campus",
-                content: userController.user.value!.campus ?? "unkown",
+                content: userController.user.value!.campus,
                 icon: Ionicons.telescope,
               ),
               InfoCard(
                 title: "Academic Status",
-                content: userController.user.value!.dateOfBirth ?? "unkown",
+                content: userController.user.value!.dateOfBirth.toString(),
                 icon: Ionicons.calendar,
               ),
             ],

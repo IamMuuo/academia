@@ -1,5 +1,5 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/models/user/user.dart';
+import 'package:academia/models/models.dart';
 import 'package:academia/tools/leaderboard/widgets/top_three_widget.dart';
 import 'widgets/personal_rating_widget.dart';
 
@@ -89,18 +89,18 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  LeaderBoardProfileWidget(
-                                    position: 3,
-                                    user: User(),
-                                  ),
-                                  LeaderBoardProfileWidget(
-                                    position: 1,
-                                    user: User(),
-                                  ),
-                                  LeaderBoardProfileWidget(
-                                    position: 2,
-                                    user: User(),
-                                  ),
+                                  // LeaderBoardProfileWidget(
+                                  //   position: 3,
+                                  //   user: User(),
+                                  // ),
+                                  // LeaderBoardProfileWidget(
+                                  //   position: 1,
+                                  //   user: User(),
+                                  // ),
+                                  // LeaderBoardProfileWidget(
+                                  //   position: 2,
+                                  //   user: User(),
+                                  // ),
                                 ],
                               ),
                               const PersonalRatingWidget(),

@@ -1,6 +1,7 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,211 +13,93 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
   final userController = Get.find<UserController>();
+
+  TextEditingController usernameController = TextEditingController();
   TextEditingController admnoEditingController = TextEditingController();
   TextEditingController passwordEditingController = TextEditingController();
 
-  // Loadind state
-  bool _isLoading = false;
-  bool _hidePassword = true;
-  bool _acceptTerms = false;
+  bool showUsernameField = false;
+  bool hidePassword = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        minimum: const EdgeInsets.all(8),
-        child: SingleChildScrollView(
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // image
-                Image.asset(
-                  'assets/images/bot_search.png',
-                  height: MediaQuery.of(context).size.height * 0.4,
-                ),
-                // Welcome  text
-                Text(
-                  'Welcome',
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.displaySmall,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 1, bottom: 20),
-                  child: Text(
-                    'Lets find you and setup things for you',
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: TextFormField(
-                    controller: admnoEditingController,
-                    textAlign: TextAlign.center,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      AdmissionNumberFormatter(),
-                    ],
-                    validator: (value) {
-                      if ((value?.length ?? 0) != 7) {
-                        return "Please enter your admission numer ${Emojis.smile_angry_face}";
-                      }
-
-                      return null;
-                    },
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    decoration: InputDecoration(
-                      hintText: 'xx-xxxx',
-                      label: const Text("Your admission number"),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
+        minimum: const EdgeInsets.all(12),
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              Text(
+                "Lets find you and set up things for you",
+                style: Theme.of(context).textTheme.displaySmall,
+              ),
+              Lottie.asset(
+                "assets/lotties/search.json",
+                height: 200,
+              ),
+              const SizedBox(height: 22),
+              Visibility(
+                visible: showUsernameField,
+                child: TextFormField(
+                  controller: usernameController,
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    hintText: "Username cannot be changed once set",
+                    label: const Text("Username"),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: TextFormField(
-                    controller: passwordEditingController,
-                    obscureText: _hidePassword,
-                    validator: (value) {
-                      if ((value?.length ?? 0) <= 3) {
-                        return "Please enter a valid password ${Emojis.smile_angry_face}";
-                      }
-                      return null;
-                    },
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      hintText: 'Your school portal password',
-                      label: const Text("Your password"),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _hidePassword = !_hidePassword;
-                          });
-                        },
-                        icon: Icon(
-                          _hidePassword
-                              ? Ionicons.eye_outline
-                              : Ionicons.eye_off_outline,
-                        ),
-                      ),
-                    ),
+              ),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: admnoEditingController,
+                maxLength: 7,
+                inputFormatters: [
+                  AdmissionNumberFormatter(),
+                ],
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  hintText: "xx-xxxx",
+                  label: const Text("Admisson Number"),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4),
                   ),
                 ),
-
-                const SizedBox(height: 50),
-
-                _isLoading
-                    ? LoadingAnimationWidget.threeArchedCircle(
-                        color: Theme.of(context).colorScheme.primary,
-                        size: 40,
-                      )
-                    : FilledButton.icon(
-                        onPressed: () async {
-                          if (!formKey.currentState!.validate()) {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text("Form Validation error"),
-                                content: const Text(
-                                  "Please ensure the fields are well filled to continue",
-                                ),
-                                actions: [
-                                  FilledButton.tonal(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text("Try again"),
-                                  ),
-                                ],
-                              ),
-                            );
-                            return;
-                          }
-
-                          if (!_acceptTerms) {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text("Terms of Service"),
-                                    content: const Text(
-                                      "To continue you must agree to our terms and conditions of service",
-                                    ),
-                                    actions: [
-                                      FilledButton(
-                                        onPressed: () {
-                                          _acceptTerms = true;
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text("I agree"),
-                                      ),
-                                      FilledButton.tonal(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text("Cancel"),
-                                      ),
-                                    ],
-                                  );
-                                });
-                          }
-                          // send request
-                          setState(() {
-                            _isLoading = true;
-                          });
-
-                          try {
-                            final auth = await userController.login(
-                              admnoEditingController.text,
-                              passwordEditingController.text.trim(),
-                            );
-                            // if (!auth) {
-                            //   throw ("Please check your admission number and password");
-                            // }
-                            // await userController(
-                            //   admnoEditingController.text.trim(),
-                            //   passwordEditingController.text.trim(),
-                            // );
-
-                            if (!context.mounted) return;
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => const HomePage(),
-                              ),
-                            );
-                          } catch (e) {
-                            if (!context.mounted) return;
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                        "Error ${Emojis.smile_downcast_face_with_sweat}"),
-                                    content: Text(e.toString()),
-                                  );
-                                });
-
-                            debugPrint(e.toString());
-                          }
-
-                          // route to dashboard
-                          setState(() {
-                            _isLoading = false;
-                          });
-                        },
-                        icon: const Icon(Ionicons.log_in),
-                        label: const Text("Get Started"),
-                      ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: passwordEditingController,
+                obscureText: hidePassword,
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  hintText: "Your secret password",
+                  label: const Text("Password"),
+                  suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          hidePassword = !hidePassword;
+                        });
+                      },
+                      icon: Icon(
+                        hidePassword
+                            ? Ionicons.lock_closed
+                            : Ionicons.lock_open,
+                      )),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ),
+              const Spacer(),
+              FilledButton.icon(
+                onPressed: () {},
+                icon: const Icon(Ionicons.lock_closed),
+                label: const Text("Login"),
+              ),
+            ],
           ),
         ),
       ),

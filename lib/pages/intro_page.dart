@@ -1,6 +1,7 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class IntroPage extends StatelessWidget {
   const IntroPage({super.key});
@@ -21,39 +22,15 @@ class IntroPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               // Welcome image ...
-              FlutterCarousel(
-                items: [
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Image.asset('assets/images/bot_hello.png'),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Image.asset('assets/images/bot_wave.png'),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Image.asset('assets/images/bot_love.png'),
-                  ),
-                ],
-                options: CarouselOptions(
-                  // height: MediaQuery.of(context).size.height * 0.5,
-                  reverse: false,
-                  autoPlay: true,
-                  enlargeCenterPage: false,
-                  slideIndicator: CircularSlideIndicator(
-                    indicatorBackgroundColor:
-                        Theme.of(context).colorScheme.secondary,
-                    indicatorRadius: 7,
-                  ),
-                ),
+              Lottie.asset(
+                "assets/lotties/study.json",
               ),
 
               // Welcoming message
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Text(
-                  "Your school life bud awaits",
+                  "School doesn't have to be boring anymore",
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.displayMedium,
                 ),

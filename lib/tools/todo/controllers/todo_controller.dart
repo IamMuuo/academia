@@ -25,9 +25,10 @@ class TodoController extends GetxController {
 
   /// Deletes both from db and [todos] a todo specified by [id]
   Future<void> deleteTodo(int id) async {
-    todos.removeWhere((element) => element.id == id);
-    await TodoModelHelper().delete(id);
-    update();
+    throw UnimplementedError();
+    // todos.removeWhere((element) => element.id == id);
+    // await TodoModelHelper().delete();
+    // update();
   }
 
   /// Deletes both from db and [todos] a todo specified by [id]

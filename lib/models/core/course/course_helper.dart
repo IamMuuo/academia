@@ -58,7 +58,7 @@ class CourseModelHelper implements DatabaseOperations {
 
   /// Unimplemented since the internal of course
   /// storage is not an integer id
-  Future<int> delete(int id) async {
+  Future<int> delete(Map<String, dynamic> data) async {
     throw UnimplementedError();
   }
 

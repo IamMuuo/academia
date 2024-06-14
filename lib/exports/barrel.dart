@@ -1,8 +1,8 @@
 export 'package:flutter/material.dart';
+export 'package:flutter_svg/svg.dart';
 export 'package:academia/widgets/widgets.dart';
 export 'package:academia/constants/common.dart';
 export 'package:ionicons/ionicons.dart';
-export 'package:academia/widgets/academia_app_bar.dart';
 export 'package:academia/controllers/notifications_controller.dart';
 export 'package:percent_indicator/percent_indicator.dart';
 export 'package:academia/controllers/settings_controller.dart';

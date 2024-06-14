@@ -7,16 +7,24 @@ class UserModelHelper implements DatabaseOperations {
 
   factory UserModelHelper() {
     DatabaseHelper().registerModel('users', '''
-    regno TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    idno TEXT NOT NULL,
-    gender TEXT NOT NULL,
-    address TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE,
-    dateofbirth TEXT NOT NULL,
-    campus TEXT NOT NULL,
-    profile TEXT,
-    password TEXT NOT NULL
+     id TEXT PRIMARY KEY,
+        username TEXT NOT NULL,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        admission_number TEXT NOT NULL,
+        national_id TEXT NOT NULL,
+        gender TEXT NOT NULL,
+        address TEXT NOT NULL,
+        email TEXT NOT NULL UNIQUE,
+        date_of_birth TEXT NOT NULL,
+        campus TEXT NOT NULL,
+        profile_url TEXT,
+        password TEXT NOT NULL,
+        active INTEGER NOT NULL CHECK (active IN (0, 1)),
+        vibe_points INTEGER NOT NULL,
+        point_transactions TEXT,
+        date_created TEXT,
+        date_updated TEXT
     ''');
 
     return _instance;
@@ -27,8 +35,9 @@ class UserModelHelper implements DatabaseOperations {
   @override
 
   /// Create.
-  /// Calling this appends a user model onto the
-  // user's table
+  /// Calling this appends a user model onto the users table
+  /// incase such a user exists it replaces the user data with the new
+  /// data
   Future<int> create(Map<String, dynamic> data) async {
     final db = await DatabaseHelper().database;
     final id = await db.insert(
@@ -49,9 +58,9 @@ class UserModelHelper implements DatabaseOperations {
   }
 
   @override
-  Future<int> delete(int id) async {
+  Future<int> delete(Map<String, dynamic> data) async {
     final db = await DatabaseHelper().database;
-    return await db.delete('users', where: 'regno =?', whereArgs: [id]);
+    return await db.delete('users', where: 'id =?', whereArgs: [data["id"]]);
   }
 
   @override
