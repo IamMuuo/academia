@@ -71,10 +71,10 @@ class DatabaseHelper {
   /// The schema should be like:
   /// 'id integer primary key, name text, email text'
   /// notice that there are no brakets
-  Future<void> registerModel(String table, String schema) async {
+  Future<void> registerModel(String schema) async {
     final db = await database;
     await db.execute(
-      "CREATE TABLE IF NOT EXISTS ${table.trim().toLowerCase()} (${schema.trim().toLowerCase()})",
+      schema,
     );
   }
 }

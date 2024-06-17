@@ -6,15 +6,17 @@ class CourseModelHelper implements DatabaseOperations {
   static final CourseModelHelper _instance = CourseModelHelper._internal();
 
   factory CourseModelHelper() {
-    DatabaseHelper().registerModel('courses', '''
-    unit TEXT PRIMARY KEY,
-    venue TEXT,
-    section TEXT,
-    time TEXT,
-    day_of_the_week TEXT,
-    period TEXT,
-    room TEXT,
-    lecturer TEXT
+    DatabaseHelper().registerModel('''
+    CREATE TABLE IF NOT EXISTS courses(
+      unit TEXT PRIMARY KEY,
+      venue TEXT,
+      section TEXT,
+      time TEXT,
+      day_of_the_week TEXT,
+      period TEXT,
+      room TEXT,
+      lecturer TEXT
+    );
     ''');
 
     return _instance;

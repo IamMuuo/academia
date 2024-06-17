@@ -1,4 +1,6 @@
 // The user model
+import 'package:intl/intl.dart';
+
 /// Represents a user's model as well as provides
 /// JSON to and fro serialization functionality
 class User {
@@ -75,7 +77,13 @@ class User {
     String firstName = nameParts.first;
     String lastName = nameParts.sublist(1).join(' ');
 
-    DateTime dateOfBirth = DateTime.parse(magnetData['dateofbirth']);
+    String dateOfBirthString = magnetData['dateofbirth'];
+    List<String> dateParts = dateOfBirthString.split('/');
+    int month = int.parse(dateParts[0]);
+    int day = int.parse(dateParts[1]);
+    int year = int.parse(dateParts[2]);
+
+    DateTime dateOfBirth = DateTime(year, month, day);
 
     String admissionNumber = magnetData['regno'];
     String nationalId = magnetData['idno'];
@@ -118,15 +126,19 @@ class User {
       'gender': gender,
       'address': address,
       'email': email,
-      'date_of_birth': dateOfBirth.toIso8601String(),
+      'date_of_birth': DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(
+        dateOfBirth.toUtc(),
+      ),
       'campus': campus,
       'profile_url': profileUrl,
       'password': password,
-      'active': active,
+      'active': active == true ? 1 : 0,
       'vibe_points': vibePoints,
       'point_transactions': pointTransactions,
-      'date_created': dateCreated?.toIso8601String(),
-      'date_updated': dateUpdated?.toIso8601String(),
+      'date_created': DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'")
+          .format(dateCreated?.toUtc() ?? DateTime.now().toUtc()),
+      'date_updated': DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'")
+          .format(dateUpdated?.toUtc() ?? DateTime.now()),
     };
   }
 }

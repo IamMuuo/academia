@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/pages/register_page.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -20,6 +21,51 @@ class _LoginPageState extends State<LoginPage> {
 
   bool showUsernameField = false;
   bool hidePassword = true;
+  bool isLoading = false;
+
+  Future<void> login() async {
+    final result = await userController.login(
+      admnoEditingController.text,
+      passwordEditingController.text,
+    );
+
+    result.fold(
+      (l) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Error"),
+            content: Text(l),
+            actions: [
+              FilledButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Oh ok"),
+              ),
+            ],
+          ),
+        );
+      },
+      (r) {
+        print(userController.isLoggedIn.value);
+        if (userController.isLoggedIn.value) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const HomePage(),
+            ),
+          );
+          return;
+        }
+        r["password"] = passwordEditingController.text;
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => RegisterPage(userData: r),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,27 +85,19 @@ class _LoginPageState extends State<LoginPage> {
                 height: 200,
               ),
               const SizedBox(height: 22),
-              Visibility(
-                visible: showUsernameField,
-                child: TextFormField(
-                  controller: usernameController,
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                    hintText: "Username cannot be changed once set",
-                    label: const Text("Username"),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
               TextFormField(
                 controller: admnoEditingController,
                 maxLength: 7,
                 inputFormatters: [
                   AdmissionNumberFormatter(),
                 ],
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  if (value?.length != 7) {
+                    return "Please enter a valid admission number";
+                  }
+                  return null;
+                },
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
                   hintText: "xx-xxxx",
@@ -73,6 +111,13 @@ class _LoginPageState extends State<LoginPage> {
               TextFormField(
                 controller: passwordEditingController,
                 obscureText: hidePassword,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  if ((value?.length ?? 0) <= 4) {
+                    return "Please enter a valid password";
+                  }
+                  return null;
+                },
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
                   hintText: "Your secret password",
@@ -94,11 +139,46 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const Spacer(),
-              FilledButton.icon(
-                onPressed: () {},
-                icon: const Icon(Ionicons.lock_closed),
-                label: const Text("Login"),
-              ),
+              isLoading
+                  ? Lottie.asset(
+                      "assets/lotties/loading.json",
+                      height: 45,
+                    )
+                  : FilledButton.icon(
+                      onPressed: () async {
+                        if (!formKey.currentState!.validate()) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text("Error"),
+                              content:
+                                  const Text("Please ensure you fill the form"),
+                              actions: [
+                                FilledButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("Oh ok"),
+                                ),
+                              ],
+                            ),
+                          );
+                          return;
+                        }
+
+                        setState(() {
+                          isLoading = true;
+                        });
+
+                        await login();
+
+                        setState(() {
+                          isLoading = false;
+                        });
+                      },
+                      icon: const Icon(Ionicons.lock_closed),
+                      label: const Text("Login"),
+                    ),
             ],
           ),
         ),

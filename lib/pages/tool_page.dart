@@ -62,15 +62,15 @@ class _ToolsPageState extends State<ToolsPage> {
       appBar: AppBar(
         title: const Text("Tools"),
         centerTitle: true,
-        leading: settingsController.settings.value!.showProfilePicture ?? false
-            ? isBirthDay
-                ? IconButton(
-                    onPressed: () {
-                      Get.to(const BirthDayPage());
-                    },
-                    icon: const Icon(Icons.cake))
-                : null
-            : null,
+        // leading: settingsController.settings.value!.showProfilePicture ?? false
+        //     ? isBirthDay
+        //         ? IconButton(
+        //             onPressed: () {
+        //               Get.to(const BirthDayPage());
+        //             },
+        //             icon: const Icon(Icons.cake))
+        //         : null
+        //     : null,
         actions: [
           IconButton(
             onPressed: () {
