@@ -9,6 +9,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userController = Get.find<UserController>();
+    final rewardController = Get.find<RewardController>();
     final settingsController = Get.find<SettingsController>();
     return CustomScrollView(
       slivers: [
@@ -62,7 +63,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  "@${userController.user.value!.firstName}",
+                  "@${userController.user.value!.username}",
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -143,17 +144,25 @@ class ProfilePage extends StatelessWidget {
               ),
               InfoCard(
                 title: "Campus",
-                content: userController.user.value!.campus,
+                content: userController.user.value!.campus.title(),
                 icon: Ionicons.telescope,
               ),
               InfoCard(
                 title: "Academic Status",
-                content: userController.user.value!.dateOfBirth.toString(),
+                content:
+                    userController.user.value!.active ? "Active" : "Inactive",
                 icon: Ionicons.calendar,
+              ),
+              Obx(
+                () => InfoCard(
+                  title: "Vibe Points",
+                  content: rewardController.vibePoints.toString(),
+                  icon: Ionicons.wallet,
+                ),
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

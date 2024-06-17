@@ -41,6 +41,7 @@ class Academia extends StatelessWidget {
   Widget build(BuildContext context) {
     /// Init the controllers here
     final userController = Get.put(UserController());
+    Get.put(RewardController());
     Get.put(NotificationsController());
     Get.put(NetworkController());
     Get.put(SettingsController());
@@ -48,37 +49,39 @@ class Academia extends StatelessWidget {
     Get.put(CoursesController());
 
     // Prompt for permission
-    AwesomeNotifications().isNotificationAllowed().then((value) {
-      if ((!value) && (Platform.isAndroid || Platform.isIOS)) {
-        showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text("Allow Notifications"),
-                content: const Text(
-                  "Academia would like to send you notifications about classes and your school work",
-                ),
-                actions: [
-                  FilledButton(
-                    onPressed: () {
-                      AwesomeNotifications()
-                          .requestPermissionToSendNotifications()
-                          .then((value) => Navigator.pop(context));
-                    },
-                    child: const Text("Allow"),
+    AwesomeNotifications().isNotificationAllowed().then(
+      (value) {
+        if ((!value) && (Platform.isAndroid || Platform.isIOS)) {
+          showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text("Allow Notifications"),
+                  content: const Text(
+                    "Academia would like to send you notifications about classes and your school work",
                   ),
-                  OutlinedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text("No"),
-                  ),
-                ],
-              );
-            });
-      }
-    });
+                  actions: [
+                    FilledButton(
+                      onPressed: () {
+                        AwesomeNotifications()
+                            .requestPermissionToSendNotifications()
+                            .then((value) => Navigator.pop(context));
+                      },
+                      child: const Text("Allow"),
+                    ),
+                    OutlinedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text("No"),
+                    ),
+                  ],
+                );
+              });
+        }
+      },
+    );
 
     return FutureBuilder(
       future: userController.loadUserFromDisk(),
