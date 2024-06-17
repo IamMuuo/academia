@@ -1,5 +1,4 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/widgets/post_card.dart';
 import 'package:get/get.dart';
 
 class DashBoard extends StatelessWidget {
@@ -26,9 +25,7 @@ class DashBoard extends StatelessWidget {
             pinned: true,
             floating: false,
             snap: false,
-            actions: const [
-              ProfilePictureWidget(),
-            ],
+            
           ),
           SliverToBoxAdapter(
             child: Container(
@@ -53,27 +50,6 @@ class DashBoard extends StatelessWidget {
               ),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Container(
-              color: Colors.red,
-              width: 80,
-              child: ListView(
-                shrinkWrap: true,
-                children: [],
-              ),
-            ),
-          ),
-          SliverFillRemaining(
-            child: ListView.builder(
-              itemCount: 20,
-              itemBuilder: (context, index) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 4),
-                  child: PostCard(),
-                );
-              },
-            ),
-          )
         ],
       ),
     );

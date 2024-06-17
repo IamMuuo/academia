@@ -7,6 +7,9 @@ class SettingsHelper {
   late SharedPreferences _prefs;
 
   factory SettingsHelper() {
+    // SharedPreferences.getInstance().then((value) {
+    //   _instance._prefs = value;
+    // });
     return _instance;
   }
 

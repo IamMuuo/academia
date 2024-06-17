@@ -6,9 +6,10 @@ class SettingsController extends GetxController {
   Rx<Settings> settings = Settings.empty().obs;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    SettingsHelper().init().then((value) => null);
+    await SettingsHelper().init();
+
     settings.value = SettingsHelper().getSettings();
     debugPrint("[+] Settings Loaded!");
   }

@@ -45,9 +45,7 @@ class ProfilePage extends StatelessWidget {
                     borderRadius: const BorderRadius.all(
                       Radius.circular(800),
                     ),
-                    child: (settingsController
-                                .settings.value!.showProfilePicture ??
-                            false)
+                    child: settingsController.settings.value.showProfilePicture
                         ? Image.memory(
                             Uint8List.fromList(
                               base64Decode(userController.user.value!.profileUrl

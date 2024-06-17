@@ -1,4 +1,7 @@
 // The user model
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:intl/intl.dart';
 
 /// Represents a user's model as well as provides
@@ -59,7 +62,11 @@ class User {
       campus: json['campus'],
       profileUrl: json['profile_url'],
       password: json['password'],
-      active: json['active'],
+      active: json["active"] is int
+          ? json["active"] == 1
+              ? true
+              : false
+          : json["active"],
       vibePoints: json['vibe_points'],
       pointTransactions: json['point_transactions'],
       dateCreated: DateTime.parse(json['date_created']),
