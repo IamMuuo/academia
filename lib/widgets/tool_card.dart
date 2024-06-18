@@ -33,8 +33,14 @@ class _ToolCardState extends State<ToolCard> {
           _isLoading = false;
         });
       },
-      child: Card(
-        elevation: 4.0,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Theme.of(context).colorScheme.shadow,
+          ),
+          borderRadius: BorderRadius.circular(4),
+          color: Theme.of(context).colorScheme.background,
+        ),
         child: Column(
           children: [
             ListTile(
