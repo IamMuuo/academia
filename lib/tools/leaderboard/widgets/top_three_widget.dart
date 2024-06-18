@@ -1,14 +1,16 @@
-import 'package:academia/exports/barrel.dart';
-import 'package:academia/models/models.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/material.dart';
 
 class LeaderBoardProfileWidget extends StatelessWidget {
   const LeaderBoardProfileWidget({
     super.key,
     required this.position,
-    required this.user,
+    required this.username,
+    required this.points,
   });
   final int position;
-  final User user;
+  final String username;
+  final String points;
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +27,14 @@ class LeaderBoardProfileWidget extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          "@erick",
+          "@$username",
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
         ),
         const SizedBox(height: 2),
         Text(
-          "200 points",
+          "$points points",
           style: Theme.of(context).textTheme.bodySmall,
         ),
       ],

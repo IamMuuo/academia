@@ -1,4 +1,5 @@
 export 'user_service.dart';
+export 'rewards_service.dart';
 
 /// The verisafe service provides the base url
 /// for user authentication

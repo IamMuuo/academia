@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
@@ -14,6 +15,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController usernameController = TextEditingController();
 
   final userController = Get.find<UserController>();
+  final rewardsController = Get.find<RewardController>();
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
@@ -38,6 +40,9 @@ class _RegisterPageState extends State<RegisterPage> {
       );
     }, (r) {
       if (r && userController.isLoggedIn.value) {
+        HapticFeedback.heavyImpact().then((value) {
+          rewardsController.awardPoints(20, "Newbie login");
+        });
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => const HomePage(),
