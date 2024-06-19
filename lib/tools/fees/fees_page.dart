@@ -220,8 +220,7 @@ class _FeesPageState extends State<FeesPage> {
                   ),
                   const SizedBox(height: 12),
                   _isLoading
-                      ? LoadingAnimationWidget.hexagonDots(
-                          color: Theme.of(context).primaryColorDark, size: 60)
+                      ? Text("Loading")
                       : TextButton.icon(
                           onPressed: () async {
                             setState(() {

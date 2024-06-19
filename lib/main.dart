@@ -99,11 +99,6 @@ class Academia extends StatelessWidget {
                     height: 200,
                   ),
                   const SizedBox(height: 22),
-                  LoadingAnimationWidget.fourRotatingDots(
-                    color: Theme.of(context).colorScheme.primary,
-                    size: 40,
-                  ),
-                  const SizedBox(height: 12),
                   Text(
                     "Let the past die, kill it if you have to ~ The Last Jedi",
                     style: Theme.of(context).textTheme.titleLarge,

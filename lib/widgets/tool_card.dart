@@ -51,11 +51,7 @@ class _ToolCardState extends State<ToolCard> {
             SizedBox(
               height: 200.0,
               child: _isLoading
-                  ? LoadingAnimationWidget.flickr(
-                      leftDotColor: Theme.of(context).primaryColor,
-                      rightDotColor: Theme.of(context).primaryColorDark,
-                      size: 80,
-                    )
+                  ? const Text("Loading")
                   : Image.asset(
                       widget.image,
                       fit: BoxFit.fitWidth,

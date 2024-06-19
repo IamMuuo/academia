@@ -98,16 +98,11 @@ class _PdfViewerState extends State<PdfViewer> {
                           ),
                         ],
                       )
-                : Center(
+                : const Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        LoadingAnimationWidget.flickr(
-                          leftDotColor: Theme.of(context).primaryColor,
-                          rightDotColor: Theme.of(context).primaryColorDark,
-                          size: 80,
-                        ),
-                        const Text("Loading .."),
+                        Text("Loading .."),
                       ],
                     ),
                   );
