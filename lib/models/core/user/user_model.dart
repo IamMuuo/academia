@@ -1,7 +1,4 @@
 // The user model
-import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:intl/intl.dart';
 
 /// Represents a user's model as well as provides
