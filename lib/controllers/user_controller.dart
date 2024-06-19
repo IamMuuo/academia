@@ -4,6 +4,7 @@
 
 import 'package:academia/exports/barrel.dart';
 import 'package:academia/models/services/services.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:dartz/dartz.dart';
 import 'package:academia/models/models.dart';
@@ -21,6 +22,28 @@ class UserController extends GetxController {
     final loadedUser = await loadUserFromDisk();
 
     if (loadedUser != null) {
+      login(user.value!.admissionNumber, user.value!.password).then((value) {
+        value.fold((l) {
+          HapticFeedback.heavyImpact().then(
+            (value) {
+              Get.rawSnackbar(
+                messageText: Text(
+                  l,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                duration: const Duration(days: 1),
+                isDismissible: true,
+                snackPosition: SnackPosition.TOP,
+                backgroundColor: Colors.red[400]!,
+                icon: const Icon(Ionicons.flash_outline, color: Colors.white),
+              );
+            },
+          );
+        }, (r) {});
+      });
       user.value = loadedUser;
       isLoggedIn.value = true;
     }
@@ -82,7 +105,7 @@ class UserController extends GetxController {
         r.password = password;
         user.value = r;
         isLoggedIn.value = true;
-        UserModelHelper().create(user.value!.toJson());
+        UserModelHelper().create(user.value!.toMap());
         return right(r.toJson());
       });
     }

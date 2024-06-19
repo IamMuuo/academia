@@ -42,7 +42,6 @@ class UserModelHelper implements DatabaseOperations {
   /// data
   Future<int> create(Map<String, dynamic> data) async {
     final db = await DatabaseHelper().database;
-    data["active"] == true ? 1 : 0;
     final id = await db.insert(
       'users',
       data,
@@ -57,9 +56,6 @@ class UserModelHelper implements DatabaseOperations {
   Future<List<Map<String, dynamic>>> queryAll() async {
     final db = await DatabaseHelper().database;
     final users = await db.query('users');
-    users.map((e) {
-      e["active"] == 1 ? true : false;
-    });
     return users;
   }
 
@@ -71,7 +67,6 @@ class UserModelHelper implements DatabaseOperations {
 
   @override
   Future<int> update(Map<String, dynamic> data) async {
-    data["active"] == true ? 1 : 0;
     final db = await DatabaseHelper().database;
     return await db
         .update('users', data, where: 'id =?', whereArgs: [data['id']]);

@@ -41,7 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
     }, (r) {
       if (r && userController.isLoggedIn.value) {
         HapticFeedback.heavyImpact().then((value) {
-          rewardsController.awardPoints(20, "Newbie login");
+          rewardsController.awardPoints(10, "Newbie login");
         });
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(

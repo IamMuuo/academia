@@ -48,7 +48,6 @@ class _LoginPageState extends State<LoginPage> {
         );
       },
       (r) {
-        print(userController.isLoggedIn.value);
         if (userController.isLoggedIn.value) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(

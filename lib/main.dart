@@ -41,11 +41,11 @@ class Academia extends StatelessWidget {
   Widget build(BuildContext context) {
     /// Init the controllers here
     final userController = Get.put(UserController());
-    Get.put(RewardController());
     Get.put(NotificationsController());
     Get.put(NetworkController());
     Get.put(SettingsController());
     Get.put(TodoController());
+    Get.put(RewardController());
     Get.put(CoursesController());
 
     // Prompt for permission

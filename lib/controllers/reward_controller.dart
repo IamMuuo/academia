@@ -1,3 +1,4 @@
+import 'package:academia/controllers/user_controller.dart';
 import 'package:academia/models/models.dart';
 import 'package:academia/models/services/services.dart';
 import 'package:flutter/material.dart';
@@ -7,25 +8,20 @@ import 'package:ionicons/ionicons.dart';
 import 'package:dartz/dartz.dart';
 
 class RewardController extends GetxController {
-  late User _user;
   RxInt vibePoints = 0.obs;
   final RxList<Reward> allPoints = <Reward>[].obs;
   final RewardsService service = RewardsService();
 
+  final UserController _userController =
+      Get.find<UserController>(); // Allow data sync
+
   @override
   void onInit() {
     super.onInit();
-    UserModelHelper().queryAll().then((value) {
-      if (value.isNotEmpty) {
-        _user = User.fromJson(value.first);
-        vibePoints.value = _user.vibePoints;
-        return;
-      } else {
-        vibePoints.value = 0;
-      }
-    });
+    if (_userController.isLoggedIn.value) {
+      _awardPointsForDailyLaunch();
+    }
     debugPrint("[+] Rewards Loaded!");
-    _awardPointsForDailyLaunch().then((value) {});
   }
 
   // Function to award daily app launch
@@ -49,7 +45,7 @@ class RewardController extends GetxController {
   Future<void> awardPoints(int points, String reason) async {
     final newReward = Reward(
       id: null,
-      studentId: _user.id!,
+      studentId: _userController.user.value!.id!,
       points: points,
       reason: reason,
       awardedAt: DateTime.now(),
@@ -62,7 +58,7 @@ class RewardController extends GetxController {
       RewardModelHelper().create(r.toJson()).then((value) {});
       allPoints.add(r);
       vibePoints.value += newReward.points;
-      _user.vibePoints += newReward.points;
+      _userController.user.value!.vibePoints += newReward.points;
 
       HapticFeedback.mediumImpact().then((value) {
         Get.rawSnackbar(
@@ -80,9 +76,6 @@ class RewardController extends GetxController {
           icon: const Icon(Ionicons.balloon_outline, color: Colors.white),
         );
       });
-
-      // Store the user
-      UserModelHelper().update(_user.toJson());
     });
   }
 
@@ -92,7 +85,7 @@ class RewardController extends GetxController {
   }
 
   Future<Either<String, List<Reward>>> fetchCurrentUserRewards() async {
-    return await service.fetchUserRewards(_user.id!);
+    return await service.fetchUserRewards(_userController.user.value!.id!);
   }
 
   Future<Either<String, List<Reward>>> loadRewards() async {
