@@ -22,28 +22,28 @@ class UserController extends GetxController {
     final loadedUser = await loadUserFromDisk();
 
     if (loadedUser != null) {
-      login(user.value!.admissionNumber, user.value!.password).then((value) {
-        value.fold((l) {
-          HapticFeedback.heavyImpact().then(
-            (value) {
-              Get.rawSnackbar(
-                messageText: Text(
-                  l,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                duration: const Duration(days: 1),
-                isDismissible: true,
-                snackPosition: SnackPosition.TOP,
-                backgroundColor: Colors.red[400]!,
-                icon: const Icon(Ionicons.flash_outline, color: Colors.white),
-              );
-            },
-          );
-        }, (r) {});
-      });
+      // login(user.value!.admissionNumber, user.value!.password).then((value) {
+      //   value.fold((l) {
+      //     HapticFeedback.heavyImpact().then(
+      //       (value) {
+      //         Get.rawSnackbar(
+      //           messageText: Text(
+      //             l,
+      //             textAlign: TextAlign.center,
+      //             style: const TextStyle(
+      //               color: Colors.white,
+      //             ),
+      //           ),
+      //           duration: const Duration(days: 1),
+      //           isDismissible: true,
+      //           snackPosition: SnackPosition.TOP,
+      //           backgroundColor: Colors.red[400]!,
+      //           icon: const Icon(Ionicons.flash_outline, color: Colors.white),
+      //         );
+      //       },
+      //     );
+      // }, (r) {});
+      // });
       user.value = loadedUser;
       isLoggedIn.value = true;
     }

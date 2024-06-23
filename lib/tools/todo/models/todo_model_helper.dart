@@ -6,20 +6,18 @@ class TodoModelHelper implements DatabaseOperations {
   static final TodoModelHelper _instance = TodoModelHelper._internal();
 
   factory TodoModelHelper() {
-    DatabaseHelper().registerModel('''
-    CREATE TABLE IF NOT EXISTS todos (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      date TEXT NOT NULL,
-      notification_time TEXT NOT NULL,
-      notification_frequency TEXT NOT NULL,
-      color TEXT NOT NULL,
-      description TEXT,
-      complete INTEGER NOT NULL,
-      date_added TEXT NOT NULL,
-      date_completed TEXT
-    );
-    ''');
+    DatabaseHelper().registerModel("""
+      CREATE TABLE IF NOT EXISTS todos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        color INTEGER NOT NULL,
+        complete INTEGER NOT NULL,
+        description TEXT NOT NULL,
+        due TEXT NOT NULL,
+        dateAdded TEXT NOT NULL,
+        dateCompleted TEXT
+      );
+    """);
 
     return _instance;
   }
@@ -27,8 +25,6 @@ class TodoModelHelper implements DatabaseOperations {
   TodoModelHelper._internal();
 
   @override
-
-  /// Inserts a new todo on the local database specified by [data]
   Future<int> create(Map<String, dynamic> data) async {
     final db = await DatabaseHelper().database;
     final id = await db.insert(
@@ -42,33 +38,28 @@ class TodoModelHelper implements DatabaseOperations {
   }
 
   @override
-
-  /// Queries for all todos stored in the local database
   Future<List<Map<String, dynamic>>> queryAll() async {
     final db = await DatabaseHelper().database;
-    final users = await db.query('todos');
-    return users;
+    final todos = await db.query('todos');
+    return todos;
+  }
+
+  @override
+  Future<int> delete(Map<String, dynamic> data) async {
+    final db = await DatabaseHelper().database;
+    return await db.delete('todos', where: 'id = ?', whereArgs: [data["id"]]);
   }
 
   @override
   Future<int> update(Map<String, dynamic> data) async {
     final db = await DatabaseHelper().database;
     return await db
-        .update('todos', data, where: 'id =?', whereArgs: [data['id']]);
-  }
-
-  @override
-
-  /// Deletes a todo specified with id [id]
-  Future<int> delete(Map<String, dynamic> data) async {
-    final db = await DatabaseHelper().database;
-    return await db.delete('todos', where: 'id =?', whereArgs: [data["id"]]);
+        .update('todos', data, where: 'id = ?', whereArgs: [data['id']]);
   }
 
   @override
   Future<void> truncate() async {
     final db = await DatabaseHelper().database;
-
-    await db.execute('DROP TABLE todos');
+    await db.execute('DELETE FROM todos');
   }
 }
