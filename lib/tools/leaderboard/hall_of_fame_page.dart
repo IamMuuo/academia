@@ -37,7 +37,6 @@ class _HallOfFamePageState extends State<HallOfFamePage> {
                   children: [
                     Lottie.asset(
                       "assets/lotties/error.json",
-                      height: 60,
                     ),
                     const SizedBox(height: 18),
                     Text(
