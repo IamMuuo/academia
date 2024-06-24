@@ -152,7 +152,7 @@ final List<Map<String, dynamic>> allTools = [
     "action": "Manage your tasks",
     "image": "assets/images/tasks_manager.png",
     "ontap": () {
-      Get.to(const TodoPage());
+      Get.to(const TodoHomeScreen());
     },
     "description":
         "Having trouble keeping track of your Assignments? We've got you covered",

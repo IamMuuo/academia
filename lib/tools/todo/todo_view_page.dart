@@ -1,7 +1,8 @@
-import 'package:academia/exports/barrel.dart';
+import 'todo.dart';
+import 'package:flutter/material.dart';
+import "package:ionicons/ionicons.dart";
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 enum Mode {
   create,
@@ -29,11 +30,6 @@ class _TodoViewPageState extends State<TodoViewPage> {
   final TextEditingController dueDateController = TextEditingController();
   final TextEditingController subTaskController = TextEditingController();
   DateTime dueDate = DateTime.now().add(const Duration(days: 1));
-
-  String formatDateTime(DateTime dateTime) {
-    return DateFormat('EEEE, d MMM y • H:mm a').format(dateTime);
-  }
-
   Future<void> promptDueDate() async {
     showDatePicker(
       context: context,
@@ -61,6 +57,19 @@ class _TodoViewPageState extends State<TodoViewPage> {
         });
       }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.todo != null) {
+      taskColor = widget.todo!.color;
+      todoNameController.text =
+          widget.todo!.name + (widget.todo!.complete ? "(Completed)" : "");
+      subTaskController.text = widget.todo!.description;
+      dueDateController.text = formatDateTime(widget.todo!.due);
+      setState(() {});
+    }
   }
 
   @override
@@ -203,6 +212,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                     description: subTaskController.text,
                   ))
                       .then((value) {
+                    todoController.getAllTodos();
                     if (value) {
                       showDialog(
                         context: context,
@@ -226,7 +236,38 @@ class _TodoViewPageState extends State<TodoViewPage> {
                   });
                 }
               }
-            : () {},
+            : () {
+                // delete the darn task
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: const Text("Confirmation"),
+                          content: const Text(
+                            "Are you sure you want tp delete the task, doing this will affect your graph",
+                          ),
+                          actions: [
+                            FilledButton(
+                              onPressed: () {
+                                todoController
+                                    .deleteTodo(widget.todo!)
+                                    .then((value) {
+                                  if (value) {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  }
+                                });
+                              },
+                              child: const Text("Delete it"),
+                            ),
+                            FilledButton.tonal(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Cancel"),
+                            ),
+                          ],
+                        ));
+              },
         child: Icon(
           widget.mode == Mode.create ? Ionicons.add : Ionicons.trash,
         ),
