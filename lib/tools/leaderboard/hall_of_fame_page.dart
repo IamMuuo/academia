@@ -3,19 +3,23 @@ import 'package:academia/tools/leaderboard/widgets/top_three_widget.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
-class HallOfFamePage extends StatefulWidget {
+class HallOfFamePage extends StatelessWidget {
   const HallOfFamePage({super.key});
 
-  @override
-  State<HallOfFamePage> createState() => _HallOfFamePageState();
-}
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   leaderBoardResult = rewardsController.fetchLeaderBoard();
+  // }
 
-class _HallOfFamePageState extends State<HallOfFamePage> {
-  final rewardsController = Get.find<RewardController>();
   @override
   Widget build(BuildContext context) {
+    final rewardsController = Get.find<RewardController>();
+    // late Future<Either<String, List<User>>> leaderBoardResult;
+    Future leaderBoardResult = rewardsController.fetchLeaderBoard();
+
     return FutureBuilder(
-        future: rewardsController.fetchLeaderBoard(),
+        future: leaderBoardResult,
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return Column(
