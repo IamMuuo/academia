@@ -1,5 +1,6 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:academia/pages/profile_page.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   ];
   @override
   Widget build(BuildContext context) {
+    Get.put(StoryController());
     return Scaffold(
       body: SafeArea(
         child: IndexedStack(index: currentIndex, children: pages),
