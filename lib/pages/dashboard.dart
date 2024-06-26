@@ -6,8 +6,7 @@ class DashBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settingsController = Get.find<SettingsController>();
-    final userController = Get.find<UserController>();
+    final StoryController storyController = Get.find<StoryController>();
 
     return Scaffold(
       body: CustomScrollView(
@@ -25,7 +24,18 @@ class DashBoard extends StatelessWidget {
             pinned: true,
             floating: false,
             snap: false,
-            
+          ),
+          SliverVisibility(
+            visible: storyController.stories.isNotEmpty,
+            sliver: const SliverToBoxAdapter(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  HomeScreenStoryWidget(),
+                ],
+              ),
+            ),
           ),
           SliverToBoxAdapter(
             child: Container(

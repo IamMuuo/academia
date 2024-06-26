@@ -19,8 +19,14 @@ class ProfilePage extends StatelessWidget {
           floating: true,
           centerTitle: true,
           leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(Ionicons.terminal_outline),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const OrganizationsPage(),
+                ),
+              );
+            },
+            icon: const Icon(Ionicons.planet_outline),
           ),
           title: const Text("Your profile"),
           actions: [
