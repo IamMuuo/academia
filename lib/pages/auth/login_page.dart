@@ -1,5 +1,4 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/pages/register_page.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -51,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
         if (userController.isLoggedIn.value) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => const HomePage(),
+              builder: (context) => const LayoutPage(),
             ),
           );
           return;

@@ -1,7 +1,6 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/pages/membership_pages.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});

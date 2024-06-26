@@ -2,27 +2,30 @@ import 'package:academia/exports/barrel.dart';
 import 'package:academia/pages/profile_page.dart';
 import 'package:get/get.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class LayoutPage extends StatefulWidget {
+  const LayoutPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<LayoutPage> createState() => _LayoutPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _LayoutPageState extends State<LayoutPage> {
   int currentIndex = 0;
-  final pages = const [
-    DashBoard(),
-    ToolsPage(),
-    CoursesPage(),
-    ProfilePage(),
-  ];
   @override
   Widget build(BuildContext context) {
     Get.put(StoryController());
+
     return Scaffold(
       body: SafeArea(
-        child: IndexedStack(index: currentIndex, children: pages),
+        child: IndexedStack(
+          index: currentIndex,
+          children: const [
+            DashBoard(),
+            ToolsPage(),
+            CoursesPage(),
+            ProfilePage(),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
