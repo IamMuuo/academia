@@ -104,18 +104,15 @@ class ProfilePage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
-                Hero(
-                  tag: "membership",
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const MembershipPage(),
-                        ),
-                      );
-                    },
-                    child: const Text("Preview school ID"),
-                  ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const MembershipPage(),
+                      ),
+                    );
+                  },
+                  child: const Text("Preview school ID"),
                 ),
                 const SizedBox(height: 16),
               ],

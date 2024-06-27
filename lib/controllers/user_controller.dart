@@ -4,7 +4,6 @@
 
 import 'package:academia/exports/barrel.dart';
 import 'package:academia/models/services/services.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:dartz/dartz.dart';
 import 'package:academia/models/models.dart';

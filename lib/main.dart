@@ -1,6 +1,5 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
-import 'package:academia/storage/storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,8 +22,6 @@ void main() async {
     ],
   );
 
-  await DatabaseHelper().initDatabase();
-
   runApp(
     GetMaterialApp(
       home: const Academia(),
@@ -44,7 +41,7 @@ class Academia extends StatelessWidget {
     Get.put(NotificationsController());
     Get.put(NetworkController());
     Get.put(SettingsController());
-    Get.put(TodoController());
+    Get.lazyPut(() => TodoController());
     Get.put(RewardController());
     Get.put(CoursesController());
 

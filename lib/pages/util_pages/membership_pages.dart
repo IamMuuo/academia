@@ -12,18 +12,15 @@ class _MembershipPageState extends State<MembershipPage> {
   final UserController userController = Get.find<UserController>();
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: "membership",
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Your Memberships"),
-        ),
-        body: SafeArea(
-          minimum: const EdgeInsets.symmetric(horizontal: 8),
-          child: Center(
-            child: SchoolIDCard(
-              user: userController.user.value!,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Your Memberships"),
+      ),
+      body: SafeArea(
+        minimum: const EdgeInsets.symmetric(horizontal: 8),
+        child: Center(
+          child: SchoolIDCard(
+            user: userController.user.value!,
           ),
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/storage/schemas.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -32,8 +33,10 @@ class DatabaseHelper {
   /// it attempts to create the database connection instance using [_initDatabase]
   /// then returns the connection instance that was established
   Future<Database> get database async {
-    if (_database != null) return _database!;
-    _database = await initDatabase();
+    if (_database != null) {
+      return _database!;
+    }
+    _database = await _initDatabase();
     return _database!;
   }
 
@@ -44,7 +47,11 @@ class DatabaseHelper {
   /// _initDatabase attempts to create a database connection
   /// and returns it if it was successful.
   ///
-  Future<Database> initDatabase() async {
+  Future<Database> _initDatabase() async {
+    if (_database != null) {
+      return _database!;
+    }
+    print("hi there");
     String path = join(
       (await getApplicationDocumentsDirectory()).path,
       databaseName,
@@ -53,12 +60,24 @@ class DatabaseHelper {
     if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
       sqfliteFfiInit();
       databaseFactory = databaseFactoryFfi;
-      return await databaseFactoryFfi.openDatabase(path);
+      final db = await databaseFactoryFfi.openDatabase(path);
+
+      // call create manually since ffi does not call onCreate
+      _create(db, 1);
+      return db;
     }
     return await openDatabase(
       path,
       version: 1,
+      onCreate: _create,
     );
+  }
+
+  void _create(Database db, int newVersion) async {
+    schemas.forEach((key, value) async {
+      print("Creating table '$key'");
+      await db.execute(value);
+    });
   }
 
   /// [registerModel]
@@ -72,9 +91,9 @@ class DatabaseHelper {
   /// 'id integer primary key, name text, email text'
   /// notice that there are no brakets
   Future<void> registerModel(String schema) async {
-    final db = await database;
-    await db.execute(
-      schema,
-    );
+    // final db = await database;
+    // await db.execute(
+    //   schema,
+    // );
   }
 }
