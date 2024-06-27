@@ -6,19 +6,6 @@ class StoryModelHelper implements DatabaseOperations {
   static final StoryModelHelper _instance = StoryModelHelper._internal();
 
   factory StoryModelHelper() {
-    DatabaseHelper().registerModel("""
-    CREATE TABLE IF NOT EXISTS stories (
-      id TEXT PRIMARY KEY,
-      organization TEXT NOT NULL,
-      hex_code TEXT,
-      text TEXT,
-      media TEXT,
-      viewed INTEGER,
-      date_added TEXT,
-      date_of_expiry TEXT
-    );
-    """);
-
     return _instance;
   }
 

@@ -79,21 +79,4 @@ class DatabaseHelper {
       await db.execute(value);
     });
   }
-
-  /// [registerModel]
-  /// The register model creates a table to represent the model
-  /// in a relational sql format.
-  ///
-  /// By default the [table] and [schema] are trimmed off whitespaces
-  /// and converted to lowercase for uniformity:
-  ///
-  /// The schema should be like:
-  /// 'id integer primary key, name text, email text'
-  /// notice that there are no brakets
-  Future<void> registerModel(String schema) async {
-    // final db = await database;
-    // await db.execute(
-    //   schema,
-    // );
-  }
 }

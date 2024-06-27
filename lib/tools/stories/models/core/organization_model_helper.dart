@@ -7,17 +7,6 @@ class OrganizationModelHelper implements DatabaseOperations {
       OrganizationModelHelper._internal();
 
   factory OrganizationModelHelper() {
-    DatabaseHelper().registerModel("""
-     CREATE TABLE IF NOT EXISTS organizations (
-          id TEXT PRIMARY KEY,
-          name TEXT NOT NULL,
-          phone TEXT,
-          email TEXT,
-          description TEXT,
-          profile TEXT,
-          date_added TEXT
-        );
-     """);
     return _instance;
   }
 

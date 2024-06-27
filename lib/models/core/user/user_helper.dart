@@ -6,29 +6,6 @@ class UserModelHelper implements DatabaseOperations {
   static final UserModelHelper _instance = UserModelHelper._internal();
 
   factory UserModelHelper() {
-    DatabaseHelper().registerModel("""
-    CREATE TABLE IF NOT EXISTS users (
-      id TEXT PRIMARY KEY,
-      username TEXT NOT NULL UNIQUE,
-      first_name TEXT NOT NULL,
-      last_name TEXT NOT NULL,
-      admission_number TEXT UNIQUE,
-      national_id TEXT UNIQUE,
-      gender TEXT,
-      address TEXT,
-      email TEXT UNIQUE,
-      date_of_birth TEXT,
-      campus TEXT,
-      profile_url TEXT,
-      password TEXT,
-      active INTEGER,
-      vibe_points INTEGER,
-      point_transactions TEXT,
-      date_created TEXT,
-      date_updated TEXT
-    );
-    """);
-
     return _instance;
   }
 

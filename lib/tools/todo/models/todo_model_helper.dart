@@ -6,19 +6,6 @@ class TodoModelHelper implements DatabaseOperations {
   static final TodoModelHelper _instance = TodoModelHelper._internal();
 
   factory TodoModelHelper() {
-    DatabaseHelper().registerModel("""
-      CREATE TABLE IF NOT EXISTS todos (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        color INTEGER NOT NULL,
-        complete INTEGER NOT NULL,
-        description TEXT NOT NULL,
-        due TEXT NOT NULL,
-        dateAdded TEXT NOT NULL,
-        dateCompleted TEXT
-      );
-    """);
-
     return _instance;
   }
 
