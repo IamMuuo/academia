@@ -51,7 +51,6 @@ class DatabaseHelper {
     if (_database != null) {
       return _database!;
     }
-    print("hi there");
     String path = join(
       (await getApplicationDocumentsDirectory()).path,
       databaseName,
@@ -75,7 +74,6 @@ class DatabaseHelper {
 
   void _create(Database db, int newVersion) async {
     schemas.forEach((key, value) async {
-      print("Creating table '$key'");
       await db.execute(value);
     });
   }

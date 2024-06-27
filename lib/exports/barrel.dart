@@ -38,5 +38,4 @@ export 'package:flutter/services.dart';
 export 'package:magnet/magnet.dart';
 export 'package:ionicons/ionicons.dart';
 export 'package:percent_indicator/percent_indicator.dart';
-export 'package:screenshot/screenshot.dart';
 export 'package:path_provider/path_provider.dart';
