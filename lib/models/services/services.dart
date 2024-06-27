@@ -5,5 +5,5 @@ export 'rewards_service.dart';
 /// for user authentication
 mixin VerisafeService {
   // static const String urlPrefix = "http://192.168.100.2:8000";
-  static const String urlPrefix = "http://54.89.208.172:8000";
+  static const String urlPrefix = "http://34.201.43.66:8000";
 }
