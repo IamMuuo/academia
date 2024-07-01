@@ -1,5 +1,5 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/tools/anki/widgets/widgets.dart' show test_topics;
+import 'package:academia/tools/anki/widgets/widgets.dart';
 import 'package:get/get.dart';
 
 class AnkiHomePage extends StatelessWidget {
@@ -28,9 +28,19 @@ class AnkiHomePage extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
             ),
           ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.29,
-            color: Colors.black,
+          Align(
+            alignment: Alignment.center,
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.27,
+              width: MediaQuery.of(context).size.width * 0.87,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, idx) {
+                  return listStarred[idx];
+                },
+                itemCount: 5,
+              ),
+            ),
           ),
           Align(
             alignment: Alignment.topRight,
@@ -52,7 +62,7 @@ class AnkiHomePage extends StatelessWidget {
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.52,
+            height: MediaQuery.of(context).size.height * 0.53,
             decoration: BoxDecoration(
               color: lightColorScheme.primaryContainer,
               borderRadius: const BorderRadius.only(
