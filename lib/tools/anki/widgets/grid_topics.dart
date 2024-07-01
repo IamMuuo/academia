@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/tools/anki/pages/flashcards.dart';
 import 'package:flutter/material.dart';
 
 class GridViewTopic extends StatelessWidget {
@@ -16,64 +17,72 @@ class GridViewTopic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var colorDet = idx % 4;
-    return Container(
-      decoration: BoxDecoration(
-        color: colorDet == 0
-            ? const Color(0xff8999aa)
-            : colorDet == 1
-                ? const Color(0xffffcdfe)
-                : colorDet == 2
-                    ? const Color(0xffffe7cd)
-                    : const Color(0xffcdffce),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(12),
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (builder) => const TopicFlashCards(),
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              topic,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
+      child: Container(
+        decoration: BoxDecoration(
+          color: colorDet == 0
+              ? const Color(0xff8999aa)
+              : colorDet == 1
+                  ? const Color(0xffffcdfe)
+                  : colorDet == 2
+                      ? const Color(0xffffe7cd)
+                      : const Color(0xffcdffce),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(12),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                topic,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              topicDesc,
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
-              width: MediaQuery.of(context).size.width * 0.2,
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => debugPrint("Feature Coming Real Soon"),
-                    child: Icon(
-                      Icons.play_arrow,
-                      size: MediaQuery.of(context).size.height * 0.041,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => debugPrint("Feature Coming Real Soon"),
-                    child: Icon(
-                      Icons.star_border_outlined,
-                      size: MediaQuery.of(context).size.height * 0.035,
-                    ),
-                  ),
-                ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                topicDesc,
               ),
             ),
-          )
-        ],
+            Align(
+              alignment: Alignment.bottomRight,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.05,
+                width: MediaQuery.of(context).size.width * 0.2,
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () => debugPrint("Feature Coming Real Soon"),
+                      child: Icon(
+                        Icons.play_arrow,
+                        size: MediaQuery.of(context).size.height * 0.041,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => debugPrint("Feature Coming Real Soon"),
+                      child: Icon(
+                        Icons.star_border_outlined,
+                        size: MediaQuery.of(context).size.height * 0.035,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
