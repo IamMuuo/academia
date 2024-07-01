@@ -5,7 +5,7 @@ import '../models.dart';
 import 'package:http/http.dart' as http;
 
 class StoryService {
-  static const String storyUrlPrefix = "http://localhost:8080";
+  static const String storyUrlPrefix = "http://notifier.erick.serv00.net";
 
   /// Future fetch Organizations
   Future<Either<String, List<Organization>>> fetchAllOrganizations() async {

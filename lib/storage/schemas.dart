@@ -91,5 +91,22 @@ const schemas = <String, String>{
       dateAdded TEXT NOT NULL,
       dateCompleted TEXT
     );
+  """,
+  "events": """
+    CREATE TABLE IF NOT EXISTS events (
+      id TEXT PRIMARY KEY,
+      date_added TEXT NOT NULL,
+      name TEXT NOT NULL,
+      phone TEXT NOT NULL,
+      email TEXT NOT NULL,
+      location TEXT NOT NULL,
+      likes INTEGER NOT NULL,
+      description TEXT NOT NULL,
+      media TEXT NOT NULL,
+      media_type TEXT NOT NULL,
+      url TEXT,
+      start_date TEXT NOT NULL,
+      end_date TEXT NOT NULL
+    );
   """
 };
