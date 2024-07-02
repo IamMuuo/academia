@@ -63,7 +63,7 @@ class UserService with VerisafeService {
   Future<Either<String, User>> login(String admno, String password) async {
     try {
       final response = await http.post(
-        Uri.parse("${VerisafeService.urlPrefix}/students/login/"),
+        Uri.parse("${VerisafeService.urlPrefix}/users/login/"),
         body: json.encode({
           "admission_number": admno,
           "password": password,

@@ -35,17 +35,28 @@ class ProfilePictureWidget extends StatelessWidget {
                       width: 400,
                       fit: BoxFit.fill,
                     )
-                  : Image.memory(
-                      Uint8List.fromList(
-                        base64Decode(
-                          userController.user.value!.profileUrl
-                              .replaceFirst("data:image/gif;base64,", ""),
-                        ),
-                      ),
-                      fit: BoxFit.cover,
-                      // width: 400,
-                      // height: 400,
-                    )
+                  : userController.user.value!.profileUrl.startsWith("http")
+                      ? CachedNetworkImage(
+                          placeholder: (context, progress) =>
+                              const CircularProgressIndicator(),
+                          imageUrl: userController.user.value!.profileUrl,
+                          errorWidget: (context, error, url) => Image.asset(
+                            userController.user.value!.gender == "male"
+                                ? "assets/images/male_student.png"
+                                : "assets/images/female_student.png",
+                          ),
+                          fit: BoxFit.cover,
+                          height: 300,
+                        )
+                      : Image.memory(
+                          Uint8List.fromList(
+                            base64Decode(
+                              userController.user.value!.profileUrl
+                                  .replaceFirst("data:image/gif;base64,", ""),
+                            ),
+                          ),
+                          fit: BoxFit.cover,
+                        )
               : Image.asset(
                   userController.user.value!.gender == "male"
                       ? "assets/images/male_student.png"
