@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'events_feed_page.dart';
+import 'liked_events_page.dart';
 
 class EventsPage extends StatefulWidget {
   const EventsPage({super.key});
@@ -40,9 +41,7 @@ class _EventsPageState extends State<EventsPage>
             const Center(
               child: Text("Semester Timeline"),
             ),
-            const Center(
-              child: Text("All Events"),
-            ),
+            LikedEventsPage(),
           ],
         ),
       ),
