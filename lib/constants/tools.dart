@@ -21,6 +21,15 @@ final List<Map<String, dynamic>> allTools = [
     "ontap": () {},
     "description": "Wanna calculate your GPA? try it here"
   },
+  {
+    "id": 2,
+    "name": "Fees statements",
+    "action": "Preview my fees statements",
+    "image": "assets/images/coin.png",
+    "ontap": () {},
+    "description": "Having trouble tracking your finaces? We're here for you"
+  },
+
   // {
   //   "id": 2,
   //   "name": "Elearning",

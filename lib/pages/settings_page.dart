@@ -12,11 +12,10 @@ class SettingsPage extends StatelessWidget {
         slivers: [
           SliverAppBar(
             backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            expandedHeight: 160,
+            expandedHeight: 250,
             flexibleSpace: const FlexibleSpaceBar(
               title: Text(
                 "Settings",
-                style: TextStyle(color: Colors.black),
               ),
             ),
             pinned: true,

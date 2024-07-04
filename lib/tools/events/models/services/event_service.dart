@@ -6,7 +6,7 @@ import '../models.dart';
 
 class EventsService {
   // static const String eventUrlPrefix = "http://notifier.erick.serv00.net";
-  static const String eventUrlPrefix = "http://localhost:8080";
+  static const String eventUrlPrefix = "http://notifier.erick.serv00.net";
 
   Future<Either<String, List<Event>>> fetchDueEvents() async {
     try {

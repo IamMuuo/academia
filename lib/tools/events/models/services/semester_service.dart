@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import '../models.dart';
 
 class SemesterService {
-  static const String urlPrefix = "http://localhost:8080";
+  static const String urlPrefix = "http://notifier.erick.serv00.net";
 
   Future<Either<String, List<Semester>>> fetchAllSemesters() async {
     try {
