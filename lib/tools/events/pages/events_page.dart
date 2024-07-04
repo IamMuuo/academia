@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'events_feed_page.dart';
 import 'liked_events_page.dart';
+import 'semester_page.dart';
 
 class EventsPage extends StatefulWidget {
   const EventsPage({super.key});
@@ -38,9 +39,7 @@ class _EventsPageState extends State<EventsPage>
         body: TabBarView(
           children: [
             EventsFeedPage(),
-            const Center(
-              child: Text("Semester Timeline"),
-            ),
+            SemesterPage(),
             LikedEventsPage(),
           ],
         ),
