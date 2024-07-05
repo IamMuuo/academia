@@ -34,20 +34,19 @@ class DashBoard extends StatelessWidget {
             floating: false,
             snap: false,
           ),
-          Obx(
-            () => SliverVisibility(
-              visible: storyController.stories.isNotEmpty,
-              sliver: const SliverToBoxAdapter(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    HomeScreenStoryWidget(),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          // Obx(
+          //   () => const SliverVisibility(
+          //     sliver: SliverToBoxAdapter(
+          //       child: Column(
+          //         mainAxisAlignment: MainAxisAlignment.start,
+          //         crossAxisAlignment: CrossAxisAlignment.stretch,
+          //         children: [
+          //           HomeScreenStoryWidget(),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // ),
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.all(22),

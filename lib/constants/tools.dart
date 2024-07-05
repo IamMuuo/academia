@@ -26,7 +26,9 @@ final List<Map<String, dynamic>> allTools = [
     "name": "Fees statements",
     "action": "Preview my fees statements",
     "image": "assets/images/coin.png",
-    "ontap": () {},
+    "ontap": () {
+      Get.to(const FeesPage());
+    },
     "description": "Having trouble tracking your finaces? We're here for you"
   },
 

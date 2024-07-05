@@ -1,5 +1,4 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/pages/profile_page.dart';
 import 'package:get/get.dart';
 
 class LayoutPage extends StatefulWidget {
