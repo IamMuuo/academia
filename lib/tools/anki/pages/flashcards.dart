@@ -1,5 +1,7 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:academia/tools/anki/widgets/widgets.dart';
+import 'package:academia/tools/anki/controllers/controllers.dart';
+import 'package:get/get.dart';
 
 class TopicFlashCards extends StatelessWidget {
   const TopicFlashCards({super.key});
@@ -12,13 +14,90 @@ class TopicFlashCards extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            // add card button
             FloatingActionButton(
               onPressed: () {
-                debugPrint("Feature Coming Soon");
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    TextEditingController cardInfo = TextEditingController();
+                    AnswerCardController ansCardController =
+                        Get.put(AnswerCardController());
+
+                    return AlertDialog(
+                      title: const Text(
+                        "Create Card",
+                      ),
+                      content: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextField(
+                                controller: cardInfo,
+                                maxLines: 5,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                onEditingComplete: () {
+                                  ansCardController.ansCard.value = cardInfo
+                                      .selection
+                                      .textInside(cardInfo.text);
+                                },
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                "Selected Answer",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Obx(
+                              () => TextField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  hintText: ansCardController.ansCard.isEmpty
+                                      ? "Your Answer To be Hidden"
+                                      : ansCardController.ansCard.value,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      actions: [
+                        ElevatedButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          style: ElevatedButton.styleFrom(
+                              foregroundColor: lightColorScheme.error),
+                          child: const Text("Cancel"),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            debugPrint(
+                                cardInfo.selection.textInside(cardInfo.text));
+                          },
+                          child: const Text("Create Card"),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
               child: const Icon(Icons.add),
             ),
             const Spacer(),
+            // play cards button
             FloatingActionButton(
               onPressed: () {
                 debugPrint("Feature Coming Soon");
@@ -28,7 +107,6 @@ class TopicFlashCards extends StatelessWidget {
           ],
         ),
       ),
-      // floatingActionButton: ElevatedButton(onPressed: () {}, child: Text("B")),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
