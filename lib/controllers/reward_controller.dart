@@ -92,7 +92,14 @@ class RewardController extends GetxController {
     final data = await RewardModelHelper().queryAll();
 
     if (data.isEmpty) {
-      return left("Seems you have not a vibe");
+      final result = await fetchCurrentUserRewards();
+      return result.fold((l) => left(l), (r) async {
+        r.map((e) async {
+          await UserModelHelper().truncate();
+          await UserModelHelper().create(e.toJson());
+        });
+        return right(r);
+      });
     }
     final rewards = data.map((e) => Reward.fromJson(e)).toList();
     return right(rewards);

@@ -113,7 +113,7 @@ class HallOfFamePage extends StatelessWidget {
                                     padding: const EdgeInsets.only(bottom: 8),
                                     child: ListTile(
                                       leading: CircleAvatar(
-                                        child: Text(index.toString()),
+                                        child: Text((index + 3).toString()),
                                       ),
                                       title: Text(
                                         "@${moreUsers[index].username}",

@@ -41,7 +41,7 @@ class Academia extends StatelessWidget {
     Get.put(NotificationsController());
     Get.put(NetworkController());
     Get.put(SettingsController());
-    Get.lazyPut(() => TodoController());
+    Get.put(TodoController());
     Get.put(RewardController());
     Get.put(CoursesController());
 

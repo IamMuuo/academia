@@ -21,6 +21,15 @@ class DashBoard extends StatelessWidget {
               icon: const Icon(Ionicons.trophy_outline),
             ),
             title: const Text("Academia"),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const EventsPage()));
+                },
+                icon: const Icon(Ionicons.time),
+              )
+            ],
             pinned: true,
             floating: false,
             snap: false,
