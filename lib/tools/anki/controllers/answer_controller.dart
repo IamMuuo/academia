@@ -3,4 +3,5 @@ import 'package:get/get.dart';
 
 class AnswerCardController extends GetxController {
   var ansCard = "".obs;
+  var ansSwitch = true.obs;
 }

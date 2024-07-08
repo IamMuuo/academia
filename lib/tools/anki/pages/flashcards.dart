@@ -9,6 +9,7 @@ class TopicFlashCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       floatingActionButton: SizedBox(
         height: MediaQuery.of(context).size.height * 0.17,
         child: Column(
@@ -16,11 +17,13 @@ class TopicFlashCards extends StatelessWidget {
           children: [
             // add card button
             FloatingActionButton(
+              heroTag: "btn1",
               onPressed: () {
                 showDialog(
                   context: context,
                   builder: (context) {
                     TextEditingController cardInfo = TextEditingController();
+                    TextEditingController cardAns = TextEditingController();
                     AnswerCardController ansCardController =
                         Get.put(AnswerCardController());
 
@@ -29,7 +32,7 @@ class TopicFlashCards extends StatelessWidget {
                         "Create Card",
                       ),
                       content: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.4,
+                        height: MediaQuery.of(context).size.height * 0.45,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -50,44 +53,89 @@ class TopicFlashCards extends StatelessWidget {
                                 },
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                "Selected Answer",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            Obx(
+                              () => Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ansCardController.ansSwitch.value
+                                    ? const Text(
+                                        "Selected Answer",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    : const Text(
+                                        "Type Answer",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                               ),
                             ),
                             Obx(
-                              () => TextField(
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  hintText: ansCardController.ansCard.isEmpty
-                                      ? "Your Answer To be Hidden"
-                                      : ansCardController.ansCard.value,
-                                ),
-                              ),
+                              () => ansCardController.ansSwitch.value
+                                  // TextField For Writing An Answer
+                                  ? TextField(
+                                      controller: cardAns,
+                                      maxLines: 3,
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        hintText: "Your Answer To be Hidden",
+                                      ),
+                                    )
+                                  // TextField for showing Highlighted Answer
+                                  : TextField(
+                                      enabled: false,
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        hintText: ansCardController
+                                                .ansCard.isEmpty
+                                            ? "Your Answer To be Hidden"
+                                            : ansCardController.ansCard.value,
+                                      ),
+                                    ),
                             ),
                           ],
                         ),
                       ),
                       actions: [
-                        ElevatedButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          style: ElevatedButton.styleFrom(
-                              foregroundColor: lightColorScheme.error),
-                          child: const Text("Cancel"),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              ansCardController.ansSwitch.value =
+                                  !ansCardController.ansSwitch.value;
+                            },
+                            child: Obx(
+                              () => Text(
+                                "Switch To ${ansCardController.ansSwitch.value ? "Writing" : "Highlight"}",
+                              ),
+                            ),
+                          ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            debugPrint(
-                                cardInfo.selection.textInside(cardInfo.text));
-                          },
-                          child: const Text("Create Card"),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              debugPrint(
+                                  cardInfo.selection.textInside(cardInfo.text));
+                            },
+                            child: const Text("Create Card"),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            style: ElevatedButton.styleFrom(
+                                foregroundColor: lightColorScheme.error),
+                            child: const Text("Cancel"),
+                          ),
                         ),
                       ],
                     );
@@ -99,6 +147,7 @@ class TopicFlashCards extends StatelessWidget {
             const Spacer(),
             // play cards button
             FloatingActionButton(
+              heroTag: "btn2",
               onPressed: () {
                 debugPrint("Feature Coming Soon");
               },
