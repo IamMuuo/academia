@@ -48,4 +48,16 @@ class CoursesController extends GetxController {
     }
     return count;
   }
+
+  Future<bool> createCourseTopic(CourseTopic coursesTopic) async {
+    final data = await CourseTopicModelHelper().create(coursesTopic.toJson());
+    coursesTopics.add(coursesTopic);
+    return data > 0 ? true : false;
+  }
+
+  Future<bool> deleteCourseTopic(CourseTopic coursesTopic) async {
+    final data = await CourseTopicModelHelper().delete(coursesTopic.toJson());
+    coursesTopics.remove(coursesTopic);
+    return data > 0 ? true : false;
+  }
 }
