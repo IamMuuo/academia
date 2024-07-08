@@ -108,5 +108,14 @@ const schemas = <String, String>{
       start_date TEXT NOT NULL,
       end_date TEXT NOT NULL
     );
+  """,
+
+  "course_topics": """
+    CREATE TABLE IF NOT EXISTS course_topics (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      course TEXT NOT NULL,
+      name TEXT NOT NULL,
+      description TEXT NOT NULL
+    );
   """
 };

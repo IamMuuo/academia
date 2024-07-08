@@ -7,6 +7,7 @@ class DashBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final StoryController storyController = Get.find<StoryController>();
+    final CoursesController coursesController = Get.find<CoursesController>();
 
     return Scaffold(
       body: CustomScrollView(
@@ -59,12 +60,57 @@ class DashBoard extends StatelessWidget {
                         color: Theme.of(context).colorScheme.surfaceTint),
                   ),
                   const SizedBox(height: 12),
-                  const Row(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Stat(title: "Day", percentage: 0.2),
-                      Stat(title: "Week", percentage: 0.2),
-                      Stat(title: "Year", percentage: 0.2),
+                      Stat(title: "Day", percentage: dayPercentGone() * 0.01),
+                      Stat(title: "Week", percentage: weekPercentGone() * 0.01),
                     ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          SliverPadding(
+            padding: const EdgeInsets.all(12),
+            sliver: SliverToBoxAdapter(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color:
+                              Theme.of(context).colorScheme.primaryContainer),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          coursesController.courses.length.toString(),
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                        const Text("Number of courses")
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color:
+                              Theme.of(context).colorScheme.primaryContainer),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          coursesController.numberOfCoursesToday.toString(),
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                        const Text("Courses today")
+                      ],
+                    ),
                   ),
                 ],
               ),

@@ -6,12 +6,18 @@ import 'package:dartz/dartz.dart';
 class CoursesController extends GetxController {
   RxBool hasCourses = false.obs;
   RxList<Course> courses = <Course>[].obs;
+  RxList<CourseTopic> coursesTopics = <CourseTopic>[].obs;
 
   @override
   void onInit() {
     super.onInit();
     CourseModelHelper().queryAll().then((value) {
       courses.value = value.map((e) => Course.fromJson(e)).toList();
+    });
+
+    // Load the course topics
+    CourseTopicModelHelper().queryAll().then((value) {
+      coursesTopics.value = value.map((e) => CourseTopic.fromJson(e)).toList();
     });
   }
 
@@ -29,5 +35,17 @@ class CoursesController extends GetxController {
       }
       return right(courses);
     });
+  }
+
+  int get numberOfCoursesToday {
+    int today = DateTime.now().weekday;
+    int count = 0;
+
+    for (final course in courses) {
+      if (getNumericDayOfWeek(course.dayOfWeek) == today) {
+        count++;
+      }
+    }
+    return count;
   }
 }
