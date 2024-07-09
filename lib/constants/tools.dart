@@ -149,15 +149,6 @@ final List<Map<String, dynamic>> allTools = [
   //   "description": "Need your transcript ASAP? Find it here"
   // },
   {
-    "id": 7,
-    "name": "Class Attendance",
-    "action": "View class Attendance",
-    "image": "assets/images/girl_sitted.png",
-    "ontap": () {},
-    "description":
-        "Curious to know how many classes you have missed this semester, this might be the tool",
-  },
-  {
     "id": 9,
     "name": "Task Manager",
     "action": "Manage your tasks",
