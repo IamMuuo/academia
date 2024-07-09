@@ -75,12 +75,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       leading: const Icon(Ionicons.balloon),
                       title: const Text("Wish me happy birthday"),
                       trailing: Switch(
-                        value:
-                            settingsController.settings.value.showFeeStatistics,
+                        value: settingsController.settings.value.showBirthDay,
                         onChanged: (value) {
                           settingsController.settings.update(
                             (val) {
-                              val?.showFeeStatistics = value;
+                              val?.showBirthDay = value;
                             },
                           );
                         },
@@ -97,12 +96,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       leading: const Icon(Ionicons.newspaper),
                       title: const Text("Enable transcript feature"),
                       trailing: Switch(
-                        value:
-                            settingsController.settings.value.showFeeStatistics,
+                        value: settingsController.settings.value.showTranscript,
                         onChanged: (value) {
                           settingsController.settings.update(
                             (val) {
-                              val?.showFeeStatistics = value;
+                              val?.showTranscript = value;
                             },
                           );
                         },
@@ -112,12 +110,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       leading: const Icon(Ionicons.document),
                       title: const Text("Enable student audit feature"),
                       trailing: Switch(
-                        value:
-                            settingsController.settings.value.showFeeStatistics,
+                        value: settingsController.settings.value.showAudit,
                         onChanged: (value) {
                           settingsController.settings.update(
                             (val) {
-                              val?.showFeeStatistics = value;
+                              val?.showAudit = value;
                             },
                           );
                         },
@@ -132,11 +129,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                       trailing: Switch(
                         value:
-                            settingsController.settings.value.showFeeStatistics,
+                            settingsController.settings.value.showExamTimetable,
                         onChanged: (value) {
                           settingsController.settings.update(
                             (val) {
-                              val?.showFeeStatistics = value;
+                              val?.showExamTimetable = value;
                             },
                           );
                         },
