@@ -20,8 +20,8 @@ class _LayoutPageState extends State<LayoutPage> {
           index: currentIndex,
           children: const [
             DashBoard(),
-            ToolsPage(),
             CoursesPage(),
+            ToolsPage(),
             ProfilePage(),
           ],
         ),
@@ -37,14 +37,14 @@ class _LayoutPageState extends State<LayoutPage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Ionicons.hammer_outline),
-            activeIcon: Icon(Ionicons.hammer),
-            label: 'Tools',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Ionicons.golf_outline),
             activeIcon: Icon(Ionicons.golf),
             label: 'Courses',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Ionicons.hammer_outline),
+            activeIcon: Icon(Ionicons.hammer),
+            label: 'Tools',
           ),
           BottomNavigationBarItem(
             icon: Icon(Ionicons.person_outline),

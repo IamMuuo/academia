@@ -8,8 +8,6 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userController = Get.find<UserController>();
-    final rewardController = Get.find<RewardController>();
-    final settingsController = Get.find<SettingsController>();
     return CustomScrollView(
       slivers: [
         SliverAppBar(
@@ -107,8 +105,8 @@ class ProfilePage extends StatelessWidget {
             children: [
               InfoCard(
                 title: "Official Name",
-                content: userController.user.value!.firstName.title() +
-                    userController.user.value!.lastName.title(),
+                content:
+                    "${userController.user.value!.firstName.title()} ${userController.user.value!.lastName.title()}",
                 icon: Ionicons.person,
               ),
               InfoCard(
@@ -140,7 +138,7 @@ class ProfilePage extends StatelessWidget {
               Obx(
                 () => InfoCard(
                   title: "Vibe Points",
-                  content: rewardController.vibePoints.toString(),
+                  content: userController.user.value!.vibePoints.toString(),
                   icon: Ionicons.wallet,
                 ),
               ),
