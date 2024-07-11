@@ -81,3 +81,22 @@ int getNumericDayOfWeek(String dayOfWeek) {
       return 0; // Handle unknown dayOfWeek
   }
 }
+
+/// Returns the pecentage of time gone
+double calculateSemesterPercent(DateTime start, DateTime end) {
+  Duration totalDuration = end.difference(start);
+
+  DateTime now = DateTime.now();
+  Duration elapsedDuration = now.difference(start);
+
+  double percentage =
+      (elapsedDuration.inMilliseconds / totalDuration.inMilliseconds) * 100;
+
+  if (percentage < 0) {
+    return 0;
+  } else if (percentage > 100) {
+    return 100;
+  } else {
+    return percentage;
+  }
+}

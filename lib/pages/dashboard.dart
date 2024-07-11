@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/models/core/course/course_model.dart';
 import 'package:get/get.dart';
 
 class DashBoard extends StatelessWidget {
@@ -7,6 +8,7 @@ class DashBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final StoryController storyController = Get.find<StoryController>();
+    final EventsController eventsController = Get.find<EventsController>();
     final CoursesController coursesController = Get.find<CoursesController>();
 
     return Scaffold(
@@ -65,6 +67,20 @@ class DashBoard extends StatelessWidget {
                     children: [
                       Stat(title: "Day", percentage: dayPercentGone() * 0.01),
                       Stat(title: "Week", percentage: weekPercentGone() * 0.01),
+                      Obx(
+                        () => Stat(
+                          title: "Semester",
+                          percentage: calculateSemesterPercent(
+                                eventsController
+                                        .currentSemester.value?.startDate ??
+                                    DateTime.now(),
+                                eventsController
+                                        .currentSemester.value?.endDate ??
+                                    DateTime.now(),
+                              ) *
+                              0.01,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -113,6 +129,31 @@ class DashBoard extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+            ),
+          ),
+
+          SliverPadding(
+            padding: const EdgeInsets.all(12),
+            sliver: SliverVisibility(
+              sliver: SliverToBoxAdapter(
+                child: ExpansionTile(
+                  initiallyExpanded: true,
+                  maintainState: true,
+                  enableFeedback: true,
+                  title: Text(
+                    "Courses Today",
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  children: [
+                    Container(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      padding: const EdgeInsets.all(12),
+                      width: double.infinity,
+                      child: Text("Hi"),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

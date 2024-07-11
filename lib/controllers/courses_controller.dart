@@ -49,6 +49,18 @@ class CoursesController extends GetxController {
     return count;
   }
 
+  List<Course> get coursesToday {
+    int today = DateTime.now().weekday;
+    final coursestoday = <Course>[];
+
+    for (final course in courses) {
+      if (getNumericDayOfWeek(course.dayOfWeek) == today) {
+        coursestoday.add(course);
+      }
+    }
+    return coursestoday;
+  }
+
   Future<bool> createCourseTopic(CourseTopic coursesTopic) async {
     final data = await CourseTopicModelHelper().create(coursesTopic.toJson());
     coursesTopics.add(coursesTopic);
