@@ -15,7 +15,7 @@ class SchoolIDCard extends StatelessWidget {
           color: Theme.of(context).colorScheme.shadow,
         ),
       ),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       constraints: BoxConstraints(
         maxWidth: MediaQuery.of(context).size.width,
         maxHeight: 250,
@@ -41,7 +41,7 @@ class SchoolIDCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            user.firstName.toUpperCase() + user.lastName.toUpperCase(),
+            "${user.firstName.toUpperCase()} ${user.lastName.toUpperCase()}",
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontFamily: GoogleFonts.jetBrainsMono().fontFamily,
                 ),
@@ -136,7 +136,7 @@ class SchoolIDCard extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .bodySmall
-                ?.copyWith(color: Colors.red),
+                ?.copyWith(color: Colors.red, overflow: TextOverflow.fade),
           ),
         ],
       ),

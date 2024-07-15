@@ -1,7 +1,6 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/pages/membership_pages.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -19,8 +18,14 @@ class ProfilePage extends StatelessWidget {
           floating: true,
           centerTitle: true,
           leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(Ionicons.terminal_outline),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const OrganizationsPage(),
+                ),
+              );
+            },
+            icon: const Icon(Ionicons.planet_outline),
           ),
           title: const Text("Your profile"),
           actions: [
@@ -99,18 +104,15 @@ class ProfilePage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
-                Hero(
-                  tag: "membership",
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const MembershipPage(),
-                        ),
-                      );
-                    },
-                    child: const Text("Preview school ID"),
-                  ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const MembershipPage(),
+                      ),
+                    );
+                  },
+                  child: const Text("Preview school ID"),
                 ),
                 const SizedBox(height: 16),
               ],

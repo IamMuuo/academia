@@ -1,6 +1,5 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
-import 'package:academia/storage/storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,13 +22,11 @@ void main() async {
     ],
   );
 
-  await DatabaseHelper().initDatabase();
-
   runApp(
     GetMaterialApp(
       home: const Academia(),
       theme: lightModeTheme,
-      darkTheme: darkModeTheme,
+      // darkTheme: darkModeTheme,
     ),
   );
 }
@@ -41,14 +38,14 @@ class Academia extends StatelessWidget {
   Widget build(BuildContext context) {
     /// Init the controllers here
     final userController = Get.put(UserController());
-    Get.put(RewardController());
     Get.put(NotificationsController());
     Get.put(NetworkController());
     Get.put(SettingsController());
     Get.put(TodoController());
+    Get.put(RewardController());
     Get.put(CoursesController());
 
-    // Prompt for permission
+    // Prompt for notification permission
     AwesomeNotifications().isNotificationAllowed().then(
       (value) {
         if ((!value) && (Platform.isAndroid || Platform.isIOS)) {
@@ -82,40 +79,10 @@ class Academia extends StatelessWidget {
         }
       },
     );
-
-    return FutureBuilder(
-      future: userController.loadUserFromDisk(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return Scaffold(
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Image.asset(
-                    "assets/icons/academia.png",
-                    height: 200,
-                  ),
-                  const SizedBox(height: 22),
-                  LoadingAnimationWidget.fourRotatingDots(
-                    color: Theme.of(context).colorScheme.primary,
-                    size: 40,
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    "Let the past die, kill it if you have to ~ The Last Jedi",
-                    style: Theme.of(context).textTheme.titleLarge,
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-        return snapshot.hasData ? const HomePage() : const IntroPage();
-      },
+    return Obx(
+      () => userController.isLoggedIn.value
+          ? const LayoutPage()
+          : const IntroPage(),
     );
   }
 }

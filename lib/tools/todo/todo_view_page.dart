@@ -1,10 +1,22 @@
-import 'package:academia/exports/barrel.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import 'todo.dart';
+import 'package:flutter/material.dart';
+import "package:ionicons/ionicons.dart";
 import 'package:flex_color_picker/flex_color_picker.dart';
+import 'package:get/get.dart';
+
+enum Mode {
+  create,
+  update,
+}
 
 class TodoViewPage extends StatefulWidget {
-  const TodoViewPage({super.key});
+  const TodoViewPage({
+    super.key,
+    this.mode = Mode.create,
+    this.todo,
+  });
+  final Mode mode;
+  final Todo? todo;
 
   @override
   State<TodoViewPage> createState() => _TodoViewPageState();
@@ -12,278 +24,252 @@ class TodoViewPage extends StatefulWidget {
 
 class _TodoViewPageState extends State<TodoViewPage> {
   final todoController = Get.find<TodoController>();
-  TextEditingController titleController = TextEditingController();
-  TextEditingController noteController = TextEditingController();
-  DateTime? _selectedDate;
-  TimeOfDay? _notificationTime;
-  Color? _selectedColor;
-  bool _completed = false;
-  bool _selectedFrequency = false;
-
-  final formKey = GlobalKey<FormState>();
-  final DateFormat formatter = DateFormat('EEEE, MMM yyyy');
-  final DateFormat timeformatter = DateFormat('HH:mm');
-
-  Future<void> saveTodo() async {
-    if (formKey.currentState!.validate()) {
-      final newTodo = Todo(
-        name: titleController.text,
-        date: _selectedDate!,
-        notificationTime: _notificationTime.toString(),
-        notificationFrequency: _selectedFrequency,
-        color: _selectedColor!.value.toString(),
-        description: noteController.text,
-        complete: _completed,
-      );
-
-      await todoController.createTodo(newTodo);
-      debugPrint("Todo created successfully");
-
-      if (!mounted) return;
-      Navigator.of(context).pop();
-    }
-  }
-
-  void _presentDatePicker() {
+  Color taskColor = Colors.green;
+  final formState = GlobalKey<FormState>();
+  final TextEditingController todoNameController = TextEditingController();
+  final TextEditingController dueDateController = TextEditingController();
+  final TextEditingController subTaskController = TextEditingController();
+  DateTime dueDate = DateTime.now().add(const Duration(days: 1));
+  Future<void> promptDueDate() async {
     showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2020),
-            lastDate: DateTime(2030))
-        .then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-      setState(() {
-        _selectedDate = pickedDate;
-      });
-    });
-  }
-
-  void _presentTimePicker() {
-    showTimePicker(
       context: context,
-      initialTime: TimeOfDay.now(),
-    ).then((value) {
-      if (value == null) {
-        return;
-      }
-      setState(() {
-        _notificationTime = value;
-      });
-    });
-  }
-
-  void _presentFrequencyPicker() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Notification Frequency"),
-        actions: [
-          FilledButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _presentTimePicker();
-              },
-              child: const Text("Confirm")),
-          FilledButton.tonal(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("Cancel")),
-        ],
-        content: StatefulBuilder(
-          builder: (context, StateSetter setState) {
-            return SizedBox(
-              height: 150,
-              child: Column(
-                children: [
-                  RadioListTile<bool>(
-                    title: const Text("Every Day"),
-                    value: true,
-                    groupValue:
-                        _selectedFrequency, // Assuming you have a variable to hold the selected frequency
-                    onChanged: (bool? value) {
-                      setState(() {
-                        _selectedFrequency = value!;
-                      });
-                    },
-                  ),
-                  RadioListTile<bool>(
-                    title: const Text("Day Before"),
-                    value: false,
-                    groupValue:
-                        _selectedFrequency, // Assuming you have a variable to hold the selected frequency
-                    onChanged: (bool? value) {
-                      setState(() {
-                        _selectedFrequency = value!;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  void _presentColorPicker() {
-    ColorPicker(
-      color: Colors.teal,
-      onColorChanged: (Color color) {
-        setState(() {
-          _selectedColor = color;
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+    ).then((selectedDate) {
+      if (selectedDate != null) {
+        showTimePicker(
+          context: context,
+          initialTime: TimeOfDay.now(),
+        ).then((selectedTime) {
+          if (selectedTime != null) {
+            setState(() {
+              dueDate = DateTime(
+                selectedDate.year,
+                selectedDate.month,
+                selectedDate.day,
+                selectedTime.hour,
+                selectedTime.minute,
+              );
+              dueDateController.text = formatDateTime(dueDate);
+            });
+          }
         });
-      },
-    ).showPickerDialog(
-      context,
-    );
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.todo != null) {
+      taskColor = widget.todo!.color;
+      todoNameController.text =
+          widget.todo!.name + (widget.todo!.complete ? "(Completed)" : "");
+      subTaskController.text = widget.todo!.description;
+      dueDateController.text = formatDateTime(widget.todo!.due);
+      setState(() {});
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Agenda Item"),
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Ionicons.trash)),
-          IconButton(
-              onPressed: () async {
-                await saveTodo();
-              },
-              icon: const Icon(Ionicons.save_outline)),
-        ],
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(Ionicons.close_outline),
-        ),
-      ),
-      body: SafeArea(
-        minimum: const EdgeInsets.symmetric(horizontal: 8),
-        child: SingleChildScrollView(
-          child: Form(
-            key: formKey,
-            child: Column(
-              children: [
-                TextFormField(
-                  controller: titleController,
+      body: Form(
+        key: formState,
+        child: CustomScrollView(
+          slivers: [
+            const SliverAppBar(
+              title: Text("Task item"),
+              actions: [],
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.all(16),
+              sliver: SliverToBoxAdapter(
+                child: TextFormField(
+                  controller: todoNameController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) {
-                    if ((value?.length ?? 0) < 3) {
-                      return "Please specify a valid title";
+                    if (value!.length < 5) {
+                      return "Please provide a memorable name for your task";
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                    hintText: "Add agenda title",
-                    hintStyle: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(color: Colors.grey),
-                    border: InputBorder.none,
-                  ),
-                ),
-                const Divider(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: ListTile(
-                    onTap: () {
-                      _presentDatePicker();
-                    },
-                    leading: const Icon(Ionicons.calendar_outline),
-                    title: Text(
-                      _selectedDate == null
-                          ? "Select Date"
-                          : formatter.format(_selectedDate!),
-                      style: Theme.of(context).textTheme.titleMedium,
+                    hintText: "Your cool task",
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text("Help"),
+                            content: const Text(
+                              "Please provide a short and memorable name for your task",
+                            ),
+                            actions: [
+                              FilledButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Ok"),
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                      icon: const Icon(Ionicons.information_circle),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: ListTile(
-                    onTap: () {
-                      _presentFrequencyPicker();
-                      // _presentTimePicker();
-                    },
-                    leading: const Icon(Ionicons.notifications_outline),
-                    title: Text(
-                      "Remind me at ${_notificationTime == null ? '16:00' : _notificationTime!.format(context)}",
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    subtitle: Text(
-                      _selectedFrequency
-                          ? "Every day to that day"
-                          : "Just day before",
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(color: Colors.grey),
-                    ),
-                  ),
-                ),
-                const Divider(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: ListTile(
-                    onTap: () {
-                      _presentColorPicker();
-                    },
-                    leading: CircleAvatar(
-                      radius: 10,
-                      backgroundColor: _selectedColor == null
-                          ? Colors.teal
-                          : _selectedColor!,
-                    ),
-                    title: Text(
-                      "Pick a color",
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (value) {
-                      if ((value?.length ?? 0) < 5) {
-                        return "Please describe this task to make it memorable";
-                      }
-                      return null;
-                    },
-                    controller: noteController,
-                    maxLines: 7,
-                    decoration: InputDecoration(
-                      hintText: "Add a note",
-                      hintStyle: Theme.of(context)
-                          .textTheme
-                          .titleLarge
-                          ?.copyWith(color: Colors.grey),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-                const Divider(height: 20),
-                FilledButton.icon(
-                  onPressed: () {
-                    setState(() {
-                      _completed = !_completed;
-                    });
-                  },
-                  icon: Icon(
-                    _completed ? Ionicons.pricetag_outline : Ionicons.checkmark,
-                  ),
-                  label: Text(
-                    _completed ? "Umark as complete" : "Mark as complete",
-                  ),
-                )
-              ],
+              ),
             ),
-          ),
+            SliverPadding(
+              padding: const EdgeInsets.all(16),
+              sliver: SliverToBoxAdapter(
+                child: GestureDetector(
+                  onTap: () async {
+                    await ColorPicker(onColorChanged: (value) {
+                      setState(() {
+                        taskColor = value;
+                      });
+                    }).showPickerDialog(context);
+                  },
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: taskColor,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        "Select color to identify your task",
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.all(12),
+              sliver: SliverToBoxAdapter(
+                child: TextFormField(
+                  readOnly: true,
+                  onTap: () async {
+                    await promptDueDate();
+                  },
+                  controller: dueDateController,
+                  decoration: InputDecoration(
+                    hintText: "Due Date",
+                    suffixIcon: IconButton(
+                      onPressed: () async {
+                        promptDueDate();
+                      },
+                      icon: const Icon(Ionicons.calendar),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.all(12),
+              sliver: SliverFillRemaining(
+                child: TextFormField(
+                  controller: subTaskController,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 10,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) {
+                    if (value!.length < 5) {
+                      return "Please split your task into smaller tasks";
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    label: const Text("Subtasks"),
+                    hintText: "Split your tasks into smaller tasks",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: widget.mode == Mode.create
+            ? () {
+                if (formState.currentState!.validate()) {
+                  // add an item
+                  todoController
+                      .addTask(Todo(
+                    due: dueDate,
+                    name: todoNameController.text,
+                    color: taskColor,
+                    dateAdded: DateTime.now(),
+                    complete: false,
+                    description: subTaskController.text,
+                  ))
+                      .then((value) {
+                    todoController.getAllTodos();
+                    if (value) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Sucess"),
+                          content: const Text(
+                            "Your todo item has been sucessfully recorded",
+                          ),
+                          actions: [
+                            FilledButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text("Ok"),
+                            )
+                          ],
+                        ),
+                      );
+                    }
+                  });
+                }
+              }
+            : () {
+                // delete the darn task
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: const Text("Confirmation"),
+                          content: const Text(
+                            "Are you sure you want tp delete the task, doing this will affect your graph",
+                          ),
+                          actions: [
+                            FilledButton(
+                              onPressed: () {
+                                todoController
+                                    .deleteTodo(widget.todo!)
+                                    .then((value) {
+                                  if (value) {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  }
+                                });
+                              },
+                              child: const Text("Delete it"),
+                            ),
+                            FilledButton.tonal(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Cancel"),
+                            ),
+                          ],
+                        ));
+              },
+        child: Icon(
+          widget.mode == Mode.create ? Ionicons.add : Ionicons.trash,
         ),
       ),
     );

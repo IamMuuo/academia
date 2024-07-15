@@ -1,60 +1,63 @@
-import 'package:academia/exports/barrel.dart';
+import 'package:academia/constants/common.dart';
 import 'package:get/get.dart';
 import 'package:academia/models/models.dart';
+import 'package:dartz/dartz.dart';
 
 class CoursesController extends GetxController {
   RxBool hasCourses = false.obs;
-  RxBool isLoading = false.obs;
   RxList<Course> courses = <Course>[].obs;
+  RxList<CourseTopic> coursesTopics = <CourseTopic>[].obs;
 
   @override
-  Future<void> onInit() async {
+  void onInit() {
     super.onInit();
-    await loadCourses();
+    CourseModelHelper().queryAll().then((value) {
+      courses.value = value.map((e) => Course.fromJson(e)).toList();
+    });
+
+    // Load the course topics
+    CourseTopicModelHelper().queryAll().then((value) {
+      coursesTopics.value = value.map((e) => CourseTopic.fromJson(e)).toList();
+    });
   }
 
-  /// Loads all courses stored in the local DB
-  Future<List<Course>> loadCourses() async {
-    isLoading.value = true;
-    final rawCourses = await CourseModelHelper().queryAll();
-    courses.value = rawCourses.map((e) => Course.fromDB(e)).toList();
-    if (courses.value.isEmpty) {
-      hasCourses.value = false;
-    } else {
-      hasCourses.value = true;
-    }
-    isLoading.value = false;
-    return courses;
-  }
+  /// Fetches the curent user's courses and saves them to local storage
+  Future<Either<String, List<Course>>> fetchUserCourses() async {
+    final result = await magnet.fetchUserTimeTable();
+    return result.fold((l) {
+      return left("Sorry we couldn't find your courses please try again later");
+    }, (r) {
+      courses.value = r.map((e) => Course.fromJson(e)).toList();
 
-  Future<void> _saveCourses(List<Course> courses) async {
-    await CourseModelHelper().truncate();
-
-    for (var course in courses) {
-      await CourseModelHelper().create(course.toJson());
-    }
-  }
-
-  /// Scrape for a user's course using magnet
-  Future<List<Course>> fetchCourses() async {
-    isLoading.value = true;
-    try {
-      final result = await magnet.fetchTimeTable();
-
-      // final rawCourses = rawData.cast<Map<String, dynamic>>();
-      final rawCourses = [];
-      courses.value = rawCourses.map((e) => Course.fromJson(e)).toList();
-      _saveCourses(courses);
-      if (courses.value.isEmpty) {
-        hasCourses.value = false;
-      } else {
-        hasCourses.value = true;
+      /// Write the courses to local db
+      for (final course in courses) {
+        CourseModelHelper().create(course.toJson());
       }
-      isLoading.value = false;
-      return courses;
-    } catch (e) {
-      isLoading.value = false;
-      rethrow;
+      return right(courses);
+    });
+  }
+
+  int get numberOfCoursesToday {
+    int today = DateTime.now().weekday;
+    int count = 0;
+
+    for (final course in courses) {
+      if (getNumericDayOfWeek(course.dayOfWeek) == today) {
+        count++;
+      }
     }
+    return count;
+  }
+
+  Future<bool> createCourseTopic(CourseTopic coursesTopic) async {
+    final data = await CourseTopicModelHelper().create(coursesTopic.toJson());
+    coursesTopics.add(coursesTopic);
+    return data > 0 ? true : false;
+  }
+
+  Future<bool> deleteCourseTopic(CourseTopic coursesTopic) async {
+    final data = await CourseTopicModelHelper().delete(coursesTopic.toJson());
+    coursesTopics.remove(coursesTopic);
+    return data > 0 ? true : false;
   }
 }

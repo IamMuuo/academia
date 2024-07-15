@@ -5,16 +5,6 @@ class RewardModelHelper implements DatabaseOperations {
   static final RewardModelHelper _instance = RewardModelHelper._internal();
 
   factory RewardModelHelper() {
-    DatabaseHelper().registerModel('''
-      CREATE TABLE IF NOT EXISTS rewards (
-        id TEXT PRIMARY KEY,
-        student_id TEXT NOT NULL,
-        points INTEGER NOT NULL,
-        reason TEXT NOT NULL,
-        awarded_at TEXT NOT NULL
-      )
-    ''');
-
     return _instance;
   }
 

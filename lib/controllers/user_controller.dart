@@ -22,6 +22,27 @@ class UserController extends GetxController {
 
     if (loadedUser != null) {
       user.value = loadedUser;
+      final data = await login(
+        user.value!.admissionNumber,
+        user.value!.password,
+      );
+
+      data.fold((l) {
+        Get.rawSnackbar(
+          messageText: const Text(
+            "Failed login",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          duration: const Duration(seconds: 5),
+          isDismissible: false,
+          backgroundColor: Colors.red[400]!,
+          icon: const Icon(Ionicons.magnet, color: Colors.white),
+        );
+      }, (r) {});
+
       isLoggedIn.value = true;
     }
   }
@@ -82,7 +103,7 @@ class UserController extends GetxController {
         r.password = password;
         user.value = r;
         isLoggedIn.value = true;
-        UserModelHelper().create(user.value!.toJson());
+        UserModelHelper().create(user.value!.toMap());
         return right(r.toJson());
       });
     }

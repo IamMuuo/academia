@@ -1,7 +1,4 @@
 // The user model
-import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:intl/intl.dart';
 
 /// Represents a user's model as well as provides
@@ -122,7 +119,8 @@ class User {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  /// Used specifically for data storage
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'username': username,
@@ -140,6 +138,34 @@ class User {
       'profile_url': profileUrl,
       'password': password,
       'active': active == true ? 1 : 0,
+      'vibe_points': vibePoints,
+      'point_transactions': pointTransactions,
+      'date_created': DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'")
+          .format(dateCreated?.toUtc() ?? DateTime.now().toUtc()),
+      'date_updated': DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'")
+          .format(dateUpdated?.toUtc() ?? DateTime.now()),
+    };
+  }
+
+  /// For api sending
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'username': username,
+      'first_name': firstName,
+      'last_name': lastName,
+      'admission_number': admissionNumber,
+      'national_id': nationalId,
+      'gender': gender,
+      'address': address,
+      'email': email,
+      'date_of_birth': DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(
+        dateOfBirth.toUtc(),
+      ),
+      'campus': campus,
+      'profile_url': profileUrl,
+      'password': password,
+      'active': active,
       'vibe_points': vibePoints,
       'point_transactions': pointTransactions,
       'date_created': DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'")

@@ -1,28 +1,27 @@
+import 'package:academia/controllers/user_controller.dart';
 import 'package:academia/models/models.dart';
+import 'package:academia/models/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:dartz/dartz.dart';
 
 class RewardController extends GetxController {
-  late User _user;
   RxInt vibePoints = 0.obs;
   final RxList<Reward> allPoints = <Reward>[].obs;
+  final RewardsService service = RewardsService();
+
+  final UserController _userController =
+      Get.find<UserController>(); // Allow data sync
 
   @override
   void onInit() {
     super.onInit();
-    UserModelHelper().queryAll().then((value) {
-      if (value.isNotEmpty) {
-        _user = User.fromJson(value.first);
-        vibePoints.value = _user.vibePoints;
-        return;
-      } else {
-        vibePoints.value = 0;
-      }
-    });
+    if (_userController.isLoggedIn.value) {
+      _awardPointsForDailyLaunch();
+    }
     debugPrint("[+] Rewards Loaded!");
-    _awardPointsForDailyLaunch().then((value) {});
   }
 
   // Function to award daily app launch
@@ -46,36 +45,63 @@ class RewardController extends GetxController {
   Future<void> awardPoints(int points, String reason) async {
     final newReward = Reward(
       id: null,
-      studentId: _user.id!,
+      studentId: _userController.user.value!.id!,
       points: points,
       reason: reason,
       awardedAt: DateTime.now(),
     );
-    await RewardModelHelper().create(newReward.toJson());
 
-    // TODO make api call to store rewards
-    allPoints.add(newReward);
-    vibePoints.value += newReward.points;
-    _user.vibePoints += newReward.points;
+    final res = await service.award(newReward);
+    res.fold((l) {
+      debugPrint(l);
+    }, (r) {
+      RewardModelHelper().create(r.toJson()).then((value) {});
+      allPoints.add(r);
+      vibePoints.value += newReward.points;
+      _userController.user.value!.vibePoints += newReward.points;
 
-    HapticFeedback.mediumImpact().then((value) {
-      Get.rawSnackbar(
-        messageText: const Text(
-          "Daily app launch reward",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.white,
+      HapticFeedback.mediumImpact().then((value) {
+        Get.rawSnackbar(
+          messageText: Text(
+            reason,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.white,
+            ),
           ),
-        ),
-        duration: const Duration(seconds: 2),
-        isDismissible: true,
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green[400]!,
-        icon: const Icon(Ionicons.balloon_outline, color: Colors.white),
-      );
+          duration: const Duration(seconds: 2),
+          isDismissible: true,
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.green[400]!,
+          icon: const Icon(Ionicons.balloon_outline, color: Colors.white),
+        );
+      });
     });
+  }
 
-    // Store the user
-    UserModelHelper().update(_user.toJson());
+  // Returns a list of the current leaderboard
+  Future<Either<String, List<User>>> fetchLeaderBoard() async {
+    return await service.fetchLeaderBoard();
+  }
+
+  Future<Either<String, List<Reward>>> fetchCurrentUserRewards() async {
+    return await service.fetchUserRewards(_userController.user.value!.id!);
+  }
+
+  Future<Either<String, List<Reward>>> loadRewards() async {
+    final data = await RewardModelHelper().queryAll();
+
+    if (data.isEmpty) {
+      final result = await fetchCurrentUserRewards();
+      return result.fold((l) => left(l), (r) async {
+        r.map((e) async {
+          await UserModelHelper().truncate();
+          await UserModelHelper().create(e.toJson());
+        });
+        return right(r);
+      });
+    }
+    final rewards = data.map((e) => Reward.fromJson(e)).toList();
+    return right(rewards);
   }
 }

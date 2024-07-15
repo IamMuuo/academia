@@ -33,8 +33,14 @@ class _ToolCardState extends State<ToolCard> {
           _isLoading = false;
         });
       },
-      child: Card(
-        elevation: 4.0,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Theme.of(context).colorScheme.shadow,
+          ),
+          borderRadius: BorderRadius.circular(4),
+          color: Theme.of(context).colorScheme.background,
+        ),
         child: Column(
           children: [
             ListTile(
@@ -45,11 +51,7 @@ class _ToolCardState extends State<ToolCard> {
             SizedBox(
               height: 200.0,
               child: _isLoading
-                  ? LoadingAnimationWidget.flickr(
-                      leftDotColor: Theme.of(context).primaryColor,
-                      rightDotColor: Theme.of(context).primaryColorDark,
-                      size: 80,
-                    )
+                  ? const Text("Loading")
                   : Image.asset(
                       widget.image,
                       fit: BoxFit.fitWidth,

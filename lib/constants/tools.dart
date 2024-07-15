@@ -8,7 +8,7 @@ final List<Map<String, dynamic>> allTools = [
   //   "action": "Show exam timetable",
   //   "image": "assets/images/exam_timetable.png",
   //   "ontap": () {
-  //     Get.to(const ExamTimeTablePage());
+  //     // Get.to(const ExamTimeTablePage());
   //   },
   //   "description":
   //       "Exams around the corner? Don't panic we've got you covered with the timetable",
@@ -21,6 +21,17 @@ final List<Map<String, dynamic>> allTools = [
     "ontap": () {},
     "description": "Wanna calculate your GPA? try it here"
   },
+  {
+    "id": 2,
+    "name": "Fees statements",
+    "action": "Preview my fees statements",
+    "image": "assets/images/coin.png",
+    "ontap": () {
+      Get.to(const FeesPage());
+    },
+    "description": "Having trouble tracking your finaces? We're here for you"
+  },
+
   // {
   //   "id": 2,
   //   "name": "Elearning",
@@ -152,7 +163,7 @@ final List<Map<String, dynamic>> allTools = [
     "action": "Manage your tasks",
     "image": "assets/images/tasks_manager.png",
     "ontap": () {
-      Get.to(const TodoPage());
+      Get.to(const TodoHomeScreen());
     },
     "description":
         "Having trouble keeping track of your Assignments? We've got you covered",

@@ -8,138 +8,69 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final settingsController = Get.find<SettingsController>();
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Settings"),
-        ),
-        body: SafeArea(
-          minimum: const EdgeInsets.symmetric(horizontal: 12),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  "Personal",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                  textAlign: TextAlign.left,
-                ),
-                const Text(
-                  "Change your personal settings",
-                ),
-                SettingsCard(
-                  items: [
-                    ListTile(
-                      title: const Text("Show my profile picture"),
-                      trailing: Switch(value: false, onChanged: (value) {}),
-                    ),
-                    ListTile(
-                      title: const Text("Wish me happy bithday"),
-                      trailing: Switch(value: false, onChanged: (value) {}),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 22),
-                Text(
-                  "Academic Data",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                  textAlign: TextAlign.left,
-                ),
-                const Text(
-                  "Set some rules on your academic data",
-                ),
-                SettingsCard(
-                  items: [
-                    ListTile(
-                      title: const Text("Lock my student audit"),
-                      trailing: Switch(value: false, onChanged: (value) {}),
-                    ),
-                    ListTile(
-                      title: const Text("Lock my transcript"),
-                      trailing: Switch(value: false, onChanged: (value) {}),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 22),
-                Text(
-                  "Finances",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                  textAlign: TextAlign.left,
-                ),
-                const Text(
-                  "Change your experiences on financal data",
-                ),
-                SettingsCard(
-                  items: [
-                    ListTile(
-                      title: const Text("Lock my financial data"),
-                      trailing: Switch(value: false, onChanged: (value) {}),
-                    ),
-                    ListTile(
-                      title:
-                          const Text("Notify me monthly on financial balances"),
-                      trailing: Switch(value: false, onChanged: (value) {}),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 22),
-                Text(
-                  "Reminders",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                  textAlign: TextAlign.left,
-                ),
-                const Text(
-                  "Set your reminders so that you dont miss events",
-                ),
-                SettingsCard(
-                  items: [
-                    ListTile(
-                      title: const Text("Remind me of classes"),
-                      trailing: Switch(value: false, onChanged: (value) {}),
-                    ),
-                    ListTile(
-                      title: const Text("Remind me on todos"),
-                      trailing: Switch(value: false, onChanged: (value) {}),
-                    ),
-                    ListTile(
-                      title: const Text("Notify me on school events"),
-                      trailing: Switch(value: false, onChanged: (value) {}),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 22),
-                Text(
-                  "Updates",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                  textAlign: TextAlign.left,
-                ),
-                const Text(
-                  "Be the first to recieve news about our new features",
-                ),
-                SettingsCard(
-                  items: [
-                    ListTile(
-                      title: const Text("Push Notifications"),
-                      trailing: Switch(value: false, onChanged: (value) {}),
-                    ),
-                    ListTile(
-                      title: const Text("Show me on homescreen"),
-                      trailing: Switch(value: false, onChanged: (value) {}),
-                    ),
-                  ],
-                )
-              ],
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            expandedHeight: 250,
+            flexibleSpace: const FlexibleSpaceBar(
+              title: Text(
+                "Settings",
+              ),
             ),
+            pinned: true,
+            floating: true,
           ),
-        ));
+          SliverSafeArea(
+            minimum: const EdgeInsets.all(12),
+            sliver: SliverFillRemaining(
+              child: ListView(
+                children: [
+                  Text(
+                    "Personal Settings",
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const Divider(),
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: const Text("Show profile picture"),
+                    trailing: Switch(value: true, onChanged: (value) {}),
+                  ),
+                  const SizedBox(height: 2),
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: const Text("Show fees statistics"),
+                    trailing: Switch(value: true, onChanged: (value) {}),
+                  ),
+                  const SizedBox(height: 22),
+                  Text(
+                    "Student Performance",
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const Divider(),
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: const Text("Hide student audit"),
+                    trailing: Switch(value: true, onChanged: (value) {}),
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: const Text("Hide student transcript"),
+                    trailing: Switch(value: true, onChanged: (value) {}),
+                  ),
+                  const SizedBox(height: 2),
+                  FilledButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Ionicons.log_out),
+                    label: const Text("Logout"),
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
