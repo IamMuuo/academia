@@ -145,5 +145,16 @@ final List<Map<String, dynamic>> allTools = [
     },
     "description":
         "Having trouble keeping track of your Assignments? We've got you covered",
+  },
+  {
+    "id": 10,
+    "name": "Ask Me",
+    "action": "Turn your notes into quiz questions!",
+    "image": "assets/images/tasks_manager.png",
+    "ontap": () {
+      //Get.to(const TodoHomeScreen());
+    },
+    "description": "Need help studying? Don't worry, we've got your back. Our personalized AI model generates study questions from your class notes, articles, PDFs, and more to help you keep your grades up."
+
   }
 ];
