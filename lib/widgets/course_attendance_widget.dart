@@ -30,17 +30,17 @@ class CourseAttendanceCard extends StatelessWidget {
         lineWidth: 20,
         progressColor: Theme.of(context).primaryColor,
         circularStrokeCap: CircularStrokeCap.round,
-        center: Text(
-          "$percent%",
-          style: h6,
-        ),
-        footer: Text(
-          course,
-          style: h6.copyWith(
-            fontSize: 10,
-          ),
-          overflow: TextOverflow.ellipsis,
-        ),
+        // center: Text(
+        //   "$percent%",
+        //   style: h6,
+        // ),
+        // footer: Text(
+        //   course,
+        //   style: h6.copyWith(
+        //     fontSize: 10,
+        //   ),
+        //   overflow: TextOverflow.ellipsis,
+        // ),
       ),
     );
   }
