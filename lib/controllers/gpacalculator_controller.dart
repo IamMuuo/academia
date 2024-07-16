@@ -63,8 +63,7 @@ class GPACalculatorController extends GetxController {
     double totalPoints = 0;
     double totalCreditHours = 0;
     for (var course in _courses) {
-      totalPoints +=
-          getGradePoints(course.grade) * (course.creditHours);
+      totalPoints += getGradePoints(course.grade) * (course.creditHours);
       totalCreditHours += course.creditHours;
     }
     return (totalPoints / totalCreditHours).toPrecision(2);

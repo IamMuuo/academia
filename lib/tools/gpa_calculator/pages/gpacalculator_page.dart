@@ -377,8 +377,9 @@ class GpaCalculator extends StatelessWidget {
 
   void loadRegisteredUnits() {
     unitController.registeredCoursesList.clear();
-    final registedCourses = unitController.registeredCoursesList;
-    for (final course in registedCourses) {
+    final registeredCourses = unitController.registeredCoursesList;
+    debugPrint("Courses: $registeredCourses");
+    for (final course in registeredCourses) {
       final period = course.period.split('-');
       final startPeriod = period[0].trim().split(':');
       final endPeriod = period[1].trim().split(':');
