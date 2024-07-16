@@ -1,5 +1,5 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/tools/gpa_calculator/pages/gpacalculator_controller.dart';
+import 'package:academia/controllers/gpacalculator_controller.dart';
 import 'package:get/get.dart';
 
 class GpaCalculator extends StatelessWidget {
