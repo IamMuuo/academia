@@ -18,7 +18,9 @@ final List<Map<String, dynamic>> allTools = [
     "name": "GPA Calculator",
     "action": "Calculate GPA",
     "image": "assets/images/calculator.png",
-    "ontap": () {},
+    "ontap": () {
+      Get.to(GpaCalculator());
+    },
     "description": "Wanna calculate your GPA? try it here"
   },
   {
