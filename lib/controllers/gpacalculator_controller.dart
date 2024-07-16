@@ -13,11 +13,8 @@ class GPACalculatorController extends GetxController {
   List<Course> get registeredCoursesList => _registeredCourses;
   double get gpa => _calculateGPA();
 
-  @override
-  void onInit() {
-    super.onInit();
-    var courseController = Get.find<CoursesController>();
-    _registeredCourses = courseController.courses;
+  set registeredCourses(List<Course> courses) {
+    _registeredCourses = courses.obs;
   }
 
   void addCourse(String name, String creditHours, String grade) {

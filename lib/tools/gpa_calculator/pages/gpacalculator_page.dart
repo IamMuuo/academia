@@ -376,7 +376,9 @@ class GpaCalculator extends StatelessWidget {
   }
 
   void loadRegisteredUnits() {
-    unitController.registeredCoursesList.clear();
+    unitController.courseList.clear();
+    var courseController = Get.find<CoursesController>();
+    unitController.registeredCourses = courseController.courses;
     final registeredCourses = unitController.registeredCoursesList;
     debugPrint("Courses: $registeredCourses");
     for (final course in registeredCourses) {
