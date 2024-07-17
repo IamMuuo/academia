@@ -68,6 +68,31 @@ class _CoursesPageState extends State<CoursesPage> {
                 },
                 icon: const Icon(Ionicons.information_circle_outline),
               ),
+              IconButton(
+                  onPressed: () async {
+                    final result = await coursesController.fetchUserCourses();
+                    result.fold(
+                        (l) => showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text("Oops!"),
+                                content: Text(l),
+                                actions: [
+                                  FilledButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Ooh, ok"),
+                                  )
+                                ],
+                              ),
+                            ), (r) {
+                      setState(
+                        () {},
+                      );
+                    });
+                  },
+                  icon: Icon(Ionicons.refresh)),
             ],
           ),
           SliverPadding(
