@@ -66,7 +66,7 @@ class GPACalculatorController extends GetxController {
     return (totalPoints / totalCreditHours).toPrecision(2);
   }
 
-  static double getGradePoints(String grade) {
+  double getGradePoints(String grade) {
     switch (grade) {
       case 'A':
         return 4.0;
@@ -99,7 +99,7 @@ class GPACalculatorController extends GetxController {
     }
   }
 
-  static bool testValidGrade(var grade) {
+  bool testValidGrade(var grade) {
     switch (grade) {
       case 'A':
         return true;
