@@ -1,5 +1,4 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/models/core/course/course_model.dart';
 import 'package:get/get.dart';
 
 class DashBoard extends StatelessWidget {
@@ -142,7 +141,57 @@ class DashBoard extends StatelessWidget {
                   maintainState: true,
                   enableFeedback: true,
                   title: Text(
-                    "Courses Today",
+                    "Courses",
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  children: [
+                    Container(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      padding: const EdgeInsets.all(12),
+                      width: double.infinity,
+                      child: Text("Hi"),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          SliverPadding(
+            padding: const EdgeInsets.all(12),
+            sliver: SliverVisibility(
+              sliver: SliverToBoxAdapter(
+                child: ExpansionTile(
+                  initiallyExpanded: true,
+                  maintainState: true,
+                  enableFeedback: true,
+                  title: Text(
+                    "Todos",
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  children: [
+                    Container(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      padding: const EdgeInsets.all(12),
+                      width: double.infinity,
+                      child: Text("Hi"),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          SliverPadding(
+            padding: const EdgeInsets.all(12),
+            sliver: SliverVisibility(
+              sliver: SliverToBoxAdapter(
+                child: ExpansionTile(
+                  initiallyExpanded: true,
+                  maintainState: true,
+                  enableFeedback: true,
+                  title: Text(
+                    "Tips",
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   children: [
