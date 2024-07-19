@@ -19,11 +19,15 @@ class EventsController extends GetxController {
       currentSemester.value = Semester.fromJson(json.decode(semData));
       return;
     }
-    // fetch the current semester
-    final result = await semesterService.fetchCurrentSemester();
-    result.fold((l) {}, (r) {
-      prefs.setString("semester", json.encode(r.toJson()));
-      currentSemester.value = r;
-    });
+
+    if (semData == null ||
+        currentSemester.value!.endDate.isBefore(DateTime.now())) {
+      // fetch the current semester
+      final result = await semesterService.fetchCurrentSemester();
+      result.fold((l) {}, (r) {
+        prefs.setString("semester", json.encode(r.toJson()));
+        currentSemester.value = r;
+      });
+   }
   }
 }
