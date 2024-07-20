@@ -15,26 +15,18 @@ class DashBoard extends StatelessWidget {
         slivers: [
           SliverAppBar(
             elevation: 0,
-            leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const LeaderBoardPage()));
-              },
-              icon: const Icon(Ionicons.trophy_outline),
-            ),
-            title: const Text("Academia"),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const EventsPage()));
-                },
-                icon: const Icon(Ionicons.time),
-              )
-            ],
             pinned: true,
             floating: false,
             snap: false,
+            expandedHeight: 250,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Container(
+                color: Theme.of(context).colorScheme.secondaryContainer,
+              ),
+              title: const Text(
+                "Life at glance",
+              ),
+            ),
           ),
           // Obx(
           //   () => const SliverVisibility(
