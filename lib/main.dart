@@ -41,7 +41,8 @@ void main() async {
     GetMaterialApp(
       home: const Academia(),
       theme: lightModeTheme,
-      darkTheme: darkModeTheme,
+      debugShowCheckedModeBanner: false,
+      // darkTheme: darkModeTheme,
     ),
   );
 }
