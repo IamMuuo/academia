@@ -94,7 +94,7 @@ class QuizSettings extends StatelessWidget {
                   ),
                   ),
                   child: const Text(
-                    'Start a quiz',
+                    'Start quiz',
                     style: TextStyle(
                       fontSize: 18.0,
                       color: Colors.black,
