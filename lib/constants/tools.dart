@@ -171,12 +171,12 @@ final List<Map<String, dynamic>> allTools = [
   {
     "id": 10,
     "name": "Ask Me",
-    "action": "Turn your notes into quiz questions!",
-    "image": "assets/images/tasks_manager.png",
+    "action": "Ask Me",
+    "image": "assets/images/think.jpeg",
     "ontap": () {
-      //Get.to(const TodoHomeScreen());
+      Get.to(const Quiz());
     },
-    "description": "Need help studying? Don't worry, we've got your back. Our personalized AI model generates study questions from your class notes, articles, PDFs, and more to help you keep your grades up."
+    "description": "Generate quiz questions from your notes and study materials with our AI tool."
 
   }
 ];
