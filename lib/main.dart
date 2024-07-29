@@ -6,13 +6,24 @@ void main() async {
 
   /// Initialize the flutter notifications plugin
   AwesomeNotifications().initialize(
-    'resource://drawable/app_icon',
+    'resource://drawable/academia',
     [
       NotificationChannel(
-        channelKey: "basic_channel",
-        channelName: "Basic Notifications",
-        channelDescription: "All Academia Notification Channel",
+        channelKey: "reminders",
+        channelName: "Academia Reminders",
+        channelDescription: "Academia's reminder notifications",
         importance: NotificationImportance.High,
+        enableLights: true,
+        defaultColor: Colors.blueGrey,
+        playSound: true,
+        enableVibration: true,
+        channelShowBadge: true,
+      ),
+      NotificationChannel(
+        channelKey: "social",
+        channelName: "Academia Social Notifications",
+        channelDescription: "Academia's social notification",
+        importance: NotificationImportance.Max,
         enableLights: true,
         defaultColor: Colors.blueGrey,
         playSound: true,
