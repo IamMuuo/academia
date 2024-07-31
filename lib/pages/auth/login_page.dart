@@ -68,116 +68,121 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         minimum: const EdgeInsets.all(12),
-        child: Form(
-          key: formKey,
-          child: Column(
-            children: [
-              Text(
-                "Lets find you and set up things for you",
-                style: Theme.of(context).textTheme.displaySmall,
-              ),
-              Lottie.asset(
-                "assets/lotties/search.json",
-                height: 200,
-              ),
-              const SizedBox(height: 22),
-              TextFormField(
-                controller: admnoEditingController,
-                maxLength: 7,
-                inputFormatters: [
-                  AdmissionNumberFormatter(),
-                ],
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) {
-                  if (value?.length != 7) {
-                    return "Please enter a valid admission number";
-                  }
-                  return null;
-                },
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  hintText: "xx-xxxx",
-                  label: const Text("Admisson Number"),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
+        child: AutofillGroup(
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                Text(
+                  "Lets find you and set up things for you",
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
-              ),
-              const SizedBox(height: 8),
-              TextFormField(
-                controller: passwordEditingController,
-                obscureText: hidePassword,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) {
-                  if ((value?.length ?? 0) <= 4) {
-                    return "Please enter a valid password";
-                  }
-                  return null;
-                },
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  hintText: "Your secret password",
-                  label: const Text("Password"),
-                  suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          hidePassword = !hidePassword;
-                        });
-                      },
-                      icon: Icon(
-                        hidePassword
-                            ? Ionicons.lock_closed
-                            : Ionicons.lock_open,
-                      )),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
+                Lottie.asset(
+                  "assets/lotties/search.json",
+                  height: 200,
                 ),
-              ),
-              const Spacer(),
-              isLoading
-                  ? Lottie.asset(
-                      "assets/lotties/loading.json",
-                      height: 45,
-                    )
-                  : FilledButton.icon(
-                      onPressed: () async {
-                        if (!formKey.currentState!.validate()) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text("Error"),
-                              content:
-                                  const Text("Please ensure you fill the form"),
-                              actions: [
-                                FilledButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text("Oh ok"),
-                                ),
-                              ],
-                            ),
-                          );
-                          return;
-                        }
-
-                        setState(() {
-                          isLoading = true;
-                        });
-
-                        await login();
-
-                        setState(() {
-                          isLoading = false;
-                        });
-                      },
-                      icon: const Icon(Ionicons.lock_closed),
-                      label: const Text("Login"),
+                const SizedBox(height: 22),
+                TextFormField(
+                  controller: admnoEditingController,
+                  autofillHints: const [AutofillHints.username],
+                  maxLength: 7,
+                  inputFormatters: [
+                    AdmissionNumberFormatter(),
+                  ],
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) {
+                    if (value?.length != 7) {
+                      return "Please enter a valid admission number";
+                    }
+                    return null;
+                  },
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    hintText: "xx-xxxx",
+                    label: const Text("Admisson Number"),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
                     ),
-            ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: passwordEditingController,
+                  obscureText: hidePassword,
+                  autofillHints: const [AutofillHints.password],
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) {
+                    if ((value?.length ?? 0) <= 4) {
+                      return "Please enter Your Student Portal Password";
+                    }
+                    return null;
+                  },
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    hintText: "Your secret password",
+                    label: const Text("Password"),
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            hidePassword = !hidePassword;
+                          });
+                        },
+                        icon: Icon(
+                          hidePassword
+                              ? Ionicons.lock_closed
+                              : Ionicons.lock_open,
+                        )),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                isLoading
+                    ? Lottie.asset(
+                        "assets/lotties/loading.json",
+                        height: 45,
+                      )
+                    : FilledButton.icon(
+                        onPressed: () async {
+                          if (!formKey.currentState!.validate()) {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text("Error"),
+                                content: const Text(
+                                    "Please ensure you fill the form"),
+                                actions: [
+                                  FilledButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Oh ok"),
+                                  ),
+                                ],
+                              ),
+                            );
+                            return;
+                          }
+
+                          setState(() {
+                            isLoading = true;
+                          });
+
+                          await login();
+
+                          setState(() {
+                            isLoading = false;
+                          });
+                        },
+                        icon: const Icon(Ionicons.lock_closed),
+                        label: const Text("Login"),
+                      ),
+              ],
+            ),
           ),
         ),
       ),
