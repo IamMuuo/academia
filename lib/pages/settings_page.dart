@@ -11,6 +11,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final settingsController = Get.find<SettingsController>();
+  final UserController userController = Get.find<UserController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,6 +56,44 @@ class _SettingsPageState extends State<SettingsPage> {
                           );
                         },
                       ),
+                    ),
+                    ListTile(
+                      leading: const Icon(Ionicons.image),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ImageConfigScreen(
+                              title: "Profile Picture Configuration",
+                              onImagePicked: (file) async {
+                                final result =
+                                    await userController.uploadProfilePicture(
+                                  file!,
+                                );
+
+                                result.fold((l) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: const Text("Error"),
+                                      content: Text(l),
+                                    ),
+                                  );
+                                }, (r) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => const AlertDialog(
+                                      title: Text("Error"),
+                                      content: Text(
+                                          "Successfully updated profile picture"),
+                                    ),
+                                  );
+                                });
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                      title: const Text("Change your profile picture"),
                     ),
                     ListTile(
                       leading: const Icon(Ionicons.wallet),

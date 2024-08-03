@@ -37,3 +37,5 @@ export 'package:magnet/magnet.dart';
 export 'package:ionicons/ionicons.dart';
 export 'package:percent_indicator/percent_indicator.dart';
 export 'package:path_provider/path_provider.dart';
+export 'package:image_picker/image_picker.dart';
+export 'package:image_cropper/image_cropper.dart';

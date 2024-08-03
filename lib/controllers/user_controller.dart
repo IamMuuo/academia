@@ -120,6 +120,22 @@ class UserController extends GetxController {
     return res.fold((l) => left(l.toString()), (r) => right(r));
   }
 
+  Future<Either<String, User>> uploadProfilePicture(XFile file) async {
+    final result = await service.uploadProfilePicture(
+      user.value!.id!,
+      await file.readAsBytes(),
+      file.name,
+    );
+
+    return result.fold((l) {
+      return left(l);
+    }, (r) {
+      user.value = r;
+      UserModelHelper().update(r.toMap());
+      return right(user.value!);
+    });
+  }
+
   /// Logout a user
   Future<void> logout() async {
     try {
