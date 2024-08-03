@@ -13,12 +13,16 @@ class SettingsController extends GetxController {
 
     settings.value = SettingsHelper().getSettings();
     debugPrint("[+] Settings Loaded!");
+
+    ever(settings, (value) {
+      saveSettings(value);
+    });
   }
 
   /// Saves the current settings
-  void saveSettings(Settings settings) {
+  void saveSettings(Settings settings) async {
     this.settings.value = settings;
-    SettingsHelper().saveSettings(settings);
+    await SettingsHelper().saveSettings(settings);
   }
 
   Future<void> _deleteDatabase() async {
