@@ -82,7 +82,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   showDialog(
                                     context: context,
                                     builder: (context) => const AlertDialog(
-                                      title: Text("Error"),
+                                      title: Text("Success"),
                                       content: Text(
                                           "Successfully updated profile picture"),
                                     ),

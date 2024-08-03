@@ -29,10 +29,10 @@ class UserController extends GetxController {
 
       data.fold((l) {
         Get.rawSnackbar(
-          messageText: const Text(
-            "Failed login",
+          messageText: Text(
+            l,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
             ),
           ),
@@ -130,8 +130,9 @@ class UserController extends GetxController {
     return result.fold((l) {
       return left(l);
     }, (r) {
+      r.password = user.value!.password;
       user.value = r;
-      UserModelHelper().update(r.toMap());
+      UserModelHelper().update(user.value!.toMap());
       return right(user.value!);
     });
   }
