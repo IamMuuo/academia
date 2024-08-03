@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../models/models.dart';
+import '../widgets/widgets.dart';
 
 class QuizSettings extends StatelessWidget {
   QuizSettings({super.key});
@@ -40,6 +41,36 @@ class QuizSettings extends StatelessWidget {
       question: 'Who wrote "To Kill a Mockingbird"?',
       choices: ['Harper Lee', 'J.K. Rowling', 'Ernest Hemingway', 'Mark Twain'],
       correctAnswer: 'Harper Lee',
+    ),
+    Question(
+      id: '6',
+      question: 'Which element has the chemical symbol "Au"?',
+      choices: ['Silver', 'Gold', 'Iron', 'Copper'],
+      correctAnswer: 'Gold',
+    ),
+    Question(
+      id: '7',
+      question: 'What is the largest ocean on Earth?',
+      choices: ['Atlantic Ocean', 'Indian Ocean', 'Arctic Ocean', 'Pacific Ocean'],
+      correctAnswer: 'Pacific Ocean',
+    ),
+    Question(
+      id: '8',
+      question: 'Who painted the Mona Lisa?',
+      choices: ['Vincent van Gogh', 'Leonardo da Vinci', 'Pablo Picasso', 'Claude Monet'],
+      correctAnswer: 'Leonardo da Vinci',
+    ),
+    Question(
+      id: '9',
+      question: 'What is the smallest prime number?',
+      choices: ['0', '1', '2', '3'],
+      correctAnswer: '2',
+    ),
+    Question(
+      id: '10',
+      question: 'Which planet is known as the Red Planet?',
+      choices: ['Venus', 'Mars', 'Mercury', 'Neptune'],
+      correctAnswer: 'Mars',
     ),
   ];
 
@@ -89,9 +120,9 @@ class QuizSettings extends StatelessWidget {
             const SizedBox(height: 20.0),
             Row(
               children: [
-                _buildChoiceChip('Multiple choice'),
+                ChoiceWidget(label: 'Multiple choice'),
                 const SizedBox(width: 10),
-                _buildChoiceChip('True/False'),
+                ChoiceWidget(label: 'True/False'),
               ],
             ),
             const SizedBox(height: 40.0),
@@ -103,7 +134,7 @@ class QuizSettings extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20.0),
-            _buildTimerOptions(),
+            TimerOptions(),
             const SizedBox(height: 20.0),
             Expanded(
               child: Align(
@@ -135,55 +166,6 @@ class QuizSettings extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildChoiceChip(String label) {
-    return Obx(() => ChoiceChip(
-          label: Text(label),
-          selected: settingsController.questionType.value == label,
-          onSelected: (bool selected) {
-            settingsController.setQuestionType(label);
-          },
-          selectedColor: Colors.pink[100],
-          backgroundColor: Colors.grey[100],
-        ));
-  }
-
-  Widget _buildTimerOptions() {
-    return Column(
-      children: List.generate(5, (index) {
-        int minute = index + 1;
-        return GestureDetector(
-          onTap: () {
-            settingsController.setSelectedTimer(minute);
-          },
-          child: Obx(
-            () => Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(15.0),
-              margin: const EdgeInsets.symmetric(vertical: 5.0),
-              decoration: BoxDecoration(
-                color: settingsController.selectedTimer.value == minute
-                    ? Colors.pink[50]
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Center(
-                child: Text(
-                  '$minute minute',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: settingsController.selectedTimer.value == minute
-                        ? Colors.black
-                        : Colors.grey,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      }),
     );
   }
 }
