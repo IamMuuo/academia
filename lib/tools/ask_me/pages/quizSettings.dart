@@ -1,23 +1,47 @@
+import 'package:academia/tools/ask_me/controllers/quizSettings_controller.dart';
+import 'package:academia/tools/ask_me/pages/questionScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class QuizSettingsController extends GetxController {
-  var questionType = 'Multiple choice'.obs;
-  var selectedTimer = 2.obs;
-
-  void setQuestionType(String type) {
-    questionType.value = type;
-  }
-
-  void setSelectedTimer(int timer) {
-    selectedTimer.value = timer;
-  }
-}
+import '../models/models.dart';
 
 class QuizSettings extends StatelessWidget {
   QuizSettings({super.key});
 
   final QuizSettingsController settingsController = Get.put(QuizSettingsController());
+  
+  List<Question> questions = [
+    Question(
+      id: '1',
+      question: 'What is the capital of France?',
+      choices: ['Berlin', 'Madrid', 'Paris', 'Rome'],
+      correctAnswer: 'Paris',
+    ),
+    Question(
+      id: '2',
+      question: 'What is the largest planet in our solar system?',
+      choices: ['Earth', 'Jupiter', 'Mars', 'Saturn'],
+      correctAnswer: 'Jupiter',
+    ),
+    Question(
+      id: '3',
+      question: 'What is the chemical symbol for water?',
+      choices: ['H2O', 'O2', 'CO2', 'NaCl'],
+      correctAnswer: 'H2O',
+    ),
+    Question(
+      id: '4',
+      question: 'What is the hardest natural substance on Earth?',
+      choices: ['Gold', 'Iron', 'Diamond', 'Platinum'],
+      correctAnswer: 'Diamond',
+    ),
+    Question(
+      id: '5',
+      question: 'Who wrote "To Kill a Mockingbird"?',
+      choices: ['Harper Lee', 'J.K. Rowling', 'Ernest Hemingway', 'Mark Twain'],
+      correctAnswer: 'Harper Lee',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -81,25 +105,31 @@ class QuizSettings extends StatelessWidget {
             const SizedBox(height: 20.0),
             _buildTimerOptions(),
             const SizedBox(height: 20.0),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  //Later
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
-                  backgroundColor: Colors.lightBlue[100],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  ),
-                  child: const Text(
-                    'Start quiz',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.black,
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                    context, 
+                      MaterialPageRoute(builder: (context) => QuestionScreen(questions: questions,))
+                    );
+                   }, 
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
+                    backgroundColor: Colors.lightBlue[100],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
                     ),
-                  ),
+                    ),
+                    child: const Text(
+                      'Start quiz',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.black,
+                      ),
+                    ),
+                ),
               ),
             ),
           ],
