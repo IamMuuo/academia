@@ -13,34 +13,48 @@ class _QuestionScreenState extends State<QuestionScreen> {
   int currentIndex = 0;
   int? selectedOptionIndex;
   bool isAnswered = false;
+  int progressvalue = 1;
+  String? correctAnswer; 
+  bool isNextButton = false;
 
   void _submitAnswer() {
     if (selectedOptionIndex == null) return;
 
     setState(() {
       isAnswered = true;
+      correctAnswer = widget.questions[currentIndex].correctAnswer;
+      isNextButton = true;
     });
 
-    Future.delayed(const Duration(seconds: 1), () {
-      setState(() {
+  }
+
+  void _nextQuestion() {
+    setState(() {
+      if (currentIndex < widget.questions.length - 1) {
         currentIndex++;
         selectedOptionIndex = null;
         isAnswered = false;
-      });
-    }); 
+        progressvalue++;
+        correctAnswer = null;
+        isNextButton = false;
+      }
+    });
   }
 
-  //Navigating to next question after a delay
-  
   @override
   Widget build(BuildContext context) {
     if (currentIndex >= widget.questions.length) {
       return const Scaffold(
-        body: Center(child: Text('Quiz Completed!'),),
+        body: Center(
+          child: Text('Quiz Completed!'),
+        ),
       );
     }
 
+
     Question currentQuestion = widget.questions[currentIndex];
+
+ 
 
     return Scaffold(
       body: Column(
@@ -62,28 +76,27 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         "${currentIndex + 1} of 10",
                         style: const TextStyle(fontSize: 18),
                       ),
-                      //const Spacer(),
                       const Text(
                         "01:40",
-                        style:  TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 18),
                       ),
                     ],
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
                   child: LinearProgressIndicator(
-                    value: 0.1,
+                    value: progressvalue / 10,
                     minHeight: 10,
-                    backgroundColor: Color(0xFF006399),
-                    valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF934171)),
+                    backgroundColor: const Color(0xFF006399),
+                    valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF934171)),
                   ),
                 ),
               ],
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -104,7 +117,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(30),
+                  padding: const EdgeInsets.all(20),
                   margin: const EdgeInsets.symmetric(horizontal: 16.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -123,33 +136,75 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     children: [
                       Text(
                         currentQuestion.question,
-                        style: const TextStyle(fontSize: 20),
+                        style: const TextStyle(fontSize: 18),
                       ),
                       const SizedBox(height: 20),
                       ...List.generate(currentQuestion.choices.length, (index) {
-                        return ListTile(
-                          title: Text(currentQuestion.choices[index]),
-                          leading: Radio<int>(
-                            value: index,
-                            groupValue: selectedOptionIndex,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedOptionIndex = value;
-                              });
-                            },
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedOptionIndex = index;
+                            });
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 6.0),
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              color: selectedOptionIndex == index
+                                  ? Colors.blue.shade100
+                                  : Colors.white,
+                              border: Border.all(
+                                color: Colors.grey,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              children: [
+                                Radio<int>(
+                                  value: index,
+                                  groupValue: selectedOptionIndex,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedOptionIndex = value;
+                                    });
+                                  },
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    currentQuestion.choices[index],
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                ),
+                                if (isAnswered)
+                                  Icon(
+                                    currentQuestion.choices[index] == currentQuestion.correctAnswer
+                                        ? Icons.check
+                                        : Icons.close,
+                                    color: currentQuestion.choices[index] == currentQuestion.correctAnswer
+                                        ? Colors.green
+                                        : Colors.red,
+                                  ),
+                                  
+                              ],
+                            ),
                           ),
-                          trailing: isAnswered
-                              ? Icon(
-                                  index == currentQuestion.correctAnswer
-                                      ? Icons.check
-                                      : Icons.close,
-                                  color: index == currentQuestion.correctAnswer
-                                      ? Colors.green
-                                      : Colors.red,
-                                )
-                              : null,
                         );
                       }),
+                      if (isAnswered) 
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Correct Answer:\n'
+                                '$correctAnswer',
+                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        )
+                      
                     ],
                   ),
                 ),
@@ -165,8 +220,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: ElevatedButton(
-                    onPressed: _submitAnswer,
-                    child: const Text("Submit"),
+                    onPressed: isNextButton ? _nextQuestion: _submitAnswer,
+                    child: Text(isNextButton ? "Next" :"Submit"),
                   ),
                 ),
               ),
