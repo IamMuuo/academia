@@ -1,9 +1,10 @@
+import 'package:academia/tools/ask_me/pages/scoreSection.dart';
 import 'package:flutter/material.dart';
 import '../models/models.dart';
 
 class QuestionScreen extends StatefulWidget {
   final List<Question> questions;
-  const QuestionScreen({super.key, required this.questions,});
+  const QuestionScreen({super.key, required this.questions});
 
   @override
   State<QuestionScreen> createState() => _QuestionScreenState();
@@ -14,7 +15,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   int? selectedOptionIndex;
   bool isAnswered = false;
   int progressvalue = 1;
-  String? correctAnswer; 
+  String? correctAnswer;
   bool isNextButton = false;
 
   void _submitAnswer() {
@@ -25,7 +26,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
       correctAnswer = widget.questions[currentIndex].correctAnswer;
       isNextButton = true;
     });
-
   }
 
   void _nextQuestion() {
@@ -37,6 +37,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
         progressvalue++;
         correctAnswer = null;
         isNextButton = false;
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const ScoreSection()),
+        );
       }
     });
   }
@@ -44,17 +49,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
   @override
   Widget build(BuildContext context) {
     if (currentIndex >= widget.questions.length) {
-      return const Scaffold(
-        body: Center(
-          child: Text('Quiz Completed!'),
-        ),
-      );
+      return const ScoreSection();
     }
 
-
     Question currentQuestion = widget.questions[currentIndex];
-
- 
 
     return Scaffold(
       body: Column(
@@ -73,7 +71,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         icon: const Icon(Icons.arrow_back),
                       ),
                       Text(
-                        "${currentIndex + 1} of 10",
+                        "${currentIndex + 1} of ${widget.questions.length}",
                         style: const TextStyle(fontSize: 18),
                       ),
                       const Text(
@@ -86,7 +84,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: LinearProgressIndicator(
-                    value: progressvalue / 10,
+                    value: progressvalue / widget.questions.length,
                     minHeight: 10,
                     backgroundColor: const Color(0xFF006399),
                     valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF934171)),
@@ -184,13 +182,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                         ? Colors.green
                                         : Colors.red,
                                   ),
-                                  
                               ],
                             ),
                           ),
                         );
                       }),
-                      if (isAnswered) 
+                      if (isAnswered)
                         Padding(
                           padding: const EdgeInsets.only(top: 10.0),
                           child: Row(
@@ -204,7 +201,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
                             ],
                           ),
                         )
-                      
                     ],
                   ),
                 ),
@@ -220,8 +216,22 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: ElevatedButton(
-                    onPressed: isNextButton ? _nextQuestion: _submitAnswer,
-                    child: Text(isNextButton ? "Next" :"Submit"),
+                    onPressed: isNextButton
+                        ? (currentIndex == widget.questions.length - 1 ? () {
+                            setState(() {
+                              isNextButton = false; 
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ScoreSection()),
+                              );
+                            });
+                          } : _nextQuestion)
+                        : _submitAnswer,
+                    child: Text(
+                      isNextButton
+                          ? (currentIndex == widget.questions.length - 1 ? "Score" : "Next")
+                          : "Submit",
+                    ),
                   ),
                 ),
               ),
