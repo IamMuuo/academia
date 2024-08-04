@@ -28,6 +28,6 @@ class EventsController extends GetxController {
         prefs.setString("semester", json.encode(r.toJson()));
         currentSemester.value = r;
       });
-   }
+    }
   }
 }

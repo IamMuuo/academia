@@ -1,6 +1,5 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
-import '../todo.dart';
 
 class TodoController extends GetxController {
   final RxList<Todo> allTodos = <Todo>[].obs;
@@ -11,6 +10,40 @@ class TodoController extends GetxController {
     getAllTodos().then((value) {
       debugPrint("[+] Todos Loaded");
     });
+  }
+
+  List<Todo> filterTodosByDate(String filterOption) {
+    final todos = allTodos;
+    final today = DateTime.now();
+    final tomorrow = DateTime.now().add(const Duration(days: 1));
+    switch (filterOption.toLowerCase().trim()) {
+      case "today":
+        return todos
+            .where((element) =>
+                element.due.day == today.day &&
+                element.due.month == today.month &&
+                element.due.year == today.year)
+            .toList(growable: false);
+
+      case "tomorrow":
+        return todos
+            .where((element) =>
+                element.due.day == tomorrow.day &&
+                element.due.month == tomorrow.month &&
+                element.due.year == tomorrow.year)
+            .toList(growable: false);
+
+      case "month":
+        return todos
+            .where((element) =>
+                element.due.day < 31 &&
+                element.due.month == today.month &&
+                element.due.year == today.year)
+            .toList(growable: false);
+
+      default:
+        return todos;
+    }
   }
 
   Future<bool> addTask(Todo t) async {
