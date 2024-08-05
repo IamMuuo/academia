@@ -17,6 +17,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   int progressvalue = 1;
   String? correctAnswer;
   bool isNextButton = false;
+  int score = 0;
 
   void _submitAnswer() {
     if (selectedOptionIndex == null) return;
@@ -24,6 +25,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
     setState(() {
       isAnswered = true;
       correctAnswer = widget.questions[currentIndex].correctAnswer;
+      if (widget.questions[currentIndex].choices[selectedOptionIndex!] == correctAnswer) {
+        score++;
+      }
       isNextButton = true;
     });
   }
@@ -40,7 +44,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
       } else {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const ScoreSection()),
+          MaterialPageRoute(builder: (context) => ScoreSection(score: score)),
         );
       }
     });
@@ -49,7 +53,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   @override
   Widget build(BuildContext context) {
     if (currentIndex >= widget.questions.length) {
-      return const ScoreSection();
+      return ScoreSection(score: score,);
     }
 
     Question currentQuestion = widget.questions[currentIndex];
@@ -222,7 +226,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                               isNextButton = false; 
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => const ScoreSection()),
+                                MaterialPageRoute(builder: (context) => ScoreSection(score: score)),
                               );
                             });
                           } : _nextQuestion)
