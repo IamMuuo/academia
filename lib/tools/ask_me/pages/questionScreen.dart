@@ -1,5 +1,9 @@
+import 'dart:async';
+
+import 'package:academia/tools/ask_me/controllers/quizSettings_controller.dart';
 import 'package:academia/tools/ask_me/pages/scoreSection.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../models/models.dart';
 
 class QuestionScreen extends StatefulWidget {
@@ -18,6 +22,38 @@ class _QuestionScreenState extends State<QuestionScreen> {
   String? correctAnswer;
   bool isNextButton = false;
   int score = 0;
+  late Timer _timer;
+  int _totalTime = 0; 
+  int _timeLeft = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final quizSettingsController = Get.find<QuizSettingsController>();
+    _totalTime = quizSettingsController.selectedTimer.value * 60; //converting minutes to seconds
+    _timeLeft = _totalTime;
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_timeLeft > 0) {
+          _timeLeft--;
+        } else {
+          _timer.cancel();
+          Navigator.pushReplacement(
+            context, 
+            MaterialPageRoute(builder: (context) => ScoreSection(score: score)),
+            );
+        }
+      });
+     });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel(); //Cancelling the timer when the widget i disposed
+    super.dispose();
+  }
 
   void _submitAnswer() {
     if (selectedOptionIndex == null) return;
@@ -57,6 +93,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
     }
 
     Question currentQuestion = widget.questions[currentIndex];
+    int minutes = _timeLeft ~/ 60;
+    int seconds = _timeLeft % 60;
 
     return Scaffold(
       body: Column(
@@ -78,9 +116,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         "${currentIndex + 1} of ${widget.questions.length}",
                         style: const TextStyle(fontSize: 18),
                       ),
-                      const Text(
-                        "01:40",
-                        style: TextStyle(fontSize: 18),
+                      Text(
+                        "${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}",
+                        style: const TextStyle(fontSize: 18),
                       ),
                     ],
                   ),
