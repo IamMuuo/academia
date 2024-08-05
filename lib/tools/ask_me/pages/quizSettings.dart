@@ -1,5 +1,6 @@
 import 'package:academia/tools/ask_me/controllers/quizSettings_controller.dart';
 import 'package:academia/tools/ask_me/pages/questionScreen.dart';
+import 'package:academia/tools/tools.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -143,7 +144,8 @@ class QuizSettings extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                     context, 
-                      MaterialPageRoute(builder: (context) => QuestionScreen(questions: questions,))
+                      //MaterialPageRoute(builder: (context) => QuestionScreen(questions: questions,))
+                      MaterialPageRoute(builder: (context) => const ScoreSection())
                     );
                    }, 
                   style: ElevatedButton.styleFrom(
