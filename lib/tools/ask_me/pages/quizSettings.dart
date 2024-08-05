@@ -144,8 +144,7 @@ class QuizSettings extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                     context, 
-                      //MaterialPageRoute(builder: (context) => QuestionScreen(questions: questions,))
-                      MaterialPageRoute(builder: (context) => const ScoreSection())
+                      MaterialPageRoute(builder: (context) => QuestionScreen(questions: questions,))
                     );
                    }, 
                   style: ElevatedButton.styleFrom(
