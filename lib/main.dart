@@ -32,10 +32,10 @@ void main() async {
       )
     ],
   );
-  await Workmanager().initialize(
-    callbackDispatcher,
-    isInDebugMode: true,
-  );
+  // await Workmanager().initialize(
+  //   callbackDispatcher,
+  //   isInDebugMode: true,
+  // );
 
   runApp(
     GetMaterialApp(

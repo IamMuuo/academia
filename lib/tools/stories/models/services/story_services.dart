@@ -33,7 +33,7 @@ class StoryService {
   }
 
   /// Fetch stories
-  Future<Either<String, List<Story>>> fetchDueStories() async {
+  Future<Either<String, List<Story>>> fetchTodaysStories() async {
     try {
       final response = await http.get(
         Uri.parse("${StoryService.storyUrlPrefix}/stories/all"),
