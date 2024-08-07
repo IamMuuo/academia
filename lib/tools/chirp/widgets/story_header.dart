@@ -12,6 +12,7 @@ class PersistentStorySliverDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
+      width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: ListView.separated(
         itemBuilder: (context, index) {

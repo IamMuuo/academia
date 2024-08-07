@@ -69,7 +69,7 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
               delegate: PersistentStorySliverDelegate(
                 child: Container(
                   height: 100,
-                  width: double.infinity,
+                  width: MediaQuery.of(context).size.width,
                   color: Colors.red,
                 ),
               ),

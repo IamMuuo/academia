@@ -165,9 +165,9 @@ class DashBoard extends StatelessWidget {
                   ),
                   children: [
                     Container(
-                      color: Theme.of(context).colorScheme.tertiaryContainer,
+                      height: MediaQuery.of(context).size.height * .25,
+                      width: MediaQuery.of(context).size.width,
                       padding: const EdgeInsets.all(12),
-                      width: double.infinity,
                       child: coursesController.numberOfCoursesToday == 0
                           ? Column(
                               children: [
