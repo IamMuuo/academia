@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/tools/chirp/pages/post_create_page.dart';
 import 'package:get/get.dart';
 import '../widgets/widgets.dart';
 
@@ -64,15 +65,8 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
           SliverVisibility(
             visible: true,
             sliver: SliverPersistentHeader(
-              pinned: true,
               floating: true,
-              delegate: PersistentStorySliverDelegate(
-                child: Container(
-                  height: 100,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.red,
-                ),
-              ),
+              delegate: PersistentStorySliverDelegate(child: const SizedBox()),
             ),
           ),
           SliverFillRemaining(
@@ -86,10 +80,14 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(
-          Ionicons.shapes_outline,
-        ),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const PostCreatePage(),
+            ),
+          );
+        },
+        child: const Icon(Ionicons.add),
       ),
     );
   }
