@@ -17,7 +17,7 @@ final List<Map<String, dynamic>> allTools = [
     "id": 1,
     "name": "GPA Calculator",
     "action": "Calculate GPA",
-    "image": "assets/images/calculator.png",
+    "image": "assets/images/khaby-lame-shrug.png",
     "ontap": () {
       Get.to(GpaCalculator());
     },
@@ -27,7 +27,7 @@ final List<Map<String, dynamic>> allTools = [
     "id": 2,
     "name": "Fees statements",
     "action": "Preview my fees statements",
-    "image": "assets/images/coin.png",
+    "image": "assets/images/doodle-character-holding-money.png",
     "ontap": () {
       Get.to(const FeesPage());
     },
@@ -154,7 +154,7 @@ final List<Map<String, dynamic>> allTools = [
     "id": 9,
     "name": "Task Manager",
     "action": "Manage your tasks",
-    "image": "assets/images/tasks_manager.png",
+    "image": "assets/images/man-with-glass.png",
     "ontap": () {
       Get.to(const TodoHomeScreen());
     },

@@ -1,5 +1,6 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
+import '../widgets/widgets.dart';
 
 class ChirpHomePage extends StatefulWidget {
   const ChirpHomePage({super.key});
@@ -17,7 +18,6 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            title: const Text("Chirp"),
             leading: IconButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -28,15 +28,10 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
             actions: [
               IconButton(
                 onPressed: () {
-                  notificationsController.createInstantNotification(
-                    "Hello there",
-                    "Hello again son",
-                  );
-                  notificationsController.scheduleNotification(
-                    DateTime.now().add(Duration(minutes: 1)),
-                    "Test",
-                    "This is a mF big text notification",
-                    notificationLayout: NotificationLayout.BigText,
+                  Workmanager().registerPeriodicTask(
+                    BackgroundConfig.refresh,
+                    BackgroundConfig.refresh,
+                    inputData: {"user": "hey"},
                   );
                 },
                 icon: const Icon(Ionicons.search_outline),
@@ -49,9 +44,36 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
                 icon: const Icon(Ionicons.flame_outline),
               )
             ],
+            expandedHeight: 250,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  image: const DecorationImage(
+                    image: AssetImage(
+                        "assets/images/sketchbook-passersby-people-working-around-1.png"),
+                  ),
+                ),
+              ),
+              title: const Text("Chirp"),
+            ),
             pinned: true,
             floating: true,
             snap: true,
+          ),
+          SliverVisibility(
+            visible: true,
+            sliver: SliverPersistentHeader(
+              pinned: true,
+              floating: true,
+              delegate: PersistentStorySliverDelegate(
+                child: Container(
+                  height: 100,
+                  width: double.infinity,
+                  color: Colors.red,
+                ),
+              ),
+            ),
           ),
           SliverFillRemaining(
             child: Center(

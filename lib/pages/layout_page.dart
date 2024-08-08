@@ -15,6 +15,8 @@ class _LayoutPageState extends State<LayoutPage> {
     Get.put(StoryController());
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
       body: SafeArea(
         child: IndexedStack(
           index: currentIndex,

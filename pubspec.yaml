@@ -69,6 +69,7 @@ dependencies:
   flutter_heatmap_calendar: ^1.0.5
   image_picker: ^1.1.2
   image_cropper: ^8.0.1
+  workmanager: ^0.5.2
   
 
 

@@ -32,6 +32,10 @@ void main() async {
       )
     ],
   );
+  await Workmanager().initialize(
+    callbackDispatcher,
+    isInDebugMode: true,
+  );
 
   runApp(
     GetMaterialApp(
@@ -61,33 +65,39 @@ class Academia extends StatelessWidget {
     AwesomeNotifications().isNotificationAllowed().then(
       (value) {
         if ((!value) && (Platform.isAndroid || Platform.isIOS)) {
-          showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text("Allow Notifications"),
-                  content: const Text(
-                    "Academia would like to send you notifications about classes and your school work",
-                  ),
-                  actions: [
-                    FilledButton(
-                      onPressed: () {
-                        AwesomeNotifications()
-                            .requestPermissionToSendNotifications()
-                            .then((value) => Navigator.pop(context));
-                      },
-                      child: const Text("Allow"),
+          if (context.mounted) {
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text("Allow Notifications"),
+                    content: const Text(
+                      "Academia would like to send you notifications about classes and your school work",
                     ),
-                    OutlinedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text("No"),
-                    ),
-                  ],
-                );
-              });
+                    actions: [
+                      FilledButton(
+                        onPressed: () {
+                          AwesomeNotifications()
+                              .requestPermissionToSendNotifications()
+                              .then((value) {
+                            if (context.mounted) {
+                              Navigator.pop(context);
+                            }
+                          });
+                        },
+                        child: const Text("Allow"),
+                      ),
+                      OutlinedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text("No"),
+                      ),
+                    ],
+                  );
+                });
+          }
         }
       },
     );
