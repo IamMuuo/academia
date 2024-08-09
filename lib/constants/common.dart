@@ -18,6 +18,14 @@ extension StringExtension on String {
   }
 }
 
+String trimTo99Characters(String text) {
+  if (text.length <= 99) {
+    return text;
+  } else {
+    return '${text.substring(0, 96)}...';
+  }
+}
+
 // Returns the day percent gone
 double dayPercentGone() {
   DateTime now = DateTime.now();
