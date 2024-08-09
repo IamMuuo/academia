@@ -187,7 +187,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             builder: (context) => AlertDialog(
                               title: const Text("Confirmation"),
                               content: const Text(
-                                "Are you sure you want to logout? Doing this will result to  data loss!",
+                                "Are you sure you want to logout? Doing this will result to  data loss! and will also terminate application",
                               ),
                               actions: [
                                 OutlinedButton(
@@ -199,8 +199,6 @@ class _SettingsPageState extends State<SettingsPage> {
                                 FilledButton(
                                   onPressed: () async {
                                     await settingsController.logout();
-                                    if (context.mounted) Navigator.pop(context);
-
                                     if (context.mounted) {
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
@@ -209,6 +207,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                         ),
                                       );
                                     }
+
+                                    if (context.mounted) Navigator.pop(context);
+                                    exit(0);
                                   },
                                   child: const Text("Yes leave"),
                                 )

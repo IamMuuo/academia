@@ -1,3 +1,4 @@
+import 'package:academia/controllers/controllers.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:academia/models/models.dart';
@@ -25,12 +26,13 @@ class SettingsController extends GetxController {
     await SettingsHelper().saveSettings(settings);
   }
 
-  Future<void> _deleteDatabase() async {
-    await DatabaseHelper().deleteDataBase();
+  Future<void> _truncateDatabase() async {
+    await DatabaseHelper().truncateDataBase();
   }
 
   Future<void> logout() async {
-    await _deleteDatabase();
-    Get.deleteAll(force: true);
+    await _truncateDatabase();
+    final userController = Get.find<UserController>();
+    userController.isLoggedIn.value = false;
   }
 }
