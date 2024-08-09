@@ -137,6 +137,10 @@ class UserController extends GetxController {
     });
   }
 
+  Map<String, String> get authHeaders {
+    return service.getTokenHeaders();
+  }
+
   /// Logout a user
   Future<void> logout() async {
     try {
