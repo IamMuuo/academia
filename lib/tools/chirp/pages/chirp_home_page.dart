@@ -28,13 +28,7 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
             ),
             actions: [
               IconButton(
-                onPressed: () {
-                  Workmanager().registerPeriodicTask(
-                    BackgroundConfig.refresh,
-                    BackgroundConfig.refresh,
-                    inputData: {"user": "hey"},
-                  );
-                },
+                onPressed: () {},
                 icon: const Icon(Ionicons.search_outline),
               ),
               IconButton(
