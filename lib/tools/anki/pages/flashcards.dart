@@ -46,21 +46,11 @@ class TopicFlashCards extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                 ),
-                                // onChanged: (value) {
-                                //   ansCardController.ansCard.value = cardInfo
-                                //       .selection
-                                //       .textInside(cardInfo.text);
-                                // },
                                 onTapOutside: (event) {
                                   ansCardController.ansCard.value = cardInfo
                                       .selection
                                       .textInside(cardInfo.text);
                                 },
-                                // onEditingComplete: () {
-                                //   ansCardController.ansCard.value = cardInfo
-                                //       .selection
-                                //       .textInside(cardInfo.text);
-                                // },
                               ),
                             ),
                             Obx(
