@@ -18,6 +18,31 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
   final NotificationsController notificationsController =
       Get.find<NotificationsController>();
   final controller = Get.put(ChirpController());
+
+  @override
+  void initState() {
+    super.initState();
+    controller.fetchPosts().then((value) {
+      value.fold((l) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text("Error"),
+                content: Text(l),
+                actions: [
+                  FilledButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Okay"))
+                ],
+              );
+            });
+      }, (r) {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,48 +94,52 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
             ),
           ),
           SliverFillRemaining(
-            child: FutureBuilder(
-              future: controller.fetchPosts(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+            child: Obx(
+              () => controller.isLoading.value
+                  ? Column(
                       children: [
                         Lottie.asset("assets/lotties/fetching.json"),
+                        const SizedBox(height: 22),
                         Text(
-                          "Fetching posts from fellow padawans we are.. hangon you must",
-                          style: Theme.of(context).textTheme.headlineSmall,
+                          "Fetching posts",
                           textAlign: TextAlign.center,
-                        )
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
                       ],
-                    ),
-                  );
-                }
-                return snapshot.data!.fold((l) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        l,
-                        style: Theme.of(context).textTheme.headlineSmall,
-                        textAlign: TextAlign.center,
-                      )
-                    ],
-                  );
-                }, (r) {
-                  return ListView.separated(
-                      itemBuilder: (context, index) {
-                        final data = r[index];
-                        return PostCard(post: data);
+                    )
+                  : RefreshIndicator(
+                      onRefresh: () async {
+                        await controller.fetchPosts();
                       },
-                      separatorBuilder: (context, index) => Divider(
-                            thickness: 2,
-                            color: Colors.black,
-                          ),
-                      itemCount: r.length);
-                });
-              },
+                      child: controller.posts.isEmpty
+                          ? SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Lottie.asset("assets/lotties/empty.json"),
+                                  Text(
+                                    "Argh snap! We couldn't find posts at the moment. Please try again later",
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall,
+                                  ),
+                                ],
+                              ),
+                            )
+                          : ListView.separated(
+                              itemBuilder: (context, index) {
+                                final data = controller.posts[index];
+                                return PostCard(post: data);
+                              },
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(
+                                child: Divider(
+                                  thickness: 0.2,
+                                ),
+                              ),
+                              itemCount: controller.posts.length,
+                            ),
+                    ),
             ),
           ),
         ],

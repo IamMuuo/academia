@@ -8,6 +8,7 @@ class ChirpController extends GetxController {
   UserController userController = Get.find<UserController>();
   RxList<Post> posts = RxList<Post>();
   RxInt currentPage = 0.obs;
+  RxBool isLoading = false.obs;
 
   @override
   void onInit() {
@@ -15,8 +16,22 @@ class ChirpController extends GetxController {
     debugPrint("Chirp Controller Loaded");
   }
 
-  Future<Either<String, List<Post>>> fetchPosts() async {
-    final result = await _service.fetchPosts(userController.authHeaders);
+  Future<Either<String, List<Post>>> fetchPosts({
+    bool nextPage = false,
+    previousPage = false,
+  }) async {
+    isLoading.value = true;
+
+    int page = 1;
+
+    if (nextPage) {
+      page = currentPage.value;
+    } else if (previousPage && currentPage > 1) {
+      page = currentPage.value -= 1;
+    }
+    final result =
+        await _service.fetchPosts(userController.authHeaders, page: page);
+    isLoading.value = false;
 
     return result.fold((l) {
       return left(l);

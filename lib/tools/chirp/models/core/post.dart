@@ -11,7 +11,7 @@ class Post {
   final bool isDeleted;
   final DateTime createdAt;
   final DateTime modifiedAt;
-  final String link;
+  final String? link;
   final List<PostAttachmentMedia> postAttachmentMedia;
 
   Post({
@@ -25,7 +25,7 @@ class Post {
     required this.isDeleted,
     required this.createdAt,
     required this.modifiedAt,
-    required this.link,
+    this.link,
     required this.postAttachmentMedia,
   });
 
@@ -41,7 +41,7 @@ class Post {
       isDeleted: json['is_deleted'] as bool,
       createdAt: DateTime.parse(json['created_at'] as String),
       modifiedAt: DateTime.parse(json['modified_at'] as String),
-      link: json['link'] as String,
+      link: json['link'] as String?,
       postAttachmentMedia: (json['post_attachment_media'] as List<dynamic>)
           .map((e) => PostAttachmentMedia.fromJson(e as Map<String, dynamic>))
           .toList(),
