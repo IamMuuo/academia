@@ -34,74 +34,59 @@ final List<Map<String, dynamic>> allTools = [
     "description": "Having trouble tracking your finaces? We're here for you"
   },
 
-  // {
-  //   "id": 2,
-  //   "name": "Elearning",
-  //   "image": "assets/images/grade.png",
-  //   "action": "Visit Elearning",
-  //   "ontap": () {
-  //     Platform.isIOS || Platform.isAndroid
-  //         ? Get.to(const WebviewPage(
-  //             title: "Elearning", url: "https://elearning.daystar.ac.ke"))
-  //         : showCustomSnackbar(
-  //             "Missing Feature",
-  //             "Please use a mobile phone to access this service since it isn't supported on desktop",
-  //             icon: Icons.error,
-  //           );
-  //   },
-  //   "description":
-  //       "Psst! Elearning is here for you. Keep track of your assignments and notes!",
-  // },
-  // {
-  //   "id": 3,
-  //   "name": "Fees Statement",
-  //   "action": "Get my fee statement",
-  //   "image": "assets/images/fees.png",
-  //   "ontap": () async {
-  //     // var controller = Get.find<SettingsController>();
-  //     // if (!(controller.settings.value!.showFeeStatistics ?? false)) {
-  //     //   showCustomSnackbar(
-  //     //     "Tool locked",
-  //     //     "Fees functionality is locked in the settings page, please unlock it to view your fees statement",
-  //     //     icon: Icons.lock,
-  //     //   );
-  //     // } else {
-  //     try {
-  //       var statements = await magnet.fetchFeeStatement();
-  //       Get.to(FeesPage(allStatements: statements));
-  //     } catch (e) {
-  //       //   showCustomSnackbar(
-  //       //     "Error",
-  //       //     "Please check your internet connection and try again!",
-  //       //     icon: Icons.network_check,
-  //       //   );
-  //     }
-  //   },
-  //   // },
-  //   "description": "Not sure about finances? We are here for you"
-  // },
-  // {
-  //   "id": 4,
-  //   "name": "Generate Catering Token",
-  //   "action": "Generate Token",
-  //   "image": "assets/images/food.png",
-  //   "ontap": () async {
-  //     try {
-  //       var token = await magnet.fetchCateringToken();
-  //       await Get.defaultDialog(
-  //         title: "Your Token",
-  //         content: Text("Your Token is ${token['message'] ?? ''}"),
-  //       );
-  //     } catch (e) {
-  //       // showCustomSnackbar(
-  //       //   "Error",
-  //       //   "Please check your internet connection and try again!",
-  //       //   icon: Icons.network_check,
-  //       // );
-  //     }
-  //   },
-  // "description": "Hungry? Maybe its time to generate your catering token!"
-  // },
+  {
+    "id": 2,
+    "name": "Elearning",
+    "image": "assets/images/young-man-trying-to-explain-something.png",
+    "action": "Visit Elearning",
+    "ontap": () {
+      Platform.isIOS || Platform.isAndroid
+          ? Get.to(const WebviewPage(
+              title: "Elearning", url: "https://elearning.daystar.ac.ke"))
+          : Get.rawSnackbar(
+              title: "Missing Feature",
+              message:
+                  "Current platform does not support this feature please try it on android",
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM,
+            );
+    },
+    "description":
+        "Psst! Elearning is here for you. Keep track of your assignments and notes!",
+  },
+  {
+    "id": 3,
+    "name": "Generate Catering Token",
+    "action": "Generate Token",
+    "image": "assets/images/food.png",
+    "ontap": () async {
+      var result = await magnet.fetchCateringToken();
+      result.fold((l) {
+        Get.defaultDialog(
+            title: "Error",
+            content: Text(l.toString()),
+            actions: [
+              FilledButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: const Text("Ok"))
+            ]);
+      }, (r) {
+        Get.defaultDialog(
+            title: "Your Token",
+            content: Text("Your Token is ${r['message'] ?? ''}"),
+            actions: [
+              FilledButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: const Text("Ok"))
+            ]);
+      });
+    },
+    "description": "Hungry? Maybe its time to generate your catering token!"
+  },
   // {
   //   "id": 5,
   //   "name": "Student Audit",
