@@ -9,7 +9,7 @@ class TopicFlashCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       floatingActionButton: SizedBox(
         height: MediaQuery.of(context).size.height * 0.17,
         child: Column(
@@ -46,11 +46,21 @@ class TopicFlashCards extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                 ),
-                                onEditingComplete: () {
+                                // onChanged: (value) {
+                                //   ansCardController.ansCard.value = cardInfo
+                                //       .selection
+                                //       .textInside(cardInfo.text);
+                                // },
+                                onTapOutside: (event) {
                                   ansCardController.ansCard.value = cardInfo
                                       .selection
                                       .textInside(cardInfo.text);
                                 },
+                                // onEditingComplete: () {
+                                //   ansCardController.ansCard.value = cardInfo
+                                //       .selection
+                                //       .textInside(cardInfo.text);
+                                // },
                               ),
                             ),
                             Obx(
@@ -73,20 +83,8 @@ class TopicFlashCards extends StatelessWidget {
                             ),
                             Obx(
                               () => ansCardController.ansSwitch.value
-                                  // TextField For Writing An Answer
+                                  // TextField for Showing Highlighted Answer
                                   ? TextField(
-                                      controller: cardAns,
-                                      maxLines: 3,
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        hintText: "Your Answer To be Hidden",
-                                      ),
-                                    )
-                                  // TextField for showing Highlighted Answer
-                                  : TextField(
                                       enabled: false,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
@@ -97,6 +95,18 @@ class TopicFlashCards extends StatelessWidget {
                                                 .ansCard.isEmpty
                                             ? "Your Answer To be Hidden"
                                             : ansCardController.ansCard.value,
+                                      ),
+                                    )
+                                  // TextField For Writing An Answer
+                                  : TextField(
+                                      controller: cardAns,
+                                      maxLines: 3,
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        hintText: "Your Answer To be Hidden",
                                       ),
                                     ),
                             ),
