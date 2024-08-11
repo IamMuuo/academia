@@ -37,9 +37,8 @@ class PostService with ChirpService {
         json.decode(response.body)["error"],
       );
     } catch (e) {
-      rethrow;
       return left(
-        "Encountered an error we did, check your connection you must, ${e.toString()}",
+        "Encountered an error we did, check your connection you must",
       );
     }
   }
