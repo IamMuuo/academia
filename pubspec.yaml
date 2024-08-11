@@ -1,5 +1,5 @@
 name: academia
-description: "Daystar University School portal app."
+description: "Daystar University's Student Assistant."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -87,8 +87,9 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
+  remove_alpha_ios: true 
   image_path: "assets/icons/academia.png"
-  min_sdk_android: 21
+  min_sdk_android: 34
 
 # The following section is specific to Flutter packages.
 flutter:

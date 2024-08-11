@@ -1,6 +1,7 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'widgets/course_card.dart';
 
 class CoursesPage extends StatefulWidget {
   const CoursesPage({super.key});
@@ -70,6 +71,64 @@ class _CoursesPageState extends State<CoursesPage> {
             ],
           ),
           SliverPadding(
+            padding: const EdgeInsets.all(12),
+            sliver: SliverToBoxAdapter(
+              child: SizedBox(
+                height: 80,
+                width: MediaQuery.of(context).size.width,
+                child: FutureBuilder(
+                    future: magnet.fetchUserClassAttendance(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return Center(
+                            child: Text(
+                          "Fetching your courses we are",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ));
+                      }
+
+                      if (snapshot.hasError) {
+                        return Center(
+                            child: Text(
+                          "Failed to fetch course attendance. Check your connection",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ));
+                      }
+
+                      return snapshot.data!.fold((l) {
+                        return const Center(
+                          child: Text(
+                            "Failed to fetch courses. Check your connection",
+                          ),
+                        );
+                      }, (r) {
+                        return ListView.builder(
+                          itemBuilder: (context, index) {
+                            final data = r[index];
+                            return ListTile(
+                              leading: CircleAvatar(
+                                child: Text((index + 1).toString()),
+                              ),
+                              title: Text(data.keys.first),
+                              subtitle: LinearProgressIndicator(
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .primaryContainer,
+                                color: Theme.of(context).colorScheme.primary,
+                                value: data.values.first.toDouble(),
+                              ),
+                            );
+                          },
+                          itemCount: r.length,
+                        );
+                      });
+                    }),
+              ),
+            ),
+          ),
+          SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             sliver: SliverFillRemaining(
               child: coursesController.courses.isEmpty
@@ -78,7 +137,7 @@ class _CoursesPageState extends State<CoursesPage> {
                       children: [
                         Lottie.asset("assets/lotties/empty.json"),
                         Text(
-                          "You have no courses yet. Once you register we will display them here.",
+                          "Sense a mistake, you do? Refresh, you must. Pull to refresh, and clarity you shall find.",
                           style: Theme.of(context).textTheme.headlineSmall,
                           textAlign: TextAlign.center,
                         )
@@ -87,14 +146,7 @@ class _CoursesPageState extends State<CoursesPage> {
                   : ListView.separated(
                       itemBuilder: (context, index) {
                         final course = coursesController.courses[index];
-                        return CourseDetailCard(
-                          courseCode: course.unit,
-                          room: course.room,
-                          time: course.period,
-                          campus: course.campus,
-                          dayOfWeek: course.dayOfWeek,
-                          lecturer: course.lecturer,
-                        );
+                        return CourseCard(course: course);
                       },
                       separatorBuilder: (context, index) {
                         return const SizedBox(

@@ -1,5 +1,4 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/pages/profile_page.dart';
 import 'package:get/get.dart';
 
 class LayoutPage extends StatefulWidget {
@@ -10,7 +9,7 @@ class LayoutPage extends StatefulWidget {
 }
 
 class _LayoutPageState extends State<LayoutPage> {
-  int currentIndex = 0;
+  int currentIndex = 2;
   @override
   Widget build(BuildContext context) {
     Get.put(StoryController());
@@ -21,35 +20,36 @@ class _LayoutPageState extends State<LayoutPage> {
           index: currentIndex,
           children: const [
             DashBoard(),
-            ToolsPage(),
             CoursesPage(),
+            ChirpHomePage(),
+            ToolsPage(),
             ProfilePage(),
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: currentIndex,
-        onTap: (index) => setState(() => currentIndex = index),
-        items: const [
-          BottomNavigationBarItem(
-            activeIcon: Icon(Ionicons.home),
-            icon: Icon(Ionicons.home_outline),
-            label: 'Home',
+      bottomNavigationBar: NavigationBar(
+        elevation: 2,
+        selectedIndex: currentIndex,
+        onDestinationSelected: (index) => setState(() => currentIndex = index),
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Ionicons.pulse_outline),
+            label: 'Stats',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Ionicons.hammer_outline),
-            activeIcon: Icon(Ionicons.hammer),
-            label: 'Tools',
-          ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Ionicons.golf_outline),
-            activeIcon: Icon(Ionicons.golf),
             label: 'Courses',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
+            icon: Icon(Ionicons.logo_wechat),
+            label: 'Chirp',
+          ),
+          NavigationDestination(
+            icon: Icon(Ionicons.hammer_outline),
+            label: 'Tools',
+          ),
+          NavigationDestination(
             icon: Icon(Ionicons.person_outline),
-            activeIcon: Icon(Ionicons.person),
             label: 'Profile',
           ),
         ],

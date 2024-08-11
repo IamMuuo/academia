@@ -77,4 +77,19 @@ class DatabaseHelper {
       await db.execute(value);
     });
   }
+
+  /// Deletes the databse from local storage along with the data it contains
+  Future<void> deleteDataBase() async {
+    String path = join(
+      (await getApplicationDocumentsDirectory()).path,
+      databaseName,
+    );
+
+    if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+      databaseFactoryFfi.deleteDatabase(path);
+      return;
+    }
+
+    databaseFactory.deleteDatabase(path);
+  }
 }

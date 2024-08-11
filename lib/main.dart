@@ -44,6 +44,7 @@ class Academia extends StatelessWidget {
     Get.put(TodoController());
     Get.put(RewardController());
     Get.put(CoursesController());
+    Get.put(EventsController());
 
     // Prompt for notification permission
     AwesomeNotifications().isNotificationAllowed().then(

@@ -1,10 +1,8 @@
 export 'package:academia/tools/exam_timetable/exams_timetable_page.dart';
-export 'package:academia/tools/fees/fees_page.dart';
 export 'package:flutter_pdfview/flutter_pdfview.dart';
 export 'package:academia/widgets/info_card.dart';
 export 'package:cached_network_image/cached_network_image.dart';
 export 'package:academia/constants/tools.dart';
-export 'package:academia/tools/birthday/birthday_page.dart';
 export 'package:academia/widgets/tool_card.dart';
 export 'package:awesome_notifications/awesome_notifications.dart';
 export 'package:academia/tools/todo/todo.dart';

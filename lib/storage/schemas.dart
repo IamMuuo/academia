@@ -109,6 +109,14 @@ const schemas = <String, String>{
       end_date TEXT NOT NULL
     );
   """,
+  "course_topics": """
+    CREATE TABLE IF NOT EXISTS course_topics (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      course TEXT NOT NULL,
+      name TEXT NOT NULL,
+      description TEXT NOT NULL
+    );
+  """,
   // Anki
   // Topic
   "ankiTopics": """
@@ -129,5 +137,5 @@ const schemas = <String, String>{
       answer TEXT NOT NULL,
       FOREIGN KEY(topic_id) REFERENCES ankiTopics(id)
     );
-  """,
+  """
 };

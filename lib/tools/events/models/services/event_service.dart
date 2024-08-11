@@ -3,15 +3,13 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 import '../models.dart';
+import './notifier_service.dart';
 
-class EventsService {
-  // static const String eventUrlPrefix = "http://notifier.erick.serv00.net";
-  static const String eventUrlPrefix = "http://notifier.erick.serv00.net";
-
+class EventsService with NotifierService {
   Future<Either<String, List<Event>>> fetchDueEvents() async {
     try {
-      final response = await http
-          .get(Uri.parse("${EventsService.eventUrlPrefix}/events/due"));
+      final response =
+          await http.get(Uri.parse("$notifierUrlPrefix/events/due"));
 
       if (response.statusCode == 200) {
         final body = json.decode(response.body).cast<Map<String, dynamic>>();
@@ -28,8 +26,8 @@ class EventsService {
 
   Future<Either<String, List<Event>>> fetchAllEvents() async {
     try {
-      final response = await http
-          .get(Uri.parse("${EventsService.eventUrlPrefix}/events/all"));
+      final response =
+          await http.get(Uri.parse("$notifierUrlPrefix/events/all"));
 
       if (response.statusCode == 200) {
         final body = json.decode(response.body).cast<Map<String, dynamic>>();
@@ -46,8 +44,8 @@ class EventsService {
 
   Future<Either<String, List<Event>>> fetchLikedEvents(String userID) async {
     try {
-      final response = await http.get(
-          Uri.parse("${EventsService.eventUrlPrefix}/events/liked-by/$userID"));
+      final response = await http
+          .get(Uri.parse("$notifierUrlPrefix/events/liked-by/$userID"));
 
       if (response.statusCode == 200) {
         final body = json.decode(response.body).cast<Map<String, dynamic>>();
@@ -65,8 +63,8 @@ class EventsService {
   Future<Either<String, bool>> isEventLikedByUser(
       String userID, String eventID) async {
     try {
-      final response = await http.get(Uri.parse(
-          "${EventsService.eventUrlPrefix}/events/is-liked-by/$eventID/$userID"));
+      final response = await http.get(
+          Uri.parse("$notifierUrlPrefix/events/is-liked-by/$eventID/$userID"));
 
       if (response.statusCode == 200) {
         return right(true);
@@ -86,7 +84,7 @@ class EventsService {
   ) async {
     try {
       final response = await http.post(
-          Uri.parse("${EventsService.eventUrlPrefix}/events/like"),
+          Uri.parse("$notifierUrlPrefix/events/like"),
           headers: {"Content-Type": "application/json"},
           body: json.encode(
               {"user": userID, "event": eventID, "attending": attending}));

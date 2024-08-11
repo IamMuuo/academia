@@ -18,7 +18,9 @@ final List<Map<String, dynamic>> allTools = [
     "name": "GPA Calculator",
     "action": "Calculate GPA",
     "image": "assets/images/calculator.png",
-    "ontap": () {},
+    "ontap": () {
+      Get.to(GpaCalculator());
+    },
     "description": "Wanna calculate your GPA? try it here"
   },
   {
@@ -26,7 +28,9 @@ final List<Map<String, dynamic>> allTools = [
     "name": "Fees statements",
     "action": "Preview my fees statements",
     "image": "assets/images/coin.png",
-    "ontap": () {},
+    "ontap": () {
+      Get.to(const FeesPage());
+    },
     "description": "Having trouble tracking your finaces? We're here for you"
   },
 
@@ -146,15 +150,6 @@ final List<Map<String, dynamic>> allTools = [
   //   },
   //   "description": "Need your transcript ASAP? Find it here"
   // },
-  {
-    "id": 7,
-    "name": "Class Attendance",
-    "action": "View class Attendance",
-    "image": "assets/images/girl_sitted.png",
-    "ontap": () {},
-    "description":
-        "Curious to know how many classes you have missed this semester, this might be the tool",
-  },
   {
     "id": 9,
     "name": "Task Manager",

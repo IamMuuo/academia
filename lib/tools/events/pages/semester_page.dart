@@ -1,8 +1,5 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:path/path.dart';
-import '../pages/pages.dart';
 import '../models/models.dart';
 
 class SemesterPage extends StatelessWidget {
