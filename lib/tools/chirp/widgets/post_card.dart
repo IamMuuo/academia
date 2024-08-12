@@ -1,5 +1,4 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class PostCard extends StatelessWidget {
   const PostCard({
@@ -29,13 +28,14 @@ class PostCard extends StatelessWidget {
                   children: [
                     Text(
                       "@${post.username}",
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.w800, color: Colors.grey),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(fontWeight: FontWeight.w800),
                     ),
                     Text(
                       "20 mins ago",
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
                 ),
@@ -43,7 +43,7 @@ class PostCard extends StatelessWidget {
               const Spacer(),
               IconButton(
                 onPressed: () {},
-                icon: const Icon(Ionicons.ellipsis_horizontal_circle_outline),
+                icon: const Icon(Ionicons.ellipsis_vertical),
               ),
             ],
           ),
@@ -62,6 +62,24 @@ class PostCard extends StatelessWidget {
               ),
             ],
           ),
+          Visibility(
+            visible: post.postAttachmentMedia.isNotEmpty,
+            child: SizedBox(
+              height: 200,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  final data = post.postAttachmentMedia[index];
+                  return CachedNetworkImage(
+                    imageUrl: data.image,
+                    height: 300,
+                    width: MediaQuery.of(context).size.width,
+                  );
+                },
+                itemCount: post.postAttachmentMedia.length,
+              ),
+            ),
+          ),
           Row(
             children: [
               IconButton(
@@ -71,24 +89,17 @@ class PostCard extends StatelessWidget {
                     const Icon(
                       Ionicons.arrow_up_circle_outline,
                     ),
-                    const SizedBox(width: 8),
                     Text(
                       post.upvotes.toString(),
-                      style: GoogleFonts.ubuntu(),
                     )
                   ],
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 2),
               IconButton(
                 onPressed: () {},
                 icon: const Icon(Ionicons.arrow_down_circle_outline),
               ),
-              const Spacer(),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Ionicons.arrow_redo_outline),
-              )
             ],
           )
         ],

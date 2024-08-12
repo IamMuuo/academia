@@ -211,7 +211,8 @@ class DashBoard extends StatelessWidget {
                       child: FutureBuilder(
                         future: eventsController.semesterService
                             .fetchSemesterEvent(
-                                eventsController.currentSemester.value!.id),
+                                eventsController.currentSemester.value?.id ??
+                                    ""),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState !=
                               ConnectionState.done) {
