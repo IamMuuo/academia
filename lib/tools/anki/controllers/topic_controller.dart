@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 class TopicController extends GetxController {
   final RxList<AnkiTopic> allTopics = <AnkiTopic>[].obs;
+  final RxList<AnkiTopic> allFavourites = <AnkiTopic>[].obs;
   // TODO getting favourite topics
 
   @override
@@ -12,6 +13,14 @@ class TopicController extends GetxController {
     getAllTopics().then((value) {
       debugPrint("[+] Topics Loaded");
     });
+    getAllFavourites().then((value) {
+      debugPrint("[+] Favourite Topics Loaded");
+    });
+  }
+
+  // returns the number of topics
+  int numTopics() {
+    return allTopics.length;
   }
 
   Future<bool> addTopic(AnkiTopic topic) async {
@@ -45,9 +54,21 @@ class TopicController extends GetxController {
     return value == 0 ? false : true;
   }
 
+  Future<List<AnkiTopic>> getAllFavourites() async {
+    TopicModelHelper().getFavourites().then((values) {
+      allFavourites.clear();
+      values = values.reversed.toList();
+      for (final val in values) {
+        allFavourites.add(AnkiTopic.fromJson(val));
+      }
+    });
+    return allFavourites.reversed.toList();
+  }
+
   Future<List<AnkiTopic>> getAllTopics() async {
     TopicModelHelper().queryAll().then((values) {
       allTopics.clear();
+      values = values.reversed.toList();
       for (final val in values) {
         allTopics.add(AnkiTopic.fromJson(val));
       }

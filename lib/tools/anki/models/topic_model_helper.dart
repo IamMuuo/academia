@@ -45,6 +45,15 @@ class TopicModelHelper implements DatabaseOperations {
         .update('ankiTopics', data, where: 'id = ?', whereArgs: [data['id']]);
   }
 
+  Future<List<Map<String, dynamic>>> getFavourites() async {
+    final db = await DatabaseHelper().database;
+    return await db.query(
+      'ankiTopics',
+      where: 'is_favourite = ?',
+      whereArgs: [1],
+    );
+  }
+
   // make sure to call in the logout function
   @override
   Future<void> truncate() async {
