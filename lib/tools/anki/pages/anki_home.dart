@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/tools/anki/models/models.dart';
 import 'package:academia/tools/anki/widgets/widgets.dart';
 import 'package:academia/tools/anki/controllers/controllers.dart';
 import 'package:get/get.dart';
@@ -10,7 +11,7 @@ class AnkiHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // topic controller
-    TopicController topicController = Get.put(TopicController());
+    final TopicController topicController = Get.put(TopicController());
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -30,7 +31,9 @@ class AnkiHomePage extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const CreateTopicWidget()
+                  CreateTopicWidget(
+                    topicController: topicController,
+                  )
                 ],
               )
             : Column(
@@ -62,45 +65,77 @@ class AnkiHomePage extends StatelessWidget {
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, idx) {
-                          return listStarred[idx];
+                          return StarredTopics(
+                            topic: topicController.allFavourites[idx].name,
+                            desc: topicController.allFavourites[idx].desc,
+                          );
                         },
-                        itemCount: 5,
+                        itemCount: topicController.allFavourites.length,
                       ),
                     ),
                   ),
-                  const Align(
+                  Align(
                     alignment: Alignment.topRight,
                     child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CreateTopicWidget(),
-                    ),
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.53,
-                    decoration: BoxDecoration(
-                      color: lightColorScheme.primaryContainer,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(28),
-                        topRight: Radius.circular(28),
+                      padding: const EdgeInsets.all(8.0),
+                      child: CreateTopicWidget(
+                        topicController: topicController,
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(22.0),
-                      child: GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
+                  ),
+                  // displays topicics
+                  // displayed in a grid view if they are more than five
+                  topicController.allTopics.length <= 5
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.35,
+                              child: Lottie.asset(
+                                "assets/lotties/empty.json",
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Once you have more than five topics, they’ll pop into a cool grid view! Don’t forget to star your favorites for quick access—but heads up, you can only star five at a time. If you add a new one, the oldest star gets bumped! ⭐",
+                                style: Theme.of(context).textTheme.titleSmall,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Container(
+                          height: MediaQuery.of(context).size.height * 0.53,
+                          decoration: BoxDecoration(
+                            color: lightColorScheme.primaryContainer,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(28),
+                              topRight: Radius.circular(28),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(22.0),
+                            child: GridView.builder(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
+                              ),
+                              itemBuilder: (context, idx) {
+                                return GridViewTopic(
+                                  idx: idx,
+                                  topic: topicController.allTopics[idx].name,
+                                  topicDesc:
+                                      topicController.allTopics[idx].desc,
+                                );
+                              },
+                              itemCount: topicController.allTopics.length,
+                              scrollDirection: Axis.vertical,
+                            ),
+                          ),
                         ),
-                        itemBuilder: (context, idx) {
-                          return test_topics[idx];
-                        },
-                        itemCount: test_topics.length,
-                        scrollDirection: Axis.vertical,
-                      ),
-                    ),
-                  ),
                 ],
               ),
       ),
@@ -112,7 +147,10 @@ class AnkiHomePage extends StatelessWidget {
 class CreateTopicWidget extends StatelessWidget {
   const CreateTopicWidget({
     super.key,
+    required this.topicController,
   });
+
+  final TopicController topicController;
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +159,7 @@ class CreateTopicWidget extends StatelessWidget {
         showDialog(
           context: context,
           builder: (context) {
-            final TextEditingController topicController =
+            final TextEditingController titleController =
                 TextEditingController();
             final TextEditingController descController =
                 TextEditingController();
@@ -139,7 +177,7 @@ class CreateTopicWidget extends StatelessWidget {
                         vertical: 8.0,
                       ),
                       child: TextField(
-                        controller: topicController,
+                        controller: titleController,
                         maxLength: 10,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -179,11 +217,11 @@ class CreateTopicWidget extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    if (topicController.text.isEmpty ||
-                        descController.text.isEmpty) {
+                    if (titleController.text.trim().isEmpty ||
+                        descController.text.trim().isEmpty) {
                       // tell user they can't be empty
                       debugPrint("All Above Fields are required");
-                    } else if (topicController.text.trim().length <= 3) {
+                    } else if (titleController.text.trim().length <= 3) {
                       // tell user topic length should be greater than 2 characters
                       debugPrint(
                           "Topic Length should be more than 2 characters");
@@ -192,7 +230,24 @@ class CreateTopicWidget extends StatelessWidget {
                       debugPrint(
                           "Desc Length should be more than 11 characters");
                     } else {
-                      debugPrint("Feature Coming Soon");
+                      // create topic
+                      AnkiTopic ankiTopic = AnkiTopic(
+                        name: titleController.text,
+                        desc: descController.text,
+                      );
+                      // add to database
+                      if (topicController.numTopics() < 5) {
+                        ankiTopic.isFavourite = true;
+                      }
+                      topicController.addTopic(ankiTopic);
+
+                      if (topicController.numTopics() < 5) {
+                        // updating favourites
+                        topicController.getAllFavourites();
+                      }
+                      // updating topic list
+                      topicController.getAllTopics();
+                      Navigator.of(context).pop();
                     }
                   },
                   child: const Text("create"),

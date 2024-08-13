@@ -119,26 +119,3 @@ class StarredTopics extends StatelessWidget {
     );
   }
 }
-
-var listStarred = const [
-  StarredTopics(
-    topic: "ACS 314",
-    desc: "This Contains Flash Cards For ACS 314, from first week",
-  ),
-  StarredTopics(
-    topic: "ACS 314",
-    desc: "This Contains Flash Cards For ACS 314, from first week",
-  ),
-  StarredTopics(
-    topic: "ACS 314",
-    desc: "This Contains Flash Cards For ACS 314, from first week",
-  ),
-  StarredTopics(
-    topic: "ACS 314",
-    desc: "This Contains Flash Cards For ACS 314, from first week",
-  ),
-  StarredTopics(
-    topic: "ACS 314",
-    desc: "This Contains Flash Cards For ACS 314, from first week",
-  ),
-];
