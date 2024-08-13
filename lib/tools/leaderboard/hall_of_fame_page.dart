@@ -78,16 +78,22 @@ class HallOfFamePage extends StatelessWidget {
                                 position: 2,
                                 username: r[1].username,
                                 points: r[1].vibePoints.toString(),
+                                profileUrl: r[1].profileUrl,
+                                gender: r[1].gender,
                               ),
                               LeaderBoardProfileWidget(
                                 position: 1,
                                 username: r[0].username,
                                 points: r[0].vibePoints.toString(),
+                                profileUrl: r[0].profileUrl,
+                                gender: r[0].gender,
                               ),
                               LeaderBoardProfileWidget(
                                 position: 3,
                                 username: r[2].username,
                                 points: r[2].vibePoints.toString(),
+                                profileUrl: r[2].profileUrl,
+                                gender: r[2].gender,
                               ),
                             ],
                           ),
@@ -113,8 +119,25 @@ class HallOfFamePage extends StatelessWidget {
                                     padding: const EdgeInsets.only(bottom: 8),
                                     child: ListTile(
                                       leading: CircleAvatar(
-                                        child: Text((index + 3).toString()),
-                                      ),
+                                          radius: 30,
+                                          child: moreUsers[index]
+                                                  .profileUrl
+                                                  .startsWith("http")
+                                              ? ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(60),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: moreUsers[index]
+                                                        .profileUrl,
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                )
+                                              : moreUsers[index].gender ==
+                                                      "male"
+                                                  ? Image.asset(
+                                                      "assets/images/male_student.png")
+                                                  : Image.asset(
+                                                      "assets/images/female_student.png")),
                                       title: Text(
                                         "@${moreUsers[index].username}",
                                       ),

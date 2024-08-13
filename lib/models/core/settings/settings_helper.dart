@@ -30,8 +30,8 @@ class SettingsHelper {
     }
   }
 
-  void saveSettings(Settings settings) {
+  Future<bool> saveSettings(Settings settings) async {
     String json = jsonEncode(settings.toJson());
-    _prefs.setString('settings', json);
+    return await _prefs.setString('settings', json);
   }
 }

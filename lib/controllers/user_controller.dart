@@ -29,10 +29,10 @@ class UserController extends GetxController {
 
       data.fold((l) {
         Get.rawSnackbar(
-          messageText: const Text(
-            "Failed login",
+          messageText: Text(
+            l,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
             ),
           ),
@@ -118,6 +118,27 @@ class UserController extends GetxController {
 
     // Return the data for registration
     return res.fold((l) => left(l.toString()), (r) => right(r));
+  }
+
+  Future<Either<String, User>> uploadProfilePicture(XFile file) async {
+    final result = await service.uploadProfilePicture(
+      user.value!.id!,
+      await file.readAsBytes(),
+      file.name,
+    );
+
+    return result.fold((l) {
+      return left(l);
+    }, (r) {
+      r.password = user.value!.password;
+      user.value = r;
+      UserModelHelper().update(user.value!.toMap());
+      return right(user.value!);
+    });
+  }
+
+  Map<String, String> get authHeaders {
+    return service.getTokenHeaders();
   }
 
   /// Logout a user

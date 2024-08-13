@@ -53,8 +53,8 @@ class SemesterService with NotifierService {
           await http.get(Uri.parse("$notifierUrlPrefix/semesters/current"));
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> body = json.decode(response.body);
-        return right(Semester.fromJson(body));
+        final List<Map<String, dynamic>> body = json.decode(response.body);
+        return right(Semester.fromJson(body.first));
       }
 
       return const Left("We are maintaining the server please try again later");
