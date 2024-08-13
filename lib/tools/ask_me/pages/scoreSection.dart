@@ -26,7 +26,7 @@ class ScoreSection extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Image.asset('assets/images/congratulations_askMe.jpeg', 
-            width: 390,
+            width: 400,
             fit: BoxFit.cover,
             ),
           ),

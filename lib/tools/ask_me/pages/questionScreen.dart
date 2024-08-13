@@ -1,13 +1,11 @@
 import 'dart:async';
-
 import 'package:academia/tools/ask_me/controllers/quizSettings_controller.dart';
-import 'package:academia/tools/ask_me/pages/scoreSection.dart';
+import 'package:academia/tools/tools.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../models/models.dart';
 
 class QuestionScreen extends StatefulWidget {
-  final List<Question> questions;
+  final List<HardCodedQuestion> questions;
   const QuestionScreen({super.key, required this.questions});
 
   @override
@@ -51,7 +49,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   @override
   void dispose() {
-    _timer.cancel(); //Cancelling the timer when the widget i disposed
+    _timer.cancel(); //Cancelling the timer when the widget is disposed
     super.dispose();
   }
 
@@ -92,7 +90,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
       return ScoreSection(score: score,);
     }
 
-    Question currentQuestion = widget.questions[currentIndex];
+    HardCodedQuestion currentQuestion = widget.questions[currentIndex];
     int minutes = _timeLeft ~/ 60;
     int seconds = _timeLeft % 60;
 
