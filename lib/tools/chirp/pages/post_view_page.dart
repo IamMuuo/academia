@@ -14,7 +14,7 @@ class PostViewPage extends StatelessWidget {
         slivers: [
           SliverAppBar(
             backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            title: Text("@${post.username}"),
+            title: Text("@${post.user?.username ?? 'anon'}"),
           ),
           SliverPadding(
             padding: const EdgeInsets.all(12),
@@ -45,7 +45,7 @@ class PostViewPage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final data = post.postAttachmentMedia[index];
                     return CachedNetworkImage(
-                      imageUrl: data.image,
+                      imageUrl: data.image ?? "",
                       height: 300,
                       width: MediaQuery.of(context).size.width,
                     );

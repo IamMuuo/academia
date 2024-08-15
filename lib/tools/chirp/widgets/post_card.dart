@@ -26,17 +26,23 @@ class PostCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CircleAvatar(
-                  backgroundImage:
-                      CachedNetworkImageProvider(post.user!.profileUrl),
-                ),
+                post.user!.profilePhoto != null
+                    ? CircleAvatar(
+                        backgroundImage: CachedNetworkImageProvider(
+                          post.user?.profilePhoto ?? '',
+                        ),
+                      )
+                    : Image.asset(
+                        "assets/images/male_student.png",
+                        height: 30,
+                      ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        "@${post.username}",
+                        "@${post.user?.username ?? 'anon'}",
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium
@@ -70,20 +76,23 @@ class PostCard extends StatelessWidget {
                   visible: post.postAttachmentMedia.isNotEmpty,
                   child: SizedBox(
                     height: 200,
-                    child: ListView.builder(
+                    child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         final data = post.postAttachmentMedia[index];
                         return CachedNetworkImage(
-                          imageUrl: data.image,
-                          height: 300,
+                          imageUrl: data.image ?? "",
+                          fit: BoxFit.fitWidth,
                           width: MediaQuery.of(context).size.width,
                         );
                       },
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(width: 4),
                       itemCount: post.postAttachmentMedia.length,
                     ),
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
                   trimTo99Characters(post.content),
                   style: Theme.of(context).textTheme.bodySmall,
@@ -112,14 +121,15 @@ class PostCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 const IconButton(
-                    onPressed: null,
-                    icon: Row(
-                      children: [
-                        Icon(Ionicons.chatbox_outline),
-                        SizedBox(width: 2),
-                        Text("30")
-                      ],
-                    ))
+                  onPressed: null,
+                  icon: Row(
+                    children: [
+                      Icon(Ionicons.chatbox_outline),
+                      SizedBox(width: 2),
+                      Text("30")
+                    ],
+                  ),
+                ),
               ],
             )
           ],
