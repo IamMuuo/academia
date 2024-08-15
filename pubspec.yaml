@@ -70,6 +70,7 @@ dependencies:
   image_picker: ^1.1.2
   image_cropper: ^8.0.1
   workmanager: ^0.5.2
+  timeago: ^3.7.0
   
 
 

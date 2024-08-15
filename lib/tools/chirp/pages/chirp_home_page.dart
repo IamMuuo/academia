@@ -44,6 +44,7 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surfaceDim,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -67,12 +68,11 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
                 icon: const Icon(Ionicons.flame_outline),
               )
             ],
-            expandedHeight: 250,
+            expandedHeight: 300,
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  image: const DecorationImage(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
                     image: AssetImage(
                         "assets/images/sketchbook-passersby-people-working-around-1.png"),
                   ),
@@ -94,16 +94,18 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
           SliverFillRemaining(
             child: Obx(
               () => controller.isLoading.value
-                  ? Column(
-                      children: [
-                        Lottie.asset("assets/lotties/fetching.json"),
-                        const SizedBox(height: 22),
-                        Text(
-                          "Fetching posts",
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                      ],
+                  ? SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Lottie.asset("assets/lotties/fetching.json"),
+                          const SizedBox(height: 22),
+                          Text(
+                            "Fetching posts",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                        ],
+                      ),
                     )
                   : RefreshIndicator(
                       onRefresh: () async {
@@ -131,9 +133,8 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
                               },
                               separatorBuilder: (context, index) =>
                                   const SizedBox(
-                                child: Divider(
-                                  thickness: 0.2,
-                                ),
+                                height: 8,
+                                child: Divider(thickness: 0.3),
                               ),
                               itemCount: controller.posts.length,
                             ),

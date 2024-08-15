@@ -5,11 +5,9 @@ export 'package:academia/themes/colors.dart';
 ThemeData lightModeTheme = ThemeData(
   fontFamily: GoogleFonts.inter().fontFamily,
   colorScheme: lightColorScheme,
-  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     showSelectedLabels: true,
     showUnselectedLabels: true,
-    elevation: 0,
-    selectedItemColor: lightColorScheme.tertiary,
   ),
 );
 

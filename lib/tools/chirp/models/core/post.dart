@@ -1,3 +1,5 @@
+import 'package:academia/models/core/user/user.dart';
+
 import 'core.dart';
 
 class Post {
@@ -12,6 +14,7 @@ class Post {
   final DateTime createdAt;
   final DateTime modifiedAt;
   final String? link;
+  final User? user;
   final List<PostAttachmentMedia> postAttachmentMedia;
 
   Post({
@@ -26,6 +29,7 @@ class Post {
     required this.createdAt,
     required this.modifiedAt,
     this.link,
+    this.user,
     required this.postAttachmentMedia,
   });
 
@@ -42,6 +46,7 @@ class Post {
       createdAt: DateTime.parse(json['created_at'] as String),
       modifiedAt: DateTime.parse(json['modified_at'] as String),
       link: json['link'] as String?,
+      user: User.fromJson(json["user"]),
       postAttachmentMedia: (json['post_attachment_media'] as List<dynamic>)
           .map((e) => PostAttachmentMedia.fromJson(e as Map<String, dynamic>))
           .toList(),

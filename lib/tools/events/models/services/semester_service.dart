@@ -53,7 +53,8 @@ class SemesterService with NotifierService {
           await http.get(Uri.parse("$notifierUrlPrefix/semesters/current"));
 
       if (response.statusCode == 200) {
-        final List<Map<String, dynamic>> body = json.decode(response.body);
+        final List<Map<String, dynamic>> body =
+            json.decode(response.body).cast<Map<String, dynamic>>();
         return right(Semester.fromJson(body.first));
       }
 
