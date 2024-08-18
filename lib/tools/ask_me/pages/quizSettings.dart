@@ -126,7 +126,7 @@ class QuizSettings extends StatelessWidget {
             ),
             const SizedBox(height: 40.0),
             const Text(
-              'HardCodedQuestion type',
+              'Question type',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
