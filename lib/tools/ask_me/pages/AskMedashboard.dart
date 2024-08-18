@@ -1,6 +1,5 @@
 import 'package:academia/themes/colors.dart';
 import 'package:flutter/material.dart';
-
 import '../widgets/widgets.dart';
 
 class AskMeDashboard extends StatefulWidget {
@@ -68,7 +67,7 @@ class _AskMeDashboardState extends State<AskMeDashboard> {
             isScrollControlled: true,
             showDragHandle: true,
             builder: (context) => FractionallySizedBox(
-              heightFactor: 0.5,
+              heightFactor: 0.7,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -104,9 +103,9 @@ class _AskMeDashboardState extends State<AskMeDashboard> {
                     const SizedBox(height: 20.0),
                     Row(
                       children: [
-                        ChoiceWidget(label: 'Multiple choice'),
-                        const SizedBox(width: 10),
-                        ChoiceWidget(label: 'True/False'),
+                      ChoiceWidget(label: 'Multiple choice'),
+                      const SizedBox(width: 10),
+                      ChoiceWidget(label: 'True/False'),
                       ],
                     ),
                     const SizedBox(height: 20.0),
@@ -120,11 +119,26 @@ class _AskMeDashboardState extends State<AskMeDashboard> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        Row(
+                          children: [
+                            TimeInputField(label: "Minute", initialValue: "2"),
+                            Text(" : ", style: TextStyle(fontSize: 20)),
+                            TimeInputField(label: "Seconds", initialValue: "30"),
+                          ]
+                        ),
                       ],
                     ),
                     const SizedBox(height: 20.0,),
-                    Center(
+                    Align(
+                      alignment: Alignment.bottomCenter,
                       child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          //padding: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
+                          backgroundColor: Colors.lightBlue[100],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
                         onPressed: () {}, 
                         child: const Text("Generate"),
                       ),
