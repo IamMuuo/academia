@@ -2,7 +2,6 @@ import 'core.dart';
 
 class Post {
   final String id;
-  final String username;
   final String title;
   final String content;
   final int upvotes;
@@ -12,11 +11,11 @@ class Post {
   final DateTime createdAt;
   final DateTime modifiedAt;
   final String? link;
+  final ChirpUser? user;
   final List<PostAttachmentMedia> postAttachmentMedia;
 
   Post({
     required this.id,
-    required this.username,
     required this.title,
     required this.content,
     required this.upvotes,
@@ -26,13 +25,13 @@ class Post {
     required this.createdAt,
     required this.modifiedAt,
     this.link,
+    this.user,
     required this.postAttachmentMedia,
   });
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
       id: json['id'] as String,
-      username: json['username'] as String,
       title: json['title'] as String,
       content: json['content'] as String,
       upvotes: json['upvotes'] as int,
@@ -42,6 +41,7 @@ class Post {
       createdAt: DateTime.parse(json['created_at'] as String),
       modifiedAt: DateTime.parse(json['modified_at'] as String),
       link: json['link'] as String?,
+      user: ChirpUser.fromJson(json["user"]),
       postAttachmentMedia: (json['post_attachment_media'] as List<dynamic>)
           .map((e) => PostAttachmentMedia.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -51,7 +51,6 @@ class Post {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'username': username,
       'title': title,
       'content': content,
       'upvotes': upvotes,

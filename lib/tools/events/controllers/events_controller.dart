@@ -12,7 +12,6 @@ class EventsController extends GetxController {
   void onInit() async {
     super.onInit();
     prefs = await SharedPreferences.getInstance();
-
     final semData = prefs.getString("semester");
 
     if (semData != null) {
@@ -24,8 +23,8 @@ class EventsController extends GetxController {
         currentSemester.value!.endDate.isBefore(DateTime.now())) {
       // fetch the current semester
       final result = await semesterService.fetchCurrentSemester();
-      result.fold((l) {}, (r) {
-        prefs.setString("semester", json.encode(r.toJson()));
+      result.fold((l) {}, (r) async {
+        await prefs.setString("semester", json.encode(r.toJson()));
         currentSemester.value = r;
       });
     }

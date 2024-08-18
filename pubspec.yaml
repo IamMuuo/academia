@@ -70,6 +70,7 @@ dependencies:
   image_picker: ^1.1.2
   image_cropper: ^8.0.1
   workmanager: ^0.5.2
+  timeago: ^3.7.0
   
 
 
@@ -122,10 +123,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Nunito
-  #     fonts:
-  #       - asset: assets/fonts/Nunito.ttf
+  fonts:
+    - family: helvetica
+      fonts:
+        - asset: assets/fonts/helvetica.ttf
         #   style: bold
         # - asset: assets/fonts/Poppins-Light
         # - asset: assets/fonts/Poppins-Medium
