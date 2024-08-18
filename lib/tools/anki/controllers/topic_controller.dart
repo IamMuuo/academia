@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 class TopicController extends GetxController {
   final RxList<AnkiTopic> allTopics = <AnkiTopic>[].obs;
   final RxList<AnkiTopic> allFavourites = <AnkiTopic>[].obs;
-  // TODO getting favourite topics
 
   @override
   void onInit() {
@@ -31,26 +30,39 @@ class TopicController extends GetxController {
   // Marking topic as favourite and vice versa
   Future<bool> favouriteTopic(AnkiTopic topic) async {
     topic.isFavourite = !topic.isFavourite;
-    int value = await TodoModelHelper().update(topic.toJson());
+    // update topic list
+    if (allFavourites.length >= 5) {
+      updateFavourites();
+    }
+    int value = await TopicModelHelper().update(topic.toJson());
     return value == 0 ? false : true;
+  }
+
+  // updating favourite lists by popping one
+  void updateFavourites() async {
+    // pops the last favourited topic when more than five
+    AnkiTopic removedTopic = allFavourites.removeAt(0);
+    removedTopic.isFavourite = false;
+    // update the topic in db
+    await updateTopic(removedTopic);
   }
 
   // increments topics number of cards by one
   Future<bool> incTopicNumCards(AnkiTopic topic) async {
     topic.numCards++;
-    int value = await TodoModelHelper().update(topic.toJson());
+    int value = await TopicModelHelper().update(topic.toJson());
     return value == 0 ? false : true;
   }
 
   // decrements topics number of cards by one
   Future<bool> descTopicNumCards(AnkiTopic topic) async {
     topic.numCards--;
-    int value = await TodoModelHelper().update(topic.toJson());
+    int value = await TopicModelHelper().update(topic.toJson());
     return value == 0 ? false : true;
   }
 
   Future<bool> updateTopic(AnkiTopic topic) async {
-    int value = await TodoModelHelper().update(topic.toJson());
+    int value = await TopicModelHelper().update(topic.toJson());
     return value == 0 ? false : true;
   }
 

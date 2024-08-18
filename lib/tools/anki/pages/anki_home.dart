@@ -57,23 +57,51 @@ class AnkiHomePage extends StatelessWidget {
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.27,
-                      width: MediaQuery.of(context).size.width * 0.87,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, idx) {
-                          return StarredTopics(
-                            topic: topicController.allFavourites[idx].name,
-                            desc: topicController.allFavourites[idx].desc,
-                          );
-                        },
-                        itemCount: topicController.allFavourites.length,
-                      ),
-                    ),
-                  ),
+                  topicController.allFavourites.isEmpty
+                      ? SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.27,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.18,
+                                child: Lottie.asset(
+                                  "assets/lotties/empty.json",
+                                  fit: BoxFit.fitHeight,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "You Have No Favourite Topics, Favourite A Topic To Find It Easily",
+                                  style: Theme.of(context).textTheme.titleSmall,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Align(
+                          alignment: Alignment.center,
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.27,
+                            width: MediaQuery.of(context).size.width * 0.87,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, idx) {
+                                return StarredTopics(
+                                  idx: topicController.allFavourites[idx].id!,
+                                  topic:
+                                      topicController.allFavourites[idx].name,
+                                  desc: topicController.allFavourites[idx].desc,
+                                  topicController: topicController,
+                                );
+                              },
+                              itemCount: topicController.allFavourites.length,
+                            ),
+                          ),
+                        ),
                   Align(
                     alignment: Alignment.topRight,
                     child: Padding(
@@ -125,10 +153,13 @@ class AnkiHomePage extends StatelessWidget {
                               ),
                               itemBuilder: (context, idx) {
                                 return GridViewTopic(
-                                  idx: idx,
+                                  idx: topicController.allTopics[idx].id!,
                                   topic: topicController.allTopics[idx].name,
                                   topicDesc:
                                       topicController.allTopics[idx].desc,
+                                  isFavourite: topicController
+                                      .allTopics[idx].isFavourite,
+                                  controller: topicController,
                                 );
                               },
                               itemCount: topicController.allTopics.length,
@@ -236,7 +267,7 @@ class CreateTopicWidget extends StatelessWidget {
                         desc: descController.text,
                       );
                       // add to database
-                      if (topicController.numTopics() < 5) {
+                      if (topicController.numTopics() <= 5) {
                         ankiTopic.isFavourite = true;
                       }
                       topicController.addTopic(ankiTopic);

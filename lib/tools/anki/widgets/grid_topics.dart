@@ -1,4 +1,6 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/tools/anki/controllers/controllers.dart';
+import 'package:academia/tools/anki/models/models.dart';
 import 'package:academia/tools/anki/pages/flashcards.dart';
 import 'package:flutter/material.dart';
 
@@ -8,11 +10,15 @@ class GridViewTopic extends StatelessWidget {
     required this.idx,
     required this.topic,
     required this.topicDesc,
+    required this.isFavourite,
+    this.controller,
   });
 
   final int idx;
   final String topic;
   final String topicDesc;
+  final bool isFavourite;
+  final TopicController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +62,7 @@ class GridViewTopic extends StatelessWidget {
                 topicDesc,
               ),
             ),
+            const Spacer(),
             Align(
               alignment: Alignment.bottomRight,
               child: SizedBox(
@@ -70,10 +77,24 @@ class GridViewTopic extends StatelessWidget {
                         size: MediaQuery.of(context).size.height * 0.041,
                       ),
                     ),
+                    // favourite a topic
                     GestureDetector(
-                      onTap: () => debugPrint("Feature Coming Real Soon"),
+                      onTap: () async {
+                        // create a topic object
+                        AnkiTopic topic = AnkiTopic(
+                          id: idx,
+                          name: this.topic,
+                          desc: topicDesc,
+                          isFavourite: isFavourite,
+                        );
+                        await controller?.favouriteTopic(topic);
+                        // update favourites and all topics
+                        await controller?.getAllFavourites();
+                        await controller?.getAllTopics();
+                        // TODO tell user that the topic has been favourited
+                      },
                       child: Icon(
-                        Icons.star_border_outlined,
+                        isFavourite ? Icons.star : Icons.star_border_outlined,
                         size: MediaQuery.of(context).size.height * 0.035,
                       ),
                     ),

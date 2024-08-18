@@ -1,15 +1,22 @@
+import 'package:academia/tools/anki/controllers/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:academia/tools/anki/widgets/widgets.dart';
+
+import '../models/models.dart';
 
 class StarredTopics extends StatelessWidget {
   const StarredTopics({
     super.key,
+    required this.idx,
     required this.topic,
     required this.desc,
+    this.topicController,
   });
 
+  final int idx;
   final String topic;
   final String desc;
+  final TopicController? topicController;
 
   @override
   Widget build(BuildContext context) {
@@ -99,9 +106,20 @@ class StarredTopics extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => debugPrint("Feature Coming Real Soon"),
+                    onTap: () async {
+                      AnkiTopic topic = AnkiTopic(
+                        id: idx,
+                        name: this.topic,
+                        desc: desc,
+                        isFavourite: true,
+                      );
+                      await topicController?.favouriteTopic(topic);
+                      // update favourites and all topics
+                      await topicController?.getAllFavourites();
+                      await topicController?.getAllTopics();
+                    },
                     child: Icon(
-                      Icons.star_border_outlined,
+                      Icons.star,
                       size: MediaQuery.of(context).size.height * 0.035,
                     ),
                   ),
