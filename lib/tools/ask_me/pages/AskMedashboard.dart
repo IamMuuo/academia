@@ -1,5 +1,7 @@
 import 'package:academia/themes/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../controllers/quizSettings_controller.dart';
 import '../widgets/widgets.dart';
 
 class AskMeDashboard extends StatefulWidget {
@@ -11,28 +13,45 @@ class AskMeDashboard extends StatefulWidget {
 
 class _AskMeDashboardState extends State<AskMeDashboard> {
   TextEditingController titleController = TextEditingController();
+  final QuizSettingsController timerController = Get.put(QuizSettingsController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Ask Me".toUpperCase(),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 32,
+          ),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: Column(
         children: [
-          const SizedBox(height: 20,),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),          
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Ask Me".toUpperCase(),
-                      style: const  TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 32,
-                      ),
-                    ),
-                  ],
-                ),              
-          ),
+          // const SizedBox(height: 20,),
+          // Padding(
+          //   padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),          
+          //     child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         children: [
+          //           Text(
+          //             "Ask Me".toUpperCase(),
+          //             style: const  TextStyle(
+          //               fontWeight: FontWeight.bold,
+          //               fontSize: 32,
+          //             ),
+          //           ),
+          //         ],
+          //       ),              
+          // ),
           const SizedBox(height: 20,),
           Center(
             child: Image.asset(
@@ -40,6 +59,7 @@ class _AskMeDashboardState extends State<AskMeDashboard> {
               fit: BoxFit.cover,
             ),
           ),
+          const SizedBox(height: 20,),
           Expanded(
             child: Container(
               color: lightColorScheme.tertiary,
@@ -68,84 +88,7 @@ class _AskMeDashboardState extends State<AskMeDashboard> {
             showDragHandle: true,
             builder: (context) => FractionallySizedBox(
               heightFactor: 0.7,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextFormField(
-                      controller: titleController,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                        if (value?.length == null) {
-                          return "Please enter a title";
-                        }
-                        return null;
-                      },
-                      textAlign: TextAlign.start,
-                      decoration: InputDecoration(
-                        hintText: "Please Enter Title for your Document",
-                        label: const Text("Title"),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10,),
-                    const Text(
-                      'Question type',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 20.0),
-                    Row(
-                      children: [
-                      ChoiceWidget(label: 'Multiple choice'),
-                      const SizedBox(width: 10),
-                      ChoiceWidget(label: 'True/False'),
-                      ],
-                    ),
-                    const SizedBox(height: 20.0),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Set a timer",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            TimeInputField(label: "Minute", initialValue: "2"),
-                            Text(" : ", style: TextStyle(fontSize: 20)),
-                            TimeInputField(label: "Seconds", initialValue: "30"),
-                          ]
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20.0,),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          //padding: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
-                          backgroundColor: Colors.lightBlue[100],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                        ),
-                        onPressed: () {}, 
-                        child: const Text("Generate"),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              child: ModalContent(),
             ),
           );
         },

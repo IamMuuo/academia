@@ -29,7 +29,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
     super.initState();
 
     final quizSettingsController = Get.find<QuizSettingsController>();
-    _totalTime = quizSettingsController.selectedTimer.value * 60; //converting minutes to seconds
+     _totalTime = quizSettingsController.minute.value * 60 + quizSettingsController.seconds.value; // use minutes and seconds
     _timeLeft = _totalTime;
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -107,7 +107,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                         icon: const Icon(Icons.arrow_back),
                       ),
                       Text(
