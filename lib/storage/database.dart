@@ -77,4 +77,12 @@ class DatabaseHelper {
       await db.execute(value);
     });
   }
+
+  /// Truncates the database
+  Future<void> truncateDataBase() async {
+    schemas.forEach((key, value) async {
+      final db = await database;
+      db.delete(key);
+    });
+  }
 }

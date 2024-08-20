@@ -6,13 +6,24 @@ void main() async {
 
   /// Initialize the flutter notifications plugin
   AwesomeNotifications().initialize(
-    'resource://drawable/app_icon',
+    'resource://drawable/academia',
     [
       NotificationChannel(
-        channelKey: "basic_channel",
-        channelName: "Basic Notifications",
-        channelDescription: "All Academia Notification Channel",
+        channelKey: "reminders",
+        channelName: "Academia Reminders",
+        channelDescription: "Academia's reminder notifications",
         importance: NotificationImportance.High,
+        enableLights: true,
+        defaultColor: Colors.blueGrey,
+        playSound: true,
+        enableVibration: true,
+        channelShowBadge: true,
+      ),
+      NotificationChannel(
+        channelKey: "social",
+        channelName: "Academia Social Notifications",
+        channelDescription: "Academia's social notification",
+        importance: NotificationImportance.Max,
         enableLights: true,
         defaultColor: Colors.blueGrey,
         playSound: true,
@@ -21,6 +32,10 @@ void main() async {
       )
     ],
   );
+  // await Workmanager().initialize(
+  //   callbackDispatcher,
+  //   isInDebugMode: true,
+  // );
 
   runApp(
     GetMaterialApp(
@@ -44,38 +59,45 @@ class Academia extends StatelessWidget {
     Get.put(TodoController());
     Get.put(RewardController());
     Get.put(CoursesController());
+    Get.put(EventsController());
 
     // Prompt for notification permission
     AwesomeNotifications().isNotificationAllowed().then(
       (value) {
         if ((!value) && (Platform.isAndroid || Platform.isIOS)) {
-          showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text("Allow Notifications"),
-                  content: const Text(
-                    "Academia would like to send you notifications about classes and your school work",
-                  ),
-                  actions: [
-                    FilledButton(
-                      onPressed: () {
-                        AwesomeNotifications()
-                            .requestPermissionToSendNotifications()
-                            .then((value) => Navigator.pop(context));
-                      },
-                      child: const Text("Allow"),
+          if (context.mounted) {
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text("Allow Notifications"),
+                    content: const Text(
+                      "Academia would like to send you notifications about classes and your school work",
                     ),
-                    OutlinedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text("No"),
-                    ),
-                  ],
-                );
-              });
+                    actions: [
+                      FilledButton(
+                        onPressed: () {
+                          AwesomeNotifications()
+                              .requestPermissionToSendNotifications()
+                              .then((value) {
+                            if (context.mounted) {
+                              Navigator.pop(context);
+                            }
+                          });
+                        },
+                        child: const Text("Allow"),
+                      ),
+                      OutlinedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text("No"),
+                      ),
+                    ],
+                  );
+                });
+          }
         }
       },
     );

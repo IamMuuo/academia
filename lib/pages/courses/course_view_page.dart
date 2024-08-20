@@ -15,6 +15,7 @@ class CourseViewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final CoursesController coursesController = Get.find<CoursesController>();
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -86,22 +87,14 @@ class CourseViewPage extends StatelessWidget {
                               ),
                               trailing: IconButton(
                                 onPressed: () async {
-                                  final deleted = await coursesController
+                                  await coursesController
                                       .deleteCourseTopic(data);
 
-                                  if (deleted) {
-                                    HapticFeedback.heavyImpact().then((value) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                              content: Text(
-                                                  "Deleted successfully")));
-                                    });
-                                    return;
-                                  }
                                   HapticFeedback.heavyImpact().then((value) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
-                                            content: Text("Failed to delete")));
+                                            content:
+                                                Text("Deleted successfully")));
                                   });
                                 },
                                 icon: const Icon(Ionicons.trash),
@@ -122,12 +115,14 @@ class CourseViewPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showModalBottomSheet(
-              context: context,
-              elevation: 0,
-              builder: (context) => TopicForm(
-                    course: course,
-                  ));
+          showDialog(
+            context: context,
+            // elevation: 0,
+            builder: (context) => Dialog(
+                child: TopicForm(
+              course: course,
+            )),
+          );
         },
         child: const Icon(Ionicons.add),
       ),

@@ -23,40 +23,40 @@ class _FilledTodoHomeScreenState extends State<FilledTodoHomeScreen> {
     "month": false,
   };
 
-  List<Todo> filterTodosByDate(String filterOption) {
-    todos = todoController.allTodos;
-    final today = DateTime.now();
-    final tomorrow = DateTime.now().add(const Duration(days: 1));
-    switch (filterOption.toLowerCase().trim()) {
-      case "today":
-        return todos
-            .where((element) =>
-                element.due.day == today.day &&
-                element.due.month == today.month &&
-                element.due.year == today.year)
-            .toList(growable: false);
-
-      case "tomorrow":
-        return todos
-            .where((element) =>
-                element.due.day == tomorrow.day &&
-                element.due.month == tomorrow.month &&
-                element.due.year == tomorrow.year)
-            .toList(growable: false);
-
-      case "month":
-        return todos
-            .where((element) =>
-                element.due.day < 31 &&
-                element.due.month == today.month &&
-                element.due.year == today.year)
-            .toList(growable: false);
-
-      default:
-        return todos;
-    }
-  }
-
+  // List<Todo> filterTodosByDate(String filterOption) {
+  //   todos = todoController.allTodos;
+  //   final today = DateTime.now();
+  //   final tomorrow = DateTime.now().add(const Duration(days: 1));
+  //   switch (filterOption.toLowerCase().trim()) {
+  //     case "today":
+  //       return todos
+  //           .where((element) =>
+  //               element.due.day == today.day &&
+  //               element.due.month == today.month &&
+  //               element.due.year == today.year)
+  //           .toList(growable: false);
+  //
+  //     case "tomorrow":
+  //       return todos
+  //           .where((element) =>
+  //               element.due.day == tomorrow.day &&
+  //               element.due.month == tomorrow.month &&
+  //               element.due.year == tomorrow.year)
+  //           .toList(growable: false);
+  //
+  //     case "month":
+  //       return todos
+  //           .where((element) =>
+  //               element.due.day < 31 &&
+  //               element.due.month == today.month &&
+  //               element.due.year == today.year)
+  //           .toList(growable: false);
+  //
+  //     default:
+  //       return todos;
+  //   }
+  // }
+  //
   @override
   void initState() {
     todos = todoController.allTodos;
@@ -127,7 +127,7 @@ class _FilledTodoHomeScreenState extends State<FilledTodoHomeScreen> {
                         () {
                           filterItems[filterItems.keys.elementAt(index)] =
                               value;
-                          filteredTodos = filterTodosByDate(
+                          filteredTodos = todoController.filterTodosByDate(
                               filterItems.keys.elementAt(index));
                         },
                       );

@@ -36,7 +36,7 @@ class StoryController extends GetxController {
   }
 
   Future<Either<String, List<Story>>> fetchStories() async {
-    final result = await _service.fetchDueStories();
+    final result = await _service.fetchTodaysStories();
     return result.fold((l) {
       return left(l);
     }, (r) {

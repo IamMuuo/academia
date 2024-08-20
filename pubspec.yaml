@@ -1,5 +1,5 @@
 name: academia
-description: "Daystar University School portal app."
+description: "Daystar University's Student Assistant."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -67,6 +67,10 @@ dependencies:
   lottie: ^3.1.2
   shared_preferences: ^2.2.3
   flutter_heatmap_calendar: ^1.0.5
+  image_picker: ^1.1.2
+  image_cropper: ^8.0.1
+  workmanager: ^0.5.2
+  timeago: ^3.7.0
   
 
 
@@ -87,8 +91,9 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icons/academia.png"
-  min_sdk_android: 21
+  remove_alpha_ios: true 
+  image_path: "assets/icons/app_icon.png"
+  min_sdk_android: 34
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -118,10 +123,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Nunito
-  #     fonts:
-  #       - asset: assets/fonts/Nunito.ttf
+  fonts:
+    - family: helvetica
+      fonts:
+        - asset: assets/fonts/helvetica.ttf
         #   style: bold
         # - asset: assets/fonts/Poppins-Light
         # - asset: assets/fonts/Poppins-Medium

@@ -51,7 +51,7 @@ class RewardController extends GetxController {
       awardedAt: DateTime.now(),
     );
 
-    final res = await service.award(newReward);
+    final res = await service.award(newReward, _userController.authHeaders);
     res.fold((l) {
       debugPrint(l);
     }, (r) {
@@ -81,11 +81,12 @@ class RewardController extends GetxController {
 
   // Returns a list of the current leaderboard
   Future<Either<String, List<User>>> fetchLeaderBoard() async {
-    return await service.fetchLeaderBoard();
+    return await service.fetchLeaderBoard(_userController.authHeaders);
   }
 
   Future<Either<String, List<Reward>>> fetchCurrentUserRewards() async {
-    return await service.fetchUserRewards(_userController.user.value!.id!);
+    return await service.fetchUserRewards(
+        _userController.user.value!.id!, _userController.authHeaders);
   }
 
   Future<Either<String, List<Reward>>> loadRewards() async {

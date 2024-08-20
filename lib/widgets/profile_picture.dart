@@ -6,62 +6,62 @@ import 'package:get/get.dart';
 /// their picture or not
 ///
 /// The [profileSize] parameter controls the size of the image
-/// and the [hasStory] shows a badge on the widget incase
 
 class ProfilePictureWidget extends StatelessWidget {
   const ProfilePictureWidget({
     super.key,
     this.profileSize = 18,
-    this.hasStory = false,
   });
 
   final double profileSize;
-  final bool hasStory;
 
   @override
   Widget build(BuildContext context) {
     final settingsController = Get.find<SettingsController>();
     final userController = Get.find<UserController>();
 
-    return Badge(
-      alignment: Alignment.bottomLeft,
-      smallSize: 8,
-      backgroundColor: hasStory
-          ? Theme.of(context).colorScheme.tertiary
-          : Colors.transparent,
-      child: CircleAvatar(
-        radius: profileSize,
+    return CircleAvatar(
+      radius: profileSize,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(
+          Radius.circular(800),
+        ),
         child: Obx(
-          () => ClipRRect(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(800),
-            ),
-            child:
-                settingsController.settings.value!.showProfilePicture ?? false
-                    ? userController.user.value == null
-                        ? Image.asset(
-                            "assets/icons/academia.png",
-                            height: 400,
-                            width: 400,
-                            fit: BoxFit.fill,
-                          )
-                        : Image.memory(
-                            Uint8List.fromList(
-                              base64Decode(
-                                userController.user.value!.profileUrl
-                                    .replaceFirst("data:image/gif;base64,", ""),
-                              ),
+          () => settingsController.settings.value.showProfilePicture
+              ? userController.user.value == null
+                  ? Image.asset(
+                      "assets/icons/academia.png",
+                      height: 400,
+                      width: 400,
+                      fit: BoxFit.fill,
+                    )
+                  : userController.user.value!.profileUrl.startsWith("http")
+                      ? CachedNetworkImage(
+                          placeholder: (context, progress) =>
+                              const CircularProgressIndicator(),
+                          imageUrl: userController.user.value!.profileUrl,
+                          errorWidget: (context, error, url) => Image.asset(
+                            userController.user.value!.gender == "male"
+                                ? "assets/images/male_student.png"
+                                : "assets/images/female_student.png",
+                          ),
+                          fit: BoxFit.cover,
+                          height: 300,
+                        )
+                      : Image.memory(
+                          Uint8List.fromList(
+                            base64Decode(
+                              userController.user.value!.profileUrl
+                                  .replaceFirst("data:image/gif;base64,", ""),
                             ),
-                            fit: BoxFit.cover,
-                            width: 400,
-                            height: 400,
-                          )
-                    : Image.asset(
-                        userController.user.value!.gender == "male"
-                            ? "assets/images/male_student.png"
-                            : "assets/images/female_student.png",
-                      ),
-          ),
+                          ),
+                          fit: BoxFit.cover,
+                        )
+              : Image.asset(
+                  userController.user.value!.gender == "male"
+                      ? "assets/images/male_student.png"
+                      : "assets/images/female_student.png",
+                ),
         ),
       ),
     );

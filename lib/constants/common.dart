@@ -18,6 +18,14 @@ extension StringExtension on String {
   }
 }
 
+String trimTo99Characters(String text) {
+  if (text.length <= 99) {
+    return text;
+  } else {
+    return '${text.substring(0, 96)}...';
+  }
+}
+
 // Returns the day percent gone
 double dayPercentGone() {
   DateTime now = DateTime.now();
@@ -79,5 +87,24 @@ int getNumericDayOfWeek(String dayOfWeek) {
       return 7;
     default:
       return 0; // Handle unknown dayOfWeek
+  }
+}
+
+/// Returns the pecentage of time gone
+double calculateSemesterPercent(DateTime start, DateTime end) {
+  Duration totalDuration = end.difference(start);
+
+  DateTime now = DateTime.now();
+  Duration elapsedDuration = now.difference(start);
+
+  double percentage =
+      (elapsedDuration.inMilliseconds / totalDuration.inMilliseconds) * 100;
+
+  if (percentage < 0) {
+    return 0;
+  } else if (percentage > 100) {
+    return 100;
+  } else {
+    return percentage;
   }
 }
