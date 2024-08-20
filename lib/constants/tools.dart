@@ -145,5 +145,16 @@ final List<Map<String, dynamic>> allTools = [
     },
     "description":
         "Having trouble keeping track of your Assignments? We've got you covered",
+  },
+  {
+    "id": 10,
+    "name": "Ask Me",
+    "action": "Ask Me",
+    "image": "assets/images/think.jpeg",
+    "ontap": () {
+      Get.to(AskMeDashboard());
+    },
+    "description": "Generate quiz questions from your notes and study materials with our AI tool."
+
   }
 ];
