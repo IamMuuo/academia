@@ -28,7 +28,9 @@ const lightColorScheme = ColorScheme(
   shadow: Color(0xFF000000),
   surfaceTint: Color(0xFF006399),
   outlineVariant: Color(0xFFC2C7CF),
-  scrim: Color(0xFF000000),
+  scrim: Color(0xFF000000), 
+  background: Colors.white,
+  onBackground: Colors.black,
 );
 
 const darkColorScheme = ColorScheme(
@@ -60,4 +62,6 @@ const darkColorScheme = ColorScheme(
   surfaceTint: Color(0xFF94CCFF),
   outlineVariant: Color(0xFF42474E),
   scrim: Color(0xFF000000),
+  background: Colors.black,
+  onBackground: Colors.white,
 );
