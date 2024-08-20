@@ -80,12 +80,27 @@ class _CoursesPageState extends State<CoursesPage> {
                     future: magnet.fetchUserClassAttendance(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState != ConnectionState.done) {
-                        return const Text("Hello");
+                        return Center(
+                            child: Text(
+                          "Fetching your courses we are",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ));
                       }
+
+                      if (snapshot.hasError) {
+                        return Center(
+                            child: Text(
+                          "Failed to fetch course attendance. Check your connection",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ));
+                      }
+
                       return snapshot.data!.fold((l) {
                         return const Center(
                           child: Text(
-                            "Failed to fetch your attendance",
+                            "Failed to fetch courses. Check your connection",
                           ),
                         );
                       }, (r) {

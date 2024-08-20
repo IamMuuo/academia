@@ -50,20 +50,10 @@ class SchoolIDCard extends StatelessWidget {
           const SizedBox(height: 8),
           Row(
             children: [
-              Flexible(
+              const Flexible(
                 flex: 1,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(200),
-                  child: CircleAvatar(
-                    radius: 60,
-                    child: Image.memory(
-                      Uint8List.fromList(
-                        base64Decode(user.profileUrl
-                            .replaceFirst("data:image/gif;base64,", "")),
-                      ),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
+                child: ProfilePictureWidget(
+                  profileSize: 60,
                 ),
               ),
               const SizedBox(width: 12),

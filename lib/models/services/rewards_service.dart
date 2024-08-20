@@ -8,12 +8,16 @@ import 'package:dartz/dartz.dart';
 
 class RewardsService with VerisafeService {
   /// Fetches all student rewards stored in the server
-  Future<Either<String, List<Reward>>> fetchUserRewards(String userID) async {
+  Future<Either<String, List<Reward>>> fetchUserRewards(
+    String userID,
+    Map<String, String> tokenHeaders,
+  ) async {
     try {
       final response = await http.get(
         Uri.parse(
           "${VerisafeService.urlPrefix}/rewards/awards/$userID",
         ),
+        headers: tokenHeaders,
       );
 
       if (response.statusCode == 200) {
@@ -35,11 +39,13 @@ class RewardsService with VerisafeService {
     }
   }
 
-  Future<Either<String, Reward>> award(Reward r) async {
+  Future<Either<String, Reward>> award(
+      Reward r, Map<String, String> tokenHeaders) async {
     try {
       final response = await http.post(
         Uri.parse("${VerisafeService.urlPrefix}/rewards/award"),
         body: json.encode(r.toJson()),
+        headers: tokenHeaders,
       );
 
       if (response.statusCode == 201) {
@@ -58,12 +64,14 @@ class RewardsService with VerisafeService {
     }
   }
 
-  Future<Either<String, List<User>>> fetchLeaderBoard() async {
+  Future<Either<String, List<User>>> fetchLeaderBoard(
+      Map<String, String> tokenHeaders) async {
     try {
       final response = await http.get(
         Uri.parse(
           "${VerisafeService.urlPrefix}/rewards/leaderboard",
         ),
+        headers: tokenHeaders,
       );
 
       if (response.statusCode == 200) {

@@ -8,8 +8,6 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userController = Get.find<UserController>();
-    final rewardController = Get.find<RewardController>();
-    final settingsController = Get.find<SettingsController>();
     return CustomScrollView(
       slivers: [
         SliverAppBar(
@@ -45,26 +43,8 @@ class ProfilePage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  radius: 60,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(800),
-                    ),
-                    child: settingsController.settings.value.showProfilePicture
-                        ? Image.memory(
-                            Uint8List.fromList(
-                              base64Decode(userController.user.value!.profileUrl
-                                  .replaceFirst("data:image/gif;base64,", "")),
-                            ),
-                            fit: BoxFit.contain,
-                          )
-                        : Image.asset(
-                            userController.user.value!.gender == "male"
-                                ? "assets/images/male_student.png"
-                                : "assets/images/female_student.png",
-                          ),
-                  ),
+                const ProfilePictureWidget(
+                  profileSize: 60,
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -125,8 +105,8 @@ class ProfilePage extends StatelessWidget {
             children: [
               InfoCard(
                 title: "Official Name",
-                content: userController.user.value!.firstName.title() +
-                    userController.user.value!.lastName.title(),
+                content:
+                    "${userController.user.value!.firstName.title()} ${userController.user.value!.lastName.title()}",
                 icon: Ionicons.person,
               ),
               InfoCard(
@@ -158,7 +138,7 @@ class ProfilePage extends StatelessWidget {
               Obx(
                 () => InfoCard(
                   title: "Vibe Points",
-                  content: rewardController.vibePoints.toString(),
+                  content: userController.user.value!.vibePoints.toString(),
                   icon: Ionicons.wallet,
                 ),
               ),

@@ -86,6 +86,7 @@ class _LoginPageState extends State<LoginPage> {
               TextFormField(
                 controller: admnoEditingController,
                 maxLength: 7,
+                keyboardType: TextInputType.number,
                 inputFormatters: [
                   AdmissionNumberFormatter(),
                 ],

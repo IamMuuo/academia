@@ -63,7 +63,7 @@ class UserService with VerisafeService {
   Future<Either<String, User>> login(String admno, String password) async {
     try {
       final response = await http.post(
-        Uri.parse("${VerisafeService.urlPrefix}/students/login/"),
+        Uri.parse("${VerisafeService.urlPrefix}/users/login/"),
         body: json.encode({
           "admission_number": admno,
           "password": password,
@@ -76,6 +76,41 @@ class UserService with VerisafeService {
       }
 
       return left(json.decode(response.body)["error"]);
+    } catch (e) {
+      if (e is http.ClientException) {
+        return const Left(
+          "Error communicating to server please check your network and try again later",
+        );
+      }
+      return Left(e.toString());
+    }
+  }
+
+  // Upload profile picture
+  Future<Either<String, User>> uploadProfilePicture(
+      String id, Uint8List imageFile, String filename) async {
+    try {
+      final request = http.MultipartRequest(
+        "PATCH",
+        Uri.parse("${VerisafeService.urlPrefix}/users/profile/upload/$id"),
+      );
+
+      request.headers.addAll({"Token": token});
+      request.files.add(http.MultipartFile.fromBytes(
+        "profile",
+        imageFile,
+        filename: filename,
+      ));
+
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        return right(
+          User.fromJson(json.decode(await response.stream.bytesToString())),
+        );
+      }
+
+      return Left(json.decode(await response.stream.bytesToString())["error"]);
     } catch (e) {
       if (e is http.ClientException) {
         return const Left(
