@@ -1,13 +1,25 @@
+import 'package:academia/exports/barrel.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import '../controllers/quizSettings_controller.dart';
 import '../pages/pages.dart';
 import 'widgets.dart';
 
-class ModalContent extends StatelessWidget {  
+class ModalContent extends StatefulWidget {  
   ModalContent({super.key});
 
-   List<HardCodedQuestion> questions = [
+  @override
+  State<ModalContent> createState() => _ModalContentState();
+}
+
+class _ModalContentState extends State<ModalContent> {
+  String? _filePath; 
+  String? _fileName;
+
+  List<HardCodedQuestion> questions = [
     HardCodedQuestion(
       id: '1',
       question: 'What is the capital of France?',
@@ -70,12 +82,45 @@ class ModalContent extends StatelessWidget {
     ),
   ];
 
+  Future<void> _pickFile() async {
+    try {
+      // Opens the file picker and allows user to select files
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+
+      if (result != null) {
+        // If a file is selected, update the file name and path
+        PlatformFile file = result.files.first;
+        setState(() {
+          _filePath = file.path;
+          _fileName = file.name;
+        });
+        debugPrint("File path: $_filePath");
+        debugPrint("File path: $_fileName");
+      } else {
+        // User canceled the picker
+        setState(() {
+          _filePath = null;
+          _filePath = null;
+        });
+      }
+    } catch (e) {
+      debugPrint("Error picking file: $e");
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     TextEditingController titleController = TextEditingController();
     final QuizSettingsController timerController = Get.put(QuizSettingsController());
     final TextEditingController minuteController = TextEditingController();
     final TextEditingController secondsController = TextEditingController();
+
+    // Define the maximum allowed time in seconds
+    const int maxTimeInSeconds = 900; // 15 minutes
 
      //Update controllers with current values from QuizSettingsController
     void updateControllers() {
@@ -154,7 +199,7 @@ class ModalContent extends StatelessWidget {
                         label: "Minutes",
                         controller: minuteController,
                         onChanged: (value) {
-                          timerController.minute.value = int.tryParse(value)!;
+                          timerController.minute.value = int.tryParse(value) ?? 00;
                         },
                       );
                     }),
@@ -166,7 +211,7 @@ class ModalContent extends StatelessWidget {
                         label: "Seconds",
                         controller: secondsController,
                         onChanged: (value) {
-                          timerController.seconds.value = int.tryParse(value)!;
+                          timerController.seconds.value = int.tryParse(value) ?? 00;
                         },
                       );
                     }),
@@ -175,34 +220,92 @@ class ModalContent extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20.0,),
+            const Text(
+              "Upload a file:",
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 5,),
+            Row(
+              //mainAxisSize: MainAxisSize.min,
+              children: [
+                FilledButton(
+                  onPressed: _pickFile, 
+                  style: FilledButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                  child: const Text("Upload a File"),
+                ),
+              ],
+            ),
+            if(_filePath != null)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('File Path: $_filePath'),
+            ),
             Expanded(
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    //padding: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
-                    backgroundColor: Colors.lightBlue[100],
+                child: FilledButton(
+                  style: FilledButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),
                   ),
                   onPressed: () {
-                    int? minuteValue = int.tryParse(minuteController.text);
-                    int? secondsValue = int.tryParse(secondsController.text);
-      
-                    // Ensure the values are not null
-                    if (minuteValue != null && secondsValue != null) {
-                      timerController.setTimer(minuteValue, secondsValue);
+                    int? minuteValue = int.tryParse(minuteController.text)!;
+                    int? secondsValue = int.tryParse(secondsController.text)!;
+                    int _totalTime = minuteValue * 60 + secondsValue; // use minutes and seconds
+        
+                    if (titleController.text.isEmpty) {
+                      showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text("Error"),
+                              content:
+                                  const Text("Please enter the title"),
+                              actions: [
+                                FilledButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("Oh ok"),
+                                ),
+                              ],
+                            ),
+                          );
+                          return;
+                    }
+                    else{
+                      if (_totalTime < maxTimeInSeconds) {
+                      timerController.setTimer(minuteValue, secondsValue);  
                       Navigator.push(
                         context, 
                         MaterialPageRoute(builder: (context) => QuestionScreen(questions: questions,))
                       );
-                    } else {
-                      // Handle invalid input case
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Please enter valid numbers")),
+                      }
+                      else {
+                      showDialog<void>(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Oops!"),
+                          content: const Text("You can't put more than 15 minutes"),
+                          actions: [
+                            FilledButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              }, 
+                              child: const Text("Ok"),
+                            ),
+                          ],
+                        )
                       );
-                    }
+                    } 
+                    }          
                   }, 
                   child: const Text("Generate"),
                 ),

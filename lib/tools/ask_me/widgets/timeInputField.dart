@@ -22,7 +22,7 @@ class TimeInputField extends StatelessWidget {
         SizedBox(
           width: width,
           child: TextFormField(
-            controller: controller,
+            controller: controller,   
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
             decoration: const InputDecoration(
