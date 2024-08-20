@@ -37,7 +37,36 @@ class PostService with ChirpService {
         json.decode(response.body)["error"],
       );
     } catch (e) {
-      rethrow;
+      return left(
+        "Encountered an error we did, check your connection you must, ${e.toString()}",
+      );
+    }
+  }
+
+  Future<Either<String, List<Comment>>> fetchPostComments(
+    Map<String, String> authHeaders,
+    String post, {
+    int page = 1,
+  }) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            "${ChirpService.urlPrefix}/comments/find-by-post/$post?pages=$page"),
+        headers: authHeaders,
+      );
+      if (response.statusCode == 200) {
+        final List<Map<String, dynamic>> rawData =
+            json.decode(response.body).cast<Map<String, dynamic>>();
+
+        final List<Comment> comments =
+            rawData.map((e) => Comment.fromJson(e)).toList().cast<Comment>();
+
+        return right(comments);
+      }
+      return left(
+        json.decode(response.body)["error"],
+      );
+    } catch (e) {
       return left(
         "Encountered an error we did, check your connection you must, ${e.toString()}",
       );

@@ -1,6 +1,5 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
-import '../models/models.dart';
 import 'package:dartz/dartz.dart';
 
 class ChirpController extends GetxController {
@@ -39,6 +38,18 @@ class ChirpController extends GetxController {
       posts.value = r["posts"];
       currentPage.value = r["nextPage"];
       return right(posts);
+    });
+  }
+
+  // Loading posts comments
+  Future<Either<String, List<Comment>>> fetchPostComments(Post post) async {
+    final result =
+        await _service.fetchPostComments(userController.authHeaders, post.id);
+
+    return result.fold((l) {
+      return left(l);
+    }, (r) {
+      return right(r);
     });
   }
 }

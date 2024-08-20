@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 export 'package:academia/themes/colors.dart';
 
 ThemeData lightModeTheme = ThemeData(
-  fontFamily: GoogleFonts.inter().fontFamily,
+  fontFamily: "helvetica",
   colorScheme: lightColorScheme,
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     showSelectedLabels: true,
