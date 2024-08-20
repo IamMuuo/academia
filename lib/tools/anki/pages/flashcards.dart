@@ -1,13 +1,26 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/tools/anki/models/ankicard_model.dart';
 import 'package:academia/tools/anki/widgets/widgets.dart';
 import 'package:academia/tools/anki/controllers/controllers.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class TopicFlashCards extends StatelessWidget {
-  const TopicFlashCards({super.key});
+  const TopicFlashCards({
+    super.key,
+    required this.topicId,
+  });
+
+  final int topicId;
 
   @override
   Widget build(BuildContext context) {
+    // adding AnkiCardController
+    AnkiCardController ankiCardController = Get.put(
+      AnkiCardController(
+        topicId: topicId,
+      ),
+    );
     return Scaffold(
       resizeToAvoidBottomInset: true,
       floatingActionButton: SizedBox(
@@ -50,6 +63,8 @@ class TopicFlashCards extends StatelessWidget {
                                   ansCardController.ansCard.value = cardInfo
                                       .selection
                                       .textInside(cardInfo.text);
+                                  cardAns.text =
+                                      ansCardController.ansCard.value;
                                 },
                               ),
                             ),
@@ -110,6 +125,10 @@ class TopicFlashCards extends StatelessWidget {
                             onPressed: () {
                               ansCardController.ansSwitch.value =
                                   !ansCardController.ansSwitch.value;
+                              // clearing the text fields
+                              cardInfo.clear();
+                              cardAns.clear();
+                              ansCardController.ansCard.value = "";
                             },
                             child: Obx(
                               () => Text(
@@ -118,12 +137,49 @@ class TopicFlashCards extends StatelessWidget {
                             ),
                           ),
                         ),
+                        // buttom to create card
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ElevatedButton(
-                            onPressed: () {
-                              debugPrint(
-                                  cardInfo.selection.textInside(cardInfo.text));
+                            onPressed: () async {
+                              // check for user inputs
+                              if (cardInfo.text.trim().isEmpty ||
+                                  cardAns.text.trim().isEmpty) {
+                                // tell user that all fields are required
+                                debugPrint("All Fields Are Required");
+                              }
+                              // user chose to write the answer
+                              else if (!ansCardController.ansSwitch.value) {
+                                AnkiCard ankiCard = AnkiCard(
+                                    topicId: topicId,
+                                    question: cardInfo.text.trim(),
+                                    answer: cardAns.text.trim());
+                                await ankiCardController.addAnkiCard(ankiCard);
+                                // clearing the text fields
+                                cardInfo.clear();
+                                cardAns.clear();
+                                ansCardController.ansCard.value = "";
+                                // reload the anki cards
+                                await ankiCardController.getAllTopicCards();
+                                // tell user the card is successfully added
+                              } else {
+                                // remove highlighted answer from the question
+                                String question = cardInfo.text.trim();
+                                question = question.replaceAll(
+                                    cardAns.text.trim(), "_");
+                                AnkiCard ankiCard = AnkiCard(
+                                    topicId: topicId,
+                                    question: question,
+                                    answer: cardAns.text.trim());
+                                await ankiCardController.addAnkiCard(ankiCard);
+                                // clearing the text fields
+                                cardInfo.clear();
+                                cardAns.clear();
+                                ansCardController.ansCard.value = "";
+                                // reload the anki cards
+                                await ankiCardController.getAllTopicCards();
+                                // tell user the card is successfully added
+                              }
                             },
                             child: const Text("Create Card"),
                           ),
@@ -273,7 +329,7 @@ class TopicFlashCards extends StatelessWidget {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(
+                                padding: EdgeInsets.only(
                                   left: 8,
                                 ),
                                 child: Text(
@@ -327,15 +383,61 @@ class TopicFlashCards extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.64,
-            child: ListView.builder(
-              itemBuilder: (context, idx) {
-                return list_cards[idx];
-              },
-              itemCount: list_cards.length,
-            ),
-          )
+          Obx(
+            () => ankiCardController.allCards.isEmpty
+                ? Align(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.64,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.4,
+                            child: Lottie.asset(
+                              "assets/lotties/study.json",
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Your card deck is blank! 🎴",
+                              style: Theme.of(context).textTheme.titleSmall,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Add your first card to start",
+                              style: Theme.of(context).textTheme.titleSmall,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "mastering your topics!",
+                              style: Theme.of(context).textTheme.titleSmall,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.64,
+                    child: ListView.builder(
+                      itemBuilder: (context, idx) {
+                        return FlashCardTile(
+                          ankiCard: ankiCardController.allCards[idx],
+                        );
+                      },
+                      itemCount: ankiCardController.allCards.length,
+                    ),
+                  ),
+          ),
         ],
       ),
     );

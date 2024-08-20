@@ -27,7 +27,9 @@ class GridViewTopic extends StatelessWidget {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (builder) => const TopicFlashCards(),
+          builder: (builder) => TopicFlashCards(
+            topicId: idx,
+          ),
         ),
       ),
       child: Container(

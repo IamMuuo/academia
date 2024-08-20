@@ -1,8 +1,14 @@
+import 'package:academia/tools/anki/models/ankicard_model.dart';
 import 'package:academia/tools/anki/widgets/eclipses.dart';
 import 'package:academia/exports/barrel.dart';
 
 class FlashCardTile extends StatelessWidget {
-  const FlashCardTile({super.key});
+  const FlashCardTile({
+    super.key,
+    required this.ankiCard,
+  });
+
+  final AnkiCard ankiCard;
 
   @override
   Widget build(BuildContext context) {
@@ -11,17 +17,21 @@ class FlashCardTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
-            color: Color(0xff444c55),
+            color: const Color(0xff444c55),
           ),
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(12),
           ),
         ),
         child: ListTile(
-          leading: CustomMixEclipse(),
-          title: Text("A computer is a programmable..."),
+          leading: const CustomMixEclipse(),
+          title: ankiCard.question.length > 31
+              ? Text(
+                  "${ankiCard.question.substring(0, 29)}...",
+                )
+              : Text("${ankiCard.question}..."),
           dense: false,
-          trailing: Icon(
+          trailing: const Icon(
             Icons.edit_note,
           ),
         ),
@@ -29,21 +39,3 @@ class FlashCardTile extends StatelessWidget {
     );
   }
 }
-
-var list_cards = const [
-  FlashCardTile(),
-  FlashCardTile(),
-  FlashCardTile(),
-  FlashCardTile(),
-  FlashCardTile(),
-  FlashCardTile(),
-  FlashCardTile(),
-  FlashCardTile(),
-  FlashCardTile(),
-  FlashCardTile(),
-  FlashCardTile(),
-  FlashCardTile(),
-  FlashCardTile(),
-  FlashCardTile(),
-  FlashCardTile(),
-];
