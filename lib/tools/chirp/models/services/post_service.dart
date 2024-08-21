@@ -72,4 +72,35 @@ class PostService with ChirpService {
       );
     }
   }
+
+  Future<Either<String, Comment>> postComment(
+      Map<String, String> authHeaders,
+      String userID,
+      String postID,
+      String? parentCommentID,
+      String content) async {
+    try {
+      authHeaders.addAll({"content-type": "application/json"});
+      final response = await http.post(
+          Uri.parse("${ChirpService.urlPrefix}/comments/create/"),
+          headers: authHeaders,
+          body: json.encode({
+            "user": userID,
+            "post": postID,
+            "parent": parentCommentID,
+            "content": content,
+          }));
+
+      print(response.body);
+
+      if (response.statusCode == 201) {
+        final Map<String, dynamic> rawComment = json.decode(response.body);
+        return right(Comment.fromJson(rawComment));
+      }
+      return left(json.decode(response.body.toString()));
+    } catch (e) {
+      rethrow;
+      return Left("Failed to post comment error: ${e.toString()}");
+    }
+  }
 }

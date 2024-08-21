@@ -52,4 +52,21 @@ class ChirpController extends GetxController {
       return right(r);
     });
   }
+
+  Future<Either<String, Comment>> postComment(String userID, String postID,
+      String? parentCommentID, String content) async {
+    final result = await _service.postComment(
+      userController.authHeaders,
+      userID,
+      postID,
+      parentCommentID,
+      content,
+    );
+
+    return result.fold((l) {
+      return left(l);
+    }, (r) {
+      return right(r);
+    });
+  }
 }
