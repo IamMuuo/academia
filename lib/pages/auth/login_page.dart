@@ -1,5 +1,4 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
@@ -47,14 +46,17 @@ class _LoginPageState extends State<LoginPage> {
         );
       },
       (r) {
-        if (userController.isLoggedIn.value) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const LayoutPage(),
-            ),
-          );
-          return;
-        }
+        HapticFeedback.heavyImpact().then((value) {
+          if (userController.isLoggedIn.value) {
+            if (!mounted) return;
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const LayoutPage(),
+              ),
+            );
+            return;
+          }
+        });
         r["password"] = passwordEditingController.text;
         Navigator.of(context).push(
           MaterialPageRoute(
