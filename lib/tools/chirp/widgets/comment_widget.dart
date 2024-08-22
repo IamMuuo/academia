@@ -51,9 +51,6 @@ class _CommentWidgetState extends State<CommentWidget> {
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
                       onPressed: () async {
-                        print(
-                          userController.user.value!.id!,
-                        );
                         final result = await chirpController.postComment(
                           userController.user.value!.id!,
                           widget.comment.post.id,
@@ -95,7 +92,7 @@ class _CommentWidgetState extends State<CommentWidget> {
             ),
           ),
         ),
-        padding: const EdgeInsets.all(2),
+        padding: const EdgeInsets.all(4),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

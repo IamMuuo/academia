@@ -180,6 +180,22 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12),
+                      child: Text(
+                        "Dangerous Actions",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(
+                                color: Theme.of(context).colorScheme.error),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Icon(Ionicons.trash),
+                      title: const Text("Delete my account"),
+                      onTap: () {},
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12),
                       child: FilledButton(
                         onPressed: () {
                           showDialog(

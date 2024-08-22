@@ -91,15 +91,12 @@ class PostService with ChirpService {
             "content": content,
           }));
 
-      print(response.body);
-
       if (response.statusCode == 201) {
         final Map<String, dynamic> rawComment = json.decode(response.body);
         return right(Comment.fromJson(rawComment));
       }
       return left(json.decode(response.body.toString()));
     } catch (e) {
-      rethrow;
       return Left("Failed to post comment error: ${e.toString()}");
     }
   }
