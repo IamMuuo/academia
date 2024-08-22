@@ -71,6 +71,7 @@ dependencies:
   image_cropper: ^8.0.1
   workmanager: ^0.5.2
   timeago: ^3.7.0
+  flutter_carousel_widget: ^2.0.4
   
 
 

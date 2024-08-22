@@ -1,4 +1,4 @@
-export 'package:academia/tools/exam_timetable/exams_timetable_page.dart';
+export 'package:academia/tools/exam_timetable/exam_timetable.dart';
 export 'package:flutter_pdfview/flutter_pdfview.dart';
 export 'package:academia/widgets/info_card.dart';
 export 'package:cached_network_image/cached_network_image.dart';
