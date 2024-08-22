@@ -1,4 +1,5 @@
 import 'package:academia/tools/anki/models/ankicard_model.dart';
+import 'package:academia/tools/anki/pages/edit_anki_card.dart';
 import 'package:academia/tools/anki/widgets/eclipses.dart';
 import 'package:academia/exports/barrel.dart';
 
@@ -31,8 +32,18 @@ class FlashCardTile extends StatelessWidget {
                 )
               : Text("${ankiCard.question}..."),
           dense: false,
-          trailing: const Icon(
-            Icons.edit_note,
+          trailing: IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (builder) => EditAnkiCard(
+                  ankiCard: ankiCard,
+                ),
+              ),
+            ),
+            icon: const Icon(
+              Icons.edit_note,
+            ),
           ),
         ),
       ),

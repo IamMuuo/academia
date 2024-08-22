@@ -1,6 +1,4 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/tools/anki/models/ankicard_model.dart';
-import 'package:academia/tools/anki/models/ankicard_model_helper.dart';
 import 'package:academia/tools/anki/models/models.dart';
 import 'package:get/get.dart';
 
