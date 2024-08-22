@@ -120,13 +120,13 @@ class PostCard extends StatelessWidget {
                   icon: const Icon(Ionicons.arrow_down_circle_outline),
                 ),
                 const Spacer(),
-                const IconButton(
+                IconButton(
                   onPressed: null,
                   icon: Row(
                     children: [
-                      Icon(Ionicons.chatbox_outline),
-                      SizedBox(width: 2),
-                      Text("30")
+                      const Icon(Ionicons.chatbox_outline),
+                      const SizedBox(width: 2),
+                      Text(post.commentsCount.toString())
                     ],
                   ),
                 ),
