@@ -41,6 +41,20 @@ const schemas = <String, String>{
     );
   """,
 
+  // Exams
+  "exams": """
+    CREATE TABLE IF NOT EXISTS exams (
+      course_code TEXT PRIMARY KEY,
+      day TEXT NOT NULL,
+      time TEXT NOT NULL,
+      venue TEXT NOT NULL,
+      hrs TEXT NOT NULL,
+      invigilator TEXT,
+      coordinator TEXT,
+      campus TEXT
+    );
+  """,
+
   // Rewards table
   "rewards": """
     CREATE TABLE IF NOT EXISTS rewards (
