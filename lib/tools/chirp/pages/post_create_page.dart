@@ -61,6 +61,10 @@ class _PostCreatePageState extends State<PostCreatePage> {
                   onPressed: () {},
                   icon: const Icon(Ionicons.images),
                 ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Ionicons.link_outline),
+                ),
               ],
             )
           ],
