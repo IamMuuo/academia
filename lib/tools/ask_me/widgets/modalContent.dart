@@ -82,42 +82,45 @@ class _ModalContentState extends State<ModalContent> {
     ),
   ];
 
-  Future<void> _pickFile() async {
-    try {
-      // Opens the file picker and allows user to select files
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['pdf'],
-      );
+ Future<void> _pickFile() async {
+  try {
+    debugPrint("Upload button pressed");
+    // Opens the file picker and allows user to select files
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
 
-      if (result != null) {
-        // If a file is selected, update the file name and path
-        PlatformFile file = result.files.first;
-        setState(() {
-          _filePath = file.path;
-          _fileName = file.name;
-        });
-        debugPrint("File path: $_filePath");
-        debugPrint("File path: $_fileName");
-      } else {
-        // User canceled the picker
-        setState(() {
-          _filePath = null;
-          _filePath = null;
-        });
-      }
-    } catch (e) {
-      debugPrint("Error picking file: $e");
+    if (result != null) {
+      // If a file is selected, update the file name and path
+      PlatformFile file = result.files.first;
+      setState(() {
+        _filePath = file.path;
+        _fileName = file.name;
+      });
+      debugPrint("File: $_filePath");
+      //debugPrint("File name: $_fileName");
+    } else {
+      // User canceled the picker
+      setState(() {
+        _filePath = null;
+        _fileName = null; 
+      });
     }
+  } catch (e) {
+    debugPrint("Error picking file: $e");
+    rethrow;
   }
+}
+  TextEditingController titleController = TextEditingController();
+    final QuizSettingsController timerController = Get.put(QuizSettingsController());
+    final TextEditingController minuteController = TextEditingController();
+    final TextEditingController secondsController = TextEditingController();
 
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController titleController = TextEditingController();
-    final QuizSettingsController timerController = Get.put(QuizSettingsController());
-    final TextEditingController minuteController = TextEditingController();
-    final TextEditingController secondsController = TextEditingController();
+    
 
     // Define the maximum allowed time in seconds
     const int maxTimeInSeconds = 900; // 15 minutes
@@ -232,7 +235,11 @@ class _ModalContentState extends State<ModalContent> {
               //mainAxisSize: MainAxisSize.min,
               children: [
                 FilledButton(
-                  onPressed: _pickFile, 
+                  
+                  onPressed: () async{
+                    
+                    await _pickFile();
+                  },
                   style: FilledButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
@@ -245,7 +252,7 @@ class _ModalContentState extends State<ModalContent> {
             if(_filePath != null)
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text('File Path: $_filePath'),
+                child: Text('File Path: $_fileName'),
             ),
             Expanded(
               child: Align(
