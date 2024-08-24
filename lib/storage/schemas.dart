@@ -71,7 +71,7 @@ const schemas = <String, String>{
     CREATE TABLE IF NOT EXISTS organizations (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
-      phone TEXT,id TEXT PRIMARY KEY
+      phone TEXT,
       email TEXT,
       description TEXT,
       profile TEXT,
@@ -137,7 +137,7 @@ const schemas = <String, String>{
   "files": """
     CREATE TABLE IF NOT EXISTS files (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      Title TEXT NOT NULL,
+      title TEXT NOT NULL,
       filePath TEXT NOT NULL,
       avgScore INTEGER NOT NULL,
     );
@@ -148,7 +148,7 @@ const schemas = <String, String>{
     CREATE TABLE IF NOT EXISTS scores (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       score INTEGER NOT NULL,
-      FOREIGN KEY (filesId) REFERENCES files(id) ON DELETE CASCADE
+      FOREIGN KEY (filesId) REFERENCES files(id) ON DELETE CASCADE,
     );
   """,
 };

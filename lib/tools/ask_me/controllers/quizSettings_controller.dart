@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 class QuizSettingsController extends GetxController {
   var questionType = 'Multiple choice'.obs;
+  RxBool multipleChoice = true.obs;
   var selectedTimer = 2.obs;
   var minute = 2.obs;
   var seconds = 30.obs;
