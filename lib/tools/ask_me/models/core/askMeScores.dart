@@ -1,17 +1,17 @@
-class Score {
-  final int id;
+class AskMeScores {
+  int? id;
   final int score;
   final int filesId; 
 
-  Score({
-    required this.id,
+  AskMeScores({
+    this.id,
     required this.score,
     required this.filesId,
   });
 
 
-  factory Score.fromJson(Map<String, dynamic> json) {
-    return Score(
+  factory AskMeScores.fromJson(Map<String, dynamic> json) {
+    return AskMeScores(
       id: json['id'],
       score: json['score'],
       filesId: json['filesId'], 
@@ -21,7 +21,7 @@ class Score {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'score': score,
+      'scores': score,
       'filesId': filesId,
     };
   }

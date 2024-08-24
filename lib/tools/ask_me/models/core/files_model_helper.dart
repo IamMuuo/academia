@@ -16,7 +16,7 @@ class FilesModelHelper implements DatabaseOperations {
   Future<int> create(Map<String, dynamic> data) async {
     final db = await DatabaseHelper().database;
     final id = await db.insert(
-      'files',
+      'askme_files',
       data,
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -28,7 +28,7 @@ class FilesModelHelper implements DatabaseOperations {
   @override
   Future<List<Map<String, dynamic>>> queryAll() async {
     final db = await DatabaseHelper().database;
-    final files = await db.query('files');
+    final files = await db.query('askme_files');
     return files;
   }
 
@@ -36,19 +36,19 @@ class FilesModelHelper implements DatabaseOperations {
   Future<int> delete(Map<String, dynamic> data) async {
     final db = await DatabaseHelper().database;
     return await db
-        .delete('files', where: 'id =?', whereArgs: [data["id"]]);
+        .delete('askme_files', where: 'id =?', whereArgs: [data["id"]]);
   }
 
   @override
   Future<int> update(Map<String, dynamic> data) async {
     final db = await DatabaseHelper().database;
     return await db
-        .update('files', data, where: 'id =?', whereArgs: [data['id']]);
+        .update('askme_files', data, where: 'id =?', whereArgs: [data['id']]);
   }
 
   @override
   Future<void> truncate() async {
     final db = await DatabaseHelper().database;
-    await db.execute('DELETE FROM files');
+    await db.execute('DELETE FROM askme_files');
   }
 }

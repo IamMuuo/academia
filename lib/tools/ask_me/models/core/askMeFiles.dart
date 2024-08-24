@@ -1,18 +1,18 @@
-class Files {
-  final int id;
+class AskMeFiles {
+  int? id;
   final String title;
   final String filePath;
   int avgScore;
 
-  Files({
-    required this.id,
+  AskMeFiles({
+    this.id,
     required this.title,
     required this.filePath,
-    required this.avgScore
+    required this.avgScore,
   });
 
-  factory Files.fromJson(Map<String, dynamic> json) {
-    return Files(
+  factory AskMeFiles.fromJson(Map<String, dynamic> json) {
+    return AskMeFiles(
       id: json["id"],
       title: json["title"],
       filePath: json['filePath'],

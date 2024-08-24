@@ -1,7 +1,7 @@
 import 'package:academia/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/quizSettings_controller.dart';
+import '../controllers/controllers.dart';
 import '../widgets/widgets.dart';
 
 class AskMeDashboard extends StatefulWidget {
@@ -14,6 +14,7 @@ class AskMeDashboard extends StatefulWidget {
 class _AskMeDashboardState extends State<AskMeDashboard> {
   TextEditingController titleController = TextEditingController();
   final QuizSettingsController timerController = Get.put(QuizSettingsController());
+  final FilesController filesController = Get.put(FilesController());
 
   @override
   Widget build(BuildContext context) {
@@ -62,14 +63,44 @@ class _AskMeDashboardState extends State<AskMeDashboard> {
           const SizedBox(height: 20,),
           Expanded(
             child: Container(
-              color: lightColorScheme.tertiary,
-              padding: const EdgeInsets.all(16.0),
-              child: ListView.builder(
-                itemCount: 8,
-                itemBuilder: (context, index) {
-                  return _buildQuizCard();
-                },
-              ),
+              //color: lightColorScheme.tertiary,
+              padding: const EdgeInsets.all(8.0),
+              child: Obx(() {
+                if (filesController.files.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      "Interact with our AI model to get started",
+                      style: TextStyle(color: Colors.black54, fontSize: 16.0),
+                    ),
+                  );
+                }
+                else{
+                  return ListView.builder(
+                    itemCount: filesController.files.length,
+                    itemBuilder: (context, index) {
+                      final file = filesController.files[index];
+                      final fileScores = filesController.scores
+                      .where((score) => score.filesId == file.id)
+                      .toList();
+                      return ExpansionTile(
+                        title: Text(file.title),
+                        children: [
+                          ListTile(
+                            title: Text('File Path: ${file.filePath}'),
+                            subtitle: Text('Average score: ${file.avgScore}'),
+                          ),
+                          ...fileScores.map((score) {
+                            return ListTile(
+                              title: Text('Score ID: ${score.id}'),
+                              subtitle: Text('Score: ${score.score}'),
+                            );
+                          }).toList(),
+                        ],
+                      );
+                    }
+                  );
+                }
+              })
             ),             
           ),
         ],

@@ -16,7 +16,7 @@ class ScoresModelHelper implements DatabaseOperations {
   Future<int> create(Map<String, dynamic> data) async {
     final db = await DatabaseHelper().database;
     final id = await db.insert(
-      'scores',
+      'askme_scores',
       data,
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -25,10 +25,15 @@ class ScoresModelHelper implements DatabaseOperations {
     return id;
   }
 
+  Future<List<Map<String, dynamic>>> queryScoresByFileId(int fileId) async {
+    final db = await DatabaseHelper().database;
+    return await db.query('askme_scores', where: 'filesId = ?', whereArgs: [fileId]);
+  }
+
   @override
   Future<List<Map<String, dynamic>>> queryAll() async {
     final db = await DatabaseHelper().database;
-    final scores = await db.query('scores');
+    final scores = await db.query('askme_scores');
     return scores;
   }
 
@@ -36,19 +41,19 @@ class ScoresModelHelper implements DatabaseOperations {
   Future<int> delete(Map<String, dynamic> data) async {
     final db = await DatabaseHelper().database;
     return await db
-        .delete('scores', where: 'id =?', whereArgs: [data["id"]]);
+        .delete('askme_scores', where: 'id =?', whereArgs: [data["id"]]);
   }
 
   @override
   Future<int> update(Map<String, dynamic> data) async {
     final db = await DatabaseHelper().database;
     return await db
-        .update('scores', data, where: 'id =?', whereArgs: [data['id']]);
+        .update('askme_scores', data, where: 'id =?', whereArgs: [data['id']]);
   }
 
   @override
   Future<void> truncate() async {
     final db = await DatabaseHelper().database;
-    await db.execute('DELETE FROM scores');
+    await db.execute('DELETE FROM askme_scores');
   }
 }
