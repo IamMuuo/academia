@@ -45,7 +45,6 @@ class ExamsTimeTableController extends GetxController {
     }
   }
 
-
   void nextQuote() {
     if (quotes.isNotEmpty && index.value < 49) {
       index.value++;
@@ -62,7 +61,7 @@ class ExamsTimeTableController extends GetxController {
     }
   }
 
-   Future<List<Exam>> fetchExams(List<String> units) async {
+  Future<List<Exam>> fetchExams(List<String> units) async {
     const String apiUrl = "http://academia.erick.serv00.net/timetables/exams/";
 
     try {
@@ -104,7 +103,8 @@ class ExamsTimeTableController extends GetxController {
 
         return examData;
       } else {
-        throw Exception("Failed to load exams. Status code: ${response.statusCode}");
+        throw Exception(
+            "Failed to load exams. Status code: ${response.statusCode}");
       }
     } catch (e) {
       throw Exception("Error fetching exams: $e");
@@ -158,7 +158,6 @@ class ExamsTimeTableController extends GetxController {
       List<String> courseTitles = courses
           .map((e) => "${e.unit.replaceAll('-', '')}${e.section.split('-')[0]}")
           .toList();
-      print(courseTitles);
 
       // Fetch from server and store in the database
       exams = await fetchExams(courseTitles);

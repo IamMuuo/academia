@@ -39,7 +39,7 @@ class _ToolCardState extends State<ToolCard> {
             color: Theme.of(context).colorScheme.shadow,
           ),
           borderRadius: BorderRadius.circular(4),
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.surface,
         ),
         child: Column(
           children: [
@@ -62,7 +62,8 @@ class _ToolCardState extends State<ToolCard> {
               alignment: Alignment.centerLeft,
               child: Text(widget.description),
             ),
-            ButtonBar(
+            OverflowBar(
+              alignment: MainAxisAlignment.end,
               children: [
                 TextButton(
                   child: Text(widget.action),

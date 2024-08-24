@@ -13,7 +13,7 @@ void callbackDispatcher() {
         storyController.fetchStories().then(
           (value) {
             value.fold((l) {
-              print("You pussy $l");
+              debugPrint("You pussy $l");
             }, (r) {
               notificationsController.createInstantNotification(
                 "Hey there you!",
@@ -23,7 +23,7 @@ void callbackDispatcher() {
             });
           },
         );
-        print("hey");
+        debugPrint("hey");
         break;
       default:
     }

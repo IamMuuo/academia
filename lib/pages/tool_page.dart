@@ -24,7 +24,7 @@ class _ToolsPageState extends State<ToolsPage> {
     foundTools = _allTools;
   }
 
-  void _runToolFilter(String enteredKeyWord) {
+  void runToolFilter(String enteredKeyWord) {
     List<Map<String, dynamic>> results = [];
     if (enteredKeyWord.isEmpty) {
       results = _allTools;
@@ -86,10 +86,6 @@ class _ToolsPageState extends State<ToolsPage> {
                 },
                 icon: const Icon(Ionicons.information_circle),
               ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Ionicons.search_circle_outline),
-              )
             ],
           ),
           SliverPadding(
