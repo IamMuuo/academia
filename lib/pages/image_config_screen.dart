@@ -35,7 +35,7 @@ class _ImageConfigScreenState extends State<ImageConfigScreen> {
         sourcePath: pickedImage.path,
         uiSettings: [
           AndroidUiSettings(
-            toolbarTitle: 'Cropper',
+            toolbarTitle: 'Crop image',
             toolbarColor: mounted
                 ? Theme.of(context).colorScheme.primary
                 : Colors.deepPurple,
@@ -50,7 +50,7 @@ class _ImageConfigScreenState extends State<ImageConfigScreen> {
             ],
           ),
           IOSUiSettings(
-              title: "Cropper",
+              title: "Crop image",
               minimumAspectRatio: 1.0,
               aspectRatioPresets: [
                 CropAspectRatioPreset.original,

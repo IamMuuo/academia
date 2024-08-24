@@ -1,5 +1,5 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/tools/chirp/pages/post_create_page.dart';
+import '../pages/post_create_page.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import '../widgets/widgets.dart';
@@ -21,23 +21,7 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
   void initState() {
     super.initState();
     controller.fetchPosts().then((value) {
-      value.fold((l) {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text("Error"),
-                content: Text(l),
-                actions: [
-                  FilledButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Okay"))
-                ],
-              );
-            });
-      }, (r) {});
+      value.fold((l) {}, (r) {});
     });
   }
 
@@ -57,8 +41,14 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
             ),
             actions: [
               IconButton(
-                onPressed: () {},
-                icon: const Icon(Ionicons.search_outline),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const PostCreatePage(),
+                    ),
+                  );
+                },
+                icon: const Icon(Ionicons.add),
               ),
               IconButton(
                 onPressed: () {
@@ -66,7 +56,7 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
                       builder: (context) => const EventsPage()));
                 },
                 icon: const Icon(Ionicons.flame_outline),
-              )
+              ),
             ],
             expandedHeight: 300,
             flexibleSpace: FlexibleSpaceBar(
@@ -142,16 +132,6 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const PostCreatePage(),
-            ),
-          );
-        },
-        child: const Icon(Ionicons.add),
       ),
     );
   }
