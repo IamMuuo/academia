@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/controllers.dart';
+import '../models/models.dart';
 
 class QuestionScreen extends StatefulWidget {
   final List<HardCodedQuestion> questions;
@@ -52,6 +53,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
         } else {
           _timer.cancel();
           scores.add(score);
+          _addFile(scores);
           Navigator.pushReplacement(
             context, 
             MaterialPageRoute(builder: (context) => ScoreSection(score: score)),
@@ -69,11 +71,21 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
    Future<void> _addFile(List<int> scores) async {
     try {
-      await fileController.addFile(
-        title: widget.title,
-        filePath: widget.filePath,
-        scores: scores,
+     AskMeFiles file = AskMeFiles(
+      title: widget.title, 
+      filePath: widget.filePath, 
+      avgScore: scores.isNotEmpty ? scores.reduce((a, b) => a + b) ~/ scores.length : 0, 
+    );
+      await fileController.addFile(file);
+
+      // Add the scores related to the file
+    for (int scoreValue in scores) {
+      AskMeScores score = AskMeScores(
+        score: scoreValue,
+        filesId: file.id!, // Use the ID of the file that was just added
       );
+      await fileController.addScores(score);
+    }
       // Optionally, handle success (e.g., show a message)
     } catch (e) {
       // Optionally, handle errors (e.g., show an error message)
