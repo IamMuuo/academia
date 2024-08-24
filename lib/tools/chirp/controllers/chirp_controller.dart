@@ -53,6 +53,36 @@ class ChirpController extends GetxController {
     });
   }
 
+  Future<Either<String, Post>> createPost(String title, String content) async {
+    final Post newPost = Post(
+      id: "",
+      title: title,
+      content: content,
+      upvotes: 0,
+      downvotes: 0,
+      isEdited: false,
+      isDeleted: false,
+      createdAt: DateTime.now(),
+      modifiedAt: DateTime.now(),
+      commentsCount: 0,
+      postAttachmentMedia: [],
+    );
+
+    return _service
+        .createPost(
+      userController.authHeaders,
+      newPost,
+      userController.user.value!.id!,
+    )
+        .then((value) {
+      return value.fold((l) {
+        return left(l);
+      }, (r) {
+        return right(r);
+      });
+    });
+  }
+
   Future<Either<String, Comment>> postComment(String userID, String postID,
       String? parentCommentID, String content) async {
     final result = await _service.postComment(

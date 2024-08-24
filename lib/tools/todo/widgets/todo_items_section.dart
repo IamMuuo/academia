@@ -1,6 +1,5 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
-import 'package:flutter/services.dart';
 
 class TodoItemSection extends StatefulWidget {
   const TodoItemSection({super.key});
@@ -13,7 +12,7 @@ class _TodoItemSectionState extends State<TodoItemSection> {
   final todoController = Get.find<TodoController>();
   late List<Todo> allTodos;
 
-  List<Todo> _getDueTodos() {
+  List<Todo> getDueTodos() {
     DateTime now = DateTime.now();
 
     List<Todo> dueTodos = todoController.allTodos
@@ -54,6 +53,7 @@ class _TodoItemSectionState extends State<TodoItemSection> {
                             todoController
                                 .deleteTodo(currentTodo)
                                 .then((value) {
+                              if (!context.mounted) return;
                               if (value) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -90,6 +90,7 @@ class _TodoItemSectionState extends State<TodoItemSection> {
                 ontap: () {
                   HapticFeedback.heavyImpact().then((value) {
                     todoController.updateTodo(currentTodo);
+                    if (!context.mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text("Task updated sucessfully"),

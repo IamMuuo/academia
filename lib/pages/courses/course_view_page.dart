@@ -91,6 +91,7 @@ class CourseViewPage extends StatelessWidget {
                                       .deleteCourseTopic(data);
 
                                   HapticFeedback.heavyImpact().then((value) {
+                                    if (!context.mounted) return;
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
                                             content:

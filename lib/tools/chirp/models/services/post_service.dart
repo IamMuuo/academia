@@ -43,6 +43,34 @@ class PostService with ChirpService {
     }
   }
 
+  Future<Either<String, Post>> createPost(
+    Map<String, String> authHeaders,
+    Post post,
+    String userID,
+  ) async {
+    try {
+      final rawPost = post.toJson();
+      rawPost["user"] = userID;
+
+      authHeaders.addAll({"Content-Type": "application/json"});
+      final response = await http.post(
+        Uri.parse("${ChirpService.urlPrefix}/posts/"),
+        headers: authHeaders,
+        body: json.encode(rawPost),
+      );
+
+      if (response.statusCode == 201) {
+        final Map<String, dynamic> rawPost = json.decode(response.body);
+        return right(Post.fromJson(rawPost));
+      }
+      return left(
+        json.decode(response.body)["error"] ?? "unknown error",
+      );
+    } catch (e) {
+      return const Left("Please check your internet connection and try again");
+    }
+  }
+
   Future<Either<String, List<Comment>>> fetchPostComments(
     Map<String, String> authHeaders,
     String post, {

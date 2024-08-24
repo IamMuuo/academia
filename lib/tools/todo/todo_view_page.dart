@@ -38,6 +38,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
       lastDate: DateTime.now().add(const Duration(days: 365)),
     ).then((selectedDate) {
       if (selectedDate != null) {
+        if (!mounted) return;
         showTimePicker(
           context: context,
           initialTime: TimeOfDay.now(),
@@ -214,6 +215,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                       .then((value) {
                     todoController.getAllTodos();
                     if (value) {
+                      if (!context.mounted) return;
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
@@ -251,6 +253,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                                 todoController
                                     .deleteTodo(widget.todo!)
                                     .then((value) {
+                                  if (!context.mounted) return;
                                   if (value) {
                                     Navigator.pop(context);
                                     Navigator.pop(context);
