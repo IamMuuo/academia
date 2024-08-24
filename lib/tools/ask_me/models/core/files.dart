@@ -1,16 +1,19 @@
 class Files {
+  final int id;
   final String title;
   final String filePath;
-  final int avgScore;
+  int avgScore;
 
   Files({
+    required this.id,
     required this.title,
     required this.filePath,
-    required this.avgScore,
+    required this.avgScore
   });
 
   factory Files.fromJson(Map<String, dynamic> json) {
     return Files(
+      id: json["id"],
       title: json["title"],
       filePath: json['filePath'],
       avgScore: json['avgScore'],
@@ -19,6 +22,7 @@ class Files {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'title': title,
       'filePath': filePath,
       'avgScore': avgScore,

@@ -4,10 +4,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import '../controllers/quizSettings_controller.dart';
+import '../controllers/controllers.dart';
 import '../pages/pages.dart';
 import 'widgets.dart';
 
+
+class HardCodedQuestion {
+  String id;
+  String question;
+  List<String> choices; // Either multple choice ot True/False
+  String correctAnswer;
+
+  HardCodedQuestion({
+    required this.id,
+    required this.question,
+    required this.choices,
+    required this.correctAnswer,
+  });
+}
 class ModalContent extends StatefulWidget {  
   ModalContent({super.key});
 
@@ -18,6 +32,13 @@ class ModalContent extends StatefulWidget {
 class _ModalContentState extends State<ModalContent> {
   String? _filePath; 
   String? _fileName;
+
+  final QuizSettingsController timerController = Get.put(QuizSettingsController());
+  final FilesController filesController = Get.put(FilesController());
+
+  TextEditingController titleController = TextEditingController(); 
+  final TextEditingController minuteController = TextEditingController();
+  final TextEditingController secondsController = TextEditingController();
 
   List<HardCodedQuestion> questions = [
     HardCodedQuestion(
@@ -82,6 +103,7 @@ class _ModalContentState extends State<ModalContent> {
     ),
   ];
 
+  //Function to handle uploading of files
  Future<void> _pickFile() async {
   try {
     debugPrint("Upload button pressed");
@@ -112,16 +134,11 @@ class _ModalContentState extends State<ModalContent> {
     rethrow;
   }
 }
-  TextEditingController titleController = TextEditingController();
-    final QuizSettingsController timerController = Get.put(QuizSettingsController());
-    final TextEditingController minuteController = TextEditingController();
-    final TextEditingController secondsController = TextEditingController();
+  
 
 
   @override
   Widget build(BuildContext context) {
-    
-
     // Define the maximum allowed time in seconds
     const int maxTimeInSeconds = 900; // 15 minutes
 
@@ -263,7 +280,7 @@ class _ModalContentState extends State<ModalContent> {
                       borderRadius: BorderRadius.circular(30.0),
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async{
                     int? minuteValue = int.tryParse(minuteController.text)!;
                     int? secondsValue = int.tryParse(secondsController.text)!;
                     int _totalTime = minuteValue * 60 + secondsValue; // use minutes and seconds
@@ -287,12 +304,19 @@ class _ModalContentState extends State<ModalContent> {
                           );
                           return;
                     }
-                    else{
+                    else {
                       if (_totalTime < maxTimeInSeconds) {
-                      timerController.setTimer(minuteValue, secondsValue);  
+                      timerController.setTimer(minuteValue, secondsValue); 
+
+                      
+
                       Navigator.push(
                         context, 
-                        MaterialPageRoute(builder: (context) => QuestionScreen(questions: questions,))
+                        MaterialPageRoute(builder: (context) => QuestionScreen(
+                          questions: questions,
+                          title: titleController.text,
+                          filePath: _filePath!,
+                        ))
                       );
                       }
                       else {

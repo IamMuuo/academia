@@ -1,10 +1,10 @@
 class Score {
-  //final int id;
+  final int id;
   final int score;
   final int filesId; 
 
   Score({
-    //required this.id,
+    required this.id,
     required this.score,
     required this.filesId,
   });
@@ -12,7 +12,7 @@ class Score {
 
   factory Score.fromJson(Map<String, dynamic> json) {
     return Score(
-      //id: json['id'],
+      id: json['id'],
       score: json['score'],
       filesId: json['filesId'], 
     );
@@ -20,7 +20,7 @@ class Score {
 
   Map<String, dynamic> toJson() {
     return {
-      //'id': id,
+      'id': id,
       'score': score,
       'filesId': filesId,
     };

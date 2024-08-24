@@ -1,12 +1,21 @@
 import 'dart:async';
-import 'package:academia/tools/ask_me/controllers/quizSettings_controller.dart';
+import 'package:academia/tools/ask_me/widgets/modalContent.dart';
 import 'package:academia/tools/tools.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../controllers/controllers.dart';
+
 class QuestionScreen extends StatefulWidget {
   final List<HardCodedQuestion> questions;
-  const QuestionScreen({super.key, required this.questions});
+  final String title;
+  final String filePath;
+  const QuestionScreen({
+    super.key, 
+    required this.questions,
+    required this.title,
+    required this.filePath,
+  });
 
   @override
   State<QuestionScreen> createState() => _QuestionScreenState();
@@ -23,12 +32,16 @@ class _QuestionScreenState extends State<QuestionScreen> {
   late Timer _timer;
   int _totalTime = 0; 
   int _timeLeft = 0;
+  List <int> scores = [];
+
+  final quizSettingsController = Get.find<QuizSettingsController>();
+  final fileController = Get.find<FilesController>();
 
   @override
   void initState() {
     super.initState();
 
-    final quizSettingsController = Get.find<QuizSettingsController>();
+    
      _totalTime = quizSettingsController.minute.value * 60 + quizSettingsController.seconds.value; // use minutes and seconds
     _timeLeft = _totalTime;
 
@@ -38,6 +51,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
           _timeLeft--;
         } else {
           _timer.cancel();
+          scores.add(score);
           Navigator.pushReplacement(
             context, 
             MaterialPageRoute(builder: (context) => ScoreSection(score: score)),
@@ -51,6 +65,20 @@ class _QuestionScreenState extends State<QuestionScreen> {
   void dispose() {
     _timer.cancel(); //Cancelling the timer when the widget is disposed
     super.dispose();
+  }
+
+   Future<void> _addFile(List<int> scores) async {
+    try {
+      await fileController.addFile(
+        title: widget.title,
+        filePath: widget.filePath,
+        scores: scores,
+      );
+      // Optionally, handle success (e.g., show a message)
+    } catch (e) {
+      // Optionally, handle errors (e.g., show an error message)
+      print('Error adding file: $e');
+    }
   }
 
   void _submitAnswer() {
@@ -83,6 +111,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
       }
     });
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -262,6 +292,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         ? (currentIndex == widget.questions.length - 1 ? () {
                             setState(() {
                               isNextButton = false; 
+                              scores.add(score);
+                              _addFile(scores);
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(builder: (context) => ScoreSection(score: score)),
