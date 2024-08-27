@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 
 class ChoiceWidget extends StatelessWidget {
   String label;
-  ChoiceWidget({super.key, required this.label});
+  bool multipleChoice;
+  ChoiceWidget({super.key, required this.label, required this.multipleChoice});
 
   final QuizSettingsController settingsController = Get.put(QuizSettingsController());
 
@@ -14,7 +15,7 @@ class ChoiceWidget extends StatelessWidget {
       label: Text(label), 
       selected: settingsController.questionType.value == label,
       onSelected: (bool selected) {
-        settingsController.setQuestionType(label);
+        settingsController.setQuestionType(label, multipleChoice);
       },
       selectedColor: Colors.pink[100],
       backgroundColor: Colors.grey[100],
