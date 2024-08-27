@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-
 class ExamTimeTablePage extends StatefulWidget {
   const ExamTimeTablePage({super.key});
 
@@ -19,9 +18,102 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
   bool _isSearching = false;
   bool _searchComplete = false;
   List<Exam> searchedExams = [];
+  String filter = 'All';
+
+  int todayCount = 0;
+  int tomorrowCount = 0;
+  int thisWeekCount = 0;
+  int completedCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    controller.hasExams.listen((hasExams) {
+      if (hasExams || !hasExams) {
+        calculateCounts();
+      }
+    });
+  }
+
+  void calculateCounts() {
+    final now = DateTime.now();
+
+    todayCount = controller.exams
+          .where((exam) =>
+              getExamDate(exam).isSameDate(DateTime.now()))
+          .length;
+
+    tomorrowCount = controller.exams
+        .where((exam) =>
+            getExamDate(exam).isSameDate(now.add(Duration(days: 1))))
+        .length;
+
+    final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+    final endOfWeek = startOfWeek.add(Duration(days: 6));
+
+    thisWeekCount = controller.exams
+        .where((exam) =>
+            getExamDate(exam)
+                .isAfter(startOfWeek.subtract(Duration(days: 1))) &&
+            getExamDate(exam).isBefore(endOfWeek.add(Duration(days: 1))))
+        .length;
+
+    completedCount = controller.exams
+        .where((exam) => getExamDate(exam).isBefore(now))
+        .length;
+
+    setState(() {});
+  }
+
+  List<Exam> filteredExams() {
+    final now = DateTime.now();
+    if (filter == 'Today') {
+      return controller.exams
+          .where((exam) => getExamDate(exam).isSameDate(now))
+          .toList();
+    } else if (filter == 'Tomorrow') {
+      return controller.exams
+          .where((exam) =>
+              getExamDate(exam).isSameDate(now.add(Duration(days: 1))))
+          .toList();
+    } else if (filter == 'This Week') {
+      final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+      final endOfWeek = startOfWeek.add(Duration(days: 6));
+
+      return controller.exams
+          .where((exam) =>
+              getExamDate(exam)
+                  .isAfter(startOfWeek.subtract(Duration(days: 1))) &&
+              getExamDate(exam).isBefore(endOfWeek.add(Duration(days: 1))))
+          .toList();
+    } else if (filter == 'Completed') {
+      return controller.exams
+          .where((exam) => getExamDate(exam).isBefore(now))
+          .toList();
+    } else {
+      return controller.exams;
+    }
+  }
+
+
+  DateTime getExamDate(Exam exam) {
+    final formatter = DateFormat('EEEE dd/MM/yy');
+    return formatter.parse(exam.day.title());
+  }
+
+  
+
+  
 
   @override
   Widget build(BuildContext context) {
+    final totalCounts = [
+      todayCount,
+      tomorrowCount,
+      thisWeekCount,
+      completedCount,
+    ];
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -102,6 +194,80 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                   : const SizedBox(),
             ),
           ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
+                  childAspectRatio: 1.5,
+                ),
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  final filterOptions = [
+                    'Today',
+                    'Tomorrow',
+                    'This Week',
+                    'Completed'
+                  ];
+                  final colors = [
+                    Theme.of(context).colorScheme.primary,
+                    Theme.of(context).colorScheme.tertiary,
+                    Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.secondaryContainer,
+                  ];
+
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        filter = filterOptions[index];
+                      });
+                    },
+                    child: Card(
+                      color: colors[index],
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              totalCounts[index].toString(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium!
+                                  .copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                  ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              filterOptions[index],
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall!
+                                  .copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
           SliverFillRemaining(
             hasScrollBody: true,
             child: Padding(
@@ -109,15 +275,21 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
               child: Obx(
                 () => controller.hasExams.value
                     ? ListView.builder(
-                        itemCount: controller.exams.length,
+                        itemCount: filteredExams().length,
                         itemBuilder: (context, index) => GestureDetector(
                           onDoubleTap: () async {
                             await controller
-                                .removeExamFromStorage(controller.exams[index]);
-                            
+                                .removeExamFromStorage(filteredExams()[index]);
                             controller.hasExams.refresh();
                           },
-                          child: ExamCard(exam: controller.exams[index]),
+                          child: Opacity(
+                            opacity: getExamDate(filteredExams()[index])
+                                    .isBefore(DateTime.now())
+                                ? 0.5
+                                : 1.0,
+                            child: ExamCard(exam: filteredExams()[index]),
+                          ),
+                          
                         ),
                       )
                     : Center(
@@ -134,7 +306,7 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                       ),
               ),
             ),
-          )
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -184,7 +356,6 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                                   });
                                 }
 
-                                // await examtimetableController.fetchExams();
                                 if (!mounted) {
                                   return;
                                 }
@@ -224,23 +395,21 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                                   height:
                                       MediaQuery.of(context).size.height * 0.4,
                                   child: ListView.builder(
-                                      itemCount: searchedExams.length,
-                                      itemBuilder: (context, index) =>
-                                          GestureDetector(
-                                            onDoubleTap: () async {
-                                              // Add exam
-                                              await controller.addExamToStorage(
-                                                  searchedExams[index]);
-                                              searchedExams
-                                                  .remove(searchedExams[index]);
-
-                                              controller.hasExams.refresh();
-                                              setState(() {});
-                                            },
-                                            child: ExamCard(
-                                              exam: searchedExams[index],
-                                            ),
-                                          )),
+                                    itemCount: searchedExams.length,
+                                    itemBuilder: (context, index) =>
+                                        GestureDetector(
+                                      onDoubleTap: () async {
+                                        await controller.addExamToStorage(
+                                            searchedExams[index]);
+                                        searchedExams.removeAt(index);
+                                        controller.hasExams.refresh();
+                                        setState(() {});
+                                      },
+                                      child: ExamCard(
+                                        exam: searchedExams[index],
+                                      ),
+                                    ),
+                                  ),
                                 )
                               : Container(
                                   padding: const EdgeInsets.all(12),
@@ -251,7 +420,7 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                                         .tertiaryContainer,
                                   ),
                                   child: Text(
-                                    "Please input your units seperated with commas and let the genie work his forbidden magic!",
+                                    "Please input your units separated with commas and let the genie work his forbidden magic!",
                                     textAlign: TextAlign.center,
                                     style: Theme.of(context)
                                         .textTheme
@@ -269,15 +438,39 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
             ),
           );
         },
-        child: const Icon(
-          Ionicons.search,
-        ),
+        child: const Icon(Ionicons.search),
       ),
     );
   }
 
-  DateTime getExamDate(Exam exam) {
-    final formatter = DateFormat('EEEE dd/MM/yy');
-    return formatter.parse(exam.day.title());
+  
+
+
+  Widget _buildFilterCard(BuildContext context, String title, Color color) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          filter = title;
+        });
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.2,
+        height: MediaQuery.of(context).size.width * 0.2,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Center(
+          child: Text(
+            title,
+          ),
+        ),
+      ),
+    );
+  }
+}
+extension DateHelpers on DateTime {
+  bool isSameDate(DateTime other) {
+    return year == other.year && month == other.month && day == other.day;
   }
 }
