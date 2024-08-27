@@ -7,7 +7,9 @@ class ChirpController extends GetxController {
   UserController userController = Get.find<UserController>();
   RxList<Post> posts = RxList<Post>();
   RxInt currentPage = 0.obs;
-  RxBool isLoading = false.obs;
+  RxBool feedLoading = false.obs;
+  RxBool myPostsLoading = false.obs;
+  RxBool upvotedPostsLoading = false.obs;
 
   @override
   void onInit() {
@@ -19,7 +21,7 @@ class ChirpController extends GetxController {
     bool nextPage = false,
     previousPage = false,
   }) async {
-    isLoading.value = true;
+    feedLoading.value = true;
 
     int page = 1;
 
@@ -30,7 +32,7 @@ class ChirpController extends GetxController {
     }
     final result =
         await _service.fetchPosts(userController.authHeaders, page: page);
-    isLoading.value = false;
+    feedLoading.value = false;
 
     return result.fold((l) {
       return left(l);
