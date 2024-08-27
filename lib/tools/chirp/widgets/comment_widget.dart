@@ -35,6 +35,7 @@ class _CommentWidgetState extends State<CommentWidget> {
     return SwipeTo(
       onRightSwipe: (data) {
         showModalBottomSheet(
+          useSafeArea: true,
           context: context,
           builder: (context) => Container(
             height: 120,
@@ -88,7 +89,7 @@ class _CommentWidgetState extends State<CommentWidget> {
           border: Border(
             left: BorderSide(
               color: Theme.of(context).colorScheme.tertiary,
-              width: 2.0,
+              width: 1.0,
             ),
           ),
         ),
