@@ -4,3 +4,6 @@ export 'core/askMeFiles.dart';
 export 'core/files_model_helper.dart';
 export 'core/askMeScores.dart';
 export 'core/scores_model_helper.dart';
+export 'core/multiple_choice.dart';
+export 'core/true_false.dart';
+export 'services/askme_service.dart.dart';

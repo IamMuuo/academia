@@ -3,17 +3,22 @@ import 'package:academia/tools/ask_me/widgets/modalContent.dart';
 import 'package:academia/tools/tools.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../controllers/controllers.dart';
 import '../models/models.dart';
 
 class QuestionScreen extends StatefulWidget {
-  final List<HardCodedQuestion> questions;
+  //final List<HardCodedQuestion> questions;
+  final MultipleChoiceQuiz? multipleChoiceQuiz;
+  final TrueFalseQuiz? trueFalseQuiz;
+  final int? id;
   final String title;
   final String filePath;
   const QuestionScreen({
     super.key, 
-    required this.questions,
+    this.multipleChoiceQuiz,
+    this.trueFalseQuiz,
+    this.id,
+    //required this.questions,
     required this.title,
     required this.filePath,
   });
@@ -72,6 +77,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
    Future<void> _addFile(List<int> scores) async {
     try {
      AskMeFiles file = AskMeFiles(
+      id: widget.id!,
       title: widget.title, 
       filePath: widget.filePath, 
       avgScore: scores.isNotEmpty ? scores.reduce((a, b) => a + b) ~/ scores.length : 0, 
@@ -79,13 +85,15 @@ class _QuestionScreenState extends State<QuestionScreen> {
       await fileController.addFile(file);
 
       // Add the scores related to the file
-    for (int scoreValue in scores) {
-      AskMeScores score = AskMeScores(
+      for (int scoreValue in scores) {
+        AskMeScores score = AskMeScores(
         score: scoreValue,
         filesId: file.id!, // Use the ID of the file that was just added
-      );
+        );
       await fileController.addScores(score);
-    }
+      }
+      
+      
       // Optionally, handle success (e.g., show a message)
     } catch (e) {
       // Optionally, handle errors (e.g., show an error message)
@@ -93,22 +101,62 @@ class _QuestionScreenState extends State<QuestionScreen> {
     }
   }
 
+//   Future<void> _addFile(List<int> scores) async {
+//   try {
+//     AskMeFiles file;
+//     if (widget.id != null) {
+//       File exists, update avgScore and add new scores
+//       file = await fileController.fetchScoresByFileId(widget.id!);
+//       file.avgScore = scores.isNotEmpty 
+//         ? (file.avgScore * (fileScores) + scores.reduce((a, b) => a + b)) 
+//         ~/ (fileScores.length + scores.length)
+//         : file.avgScore;
+//       await fileController.updateFile(file);
+//     } else {
+//       New file, add to the database
+//       file = AskMeFiles(
+//         title: widget.title,
+//         filePath: widget.filePath,
+//         avgScore: scores.isNotEmpty ? scores.reduce((a, b) => a + b) ~/ scores.length : 0,
+//       );
+//       await fileController.addFile(file);
+//     }
+
+//     for (int scoreValue in scores) {
+//       AskMeScores score = AskMeScores(
+//         score: scoreValue,
+//         filesId: file.id!,
+//       );
+//       await fileController.addScores(score);
+//     }
+//   } catch (e) {
+//     print('Error adding file: $e');
+//   }
+// }
+
+
   void _submitAnswer() {
     if (selectedOptionIndex == null) return;
 
     setState(() {
       isAnswered = true;
-      correctAnswer = widget.questions[currentIndex].correctAnswer;
-      if (widget.questions[currentIndex].choices[selectedOptionIndex!] == correctAnswer) {
-        score++;
+      correctAnswer = widget.multipleChoiceQuiz?.questions[currentIndex].correctAnswer ?? widget.trueFalseQuiz?.questions[currentIndex].answer;
+      if (widget.multipleChoiceQuiz != null) {
+        if (widget.multipleChoiceQuiz!.questions[currentIndex].choices[selectedOptionIndex!] == correctAnswer) {
+          score++;
+        }
+      } else if (widget.trueFalseQuiz != null) {
+        if (widget.trueFalseQuiz!.questions[currentIndex].choices[selectedOptionIndex!] == correctAnswer) {
+          score++;
+        }
       }
       isNextButton = true;
     });
   }
 
-  void _nextQuestion() {
+   void _nextQuestion() {
     setState(() {
-      if (currentIndex < widget.questions.length - 1) {
+      if (currentIndex < (widget.multipleChoiceQuiz?.questions.length ?? widget.trueFalseQuiz?.questions.length ?? 0) - 1) {
         currentIndex++;
         selectedOptionIndex = null;
         isAnswered = false;
@@ -128,11 +176,36 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (currentIndex >= widget.questions.length) {
+    final questions = widget.multipleChoiceQuiz?.questions ?? 
+                      widget.trueFalseQuiz?.questions ?? [];
+
+    if (currentIndex >= questions.length) {
       return ScoreSection(score: score,);
     }
 
-    HardCodedQuestion currentQuestion = widget.questions[currentIndex];
+    final currentQuestion = questions[currentIndex];
+
+     // Check the type of the current question and cast accordingly
+    final isMultipleChoice = widget.multipleChoiceQuiz != null;
+    final isTrueFalse = widget.trueFalseQuiz != null;
+
+    final questionText = isMultipleChoice
+      ? (currentQuestion as MultipleChoiceQuestion).question
+      : (widget.trueFalseQuiz != null)
+          ? (currentQuestion as TrueFalseQuestion).question
+          : '';
+
+    final choices = isMultipleChoice
+      ? (currentQuestion as MultipleChoiceQuestion).choices
+      : isTrueFalse
+          ? (currentQuestion as TrueFalseQuestion).choices
+          : [];
+
+    final correctAnswer = isMultipleChoice
+      ? (currentQuestion as MultipleChoiceQuestion).correctAnswer
+      : (widget.trueFalseQuiz != null)
+          ? (currentQuestion as TrueFalseQuestion).answer
+          : '';
     int minutes = _timeLeft ~/ 60;
     int seconds = _timeLeft % 60;
 
@@ -155,7 +228,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         icon: const Icon(Icons.arrow_back),
                       ),
                       Text(
-                        "${currentIndex + 1} of ${widget.questions.length}",
+                        "${currentIndex + 1} of ${questions.length}",
                         style: const TextStyle(fontSize: 18),
                       ),
                       Text(
@@ -168,7 +241,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: LinearProgressIndicator(
-                    value: progressvalue / widget.questions.length,
+                    value: progressvalue / questions.length,
                     minHeight: 10,
                     backgroundColor: const Color(0xFF006399),
                     valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF934171)),
@@ -217,11 +290,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        currentQuestion.question,
+                        questionText,
                         style: const TextStyle(fontSize: 18),
                       ),
                       const SizedBox(height: 20),
-                      ...List.generate(currentQuestion.choices.length, (index) {
+                      ...List.generate(choices.length, (index) {
                         return GestureDetector(
                           onTap: () {
                             setState(() {
@@ -253,16 +326,16 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                 ),
                                 Expanded(
                                   child: Text(
-                                    currentQuestion.choices[index],
+                                    choices[index],
                                     style: const TextStyle(fontSize: 14),
                                   ),
                                 ),
                                 if (isAnswered)
                                   Icon(
-                                    currentQuestion.choices[index] == currentQuestion.correctAnswer
+                                    choices[index] == correctAnswer
                                         ? Icons.check
                                         : Icons.close,
-                                    color: currentQuestion.choices[index] == currentQuestion.correctAnswer
+                                    color: choices[index] == correctAnswer
                                         ? Colors.green
                                         : Colors.red,
                                   ),
@@ -301,11 +374,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   padding: const EdgeInsets.all(16.0),
                   child: ElevatedButton(
                     onPressed: isNextButton
-                        ? (currentIndex == widget.questions.length - 1 ? () {
+                        ? (currentIndex == questions.length - 1 ? () {
                             setState(() {
                               isNextButton = false; 
-                              scores.add(score);
-                              _addFile(scores);
+                              // scores.add(score);
+                              // _addFile(scores);
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(builder: (context) => ScoreSection(score: score)),
@@ -315,7 +388,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         : _submitAnswer,
                     child: Text(
                       isNextButton
-                          ? (currentIndex == widget.questions.length - 1 ? "Score" : "Next")
+                          ? (currentIndex == questions.length - 1 ? "Score" : "Next")
                           : "Submit",
                     ),
                   ),

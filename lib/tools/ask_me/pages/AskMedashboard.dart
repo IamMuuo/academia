@@ -86,15 +86,41 @@ class _AskMeDashboardState extends State<AskMeDashboard> {
                         title: Text(file.title),
                         children: [
                           ListTile(
-                            title: Text('File Path: ${file.filePath}'),
-                            subtitle: Text('Average score: ${file.avgScore}'),
+                            title: Text('Average score is: ${file.avgScore}'),
                           ),
-                          ...fileScores.map((score) {
-                            return ListTile(
-                              title: Text('Score ID: ${score.id}'),
-                              subtitle: Text('Score: ${score.score}'),
-                            );
-                          }).toList(),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Wrap(
+                              spacing: 8.0,
+                              children: fileScores.map((score) {
+                                return Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text('Score ${fileScores.indexOf(score) + 1}:'),
+                                    Text('${score.score}'),
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: TextButton(
+                                onPressed: () {
+                                  _bottomSheet(
+                                    context,
+                                    id: file.id,
+                                    title: file.title,
+                                    filepath: file.filePath,
+                                  );
+                                }, 
+                                child: const Text('+ Generate more questions from this file'),
+                              ),
+                            ),
+                          ),
+                         
                         ],
                       );
                     }
@@ -109,42 +135,31 @@ class _AskMeDashboardState extends State<AskMeDashboard> {
         backgroundColor: lightColorScheme.tertiary,
         foregroundColor: Colors.white,
         onPressed: () {
-          showModalBottomSheet(
-            backgroundColor: lightColorScheme.onPrimary,
-            context: context, 
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-            ),
-            isScrollControlled: true,
-            showDragHandle: true,
-            builder: (context) => FractionallySizedBox(
-              heightFactor: 0.7,
-              child: ModalContent(),
-            ),
-          );
+          _bottomSheet(context);
         },
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  Widget _buildQuizCard() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      child: Container(
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: lightColorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Title'),
-            Text('20%'),
-          ],
-        ),
+  Future<void> _bottomSheet(BuildContext context, {int? id,String? title, String? filepath}) {
+  return showModalBottomSheet(
+    backgroundColor: lightColorScheme.onPrimary,
+    context: context,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+    ),
+    isScrollControlled: true,
+    showDragHandle: true,
+    builder: (context) => FractionallySizedBox(
+      heightFactor: 0.7,
+      child: ModalContent(
+        id: id,
+        title: title,
+        filepath: filepath,
       ),
-    );
-  }
+    ),
+  );
+}
+
 }

@@ -55,6 +55,7 @@ class FilesController extends GetxController {
 
    // Fetch scores by file ID
   Future<void> fetchScoresByFileId(int fileId) async {
+    isLoading.value = true;
     final scoreList = await ScoresModelHelper().queryScoresByFileId(fileId);
     scores.value = scoreList.map((score) => AskMeScores.fromJson(score)).toList();
   }

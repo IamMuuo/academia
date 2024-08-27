@@ -21,7 +21,7 @@ class AskMeScores {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'scores': score,
+      'score': score,
       'filesId': filesId,
     };
   }
