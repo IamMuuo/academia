@@ -1,26 +1,22 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/tools/ask_me/models/core/multiple_choice.dart';
 import 'package:academia/tools/ask_me/models/models.dart';
-import 'package:academia/tools/ask_me/models/services/askme_service.dart.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import '../controllers/controllers.dart';
-import '../pages/pages.dart';
 import 'widgets.dart';
 
 class ModalContent extends StatefulWidget {  
   int? id;
   String? title; 
   String? filepath;
+  int? avgScore;
   ModalContent({
     super.key,
     this.id,
     this.title,
     this.filepath, 
+    this.avgScore,
   });
 
   @override
@@ -267,15 +263,48 @@ class _ModalContentState extends State<ModalContent> {
                         try {
                           setState(() {
                           isLoading = true;
-                        });
+                          });
+                          int? fileId;
+                          AskMeFiles? newFile;
+                          if(widget.id != null) {
+                            final sameFile = AskMeFiles(
+                              id: widget.id,
+                              title: titleController.text, 
+                              filePath: _filePath!, 
+                              avgScore: widget.avgScore!,
+                            );
+                            await filesController.updateFile(sameFile);
+                            fileId = widget.id; // Use the existing file ID
+                            debugPrint("Field Id of existing file is $fileId");
+                          } 
+                          else{
+                            AskMeFiles file = AskMeFiles(
+                              title: titleController.text,
+                              filePath: _filePath!,
+                              avgScore: 0,
+                            );
+                            await filesController.addFile(file);
+
+                            // Reload files to get the updated list
+                            await filesController.loadFiles();
+                            
+                            // Find the newly added file
+                            final addedFiles = filesController.files.where((f) => f.filePath == file.filePath).toList();
+                            if (addedFiles.isNotEmpty) {
+                              newFile = addedFiles.last; // Assuming the newly added file is the last one
+                              fileId = newFile.id;
+                            } else {
+                              throw Exception('Failed to retrieve the new file ID.');
+                            }
+                          }                  
                           final questionsResponse = await _askMeService.fetchQuestions(        
                             title: titleController.text,
                             filePath: _filePath!,
                             multipleChoice: quizSettingsController.multipleChoice.value,
                           );
                           setState(() {
-                          isLoading = false;
-                        });
+                            isLoading = false;
+                          });
                           debugPrint("After clicking Generate Button");
                           debugPrint("Title: ${titleController.text}");
                           debugPrint("File Path: $_filePath");
@@ -284,24 +313,15 @@ class _ModalContentState extends State<ModalContent> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                if (quizSettingsController.multipleChoice.value == true) {
-                                  return QuestionScreen(
-                                    multipleChoiceQuiz: questionsResponse as MultipleChoiceQuiz,
-                                    trueFalseQuiz: null,
+                                return QuestionScreen(
+                                    multipleChoiceQuiz: quizSettingsController.multipleChoice.value == true ? questionsResponse as MultipleChoiceQuiz : null,
+                                    trueFalseQuiz: quizSettingsController.multipleChoice.value == true ? null : questionsResponse as TrueFalseQuiz,
                                     title: titleController.text,
-                                    id: widget.id,
+                                    id: fileId,
                                     filePath: _filePath!,
-                                  );
-                                } else {
-                                  return QuestionScreen(
-                                    multipleChoiceQuiz: null,
-                                    trueFalseQuiz: questionsResponse as TrueFalseQuiz,
-                                    title: titleController.text,
-                                    id: widget.id,
-                                    filePath: _filePath!,
-                                  );
-                                }
-                              },
+                                );
+                              }
+                              
                             ),
                           );
                         } catch (e) {
@@ -321,10 +341,8 @@ class _ModalContentState extends State<ModalContent> {
                             ),
                           );
                         }
-                      },
-                      
-
-                      child: const Text("Generate"),
+                      },                      
+                     child: const Text("Generate"),
                     ),  
               ),
             ),

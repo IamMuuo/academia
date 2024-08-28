@@ -52,8 +52,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
           _timeLeft--;
         } else {
           _timer.cancel();
-          scores.add(score);
-          _addFile(scores);
+          _saveScores();
           Navigator.pushReplacement(
             context, 
             MaterialPageRoute(builder: (context) => ScoreSection(score: score)),
@@ -69,65 +68,39 @@ class _QuestionScreenState extends State<QuestionScreen> {
     super.dispose();
   }
 
-   Future<void> _addFile(List<int> scores) async {
+    Future<void> _saveScores() async {
     try {
-     AskMeFiles file = AskMeFiles(
-      id: widget.id!,
-      title: widget.title, 
-      filePath: widget.filePath, 
-      avgScore: scores.isNotEmpty ? scores.reduce((a, b) => a + b) ~/ scores.length : 0, 
-    );
-      await fileController.addFile(file);
-
-      // Add the scores related to the file
-      for (int scoreValue in scores) {
-        AskMeScores score = AskMeScores(
-        score: scoreValue,
-        filesId: file.id!, // Use the ID of the file that was just added
-        );
-      await fileController.addScores(score);
-      }
+      // Save the current score
+      scores.add(score);
       
+      // Save the score in the AskMeScores table
+      for (int scoreValue in scores) {
+        AskMeScores newScore = AskMeScores(
+          score: scoreValue,
+          filesId: widget.id!, // Use the ID of the associated file
+        );
+        await fileController.addScores(newScore);
+      }
+
+      // Calculate the average score for the file
+      int totalScores = scores.reduce((a, b) => a + b);
+      int avgScore = totalScores ~/ scores.length;
+
+      // Update the average score in the AskMeFiles table
+      AskMeFiles updatedFile = AskMeFiles(
+        id: widget.id!,
+        title: widget.title, 
+        filePath: widget.filePath, 
+        avgScore: avgScore,
+      );
+      await fileController.updateFile(updatedFile);
       
       // Optionally, handle success (e.g., show a message)
     } catch (e) {
       // Optionally, handle errors (e.g., show an error message)
-      print('Error adding file: $e');
+      debugPrint('Error saving scores: $e');
     }
   }
-
-//   Future<void> _addFile(List<int> scores) async {
-//   try {
-//     AskMeFiles file;
-//     if (widget.id != null) {
-//       File exists, update avgScore and add new scores
-//       file = await fileController.fetchScoresByFileId(widget.id!);
-//       file.avgScore = scores.isNotEmpty 
-//         ? (file.avgScore * (fileScores) + scores.reduce((a, b) => a + b)) 
-//         ~/ (fileScores.length + scores.length)
-//         : file.avgScore;
-//       await fileController.updateFile(file);
-//     } else {
-//       New file, add to the database
-//       file = AskMeFiles(
-//         title: widget.title,
-//         filePath: widget.filePath,
-//         avgScore: scores.isNotEmpty ? scores.reduce((a, b) => a + b) ~/ scores.length : 0,
-//       );
-//       await fileController.addFile(file);
-//     }
-
-//     for (int scoreValue in scores) {
-//       AskMeScores score = AskMeScores(
-//         score: scoreValue,
-//         filesId: file.id!,
-//       );
-//       await fileController.addScores(score);
-//     }
-//   } catch (e) {
-//     print('Error adding file: $e');
-//   }
-// }
 
   void _submitAnswer() {
     if (selectedOptionIndex == null) return;
@@ -173,9 +146,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
     if (currentIndex >= questions.length) {
       return ScoreSection(score: score,);
     }
-
     final currentQuestion = questions[currentIndex];
-
      // Check the type of the current question and cast accordingly
     final isMultipleChoice = widget.multipleChoiceQuiz != null;
     final isTrueFalse = widget.trueFalseQuiz != null;
@@ -368,8 +339,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         ? (currentIndex == questions.length - 1 ? () {
                             setState(() {
                               isNextButton = false; 
-                              // scores.add(score);
-                              // _addFile(scores);
+                              _saveScores();
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(builder: (context) => ScoreSection(score: score)),

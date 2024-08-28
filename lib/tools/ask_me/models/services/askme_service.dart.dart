@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:academia/controllers/user_controller.dart';
 import 'package:academia/exports/barrel.dart';
 import 'package:academia/tools/ask_me/controllers/controllers.dart';
 import 'package:get/get.dart';
@@ -19,8 +18,9 @@ class AskMeService {
     required String filePath,
     required bool multipleChoice,
   }) async {
-    const userId = 'mdD5';
-
+    // var userId = userController.user.value?.id;
+    //debugPrint("User Id: $userId");
+    const userId = 'Md5';
     try {
       // Preparing the request using multipart/form-data
       var request = http.MultipartRequest(

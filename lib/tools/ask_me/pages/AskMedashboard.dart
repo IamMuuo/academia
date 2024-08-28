@@ -97,6 +97,7 @@ class _AskMeDashboardState extends State<AskMeDashboard> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Text('Score ${fileScores.indexOf(score) + 1}:'),
+                                    const Spacer(),
                                     Text('${score.score}'),
                                   ],
                                 );
@@ -114,6 +115,7 @@ class _AskMeDashboardState extends State<AskMeDashboard> {
                                     id: file.id,
                                     title: file.title,
                                     filepath: file.filePath,
+                                    avgScore: file.avgScore,
                                   );
                                 }, 
                                 child: const Text('+ Generate more questions from this file'),
@@ -142,7 +144,7 @@ class _AskMeDashboardState extends State<AskMeDashboard> {
     );
   }
 
-  Future<void> _bottomSheet(BuildContext context, {int? id,String? title, String? filepath}) {
+  Future<void> _bottomSheet(BuildContext context, {int? id,String? title, String? filepath, int? avgScore}) {
   return showModalBottomSheet(
     backgroundColor: lightColorScheme.onPrimary,
     context: context,
@@ -157,6 +159,7 @@ class _AskMeDashboardState extends State<AskMeDashboard> {
         id: id,
         title: title,
         filepath: filepath,
+        avgScore: avgScore,
       ),
     ),
   );
