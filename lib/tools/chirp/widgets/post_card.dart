@@ -105,9 +105,7 @@ class PostCard extends StatelessWidget {
                   onPressed: () {},
                   icon: Row(
                     children: [
-                      const Icon(
-                        Ionicons.arrow_up_circle_outline,
-                      ),
+                      const Icon(Ionicons.arrow_up_circle_outline),
                       Text(
                         post.upvotes.toString(),
                       )

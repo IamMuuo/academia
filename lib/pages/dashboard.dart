@@ -41,7 +41,9 @@ class DashBoard extends StatelessWidget {
             pinned: true,
             floating: false,
             snap: false,
+            leading: const SizedBox(width: 18),
             expandedHeight: 250,
+            automaticallyImplyLeading: false,
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 decoration: BoxDecoration(
