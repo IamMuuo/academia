@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import '../widgets/widgets.dart';
-import '../controllers/chirp_controller.dart';
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key});
@@ -12,68 +10,95 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
-  final ChirpController controller = Get.find<ChirpController>();
+  bool pageLoading = true;
+  bool morePostsLoading = false;
+  List<Post> feedPosts = [];
+  int nextPage = 1;
+  bool hasMorePages = true;
+
+  final UserController userController = Get.find<UserController>();
+  final PostService _service = PostService();
+  @override
+  void initState() {
+    super.initState();
+    _service.fetchPosts(userController.authHeaders).then((value) {
+      value.fold((l) {
+        debugPrint(l);
+      }, (r) {
+        feedPosts.addAll(r["posts"]);
+        if (nextPage == r["nextPage"]) {
+          setState(() {
+            hasMorePages = false;
+          });
+          return;
+        }
+
+        nextPage = r["nextPage"];
+        setState(() {});
+      });
+    });
+    setState(() {
+      pageLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-        child: Obx(
-          () => controller.feedLoading.value || true
-              ? ListView.builder(
-                  itemBuilder: (context, index) => EmptyPostCard(),
-                )
-              : Text("Loaded"),
-        ),
-        onRefresh: () async {
-          Future.delayed(Duration(seconds: 5));
-        });
+    return pageLoading
+        ? ListView.separated(
+            itemBuilder: (context, index) {
+              return const EmptyPostCard();
+            },
+            separatorBuilder: (context, index) => const SizedBox(
+                  height: 4,
+                ),
+            itemCount: 12)
+        : feedPosts.isEmpty
+            ? const Center(
+                child: Text("No posts here yet"),
+              )
+            : ListView.separated(
+                itemBuilder: (context, index) {
+                  if (index < feedPosts.length) {
+                    final post = feedPosts[index];
+                    return PostCard(post: post);
+                  }
+                  return hasMorePages
+                      ? morePostsLoading
+                          ? const LinearProgressIndicator()
+                          : TextButton(
+                              onPressed: fetchMorePosts,
+                              child: const Text("Load more"),
+                            )
+                      : const Text("You have reached the end of feed!");
+                },
+                separatorBuilder: (context, index) => const SizedBox(height: 2),
+                itemCount: feedPosts.length + 1);
+  }
+
+  Future<void> fetchMorePosts() async {
+    setState(() {
+      morePostsLoading = true;
+    });
+
+    _service
+        .fetchPosts(userController.authHeaders, page: nextPage)
+        .then((value) {
+      value.fold((l) {
+        debugPrint(l);
+      }, (r) {
+        feedPosts.addAll(r["posts"]);
+        setState(() {});
+        if (nextPage == r["nextPage"]) {
+          hasMorePages = false;
+          return;
+        }
+        nextPage = r["nextPage"];
+      });
+    });
+
+    setState(() {
+      morePostsLoading = false;
+    });
   }
 }
-// Obx(
-//                () => controller.isLoading.value
-//                    ? SingleChildScrollView(
-//                        child: Column(
-//                          children: [
-//                            Lottie.asset("assets/lotties/fetching.json"),
-//                            const SizedBox(height: 22),
-//                            Text(
-//                              "Fetching posts",
-//                              textAlign: TextAlign.center,
-//                              style: Theme.of(context).textTheme.headlineSmall,
-//                            ),
-//                          ],
-//                        ),
-//                      )
-//                    : RefreshIndicator(
-//                        onRefresh: () async {
-//                          await controller.fetchPosts();
-//                        },
-//                        child: controller.posts.isEmpty
-//                            ? SingleChildScrollView(
-//                                child: Column(
-//                                  children: [
-//                                    Lottie.asset("assets/lotties/empty.json"),
-//                                    Text(
-//                                      "Argh snap! We couldn't find posts at the moment. Please try again later",
-//                                      textAlign: TextAlign.center,
-//                                      style: Theme.of(context)
-//                                          .textTheme
-//                                          .headlineSmall,
-//                                    ),
-//                                  ],
-//                                ),
-//                              )
-//                            : ListView.separated(
-//                                itemBuilder: (context, index) {
-//                                  final data = controller.posts[index];
-//                                  return PostCard(post: data);
-//                                },
-//                                separatorBuilder: (context, index) =>
-//                                    const SizedBox(
-//                                  height: 8,
-//                                  child: Divider(thickness: 0.3),
-//                                ),
-//                                itemCount: controller.posts.length,
-//                              ),
-//                      ),
-//              ),
-//

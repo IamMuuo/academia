@@ -20,9 +20,6 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
   @override
   void initState() {
     super.initState();
-    controller.fetchPosts().then((value) {
-      value.fold((l) {}, (r) {});
-    });
   }
 
   @override
@@ -30,7 +27,7 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
       body: DefaultTabController(
-        length: 3,
+        length: 2,
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
@@ -77,9 +74,8 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
               snap: true,
               bottom: const TabBar(
                 tabs: [
-                  Tab(text: 'Feed'),
+                  Tab(text: 'My Feed'),
                   Tab(text: "My Posts"),
-                  Tab(text: "Upvoted"),
                 ],
               ),
             ),
@@ -92,11 +88,40 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
               ),
             ),
             SliverFillRemaining(
+                hasScrollBody: true,
+                fillOverscroll: true,
                 child: TabBarView(children: [
-              FeedPage(),
-              Text("Holla"),
-              Text("Moma"),
-            ])),
+                  const FeedPage(),
+                  FutureBuilder(
+                      future: controller.fetchUserPosts(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState != ConnectionState.done) {
+                          return ListView.separated(
+                              itemBuilder: (context, index) {
+                                return const EmptyPostCard();
+                              },
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                              itemCount: 12);
+                        }
+                        return snapshot.data!.fold((l) {
+                          return Center(
+                            child: Text("Snap! $l"),
+                          );
+                        }, (r) {
+                          return ListView.separated(
+                              itemBuilder: (context, index) {
+                                final post = r[index];
+                                return PostCard(post: post);
+                              },
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(height: 2),
+                              itemCount: r.length);
+                        });
+                      }),
+                ])),
           ],
         ),
       ),

@@ -27,21 +27,6 @@ class _PostCreatePageState extends State<PostCreatePage> {
           },
           icon: const Icon(Ionicons.close),
         ),
-        // actions: [
-        // IconButton(
-        //   onPressed: () {
-        //     Navigator.of(context).push(MaterialPageRoute(
-        //         builder: (context) => ImageConfigScreen(
-        //               onImagePicked: (file) {
-        //                 setState(() {
-        //                   imageFiles.add(file!);
-        //                 });
-        //               },
-        //             )));
-        // },
-        // icon: const Icon(Ionicons.attach_outline),
-        // ),
-        // ],
       ),
       body: SafeArea(
         minimum: const EdgeInsets.all(12),

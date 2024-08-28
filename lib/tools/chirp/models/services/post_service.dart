@@ -11,7 +11,7 @@ class PostService with ChirpService {
   }) async {
     try {
       final response = await http.get(
-        Uri.parse("${ChirpService.urlPrefix}/posts/all?pages=$page"),
+        Uri.parse("${ChirpService.urlPrefix}/posts/all?page=$page"),
         headers: authHeaders,
       );
 
@@ -68,6 +68,32 @@ class PostService with ChirpService {
       );
     } catch (e) {
       return const Left("Please check your internet connection and try again");
+    }
+  }
+
+  Future<Either<String, List<Post>>> fetchUserPosts(
+      Map<String, String> authHeaders, String userID) async {
+    try {
+      final response = await http.get(
+        Uri.parse("${ChirpService.urlPrefix}/posts/user/$userID"),
+        headers: authHeaders,
+      );
+      if (response.statusCode == 200) {
+        final List<Map<String, dynamic>> rawData =
+            json.decode(response.body).cast<Map<String, dynamic>>();
+
+        final List<Post> comments =
+            rawData.map((e) => Post.fromJson(e)).toList().cast<Post>();
+
+        return right(comments);
+      }
+      return left(
+        json.decode(response.body)["error"],
+      );
+    } catch (e) {
+      return left(
+        "Encountered an error we did, check your connection you must, ${e.toString()}",
+      );
     }
   }
 
