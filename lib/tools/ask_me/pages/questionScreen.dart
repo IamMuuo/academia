@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:academia/tools/ask_me/widgets/modalContent.dart';
 import 'package:academia/tools/tools.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,7 +6,6 @@ import '../controllers/controllers.dart';
 import '../models/models.dart';
 
 class QuestionScreen extends StatefulWidget {
-  //final List<HardCodedQuestion> questions;
   final MultipleChoiceQuiz? multipleChoiceQuiz;
   final TrueFalseQuiz? trueFalseQuiz;
   final int? id;
@@ -18,7 +16,6 @@ class QuestionScreen extends StatefulWidget {
     this.multipleChoiceQuiz,
     this.trueFalseQuiz,
     this.id,
-    //required this.questions,
     required this.title,
     required this.filePath,
   });
@@ -45,10 +42,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   @override
   void initState() {
-    super.initState();
-
-    
-     _totalTime = quizSettingsController.minute.value * 60 + quizSettingsController.seconds.value; // use minutes and seconds
+    super.initState();   
+    _totalTime = quizSettingsController.minute.value * 60 + quizSettingsController.seconds.value; // use minutes and seconds
     _timeLeft = _totalTime;
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -134,10 +129,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
 //   }
 // }
 
-
   void _submitAnswer() {
     if (selectedOptionIndex == null) return;
-
     setState(() {
       isAnswered = true;
       correctAnswer = widget.multipleChoiceQuiz?.questions[currentIndex].correctAnswer ?? widget.trueFalseQuiz?.questions[currentIndex].answer;
@@ -171,8 +164,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
       }
     });
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
