@@ -1,8 +1,8 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/tools/chirp/pages/post_create_page.dart';
+import '../pages/post_create_page.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import '../widgets/widgets.dart';
+import './feed_page.dart';
 import '../controllers/chirp_controller.dart';
 
 class ChirpHomePage extends StatefulWidget {
@@ -20,138 +20,110 @@ class _ChirpHomePageState extends State<ChirpHomePage> {
   @override
   void initState() {
     super.initState();
-    controller.fetchPosts().then((value) {
-      value.fold((l) {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text("Error"),
-                content: Text(l),
-                actions: [
-                  FilledButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Okay"))
-                ],
-              );
-            });
-      }, (r) {});
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const LeaderBoardPage()));
-              },
-              icon: const Icon(Ionicons.trophy_outline),
-            ),
-            actions: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Ionicons.search_outline),
-              ),
-              IconButton(
+      body: DefaultTabController(
+        length: 2,
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              title: const Text("Chirp"),
+              leading: IconButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const EventsPage()));
+                      builder: (context) => const LeaderBoardPage()));
                 },
-                icon: const Icon(Ionicons.flame_outline),
-              )
-            ],
-            expandedHeight: 300,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                        "assets/images/sketchbook-passersby-people-working-around-1.png"),
+                icon: const Icon(Ionicons.trophy_outline),
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const PostCreatePage(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Ionicons.add),
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const EventsPage()));
+                  },
+                  icon: const Icon(Ionicons.flame_outline),
+                ),
+              ],
+              expandedHeight: 300,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(
+                          "assets/images/sketchbook-passersby-people-working-around-1.png"),
+                    ),
                   ),
                 ),
               ),
-              title: const Text("Chirp"),
-            ),
-            pinned: true,
-            floating: true,
-            snap: true,
-          ),
-          SliverVisibility(
-            visible: false,
-            sliver: SliverPersistentHeader(
+              pinned: true,
               floating: true,
-              delegate: PersistentStorySliverDelegate(child: const SizedBox()),
+              snap: true,
+              bottom: const TabBar(
+                tabs: [
+                  Tab(text: 'My Feed'),
+                  Tab(text: "My Posts"),
+                ],
+              ),
             ),
-          ),
-          SliverFillRemaining(
-            child: Obx(
-              () => controller.isLoading.value
-                  ? SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Lottie.asset("assets/lotties/fetching.json"),
-                          const SizedBox(height: 22),
-                          Text(
-                            "Fetching posts",
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                        ],
-                      ),
-                    )
-                  : RefreshIndicator(
-                      onRefresh: () async {
-                        await controller.fetchPosts();
-                      },
-                      child: controller.posts.isEmpty
-                          ? SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  Lottie.asset("assets/lotties/empty.json"),
-                                  Text(
-                                    "Argh snap! We couldn't find posts at the moment. Please try again later",
-                                    textAlign: TextAlign.center,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineSmall,
-                                  ),
-                                ],
-                              ),
-                            )
-                          : ListView.separated(
+            SliverVisibility(
+              visible: false,
+              sliver: SliverPersistentHeader(
+                floating: true,
+                delegate:
+                    PersistentStorySliverDelegate(child: const SizedBox()),
+              ),
+            ),
+            SliverFillRemaining(
+                hasScrollBody: true,
+                fillOverscroll: true,
+                child: TabBarView(children: [
+                  const FeedPage(),
+                  FutureBuilder(
+                      future: controller.fetchUserPosts(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState != ConnectionState.done) {
+                          return ListView.separated(
                               itemBuilder: (context, index) {
-                                final data = controller.posts[index];
-                                return PostCard(post: data);
+                                return const EmptyPostCard();
                               },
                               separatorBuilder: (context, index) =>
                                   const SizedBox(
-                                height: 8,
-                                child: Divider(thickness: 0.3),
-                              ),
-                              itemCount: controller.posts.length,
-                            ),
-                    ),
-            ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const PostCreatePage(),
-            ),
-          );
-        },
-        child: const Icon(Ionicons.add),
+                                    height: 4,
+                                  ),
+                              itemCount: 12);
+                        }
+                        return snapshot.data!.fold((l) {
+                          return Center(
+                            child: Text("Snap! $l"),
+                          );
+                        }, (r) {
+                          return ListView.separated(
+                              itemBuilder: (context, index) {
+                                final post = r[index];
+                                return PostCard(post: post);
+                              },
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(height: 2),
+                              itemCount: r.length);
+                        });
+                      }),
+                ])),
+          ],
+        ),
       ),
     );
   }

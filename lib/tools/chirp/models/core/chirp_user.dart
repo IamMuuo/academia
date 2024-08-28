@@ -43,7 +43,7 @@ class ChirpUser {
       isActive: json['is_active'] as bool,
       dateJoined: DateTime.parse(json['date_joined'] as String),
       email: json['email'] as String,
-      profilePhoto: json['profile_photo'] as String?,
+      profilePhoto: json['profile_url'] as String?,
       firstName: json['first_name'] as String,
       lastName: json['last_name'] as String,
       upvotes: json['upvotes'] as int,

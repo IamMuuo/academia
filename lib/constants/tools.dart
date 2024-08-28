@@ -2,17 +2,17 @@ import 'package:get/get.dart';
 import 'package:academia/exports/barrel.dart';
 
 final List<Map<String, dynamic>> allTools = [
-  // {
-  //   "id": 8,
-  //   "name": "Exam Timetable",
-  //   "action": "Show exam timetable",
-  //   "image": "assets/images/exam_timetable.png",
-  //   "ontap": () {
-  //     // Get.to(const ExamTimeTablePage());
-  //   },
-  //   "description":
-  //       "Exams around the corner? Don't panic we've got you covered with the timetable",
-  // },
+  {
+    "id": 8,
+    "name": "Exam Timetable",
+    "action": "Show exam timetable",
+    "image": "assets/images/star_trek.png",
+    "ontap": () {
+      Get.to(const ExamTimeTablePage());
+    },
+    "description":
+        "Exams around the corner? Don't panic we've got you covered with the timetable",
+  },
   {
     "id": 1,
     "name": "GPA Calculator",

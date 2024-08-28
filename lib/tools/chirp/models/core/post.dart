@@ -12,6 +12,7 @@ class Post {
   final DateTime modifiedAt;
   final String? link;
   final ChirpUser? user;
+  final int commentsCount;
   final List<PostAttachmentMedia> postAttachmentMedia;
 
   Post({
@@ -24,6 +25,7 @@ class Post {
     required this.isDeleted,
     required this.createdAt,
     required this.modifiedAt,
+    required this.commentsCount,
     this.link,
     this.user,
     required this.postAttachmentMedia,
@@ -34,8 +36,9 @@ class Post {
       id: json['id'] as String,
       title: json['title'] as String,
       content: json['content'] as String,
-      upvotes: json['upvotes'] as int,
-      downvotes: json['downvotes'] as int,
+      upvotes: json['upvote_count'] as int,
+      downvotes: json['downvote_count'] as int,
+      commentsCount: json['comments_count'] as int,
       isEdited: json['is_edited'] as bool,
       isDeleted: json['is_deleted'] as bool,
       createdAt: DateTime.parse(json['created_at'] as String),
