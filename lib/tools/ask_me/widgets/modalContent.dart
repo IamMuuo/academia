@@ -85,8 +85,6 @@ class _ModalContentState extends State<ModalContent> {
     rethrow;
   }
 }
-  
-
 
   @override
   Widget build(BuildContext context) {
@@ -98,10 +96,8 @@ class _ModalContentState extends State<ModalContent> {
       minuteController.text = quizSettingsController.minute.value.toString();
       secondsController.text = quizSettingsController.seconds.value.toString();
     }
-
     // Update controllers when the widget is built
     updateControllers();
-
     return SizedBox(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
