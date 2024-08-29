@@ -38,7 +38,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   List <int> scores = [];
 
   final quizSettingsController = Get.find<QuizSettingsController>();
-  final fileController = Get.find<FilesController>();
+  final filesController = Get.find<FilesController>();
 
   @override
   void initState() {
@@ -79,12 +79,18 @@ class _QuestionScreenState extends State<QuestionScreen> {
           score: scoreValue,
           filesId: widget.id!, // Use the ID of the associated file
         );
-        await fileController.addScores(newScore);
-      }
-
-      // Calculate the average score for the file
-      int totalScores = scores.reduce((a, b) => a + b);
-      int avgScore = totalScores ~/ scores.length;
+        await filesController.addScores(newScore);
+      }   
+      //loading both the files and the scores to get the latest changes
+      await filesController.loadFiles();
+      // Load the scores associated with the current file ID (widget.id)
+      final fileScores = filesController.scores
+        .where((score) => score.filesId == widget.id)
+        .map((e) => e.score)
+        .toList();
+      // Calculating the average score for the file
+      int totalScores = fileScores.reduce((a, b) => a + b);
+      int avgScore = totalScores ~/ fileScores.length;
 
       // Update the average score in the AskMeFiles table
       AskMeFiles updatedFile = AskMeFiles(
@@ -93,7 +99,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
         filePath: widget.filePath, 
         avgScore: avgScore,
       );
-      await fileController.updateFile(updatedFile);
+      await filesController.updateFile(updatedFile);
       
       // Optionally, handle success (e.g., show a message)
     } catch (e) {

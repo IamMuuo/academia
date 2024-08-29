@@ -76,6 +76,7 @@ class _AskMeDashboardState extends State<AskMeDashboard> {
                 }
                 else{
                   return ListView.builder(
+                    shrinkWrap: true,
                     itemCount: filesController.files.length,
                     itemBuilder: (context, index) {
                       final file = filesController.files[index];
