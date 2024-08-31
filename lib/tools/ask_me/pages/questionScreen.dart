@@ -12,7 +12,7 @@ class QuestionScreen extends StatefulWidget {
   final String title;
   final String filePath;
   const QuestionScreen({
-    super.key, 
+    super.key,
     this.multipleChoiceQuiz,
     this.trueFalseQuiz,
     this.id,
@@ -33,17 +33,18 @@ class _QuestionScreenState extends State<QuestionScreen> {
   bool isNextButton = false;
   int score = 0;
   late Timer _timer;
-  int _totalTime = 0; 
+  int _totalTime = 0;
   int _timeLeft = 0;
-  List <int> scores = [];
+  List<int> scores = [];
 
   final quizSettingsController = Get.find<QuizSettingsController>();
   final filesController = Get.find<FilesController>();
 
   @override
   void initState() {
-    super.initState();   
-    _totalTime = quizSettingsController.minute.value * 60 + quizSettingsController.seconds.value; // use minutes and seconds
+    super.initState();
+    _totalTime = quizSettingsController.minute.value * 60 +
+        quizSettingsController.seconds.value; // use minutes and seconds
     _timeLeft = _totalTime;
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -54,12 +55,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
           _timer.cancel();
           _saveScores();
           Navigator.pushReplacement(
-            context, 
+            context,
             MaterialPageRoute(builder: (context) => ScoreSection(score: score)),
-            );
+          );
         }
       });
-     });
+    });
   }
 
   @override
@@ -68,26 +69,26 @@ class _QuestionScreenState extends State<QuestionScreen> {
     super.dispose();
   }
 
-    Future<void> _saveScores() async {
+  Future<void> _saveScores() async {
     try {
       // Save the current score
       scores.add(score);
-      
+
       // Save the score in the AskMeScores table
       for (int scoreValue in scores) {
         AskMeScores newScore = AskMeScores(
           score: scoreValue,
-          filesId: widget.id!, // Use the ID of the associated file
+          filesId: widget.id!, // ID of the associated file
         );
         await filesController.addScores(newScore);
-      }   
+      }
       //loading both the files and the scores to get the latest changes
       await filesController.loadFiles();
       // Load the scores associated with the current file ID (widget.id)
       final fileScores = filesController.scores
-        .where((score) => score.filesId == widget.id)
-        .map((e) => e.score)
-        .toList();
+          .where((score) => score.filesId == widget.id)
+          .map((e) => e.score)
+          .toList();
       // Calculating the average score for the file
       int totalScores = fileScores.reduce((a, b) => a + b);
       int avgScore = totalScores ~/ fileScores.length;
@@ -95,12 +96,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
       // Update the average score in the AskMeFiles table
       AskMeFiles updatedFile = AskMeFiles(
         id: widget.id!,
-        title: widget.title, 
-        filePath: widget.filePath, 
+        title: widget.title,
+        filePath: widget.filePath,
         avgScore: avgScore,
       );
       await filesController.updateFile(updatedFile);
-      
+
       // Optionally, handle success (e.g., show a message)
     } catch (e) {
       // Optionally, handle errors (e.g., show an error message)
@@ -112,13 +113,19 @@ class _QuestionScreenState extends State<QuestionScreen> {
     if (selectedOptionIndex == null) return;
     setState(() {
       isAnswered = true;
-      correctAnswer = widget.multipleChoiceQuiz?.questions[currentIndex].correctAnswer ?? widget.trueFalseQuiz?.questions[currentIndex].answer;
+      correctAnswer =
+          widget.multipleChoiceQuiz?.questions[currentIndex].correctAnswer ??
+              widget.trueFalseQuiz?.questions[currentIndex].answer;
       if (widget.multipleChoiceQuiz != null) {
-        if (widget.multipleChoiceQuiz!.questions[currentIndex].choices[selectedOptionIndex!] == correctAnswer) {
+        if (widget.multipleChoiceQuiz!.questions[currentIndex]
+                .choices[selectedOptionIndex!] ==
+            correctAnswer) {
           score++;
         }
       } else if (widget.trueFalseQuiz != null) {
-        if (widget.trueFalseQuiz!.questions[currentIndex].choices[selectedOptionIndex!] == correctAnswer) {
+        if (widget.trueFalseQuiz!.questions[currentIndex]
+                .choices[selectedOptionIndex!] ==
+            correctAnswer) {
           score++;
         }
       }
@@ -126,9 +133,13 @@ class _QuestionScreenState extends State<QuestionScreen> {
     });
   }
 
-   void _nextQuestion() {
+  void _nextQuestion() {
     setState(() {
-      if (currentIndex < (widget.multipleChoiceQuiz?.questions.length ?? widget.trueFalseQuiz?.questions.length ?? 0) - 1) {
+      if (currentIndex <
+          (widget.multipleChoiceQuiz?.questions.length ??
+                  widget.trueFalseQuiz?.questions.length ??
+                  0) -
+              1) {
         currentIndex++;
         selectedOptionIndex = null;
         isAnswered = false;
@@ -146,34 +157,37 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final questions = widget.multipleChoiceQuiz?.questions ?? 
-                      widget.trueFalseQuiz?.questions ?? [];
+    final questions = widget.multipleChoiceQuiz?.questions ??
+        widget.trueFalseQuiz?.questions ??
+        [];
 
     if (currentIndex >= questions.length) {
-      return ScoreSection(score: score,);
+      return ScoreSection(
+        score: score,
+      );
     }
     final currentQuestion = questions[currentIndex];
-     // Check the type of the current question and cast accordingly
+    // Check the type of the current question and cast accordingly
     final isMultipleChoice = widget.multipleChoiceQuiz != null;
     final isTrueFalse = widget.trueFalseQuiz != null;
 
     final questionText = isMultipleChoice
-      ? (currentQuestion as MultipleChoiceQuestion).question
-      : (widget.trueFalseQuiz != null)
-          ? (currentQuestion as TrueFalseQuestion).question
-          : '';
+        ? (currentQuestion as MultipleChoiceQuestion).question
+        : (widget.trueFalseQuiz != null)
+            ? (currentQuestion as TrueFalseQuestion).question
+            : '';
 
     final choices = isMultipleChoice
-      ? (currentQuestion as MultipleChoiceQuestion).choices
-      : isTrueFalse
-          ? (currentQuestion as TrueFalseQuestion).choices
-          : [];
+        ? (currentQuestion as MultipleChoiceQuestion).choices
+        : isTrueFalse
+            ? (currentQuestion as TrueFalseQuestion).choices
+            : [];
 
     final correctAnswer = isMultipleChoice
-      ? (currentQuestion as MultipleChoiceQuestion).correctAnswer
-      : (widget.trueFalseQuiz != null)
-          ? (currentQuestion as TrueFalseQuestion).answer
-          : '';
+        ? (currentQuestion as MultipleChoiceQuestion).correctAnswer
+        : (widget.trueFalseQuiz != null)
+            ? (currentQuestion as TrueFalseQuestion).answer
+            : '';
     int minutes = _timeLeft ~/ 60;
     int seconds = _timeLeft % 60;
 
@@ -191,7 +205,35 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     children: [
                       IconButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Confirm Exit"),
+                                content: const Text(
+                                    "Are you sure you want to quit?"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      // Dismiss the dialog and stay on the current screen
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text("Cancel"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      // Dismiss the dialog and navigate to the previous screen
+                                      Navigator.of(context)
+                                          .pop(); // Dismiss the dialog first
+                                      Navigator.pop(
+                                          context); // Then pop the current screen
+                                    },
+                                    child: const Text("Quit"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         },
                         icon: const Icon(Icons.arrow_back),
                       ),
@@ -212,7 +254,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     value: progressvalue / questions.length,
                     minHeight: 10,
                     backgroundColor: const Color(0xFF006399),
-                    valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF934171)),
+                    valueColor:
+                        const AlwaysStoppedAnimation<Color>(Color(0xFF934171)),
                   ),
                 ),
               ],
@@ -257,75 +300,91 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        questionText,
-                        style: const TextStyle(fontSize: 18),
+                      Flexible(
+                        child: Text(
+                          questionText,
+                          style: const TextStyle(fontSize: 18),
+                        ),
                       ),
                       const SizedBox(height: 20),
-                      ...List.generate(choices.length, (index) {
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedOptionIndex = index;
-                            });
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 6.0),
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: BoxDecoration(
-                              color: selectedOptionIndex == index
-                                  ? Colors.blue.shade100
-                                  : Colors.white,
-                              border: Border.all(
-                                color: Colors.grey,
+                      Wrap(
+                        spacing: 8.0,
+                        runSpacing: 8.0,
+                        children: List.generate(choices.length, (index) {
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedOptionIndex = index;
+                              });
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.85,
+                              padding: const EdgeInsets.all(10.0),
+                              decoration: BoxDecoration(
+                                color: selectedOptionIndex == index
+                                    ? Colors.blue.shade100
+                                    : Colors.white,
+                                border: Border.all(
+                                  color: Colors.grey,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              children: [
-                                Radio<int>(
-                                  value: index,
-                                  groupValue: selectedOptionIndex,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectedOptionIndex = value;
-                                    });
-                                  },
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    choices[index],
-                                    style: const TextStyle(fontSize: 14),
+                              child: Row(
+                                children: [
+                                  Radio<int>(
+                                    value: index,
+                                    groupValue: selectedOptionIndex,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedOptionIndex = value;
+                                      });
+                                    },
                                   ),
-                                ),
-                                if (isAnswered)
-                                  Icon(
-                                    choices[index] == correctAnswer
-                                        ? Icons.check
-                                        : Icons.close,
-                                    color: choices[index] == correctAnswer
-                                        ? Colors.green
-                                        : Colors.red,
+                                  Expanded(
+                                    child: Text(
+                                      choices[index],
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
                                   ),
-                              ],
+                                  if (isAnswered)
+                                    Icon(
+                                      choices[index] == correctAnswer
+                                          ? Icons.check
+                                          : Icons.close,
+                                      color: choices[index] == correctAnswer
+                                          ? Colors.green
+                                          : Colors.red,
+                                    ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      }),
+                          );
+                        }),
+                      ),
                       if (isAnswered)
                         Padding(
                           padding: const EdgeInsets.only(top: 10.0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Correct Answer:\n'
-                                '$correctAnswer',
-                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              const Text(
+                                'Correct Answer:',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              Flexible(
+                                child: Text(
+                                  correctAnswer,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold
+                                  ),
+                                  maxLines: null,
+                                ),
                               ),
                             ],
                           ),
-                        )
+                        ),
                     ],
                   ),
                 ),
@@ -342,20 +401,26 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   padding: const EdgeInsets.all(16.0),
                   child: ElevatedButton(
                     onPressed: isNextButton
-                        ? (currentIndex == questions.length - 1 ? () {
-                            setState(() {
-                              isNextButton = false; 
-                              _saveScores();
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => ScoreSection(score: score)),
-                              );
-                            });
-                          } : _nextQuestion)
+                        ? (currentIndex == questions.length - 1
+                            ? () {
+                                setState(() {
+                                  isNextButton = false;
+                                  _saveScores();
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ScoreSection(score: score)),
+                                  );
+                                });
+                              }
+                            : _nextQuestion)
                         : _submitAnswer,
                     child: Text(
                       isNextButton
-                          ? (currentIndex == questions.length - 1 ? "Score" : "Next")
+                          ? (currentIndex == questions.length - 1
+                              ? "Score"
+                              : "Next")
                           : "Submit",
                     ),
                   ),

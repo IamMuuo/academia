@@ -69,7 +69,6 @@ class _ModalContentState extends State<ModalContent> {
         throw Exception("File path is null");
       }
       // Get the file size in bytes
-
       int fileSizeInBytes = pickedFile.size;
 
       // Define the maximum file size (10MB)
@@ -94,7 +93,6 @@ class _ModalContentState extends State<ModalContent> {
 
       // Copy the file
       File copiedFile = await originalFile.copy(newPath);
-
 
       setState(() {
         _filePath = copiedFile.path;
@@ -135,13 +133,6 @@ class _ModalContentState extends State<ModalContent> {
     // The maximum allowed time in seconds 
     const int maxTimeInSeconds = 1800; // 30 minutes
 
-     //Update controllers with current values from QuizSettingsController
-    void updateControllers() {
-      minuteController.text = quizSettingsController.minute.value.toString();
-      secondsController.text = quizSettingsController.seconds.value.toString();
-    }
-    // Update controllers when the widget is built
-    updateControllers();
     return SizedBox(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -149,6 +140,13 @@ class _ModalContentState extends State<ModalContent> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
+            const Text(
+              "Enter a title for your File",
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             TextFormField(
               controller: titleController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -161,13 +159,12 @@ class _ModalContentState extends State<ModalContent> {
               textAlign: TextAlign.start,
               decoration: InputDecoration(
                 hintText: "Please Enter Title for your Document",
-                label: const Text("Title"),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(height: 20),
             const Text(
               'Question type',
               style: TextStyle(
@@ -175,7 +172,6 @@ class _ModalContentState extends State<ModalContent> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 20.0),
             Row(
               children: [
                 ChoiceWidget(label: 'Multiple choice', multipleChoice: true),
@@ -198,19 +194,18 @@ class _ModalContentState extends State<ModalContent> {
                   children: [
                       Obx(() {
                       // Update the controller values whenever the observed values change
-                      updateControllers();
+                      minuteController.text = quizSettingsController.minute.value.toString();
                       return TimeInputField(
                         label: "Minutes",
                         controller: minuteController,
                         onChanged: (value) {
-                          quizSettingsController.minute.value = int.tryParse(value) ?? 00;
+                          quizSettingsController.minute.value = int.tryParse(value) ?? 2;
                         },
                       );
                     }),
                     const Text(" : ", style: TextStyle(fontSize: 20)),
                     Obx(() {
-                      // Update the controller values whenever the observed values change
-                      updateControllers();
+                      secondsController.text = quizSettingsController.seconds.value.toString();
                       return TimeInputField(
                         label: "Seconds",
                         controller: secondsController,
@@ -227,7 +222,7 @@ class _ModalContentState extends State<ModalContent> {
             const Text(
               "Select a PDF file to upload (Max 10MB):",
               style: TextStyle(
-                fontSize: 20.0,
+                fontSize: 18.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
