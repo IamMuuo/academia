@@ -1,5 +1,5 @@
 export 'quiz.dart';
-export 'quizSettings.dart';
-export 'questionScreen.dart';
-export 'scoreSection.dart';
-export 'AskMedashboard.dart';
+export 'quiz_settings.dart';
+export 'question_screen.dart';
+export 'score_section.dart';
+export 'askme_home.dart';

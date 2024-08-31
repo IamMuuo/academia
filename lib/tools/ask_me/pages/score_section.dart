@@ -122,7 +122,7 @@ class ScoreSection extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const AskMeDashboard()),
+                      MaterialPageRoute(builder: (context) => const AskMeHome()),
                     );
                   },
                   style: ElevatedButton.styleFrom(

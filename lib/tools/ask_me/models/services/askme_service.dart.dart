@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/tools/ask_me/controllers/controllers.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
@@ -10,8 +9,6 @@ class AskMeService {
   static const String askMeUrlPrefix = "http://62.169.16.219:83";
 
   final UserController userController = Get.find<UserController>();
-  final FilesController filesController = Get.find<FilesController>();
-  final QuizSettingsController quizSettingsController = Get.find<QuizSettingsController>();
 
   Future<dynamic> fetchQuestions({
     required String title,
@@ -85,4 +82,3 @@ class AskMeService {
   }
 }
 
-// {True or False: Lust is not a gender-specific issue, and it is not a problem that getting married will solve.: True}

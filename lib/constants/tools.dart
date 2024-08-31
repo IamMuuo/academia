@@ -152,7 +152,7 @@ final List<Map<String, dynamic>> allTools = [
     "action": "Ask Me",
     "image": "assets/images/think.jpeg",
     "ontap": () {
-      Get.to(AskMeDashboard());
+      Get.to(AskMeHome());
     },
     "description": "Generate quiz questions from your notes and study materials with our AI tool."
 
