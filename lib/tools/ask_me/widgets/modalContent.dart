@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import '../controllers/controllers.dart';
 import 'widgets.dart';
+import 'package:path/path.dart' as path;
+
 
 class ModalContent extends StatefulWidget {  
   int? id;
@@ -62,12 +64,33 @@ class _ModalContentState extends State<ModalContent> {
 
     if (result != null) {
       // If a file is selected, update the file name and path
-      PlatformFile file = result.files.first;
+      PlatformFile pickedFile = result.files.first;
+      if (pickedFile.path == null) {
+        throw Exception("File path is null");
+      }
+
+      File originalFile = File(pickedFile.path!);
+
+      //Get the app's documents directory
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+
+      // Create a unique file name to prevent conflicts
+      String uniqueFileName = '${DateTime.now().millisecondsSinceEpoch}_${pickedFile.name}';
+
+      // Define the new path
+      String newPath = path.join(appDocPath, uniqueFileName);
+
+      // Copy the file
+      File copiedFile = await originalFile.copy(newPath);
+
+
       setState(() {
-        _filePath = file.path;
-        _fileName = file.name;
+        _filePath = copiedFile.path;
+        _fileName = copiedFile.path.split('/').last;
       });
       debugPrint("File: $_filePath");
+      debugPrint("File Name: $_fileName");
       //debugPrint("File name: $_fileName");
     } else {
       // User canceled the picker
@@ -78,7 +101,22 @@ class _ModalContentState extends State<ModalContent> {
     }
   } catch (e) {
     debugPrint("Error picking file: $e");
-    rethrow;
+    showDialog(
+      // ignore: use_build_context_synchronously
+      context: context, 
+      builder: (context) => AlertDialog(
+        title: const Text("Error"),
+        content: Text("Failed to upload the file: $e"),
+        actions: [
+          FilledButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text("Ok"),
+          ),
+        ],
+      )
+    );
   }
 }
 
@@ -222,7 +260,8 @@ class _ModalContentState extends State<ModalContent> {
                       onPressed: () async {
                         int? minuteValue = int.tryParse(minuteController.text);
                         int? secondsValue = int.tryParse(secondsController.text);
-                        int _totalTime = (minuteValue ?? 0) * 60 + (secondsValue ?? 0);
+                        int totalTime = (minuteValue ?? 0) * 60 + (secondsValue ?? 0);
+                        //Ensuring title and file path are not null
                         if (titleController.text.isEmpty || _filePath == null) {
                           showDialog(
                             context: context,
@@ -241,7 +280,8 @@ class _ModalContentState extends State<ModalContent> {
                           );
                           return;
                         }
-                        if (_totalTime > maxTimeInSeconds) {
+                        //Ensuring time selected does not exceed specified limit
+                        if (totalTime > maxTimeInSeconds) {
                           showDialog<void>(
                             context: context,
                             builder: (context) => AlertDialog(
@@ -259,6 +299,28 @@ class _ModalContentState extends State<ModalContent> {
                           );
                           return;
                         }
+                        //Validating file existence
+                        File file = File(_filePath!);
+                        if (!await file.exists()) {
+                          showDialog(
+                            // ignore: use_build_context_synchronously
+                            context: context, 
+                            builder: (context) => AlertDialog(
+                              title: const Text("File Not Found"),
+                              content: const Text("The uploaded file could not be found. Please re-upload the file."),
+                              actions: [
+                                FilledButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text("Ok"),
+                                ),
+                              ],
+                            ),
+                          );
+                          return;
+                        }
+
                         quizSettingsController.setTimer(minuteValue!, secondsValue!);
                         try {
                           setState(() {
@@ -266,6 +328,7 @@ class _ModalContentState extends State<ModalContent> {
                           });
                           int? fileId;
                           AskMeFiles? newFile;
+                          //Existing file in the local db hence the file will be updated
                           if(widget.id != null) {
                             final sameFile = AskMeFiles(
                               id: widget.id,
@@ -278,6 +341,7 @@ class _ModalContentState extends State<ModalContent> {
                             debugPrint("Field Id of existing file is $fileId");
                           } 
                           else{
+                            //Executing this block means the file does not exist, hence the entry would be added to local db
                             AskMeFiles file = AskMeFiles(
                               title: titleController.text,
                               filePath: _filePath!,
@@ -310,6 +374,7 @@ class _ModalContentState extends State<ModalContent> {
                           debugPrint("File Path: $_filePath");
                           debugPrint("Question Type: ${quizSettingsController.multipleChoice.value}");
                           Navigator.push(
+                            // ignore: use_build_context_synchronously
                             context,
                             MaterialPageRoute(
                               builder: (context) {
@@ -320,12 +385,12 @@ class _ModalContentState extends State<ModalContent> {
                                     id: fileId,
                                     filePath: _filePath!,
                                 );
-                              }
-                              
+                              }                            
                             ),
                           );
                         } catch (e) {
                           showDialog(
+                            // ignore: use_build_context_synchronously
                             context: context,
                             builder: (context) => AlertDialog(
                               title: const Text("Error"),
