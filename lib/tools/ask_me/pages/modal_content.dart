@@ -4,7 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import '../controllers/controllers.dart';
-import 'widgets.dart';
+import '../widgets/widgets.dart';
 import 'package:path/path.dart' as path;
 
 

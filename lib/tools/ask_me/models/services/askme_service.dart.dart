@@ -17,7 +17,7 @@ class AskMeService {
   }) async {
     // var userId = userController.user.value?.id;
     //debugPrint("User Id: $userId");
-    const userId = 'Md5';
+    const userId = 'Md5'; //Custom User Id for testing purposes
     try {
       // Preparing the request using multipart/form-data
       var request = http.MultipartRequest(

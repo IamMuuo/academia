@@ -8,17 +8,22 @@ class ScoreSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  String quotes = '';
-  if (score >= 0 && score <= 3) {
-    quotes = 'Keep Trying, You’re Almost There!';
-  } else if (score >= 4 && score <= 6) {
-    quotes = 'Well Done, You’re Making Progress!';
-  } else if (score >= 7 && score <= 9) {
-    quotes = 'Great Job, Keep Up the Good Work!';
-  } else {
-    quotes = 'Outstanding, You’ve Really Excelled!';
-  }
-  
+    String quotes;
+    String emoji;
+    if (score >= 0 && score <= 3) {
+      quotes = 'Keep Trying, You’re Almost There!';
+      emoji = '😅';
+    } else if (score >= 4 && score <= 6) {
+      quotes = 'Well Done, You’re Making Progress!';
+      emoji = '👏';
+    } else if (score >= 7 && score <= 9) {
+      quotes = 'Great Job, Keep Up the Good Work!';
+      emoji = '👍';
+    } else {
+      quotes = 'Outstanding, You’ve Really Excelled!';
+      emoji = '🏆';
+    }
+
     return Scaffold(
       // appBar: AppBar(
       //   title: const Text("The End"),
@@ -27,9 +32,10 @@ class ScoreSection extends StatelessWidget {
         children: [
           Expanded(
             flex: 2,
-            child: Image.asset('assets/images/congratulations_askMe.jpeg', 
-            width: 400,
-            fit: BoxFit.cover,
+            child: Image.asset(
+              'assets/images/congratulations_askMe.jpeg',
+              width: 400,
+              fit: BoxFit.cover,
             ),
           ),
           Expanded(
@@ -77,28 +83,31 @@ class ScoreSection extends StatelessWidget {
                     children: [
                       const Text(
                         "Congratulations",
-                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
                       const Text(
                         "You completed the test!",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w300),
                       ),
                       const SizedBox(height: 20),
                       Text(
                         "your score".toUpperCase(),
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 10),
                       Text(
                         "$score/10",
-                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 10),
-                      const Icon(
-                        Icons.sentiment_dissatisfied,
-                        color: Colors.yellow,
-                        size: 40,
+                      Text(
+                        emoji,
+                        style: const TextStyle(fontSize: 30),
                       ),
                       const SizedBox(height: 10),
                       Text(
@@ -122,12 +131,10 @@ class ScoreSection extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const AskMeHome()),
+                      MaterialPageRoute(
+                          builder: (context) => const AskMeHome()),
                     );
                   },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  ),
                   child: const Text("Complete"),
                 ),
               ),
@@ -138,5 +145,3 @@ class ScoreSection extends StatelessWidget {
     );
   }
 }
-
-
