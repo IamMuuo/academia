@@ -68,6 +68,17 @@ class _ModalContentState extends State<ModalContent> {
       if (pickedFile.path == null) {
         throw Exception("File path is null");
       }
+      // Get the file size in bytes
+
+      int fileSizeInBytes = pickedFile.size;
+
+      // Define the maximum file size (10MB)
+      const int maxFileSizeInBytes = 10 * 1024 * 1024; // 10MB
+
+      // Check if the file size exceeds the maximum allowed size
+      if (fileSizeInBytes > maxFileSizeInBytes) {
+        throw Exception("File size exceeds the maximum limit of 10MB.");
+      }
 
       File originalFile = File(pickedFile.path!);
 
@@ -91,7 +102,6 @@ class _ModalContentState extends State<ModalContent> {
       });
       debugPrint("File: $_filePath");
       debugPrint("File Name: $_fileName");
-      //debugPrint("File name: $_fileName");
     } else {
       // User canceled the picker
       setState(() {
@@ -215,7 +225,7 @@ class _ModalContentState extends State<ModalContent> {
             ),
             const SizedBox(height: 20.0,),
             const Text(
-              "Upload a file:",
+              "Select a PDF file to upload (Max 10MB):",
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
