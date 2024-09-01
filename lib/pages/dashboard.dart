@@ -1,32 +1,10 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:academia/pages/courses/widgets/course_card.dart';
-import 'package:dartz/dartz.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
 import 'package:lottie/lottie.dart';
-import 'package:http/http.dart' as http;
 
 class DashBoard extends StatelessWidget {
   const DashBoard({super.key});
-
-  Future<Either<String, Map<String, dynamic>>> fetchTodayQuotes() async {
-    try {
-      final response =
-          await http.get(Uri.parse("https://today.zenquotes.io/api"));
-
-      if (response.statusCode == 200) {
-        return right(json.decode(response.body)["data"]);
-      }
-
-      return const Left("An error, there is. Server unavailable, it is.");
-    } catch (e) {
-      if (e is ClientException) {
-        return const Left(
-            "Failed to fetch todays quote we have, the force not strong with you.");
-      }
-      return Left(e.toString());
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
