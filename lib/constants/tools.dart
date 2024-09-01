@@ -54,39 +54,6 @@ final List<Map<String, dynamic>> allTools = [
     "description":
         "Psst! Elearning is here for you. Keep track of your assignments and notes!",
   },
-  {
-    "id": 3,
-    "name": "Generate Catering Token",
-    "action": "Generate Token",
-    "image": "assets/images/food.png",
-    "ontap": () async {
-      var result = await magnet.fetchCateringToken();
-      result.fold((l) {
-        Get.defaultDialog(
-            title: "Error",
-            content: Text(l.toString()),
-            actions: [
-              FilledButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  child: const Text("Ok"))
-            ]);
-      }, (r) {
-        Get.defaultDialog(
-            title: "Your Token",
-            content: Text("Your Token is ${r['message'] ?? ''}"),
-            actions: [
-              FilledButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  child: const Text("Ok"))
-            ]);
-      });
-    },
-    "description": "Hungry? Maybe its time to generate your catering token!"
-  },
   // {
   //   "id": 5,
   //   "name": "Student Audit",
@@ -139,7 +106,7 @@ final List<Map<String, dynamic>> allTools = [
     "id": 9,
     "name": "Task Manager",
     "action": "Manage your tasks",
-    "image": "assets/images/man-with-glass.png",
+    "image": "assets/images/organize.png",
     "ontap": () {
       Get.to(const TodoHomeScreen());
     },

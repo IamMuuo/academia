@@ -1,6 +1,5 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'widgets/course_card.dart';
 
 class CoursesPage extends StatefulWidget {
@@ -33,9 +32,7 @@ class _CoursesPageState extends State<CoursesPage> {
                     ],
                   ),
                 ), (r) {
-          setState(
-            () {},
-          );
+          setState(() {});
         });
       },
       child: CustomScrollView(
@@ -135,9 +132,10 @@ class _CoursesPageState extends State<CoursesPage> {
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Lottie.asset("assets/lotties/empty.json"),
+                        // Lottie.asset("assets/lotties/empty.json"),
+                        Image.asset("assets/images/study.gif"),
                         Text(
-                          "Sense a mistake, you do? Refresh, you must. Pull to refresh, and clarity you shall find.",
+                          "No courses available right now, pull to refresh",
                           style: Theme.of(context).textTheme.headlineSmall,
                           textAlign: TextAlign.center,
                         )
