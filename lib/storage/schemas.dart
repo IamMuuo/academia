@@ -131,5 +131,25 @@ const schemas = <String, String>{
       name TEXT NOT NULL,
       description TEXT NOT NULL
     );
-  """
+  """,
+  //Ask Me
+  //Files from Ask Me from which questions are being generated
+  "askme_files": """
+    CREATE TABLE IF NOT EXISTS askme_files (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      filePath TEXT NOT NULL,
+      avgScore INTEGER NOT NULL
+    );
+  """,
+  
+  //AskMe Scores
+  "askme_scores": """
+    CREATE TABLE IF NOT EXISTS askme_scores (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      score INTEGER NOT NULL,
+      filesId INTEGER,
+      FOREIGN KEY (filesId) REFERENCES askme_files(id) ON DELETE CASCADE
+    );
+  """,
 };

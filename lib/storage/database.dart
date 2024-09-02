@@ -7,7 +7,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 ///
 /// The database helper class is a singleton class that provides
 ///
-/// 1. The atabase connection instance.
+/// 1. The database connection instance.
 /// 2. The database name
 ///
 /// By default the database should be stored in the application's
