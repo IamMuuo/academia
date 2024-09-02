@@ -110,8 +110,27 @@ class _QuestionScreenState extends State<QuestionScreen> {
   }
 
   void _submitAnswer() {
-    if (selectedOptionIndex == null) return;
-    setState(() {
+    if (selectedOptionIndex == null) {
+      showDialog(
+        // ignore: use_build_context_synchronously
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Error!!"),
+          content: const Text(
+              "Please choose an answer to proceed to the next question."),
+          actions: [
+            FilledButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Oh ok"),
+            ),
+          ],
+        ),
+      );
+    }
+    else {
+      setState(() {
       isAnswered = true;
       correctAnswer =
           widget.multipleChoiceQuiz?.questions[currentIndex].correctAnswer ??
@@ -130,7 +149,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
         }
       }
       isNextButton = true;
-    });
+      });
+    }
   }
 
   void _nextQuestion() {
@@ -376,9 +396,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                 child: Text(
                                   correctAnswer,
                                   style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold
-                                  ),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
                                   maxLines: null,
                                 ),
                               ),

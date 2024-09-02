@@ -114,7 +114,7 @@ class _ModalContentState extends State<ModalContent> {
       context: context, 
       builder: (context) => AlertDialog(
         title: const Text("Error"),
-        content: Text("Failed to upload the file: $e"),
+        content: const Text("Failed to upload the file. Please try again"),
         actions: [
           FilledButton(
             onPressed: () {
@@ -398,8 +398,8 @@ class _ModalContentState extends State<ModalContent> {
                             // ignore: use_build_context_synchronously
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text("Error"),
-                              content: Text(e.toString()),
+                              title: const Text("Oh-no!!!"),
+                              content: const Text("Something went wrong. Try again, and if it keeps happening, some documents might not work right now. We're fixing it!"),
                               actions: [
                                 FilledButton(
                                   onPressed: () {
@@ -410,6 +410,9 @@ class _ModalContentState extends State<ModalContent> {
                               ],
                             ),
                           );
+                          setState(() {
+                            isLoading = false;
+                          });
                         }
                       },                      
                      child: const Text("Generate"),

@@ -15,9 +15,16 @@ class AskMeService {
     required String filePath,
     required bool multipleChoice,
   }) async {
-    // var userId = userController.user.value?.id;
-    //debugPrint("User Id: $userId");
-    const userId = 'Md5'; //Custom User Id for testing purposes
+    var userId = userController.user.value?.id;
+    debugPrint("User Id: $userId");
+    //const userId = 'Md5'; //Custom User Id for testing purposes
+    /*
+    For testing purposes as of now, I would recommend you to uncomment the above 
+    while comment the userId gotten from the userController since there is an issue
+    at the moment on the backend since the backend does not expect the current number 
+    of characters for the user id which is 32 which is a really large number.
+    The above issue is currently being fixed though.
+    */
     try {
       // Preparing the request using multipart/form-data
       var request = http.MultipartRequest(
@@ -26,7 +33,7 @@ class AskMeService {
       );
 
       // Adding fields to the request
-      request.fields['user_id'] = userId;
+      request.fields['user_id'] = userId!;
       request.fields['title'] = title;
       request.fields['multi_choice'] = multipleChoice.toString();
 
