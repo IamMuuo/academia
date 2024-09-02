@@ -11,6 +11,7 @@ class ProfilePage extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
+          automaticallyImplyLeading: false,
           pinned: true,
           snap: true,
           floating: true,

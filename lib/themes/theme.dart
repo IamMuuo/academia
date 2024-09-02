@@ -1,5 +1,4 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:google_fonts/google_fonts.dart';
 export 'package:academia/themes/colors.dart';
 
 ThemeData lightModeTheme = ThemeData(
@@ -12,7 +11,7 @@ ThemeData lightModeTheme = ThemeData(
 );
 
 ThemeData darkModeTheme = ThemeData(
-  fontFamily: GoogleFonts.inter().fontFamily,
+  fontFamily: "helvetica",
   colorScheme: darkColorScheme,
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     showSelectedLabels: true,

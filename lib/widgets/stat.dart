@@ -15,7 +15,7 @@ class Stat extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: CircularPercentIndicator(
         footer: Text(title),
-        center: Text("${(percentage * 100).toStringAsPrecision(2)}%"),
+        center: Text("${(percentage * 100).toStringAsFixed(1)}%"),
         curve: Curves.elasticIn,
         lineWidth: 18,
         animation: true,

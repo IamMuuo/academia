@@ -19,6 +19,7 @@ class CourseViewPage extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            automaticallyImplyLeading: true,
             expandedHeight: 250,
             snap: true,
             pinned: true,
