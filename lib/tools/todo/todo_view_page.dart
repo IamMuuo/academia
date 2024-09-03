@@ -263,7 +263,11 @@ class _TodoViewPageState extends State<TodoViewPage> {
                   if (notify) {
                     // notification logic
                     notificationsController.scheduleNotification(
-                      dueDate.subtract(const Duration(hours: 6)),
+                      DateTime.now().copyWith(
+                        hour: 8,
+                        month: null,
+                        day: null,
+                      ),
                       "Todos",
                       "Todo $todoController needs your attention",
                       repeats: true,

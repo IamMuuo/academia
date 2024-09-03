@@ -70,8 +70,8 @@ class TodoController extends GetxController {
   }
 
   Future<bool> deleteTodo(Todo t) async {
+    allTodos.removeWhere((value) => t.id == value.id);
     int value = await TodoModelHelper().delete(t.toJson());
-    getAllTodos();
     return value == 0 ? false : true;
   }
 }
