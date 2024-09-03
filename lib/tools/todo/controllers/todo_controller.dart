@@ -48,12 +48,14 @@ class TodoController extends GetxController {
 
   Future<bool> addTask(Todo t) async {
     int value = await TodoModelHelper().create(t.toJson());
+    allTodos.add(t);
     return value == 0 ? false : true;
   }
 
   Future<bool> updateTodo(Todo t) async {
-    t.complete = !t.complete;
+    allTodos.removeWhere((todo) => todo.id == t.id);
     int value = await TodoModelHelper().update(t.toJson());
+    allTodos.add(t);
     return value == 0 ? false : true;
   }
 

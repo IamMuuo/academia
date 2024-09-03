@@ -111,7 +111,7 @@ final List<Map<String, dynamic>> allTools = [
       Get.to(const TodoHomeScreen());
     },
     "description":
-        "Having trouble keeping track of your Assignments? We've got you covered",
+        "Having trouble keeping track of your todos? We've got you covered",
   },
   {
     "id": 10,
@@ -119,9 +119,9 @@ final List<Map<String, dynamic>> allTools = [
     "action": "Ask Me",
     "image": "assets/images/think.jpeg",
     "ontap": () {
-      Get.to(AskMeHome());
+      Get.to(const AskMeHome());
     },
-    "description": "Generate quiz questions from your notes and study materials with our AI tool."
-
+    "description":
+        "Generate quiz questions from your notes and study materials with our AI tool."
   }
 ];

@@ -15,12 +15,8 @@ class TodoItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: todo.complete
-            ? todo.color.withOpacity(0.1)
-            : todo.color.withOpacity(0.4),
         borderRadius: BorderRadiusDirectional.circular(8),
         border: Border.all(
-          color: todo.complete ? todo.color.withOpacity(0.2) : todo.color,
           width: 2,
         ),
       ),

@@ -14,5 +14,5 @@ String trimAndEllipsis(String input, int maxLength) {
 }
 
 String formatDateTime(DateTime dateTime) {
-  return DateFormat('EEEE, d MMM y • H:mm a').format(dateTime);
+  return DateFormat('EEEE, d MMM y').format(dateTime);
 }
