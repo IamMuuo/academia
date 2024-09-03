@@ -43,8 +43,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   @override
   void initState() {
     super.initState();
-    _totalTime = quizSettingsController.minute.value * 60 +
-        quizSettingsController.seconds.value; // use minutes and seconds
+    _totalTime = quizSettingsController.minute.value * 60 + quizSettingsController.seconds.value; // use minutes and seconds
     _timeLeft = _totalTime;
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {

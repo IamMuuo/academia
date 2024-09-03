@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -23,6 +22,8 @@ class AskMeService {
     while comment the userId gotten from the userController since there is an issue
     at the moment on the backend since the backend does not expect the current number 
     of characters for the user id which is 32 which is a really large number.
+    This the error I am getting: 
+    Error: {"user_id":["Ensure this field has no more than 12 characters."]}
     The above issue is currently being fixed though.
     */
     try {
