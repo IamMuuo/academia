@@ -1,21 +1,8 @@
-import 'todo.dart';
-import 'package:flutter/material.dart';
-import "package:ionicons/ionicons.dart";
-import 'package:flex_color_picker/flex_color_picker.dart';
+import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
 
-enum Mode {
-  create,
-  update,
-}
-
 class TodoViewPage extends StatefulWidget {
-  const TodoViewPage({
-    super.key,
-    this.mode = Mode.create,
-    this.todo,
-  });
-  final Mode mode;
+  const TodoViewPage({super.key, this.todo});
   final Todo? todo;
 
   @override
@@ -23,54 +10,47 @@ class TodoViewPage extends StatefulWidget {
 }
 
 class _TodoViewPageState extends State<TodoViewPage> {
-  final todoController = Get.find<TodoController>();
-  Color taskColor = Colors.green;
-  final formState = GlobalKey<FormState>();
-  final TextEditingController todoNameController = TextEditingController();
-  final TextEditingController dueDateController = TextEditingController();
+  final TodoController todoController = Get.find<TodoController>();
+  final NotificationsController notificationsController =
+      Get.find<NotificationsController>();
+  final Map<String, bool> subtasks = {};
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController duedateController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
   final TextEditingController subTaskController = TextEditingController();
-  DateTime dueDate = DateTime.now().add(const Duration(days: 1));
-  Future<void> promptDueDate() async {
-    showDatePicker(
+  bool notify = false;
+  late DateTime dueDate;
+  final GlobalKey<FormState> formState = GlobalKey<FormState>();
+
+  Future<void> pickDueDate() async {
+    final date = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
       firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
-    ).then((selectedDate) {
-      if (selectedDate != null) {
-        if (!mounted) return;
-        showTimePicker(
-          context: context,
-          initialTime: TimeOfDay.now(),
-        ).then((selectedTime) {
-          if (selectedTime != null) {
-            setState(() {
-              dueDate = DateTime(
-                selectedDate.year,
-                selectedDate.month,
-                selectedDate.day,
-                selectedTime.hour,
-                selectedTime.minute,
-              );
-              dueDateController.text = formatDateTime(dueDate);
-            });
-          }
-        });
-      }
-    });
+      lastDate: DateTime.now().add(
+        const Duration(days: 365),
+      ),
+    );
+
+    if (date != null) {
+      setState(() {
+        dueDate = date;
+        duedateController.text = (formatDateTime(date));
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
     if (widget.todo != null) {
-      taskColor = widget.todo!.color;
-      todoNameController.text =
-          widget.todo!.name + (widget.todo!.complete ? "(Completed)" : "");
-      subTaskController.text = widget.todo!.description;
-      dueDateController.text = formatDateTime(widget.todo!.due);
-      setState(() {});
+      // subtasks = widget.todo.subTasks ?? {};
+      titleController.text = widget.todo!.name;
+      descriptionController.text = widget.todo!.description;
+      duedateController.text = formatDateTime(widget.todo!.due);
+      dueDate = widget.todo!.due;
+      subtasks.addAll(widget.todo!.subTasks ?? {});
     }
+    setState(() {});
   }
 
   @override
@@ -80,114 +60,85 @@ class _TodoViewPageState extends State<TodoViewPage> {
         key: formState,
         child: CustomScrollView(
           slivers: [
-            const SliverAppBar(
-              title: Text("Task item"),
-              actions: [],
-            ),
-            SliverPadding(
-              padding: const EdgeInsets.all(16),
-              sliver: SliverToBoxAdapter(
-                child: TextFormField(
-                  controller: todoNameController,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) {
-                    if (value!.length < 5) {
-                      return "Please provide a memorable name for your task";
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    hintText: "Your cool task",
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text("Help"),
-                            content: const Text(
-                              "Please provide a short and memorable name for your task",
-                            ),
-                            actions: [
-                              FilledButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Ok"),
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                      icon: const Icon(Ionicons.information_circle),
-                    ),
-                  ),
+            SliverAppBar(
+              pinned: true,
+              floating: true,
+              snap: true,
+              expandedHeight: 250,
+              flexibleSpace: FlexibleSpaceBar(
+                title: Text(
+                  widget.todo == null ? "Create a todo" : "Update todo",
                 ),
               ),
             ),
-            SliverPadding(
-              padding: const EdgeInsets.all(16),
-              sliver: SliverToBoxAdapter(
-                child: GestureDetector(
-                  onTap: () async {
-                    await ColorPicker(onColorChanged: (value) {
-                      setState(() {
-                        taskColor = value;
-                      });
-                    }).showPickerDialog(context);
-                  },
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: taskColor,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        "Select color to identify your task",
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+
+            // body
             SliverPadding(
               padding: const EdgeInsets.all(12),
               sliver: SliverToBoxAdapter(
                 child: TextFormField(
-                  readOnly: true,
-                  onTap: () async {
-                    await promptDueDate();
-                  },
-                  controller: dueDateController,
-                  decoration: InputDecoration(
+                  controller: titleController,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) => value!.length < 5
+                      ? "Please provide a valuable title"
+                      : null,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  decoration: const InputDecoration(
+                    hintText: "Your awesome task name",
+                  ),
+                ),
+              ),
+            ),
+
+            SliverPadding(
+              padding: const EdgeInsets.all(12),
+              sliver: SliverToBoxAdapter(
+                child: TextFormField(
+                  onTap: () async => await pickDueDate(),
+                  controller: duedateController,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) =>
+                      value!.length < 5 ? "Please pick a date" : null,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  decoration: const InputDecoration(
                     hintText: "Due Date",
-                    suffixIcon: IconButton(
-                      onPressed: () async {
-                        promptDueDate();
-                      },
-                      icon: const Icon(Ionicons.calendar),
-                    ),
                   ),
                 ),
               ),
             ),
+
             SliverPadding(
               padding: const EdgeInsets.all(12),
-              sliver: SliverFillRemaining(
+              sliver: SliverToBoxAdapter(
+                child: Row(
+                  children: [
+                    Checkbox(
+                      value: notify,
+                      onChanged: (value) {
+                        setState(() {
+                          notify = value!;
+                        });
+                      },
+                    ),
+                    const Text("Notify me everyday on this task"),
+                  ],
+                ),
+              ),
+            ),
+
+            // Task description
+            SliverPadding(
+              padding: const EdgeInsets.all(12),
+              sliver: SliverToBoxAdapter(
                 child: TextFormField(
-                  controller: subTaskController,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 10,
+                  controller: descriptionController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) {
-                    if (value!.length < 5) {
-                      return "Please split your task into smaller tasks";
-                    }
-                    return null;
-                  },
+                  validator: (value) => value!.length < 5
+                      ? "Please provide a description for your task"
+                      : null,
+                  maxLines: 3,
                   decoration: InputDecoration(
-                    label: const Text("Subtasks"),
-                    hintText: "Split your tasks into smaller tasks",
+                    hintText: "Describe your task",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(2),
                     ),
@@ -195,85 +146,182 @@ class _TodoViewPageState extends State<TodoViewPage> {
                 ),
               ),
             ),
+
+            // Split them to subtasks
+            SliverPadding(
+              padding: const EdgeInsets.all(12),
+              sliver: SliverToBoxAdapter(
+                child: Text(
+                  "Split your tasks into subtasks",
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+              ),
+            ),
+
+            // Now for the sub taks
+            SliverPadding(
+              padding: const EdgeInsets.all(16),
+              sliver: SliverList.separated(
+                itemBuilder: (context, index) {
+                  return index == subtasks.length
+                      ? TextButton.icon(
+                          icon: const Icon(Ionicons.add),
+                          onPressed: () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) => Container(
+                                      padding: const EdgeInsets.all(12),
+                                      child: Column(
+                                        children: [
+                                          TextFormField(
+                                            controller: subTaskController,
+                                            autovalidateMode: AutovalidateMode
+                                                .onUserInteraction,
+                                            validator: (value) => value!
+                                                        .length <
+                                                    5
+                                                ? "Please provide a description for your task"
+                                                : null,
+                                            decoration: const InputDecoration(
+                                              hintText: "Sub tasks name",
+                                            ),
+                                          ),
+                                          const SizedBox(height: 22),
+                                          FilledButton(
+                                              onPressed: () {
+                                                if (subTaskController
+                                                    .text.isNotEmpty) {
+                                                  setState(() {
+                                                    subtasks.addAll({
+                                                      subTaskController.text:
+                                                          false
+                                                    });
+                                                    subTaskController.text = "";
+                                                  });
+                                                  Navigator.pop(context);
+                                                }
+                                              },
+                                              child: const Text("Add"))
+                                        ],
+                                      ),
+                                    ));
+                          },
+                          label: const Text("Add Subtask"),
+                        )
+                      : ListTile(
+                          title: Text(
+                            subtasks.keys.elementAt(index).title(),
+                          ),
+                          leading: Checkbox(
+                              value: subtasks.values.elementAt(index),
+                              onChanged: (val) {
+                                setState(() {
+                                  subtasks[subtasks.keys.elementAt(index)] =
+                                      val!;
+                                });
+                              }),
+                          trailing: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                subtasks.remove(subtasks.keys.elementAt(index));
+                              });
+                            },
+                            icon: const Icon(Ionicons.trash),
+                          ),
+                        );
+                },
+                separatorBuilder: (context, index) => const SizedBox(height: 2),
+                itemCount: subtasks.length + 1,
+              ),
+            )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: widget.mode == Mode.create
-            ? () {
-                if (formState.currentState!.validate()) {
-                  // add an item
-                  todoController
-                      .addTask(Todo(
-                    due: dueDate,
-                    name: todoNameController.text,
-                    color: taskColor,
-                    dateAdded: DateTime.now(),
-                    complete: false,
-                    description: subTaskController.text,
-                  ))
-                      .then((value) {
-                    todoController.getAllTodos();
-                    if (value) {
-                      if (!context.mounted) return;
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text("Sucess"),
-                          content: const Text(
-                            "Your todo item has been sucessfully recorded",
-                          ),
-                          actions: [
-                            FilledButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text("Ok"),
-                            )
-                          ],
-                        ),
-                      );
-                    }
-                  });
+        onPressed: widget.todo == null
+            ? () async {
+                if (!formState.currentState!.validate()) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text("Please ensure you fill the form"),
+                  ));
+                  return;
                 }
+
+                // Add the data to the controller
+                final ok = await todoController.addTask(
+                  Todo(
+                      subTasks: subtasks,
+                      name: titleController.text,
+                      description: descriptionController.text,
+                      dateAdded: DateTime.now(),
+                      due: dueDate,
+                      complete: false),
+                );
+
+                if (ok) {
+                  if (!context.mounted) return;
+                  if (notify) {
+                    // notification logic
+                    notificationsController.scheduleNotification(
+                      DateTime.now().copyWith(
+                        hour: 8,
+                        month: null,
+                        day: null,
+                      ),
+                      "Todos",
+                      "Todo $todoController needs your attention",
+                      repeats: true,
+                      channelKey: "reminders",
+                      notificationLayout: NotificationLayout.Inbox,
+                    );
+                  }
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                      notify
+                          ? "Your task has been saved and you will be notified daily"
+                          : "Your task has been sucessfully saved",
+                    ),
+                  ));
+                  return;
+                }
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text(
+                      "Something went wrong while trying to save your todo"),
+                ));
+                return;
               }
-            : () {
-                // delete the darn task
-                showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                          title: const Text("Confirmation"),
-                          content: const Text(
-                            "Are you sure you want tp delete the task, doing this will affect your graph",
-                          ),
-                          actions: [
-                            FilledButton(
-                              onPressed: () {
-                                todoController
-                                    .deleteTodo(widget.todo!)
-                                    .then((value) {
-                                  if (!context.mounted) return;
-                                  if (value) {
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
-                                  }
-                                });
-                              },
-                              child: const Text("Delete it"),
-                            ),
-                            FilledButton.tonal(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text("Cancel"),
-                            ),
-                          ],
-                        ));
+            : () async {
+                if (!formState.currentState!.validate()) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text("Please ensure you fill the form"),
+                  ));
+                  return;
+                }
+
+                widget.todo?.name = titleController.text;
+                widget.todo?.description = descriptionController.text;
+                widget.todo?.subTasks = subtasks;
+                widget.todo?.due = dueDate;
+
+                final ok = await todoController.updateTodo(widget.todo!);
+                if (ok) {
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text(
+                      "Your task has been sucessfully updated",
+                    ),
+                  ));
+                  return;
+                }
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text(
+                    "Something went wrong while attempting to update todo",
+                  ),
+                ));
               },
-        child: Icon(
-          widget.mode == Mode.create ? Ionicons.add : Ionicons.trash,
-        ),
+        child: const Icon(Ionicons.checkmark),
       ),
     );
   }

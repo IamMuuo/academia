@@ -48,12 +48,14 @@ class TodoController extends GetxController {
 
   Future<bool> addTask(Todo t) async {
     int value = await TodoModelHelper().create(t.toJson());
+    allTodos.add(t);
     return value == 0 ? false : true;
   }
 
   Future<bool> updateTodo(Todo t) async {
-    t.complete = !t.complete;
+    allTodos.removeWhere((todo) => todo.id == t.id);
     int value = await TodoModelHelper().update(t.toJson());
+    allTodos.add(t);
     return value == 0 ? false : true;
   }
 
@@ -68,8 +70,8 @@ class TodoController extends GetxController {
   }
 
   Future<bool> deleteTodo(Todo t) async {
+    allTodos.removeWhere((value) => t.id == value.id);
     int value = await TodoModelHelper().delete(t.toJson());
-    getAllTodos();
     return value == 0 ? false : true;
   }
 }
