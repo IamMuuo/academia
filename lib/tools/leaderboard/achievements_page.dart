@@ -1,5 +1,5 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/models/core/user/user.dart';
+import 'package:academia/models/core/reward/reward.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -28,11 +28,9 @@ class _AchievementPageState extends State<AchievementPage>
       onRefresh: () async {
         final result = await rewardsController.fetchCurrentUserRewards();
         result.fold((l) => null, (r) async {
-          r.map((e) async {
-            await UserModelHelper().truncate();
-            await UserModelHelper().create(e.toJson());
-          });
+          await RewardModelHelper().truncate();
         });
+        setState(() {});
       },
       child: FutureBuilder(
         future: rewardsController.loadRewards(),
