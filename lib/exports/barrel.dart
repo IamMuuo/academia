@@ -1,13 +1,3 @@
-export 'package:academia/tools/exam_timetable/exam_timetable.dart';
-export 'package:flutter_pdfview/flutter_pdfview.dart';
-export 'package:academia/widgets/info_card.dart';
-export 'package:cached_network_image/cached_network_image.dart';
-export 'package:academia/constants/tools.dart';
-export 'package:academia/widgets/tool_card.dart';
-export 'package:awesome_notifications/awesome_notifications.dart';
-export 'package:academia/tools/todo/todo.dart';
-export 'package:academia/tools/tools.dart';
-
 // academia core pages
 export '../pages/pages.dart';
 
@@ -16,6 +6,8 @@ export '../widgets/widgets.dart';
 
 // Academia constants
 export '../constants/common.dart';
+export 'package:academia/constants/tools.dart';
+export 'package:academia/tools/tools.dart';
 
 // Academis controllers
 export '../controllers/controllers.dart';
@@ -37,6 +29,9 @@ export 'package:flutter/services.dart';
 
 // third party packages
 export 'package:magnet/magnet.dart';
+export 'package:awesome_notifications/awesome_notifications.dart';
+export 'package:flutter_pdfview/flutter_pdfview.dart';
+export 'package:cached_network_image/cached_network_image.dart';
 export 'package:ionicons/ionicons.dart';
 export 'package:percent_indicator/percent_indicator.dart';
 export 'package:path_provider/path_provider.dart';
