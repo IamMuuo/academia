@@ -1,40 +1,81 @@
-<img src="assets/icons/academia.png">
+![Logo](assets/icons/academia.png)
+
 
 # Academia
 
-"Academia" is a 📱 mobile app 🎓🏫 exclusively designed for Daystar University students, tailored to streamline their academic experience. With Academia, Daystar students can effortlessly manage their class schedules 🗓️, assignments 📚, exams 📝, grades 📊, and more, all within a single, user-friendly platform. The app harnesses the power of 🚀 Flutter, a versatile mobile app SDK for building high-performance, cross-platform apps for iOS, Android, web, and desktop, all from a unified codebase. 📲
+Academia is an open-source mobile application designed specifically for Daystar University students.
 
-Academia is powered by magnet for scraping data
 
-## Features 🔥🚀
+## Features
 
-📅 **Schedule:** Keep track of all your classes and lectures with the built-in calendar.
+- Chirp - Daystar's social platform
+- Course Tracking
+- Student transcripts and audits
+- Flash Cards
+- Ai Study with me
+- Todos
 
-📝 **Assignments:** Track all your assignments and their deadlines in one place.
 
-📚 **Course Material:** Access all your course material in one place, including lecture notes, PDFs, and videos.
+## Run Locally
 
-📈 **Grades:** Keep track of your grades throughout the semester.
+Please ensure that you have [Flutter](https://flutter.dev) installed on your machine
 
-💬 **Announcements:** Stay up-to-date with the latest announcements from your school or professor.
+Clone the project
 
-🔔 **Reminders:** Get notified about upcoming assignments, exams, and other important events.
+```bash
+  git clone https://github.com/IamMuuo/academia.git
+```
 
-## Screenshots 📷
+Go to the project directory
 
-![Screenshot](screenshots/shot.png)
+```bash
+  cd academia
+```
 
-## Getting Started 🚀
+Install dependencies
 
-1. Install [Flutter](https://flutter.dev/docs/get-started/install).
-2. Clone this repository: `git clone https://github.com/IamMuuo/academia.git`
-3. Install dependencies: `flutter pub get`
-4. Run the app: `flutter run`
+```bash
+  flutter pub get
+```
 
-## Contributing 🤝
+Run the application
 
-Contributions are always welcome! If you have any ideas or suggestions, please open an issue or submit a pull request. For more information, please see [CONTRIBUTING.md](CONTRIBUTING.md).
+```bash
+  flutter run
+```
 
-## License 📝
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Documentation
+
+The application's source code is self documenting. For the backend the postman exports are also available on the `docs` folder.
+
+Incase of any query about documentated with inline comments you can always reach out to any of the project maintainers or DITA for more information
+
+## Authors
+
+- [@Erick](https://www.github.com/iammuuo)
+
+## Screenshots
+
+![App Screenshot](screenshots/shot.png)
+
+
+## Contributing
+
+Contributions are always welcome!
+
+See `contributing.md` for ways to get started.
+
+Please adhere to this project's `code of conduct`.
+
+
+## Support
+
+For support, you can open a github issue or mail dita@daystar.ac.ke
+
+We would really appreciate if you reported bugs or even made features for you and your fellow students to use and enjoy!
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
