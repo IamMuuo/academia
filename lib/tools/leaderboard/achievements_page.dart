@@ -11,8 +11,11 @@ class AchievementPage extends StatefulWidget {
   State<AchievementPage> createState() => _AchievementPageState();
 }
 
-class _AchievementPageState extends State<AchievementPage> {
+class _AchievementPageState extends State<AchievementPage>
+    with AutomaticKeepAliveClientMixin {
   final rewardsController = Get.find<RewardController>();
+  @override
+  bool get wantKeepAlive => true;
 
   String dateFormat(DateTime date) {
     return DateFormat('EEEE, MMMM d, y').format(date);
@@ -20,6 +23,7 @@ class _AchievementPageState extends State<AchievementPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return RefreshIndicator(
       onRefresh: () async {
         final result = await rewardsController.fetchCurrentUserRewards();
