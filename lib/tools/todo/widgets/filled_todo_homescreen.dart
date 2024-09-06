@@ -6,7 +6,12 @@ class FilledTodoHomeScreen extends StatelessWidget {
 
   Widget _buildFilteredTodos(String filter, List<Todo> todos) {
     return todos.isEmpty
-        ? const EmptyTodoHomeScreen()
+        ? const Center(
+            child: Text(
+              "Oops! Seems you have nothing in this category create a todo to get started",
+              textAlign: TextAlign.center,
+            ),
+          )
         : ListView.separated(
             itemBuilder: (context, index) {
               final data = todos[index];

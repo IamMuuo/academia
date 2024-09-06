@@ -25,12 +25,19 @@ class TodoController extends GetxController {
                 element.due.year == today.year)
             .toList(growable: false);
 
-      case "tomorrow":
+      case "tommorrow":
         return todos
             .where((element) =>
                 element.due.day == tomorrow.day &&
                 element.due.month == tomorrow.month &&
                 element.due.year == tomorrow.year)
+            .toList(growable: false);
+
+      case "week":
+        return todos
+            .where((element) =>
+                element.due.isAfter(today) &&
+                element.due.difference(today).inDays < 7)
             .toList(growable: false);
 
       case "month":

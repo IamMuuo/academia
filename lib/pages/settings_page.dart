@@ -18,12 +18,10 @@ class _SettingsPageState extends State<SettingsPage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            automaticallyImplyLeading: false,
             snap: true,
             pinned: true,
             floating: true,
             expandedHeight: 250,
-            leading: const SizedBox(width: 18),
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 color: Theme.of(context).colorScheme.primaryContainer,
