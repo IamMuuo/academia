@@ -2,9 +2,7 @@ import 'package:academia/controllers/user_controller.dart';
 import 'package:academia/models/models.dart';
 import 'package:academia/models/services/services.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:dartz/dartz.dart';
 
 class RewardController extends GetxController {
