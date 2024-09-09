@@ -14,8 +14,6 @@ class AskMeHome extends StatefulWidget {
 
 class _AskMeHomeState extends State<AskMeHome> {
   TextEditingController titleController = TextEditingController();
-  final QuizSettingsController timerController =
-      Get.put(QuizSettingsController());
   final FilesController filesController = Get.put(FilesController());
 
   @override

@@ -9,11 +9,11 @@ import 'package:path/path.dart' as path;
 
 
 class ModalContent extends StatefulWidget {  
-  int? id;
-  String? title; 
-  String? filepath;
-  int? avgScore;
-  ModalContent({
+  final int? id;
+  final String? title; 
+  final String? filepath;
+  final int? avgScore;
+  const ModalContent({
     super.key,
     this.id,
     this.title,
