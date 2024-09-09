@@ -39,9 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
       );
     }, (r) {
       if (r && userController.isLoggedIn.value) {
-        HapticFeedback.heavyImpact().then((value) {
-          rewardsController.awardPoints(10, "Newbie login");
-        });
+        HapticFeedback.heavyImpact().then((value) {});
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => const LayoutPage(),

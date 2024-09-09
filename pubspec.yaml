@@ -71,7 +71,6 @@ dependencies:
   workmanager: ^0.5.2
   timeago: ^3.7.0
   swipe_to: ^1.0.6
-  shimmer: ^3.0.0
   file_picker: ^8.0.5
   
 

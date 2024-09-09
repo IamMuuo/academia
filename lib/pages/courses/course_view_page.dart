@@ -39,25 +39,12 @@ class CourseViewPage extends StatelessWidget {
                         .where((p0) => p0.course == course.unit)
                         .toList()
                         .isEmpty
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "No topics here, there are. Disappointed, I am. ${Emojis.smile_skull}",
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            "Tap the + button you must, to add a new topic",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                ),
-                          ),
-                        ],
+                    ? Center(
+                        child: Text(
+                          "Add topics you learn in class for easier revision ${Emojis.smile_nerd_face}",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
                       )
                     : ListView.separated(
                         separatorBuilder: (context, index) =>

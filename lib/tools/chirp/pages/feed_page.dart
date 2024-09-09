@@ -9,7 +9,8 @@ class FeedPage extends StatefulWidget {
   State<FeedPage> createState() => _FeedPageState();
 }
 
-class _FeedPageState extends State<FeedPage> {
+class _FeedPageState extends State<FeedPage>
+    with AutomaticKeepAliveClientMixin {
   bool pageLoading = true;
   bool morePostsLoading = false;
   List<Post> feedPosts = [];
@@ -18,6 +19,10 @@ class _FeedPageState extends State<FeedPage> {
 
   final UserController userController = Get.find<UserController>();
   final PostService _service = PostService();
+
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     super.initState();
@@ -44,6 +49,7 @@ class _FeedPageState extends State<FeedPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return pageLoading
         ? ListView.separated(
             itemBuilder: (context, index) {
