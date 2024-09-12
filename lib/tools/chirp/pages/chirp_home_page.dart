@@ -1,13 +1,16 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/tools/chirp/controllers/chirp_controller.dart';
 import '../pages/post_create_page.dart';
 import '../widgets/widgets.dart';
 import './feed_page.dart';
 import './personal_posts.dart';
+import 'package:get/get.dart';
 
 class ChirpHomePage extends StatelessWidget {
   const ChirpHomePage({super.key});
   @override
   Widget build(BuildContext context) {
+    Get.put(ChirpController());
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
       body: DefaultTabController(
