@@ -30,6 +30,7 @@ class CoursesController extends GetxController {
       courses.value = r.map((e) => Course.fromJson(e)).toList();
 
       /// Write the courses to local db
+      CourseModelHelper().truncate();
       for (final course in courses) {
         CourseModelHelper().create(course.toJson());
       }
