@@ -1,12 +1,7 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/pages/tool_page.dart';
-import 'package:academia/themes/colors.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ionicons/ionicons.dart';
 import '../controllers/controllers.dart';
 import '../widgets/widgets.dart';
-import 'pages.dart';
 
 class AskMeHome extends StatefulWidget {
   const AskMeHome({super.key});
