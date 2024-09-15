@@ -30,4 +30,32 @@ class OrganizationService with ChirpService {
       );
     }
   }
+
+  Future<Either<String, List<Membership>>> fetchUserMemberships(
+      String userID, Map<String, String> authHeaders) async {
+    try {
+      // fetch organizations
+      final response = await http.get(
+        Uri.parse("${ChirpService.urlPrefix}/organizations/user/$userID"),
+        headers: authHeaders,
+      );
+
+      if (response.statusCode == 200) {
+        List<Map<String, dynamic>> rawMemberships =
+            json.decode(response.body).cast<Map<String, dynamic>>();
+
+        return Right(
+          rawMemberships.map((e) => Membership.fromJson(e)).toList(),
+        );
+      }
+
+      return const Left(
+        "Something went wrong white attempting to fetch organizations",
+      );
+    } catch (e) {
+      return const Left(
+        "Please check your internet connection and try that again",
+      );
+    }
+  }
 }
