@@ -54,39 +54,6 @@ final List<Map<String, dynamic>> allTools = [
     "description":
         "Psst! Elearning is here for you. Keep track of your assignments and notes!",
   },
-  {
-    "id": 3,
-    "name": "Generate Catering Token",
-    "action": "Generate Token",
-    "image": "assets/images/food.png",
-    "ontap": () async {
-      var result = await magnet.fetchCateringToken();
-      result.fold((l) {
-        Get.defaultDialog(
-            title: "Error",
-            content: Text(l.toString()),
-            actions: [
-              FilledButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  child: const Text("Ok"))
-            ]);
-      }, (r) {
-        Get.defaultDialog(
-            title: "Your Token",
-            content: Text("Your Token is ${r['message'] ?? ''}"),
-            actions: [
-              FilledButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  child: const Text("Ok"))
-            ]);
-      });
-    },
-    "description": "Hungry? Maybe its time to generate your catering token!"
-  },
   // {
   //   "id": 5,
   //   "name": "Student Audit",
@@ -139,11 +106,12 @@ final List<Map<String, dynamic>> allTools = [
     "id": 9,
     "name": "Task Manager",
     "action": "Manage your tasks",
-    "image": "assets/images/man-with-glass.png",
+    "image": "assets/images/organize.png",
     "ontap": () {
       Get.to(const TodoHomeScreen());
     },
     "description":
+<<<<<<< HEAD
         "Having trouble keeping track of your Assignments? We've got you covered",
   },
   {
@@ -156,5 +124,19 @@ final List<Map<String, dynamic>> allTools = [
     },
     "description":
         "Ready to revolutionize your study habits?\nLet's help you master courses effortlessly",
+=======
+        "Having trouble keeping track of your todos? We've got you covered",
+  },
+  {
+    "id": 10,
+    "name": "Ask Me",
+    "action": "Ask Me",
+    "image": "assets/images/think.jpeg",
+    "ontap": () {
+      Get.to(const AskMeHome());
+    },
+    "description":
+        "Generate quiz questions from your notes and study materials with our AI tool."
+>>>>>>> dev
   }
 ];

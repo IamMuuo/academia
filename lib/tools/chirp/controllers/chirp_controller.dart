@@ -5,43 +5,19 @@ import 'package:dartz/dartz.dart';
 class ChirpController extends GetxController {
   final PostService _service = PostService();
   UserController userController = Get.find<UserController>();
-  RxList<Post> posts = RxList<Post>();
-  RxInt currentPage = 0.obs;
-  RxBool isLoading = false.obs;
+  // Loading posts comments
 
-  @override
-  void onInit() {
-    super.onInit();
-    debugPrint("Chirp Controller Loaded");
-  }
-
-  Future<Either<String, List<Post>>> fetchPosts({
-    bool nextPage = false,
-    previousPage = false,
-  }) async {
-    isLoading.value = true;
-
-    int page = 1;
-
-    if (nextPage) {
-      page = currentPage.value;
-    } else if (previousPage && currentPage > 1) {
-      page = currentPage.value -= 1;
-    }
-    final result =
-        await _service.fetchPosts(userController.authHeaders, page: page);
-    isLoading.value = false;
+  Future<Either<String, List<Post>>> fetchUserPosts() async {
+    final result = await _service.fetchUserPosts(
+        userController.authHeaders, userController.user.value!.id!);
 
     return result.fold((l) {
       return left(l);
     }, (r) {
-      posts.value = r["posts"];
-      currentPage.value = r["nextPage"];
-      return right(posts);
+      return right(r);
     });
   }
 
-  // Loading posts comments
   Future<Either<String, List<Comment>>> fetchPostComments(Post post) async {
     final result =
         await _service.fetchPostComments(userController.authHeaders, post.id);

@@ -1,8 +1,6 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-
 
 class ExamTimeTablePage extends StatefulWidget {
   const ExamTimeTablePage({super.key});
@@ -62,17 +60,11 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                       const Spacer(),
                       Obx(
                         () => Text(
-                          controller.index > -1
-                              ? controller.quotes[controller.index.value]["q"]
-                              : "Fool me once shame on you; fool me twice, shame on me.",
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge!
-                              .copyWith(
-                                fontFamily: GoogleFonts.figtree().fontFamily,
-                              ),
-                        ),
+                            controller.index > -1
+                                ? controller.quotes[controller.index.value]["q"]
+                                : "Fool me once shame on you; fool me twice, shame on me.",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.titleLarge),
                       ),
                       Obx(
                         () => Text(
@@ -114,7 +106,7 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                           onDoubleTap: () async {
                             await controller
                                 .removeExamFromStorage(controller.exams[index]);
-                            
+
                             controller.hasExams.refresh();
                           },
                           child: ExamCard(exam: controller.exams[index]),
@@ -124,12 +116,7 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                         child: Text(
                           "Who dares summon me?🧞",
                           textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge!
-                              .copyWith(
-                                fontFamily: GoogleFonts.figtree().fontFamily,
-                              ),
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
               ),
@@ -208,16 +195,10 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                                     .tertiaryContainer,
                               ),
                               child: Text(
-                                "Your wish is my command. Performing forbidden magic 🧞\n Double Tap a course to add it",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge!
-                                    .copyWith(
-                                      fontFamily:
-                                          GoogleFonts.figtree().fontFamily,
-                                    ),
-                              ),
+                                  "Your wish is my command. Performing forbidden magic 🧞\n Double Tap a course to add it",
+                                  textAlign: TextAlign.center,
+                                  style:
+                                      Theme.of(context).textTheme.titleLarge),
                             )
                           : _searchComplete
                               ? SizedBox(
@@ -251,16 +232,11 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                                         .tertiaryContainer,
                                   ),
                                   child: Text(
-                                    "Please input your units seperated with commas and let the genie work his forbidden magic!",
-                                    textAlign: TextAlign.center,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge!
-                                        .copyWith(
-                                          fontFamily:
-                                              GoogleFonts.figtree().fontFamily,
-                                        ),
-                                  ),
+                                      "Please input your units seperated with commas and let the genie work his forbidden magic!",
+                                      textAlign: TextAlign.center,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge!),
                                 ),
                     ],
                   ),

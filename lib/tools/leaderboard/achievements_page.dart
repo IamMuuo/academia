@@ -1,5 +1,5 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/models/core/user/user.dart';
+import 'package:academia/models/core/reward/reward.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -11,8 +11,11 @@ class AchievementPage extends StatefulWidget {
   State<AchievementPage> createState() => _AchievementPageState();
 }
 
-class _AchievementPageState extends State<AchievementPage> {
+class _AchievementPageState extends State<AchievementPage>
+    with AutomaticKeepAliveClientMixin {
   final rewardsController = Get.find<RewardController>();
+  @override
+  bool get wantKeepAlive => true;
 
   String dateFormat(DateTime date) {
     return DateFormat('EEEE, MMMM d, y').format(date);
@@ -20,15 +23,14 @@ class _AchievementPageState extends State<AchievementPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return RefreshIndicator(
       onRefresh: () async {
         final result = await rewardsController.fetchCurrentUserRewards();
         result.fold((l) => null, (r) async {
-          r.map((e) async {
-            await UserModelHelper().truncate();
-            await UserModelHelper().create(e.toJson());
-          });
+          await RewardModelHelper().truncate();
         });
+        setState(() {});
       },
       child: FutureBuilder(
         future: rewardsController.loadRewards(),

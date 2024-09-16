@@ -27,42 +27,6 @@ class _PostCreatePageState extends State<PostCreatePage> {
           },
           icon: const Icon(Ionicons.close),
         ),
-        actions: [
-          FilledButton(
-            onPressed: () {
-              if (!formState.currentState!.validate()) {
-                return;
-              }
-              // Create post
-              setState(() {
-                isLoading = true;
-              });
-              chirpController
-                  .createPost(
-                titleController.text,
-                bodyController.text,
-              )
-                  .then((value) {
-                value.fold((l) {}, (r) {
-                  chirpController.fetchPosts();
-                  showDialog(
-                      context: context,
-                      builder: (context) => const AlertDialog(
-                            title: Text("Success!"),
-                            content:
-                                Text("Your post was successfully added 😉"),
-                          ));
-                });
-              });
-
-              setState(() {
-                isLoading = false;
-              });
-              Navigator.pop(context);
-            },
-            child: const Text("Post"),
-          ),
-        ],
       ),
       body: SafeArea(
         minimum: const EdgeInsets.all(12),
@@ -142,24 +106,56 @@ class _PostCreatePageState extends State<PostCreatePage> {
                         itemCount: imageFiles.length,
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ImageConfigScreen(
-                                      onImagePicked: (file) {
-                                        setState(() {
-                                          imageFiles.add(file!);
-                                        });
-                                      },
-                                    )));
-                          },
-                          icon: const Icon(Ionicons.attach_outline),
-                        ),
-                      ],
-                    )
+                    FilledButton(
+                      onPressed: () async {
+                        if (!formState.currentState!.validate()) {
+                          return;
+                        }
+                        // Create post
+                        setState(() {
+                          isLoading = true;
+                        });
+                        final postresponse = await chirpController.createPost(
+                          titleController.text,
+                          bodyController.text,
+                        );
+                        postresponse.fold((l) {
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    title: const Text("Error"),
+                                    content: Text("Error uploading post: $l"),
+                                    actions: [
+                                      FilledButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("okay"))
+                                    ],
+                                  ));
+                        }, (r) {
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    title: const Text("Success"),
+                                    content:
+                                        const Text("Post uploaded sucessfully"),
+                                    actions: [
+                                      FilledButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("okay"))
+                                    ],
+                                  ));
+                        });
+                        setState(() {
+                          isLoading = false;
+                        });
+                        // Navigator.pop(context);
+                      },
+                      child: const Text("Post"),
+                    ),
                   ],
                 ),
               ),
