@@ -111,8 +111,7 @@ final List<Map<String, dynamic>> allTools = [
       Get.to(const TodoHomeScreen());
     },
     "description":
-<<<<<<< HEAD
-        "Having trouble keeping track of your Assignments? We've got you covered",
+        "Having trouble keeping track of your todos? We've got you covered",
   },
   {
     "id": 10,
@@ -124,11 +123,9 @@ final List<Map<String, dynamic>> allTools = [
     },
     "description":
         "Ready to revolutionize your study habits?\nLet's help you master courses effortlessly",
-=======
-        "Having trouble keeping track of your todos? We've got you covered",
   },
   {
-    "id": 10,
+    "id": 11,
     "name": "Ask Me",
     "action": "Ask Me",
     "image": "assets/images/think.jpeg",
@@ -137,6 +134,5 @@ final List<Map<String, dynamic>> allTools = [
     },
     "description":
         "Generate quiz questions from your notes and study materials with our AI tool."
->>>>>>> dev
   }
 ];
