@@ -42,7 +42,7 @@ void main() async {
       home: const Academia(),
       theme: lightModeTheme,
       debugShowCheckedModeBanner: false,
-      // darkTheme: darkModeTheme,
+      darkTheme: darkModeTheme,
     ),
   );
 }

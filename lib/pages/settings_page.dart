@@ -225,9 +225,6 @@ class _SettingsPageState extends State<SettingsPage> {
                                         ),
                                       );
                                     }
-
-                                    // if (context.mounted)
-                                    // exit(0);
                                   },
                                   child: const Text("Yes leave"),
                                 )

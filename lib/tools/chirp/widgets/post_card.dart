@@ -1,13 +1,31 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:get/get.dart';
 import '../pages/post_view_page.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class PostCard extends StatelessWidget {
+class PostCard extends StatefulWidget {
   const PostCard({
     super.key,
     required this.post,
   });
+
   final Post post;
+  @override
+  State<PostCard> createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard> {
+  int upvotes = 0;
+  int downvotes = 0;
+  PostService ps = PostService();
+  final UserController userController = Get.find<UserController>();
+
+  @override
+  void initState() {
+    super.initState();
+    upvotes = widget.post.upvotes;
+    downvotes = widget.post.downvotes;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +33,7 @@ class PostCard extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => PostViewPage(
-            post: post,
+            post: widget.post,
           ),
         ));
       },
@@ -26,10 +44,10 @@ class PostCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                post.user!.profilePhoto != null
+                widget.post.user!.profilePhoto != null
                     ? CircleAvatar(
                         backgroundImage: CachedNetworkImageProvider(
-                          post.user?.profilePhoto ?? '',
+                          widget.post.user?.profilePhoto ?? '',
                         ),
                       )
                     : Image.asset(
@@ -42,14 +60,14 @@ class PostCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        "@${post.user?.username ?? 'anon'}",
+                        "@${widget.post.user?.username ?? 'anon'}",
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium
                             ?.copyWith(fontWeight: FontWeight.w800),
                       ),
                       Text(
-                        timeago.format(post.createdAt),
+                        timeago.format(widget.post.createdAt),
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
@@ -66,20 +84,20 @@ class PostCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  post.title,
+                  widget.post.title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
                 ),
                 const SizedBox(height: 4),
                 Visibility(
-                  visible: post.postAttachmentMedia.isNotEmpty,
+                  visible: widget.post.postAttachmentMedia.isNotEmpty,
                   child: SizedBox(
                     height: 200,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
-                        final data = post.postAttachmentMedia[index];
+                        final data = widget.post.postAttachmentMedia[index];
                         return CachedNetworkImage(
                           imageUrl: data.image ?? "",
                           fit: BoxFit.fitWidth,
@@ -88,48 +106,72 @@ class PostCard extends StatelessWidget {
                       },
                       separatorBuilder: (context, index) =>
                           const SizedBox(width: 4),
-                      itemCount: post.postAttachmentMedia.length,
+                      itemCount: widget.post.postAttachmentMedia.length,
                     ),
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  trimTo99Characters(post.content),
+                  trimTo99Characters(widget.post.content),
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
             ),
+            const SizedBox(height: 4),
             Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Row(
-                    children: [
-                      const Icon(Ionicons.arrow_up_circle_outline),
-                      Text(
-                        post.upvotes.toString(),
-                      )
-                    ],
-                  ),
+                FilledButton.tonalIcon(
+                  icon: const Icon(Ionicons.arrow_up_circle_outline),
+                  onPressed: () {
+                    ps
+                        .postVote(userController.authHeaders, "upvote",
+                            widget.post.id)
+                        .then((value) {
+                      value.fold((l) {
+                        debugPrint(l);
+                      }, (r) {
+                        if (r) {
+                          setState(() {
+                            upvotes++;
+                          });
+                        } else {
+                          setState(() {
+                            upvotes--;
+                          });
+                        }
+                      });
+                    });
+                  },
+                  label: Text(upvotes.toString()),
                 ),
-                const SizedBox(width: 2),
-                IconButton(
-                  onPressed: () {},
+                const SizedBox(width: 4),
+                FilledButton.tonalIcon(
+                  label: Text(downvotes.toString()),
+                  onPressed: () {
+                    ps
+                        .postVote(userController.authHeaders, "downvote",
+                            widget.post.id)
+                        .then((value) {
+                      value.fold((l) {
+                        debugPrint(l);
+                      }, (r) {
+                        if (r) {
+                          setState(() {
+                            downvotes++;
+                          });
+                        } else {
+                          setState(() {
+                            downvotes--;
+                          });
+                        }
+                      });
+                    });
+                  },
                   icon: const Icon(Ionicons.arrow_down_circle_outline),
                 ),
-                const Spacer(),
-                IconButton(
-                  onPressed: null,
-                  icon: Row(
-                    children: [
-                      const Icon(Ionicons.chatbox_outline),
-                      const SizedBox(width: 2),
-                      Text(post.commentsCount.toString())
-                    ],
-                  ),
-                ),
               ],
-            )
+            ),
           ],
         ),
       ),
