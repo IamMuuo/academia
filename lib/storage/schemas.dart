@@ -19,6 +19,7 @@ const schemas = <String, String>{
       date_of_birth TEXT,
       campus TEXT,
       profile_url TEXT,
+      school_profile TEXT,
       password TEXT,
       active INTEGER,
       vibe_points INTEGER,
