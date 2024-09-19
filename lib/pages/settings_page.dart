@@ -192,7 +192,41 @@ class _SettingsPageState extends State<SettingsPage> {
                     ListTile(
                       leading: const Icon(Ionicons.trash),
                       title: const Text("Delete my account"),
-                      onTap: () {},
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text("Confirmation"),
+                            content: const Text(
+                              "Are you sure you want to delete this acount? Doing this will result to  data loss and cannot be restored!",
+                            ),
+                            actions: [
+                              OutlinedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Cancel"),
+                              ),
+                              FilledButton(
+                                onPressed: () async {
+                                  await HapticFeedback.heavyImpact();
+                                  await settingsController.logout();
+                                  await userController.deleteUser();
+                                  if (context.mounted) {
+                                    Navigator.pop(context);
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) => const Academia(),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: const Text("Yes delete it"),
+                              )
+                            ],
+                          ),
+                        );
+                      },
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12),
