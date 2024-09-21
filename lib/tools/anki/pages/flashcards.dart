@@ -1,5 +1,6 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:academia/tools/anki/models/ankicard_model.dart';
+import 'package:academia/tools/anki/pages/anki_swap.dart';
 import 'package:academia/tools/anki/widgets/widgets.dart';
 import 'package:academia/tools/anki/controllers/controllers.dart';
 import 'package:get/get.dart';
@@ -22,6 +23,9 @@ class TopicFlashCards extends StatelessWidget {
       ),
     );
     return Scaffold(
+      // appBar: AppBar(
+      //   automaticallyImplyLeading: true,
+      // ),
       resizeToAvoidBottomInset: true,
       floatingActionButton: SizedBox(
         height: MediaQuery.of(context).size.height * 0.17,
@@ -205,7 +209,18 @@ class TopicFlashCards extends StatelessWidget {
             FloatingActionButton(
               heroTag: "btn2",
               onPressed: () {
-                debugPrint("Feature Coming Soon");
+                if (ankiCardController.allCards.length >= 5) {
+                  // opens the anki swap page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          AnkiSwap(ankiCards: ankiCardController.allCards),
+                    ),
+                  );
+                } else {
+                  debugPrint("Anki Cards Should be More than 4");
+                }
               },
               child: const Icon(Icons.play_arrow),
             ),
@@ -279,11 +294,11 @@ class TopicFlashCards extends StatelessWidget {
                                 Radius.circular(20),
                               ),
                             ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                "1000",
-                                style: TextStyle(
+                                "${ankiCardController.allCards.length}",
+                                style: const TextStyle(
                                   fontSize: 20,
                                 ),
                               ),
