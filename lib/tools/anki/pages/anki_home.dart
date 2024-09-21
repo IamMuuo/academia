@@ -13,163 +13,159 @@ class AnkiHomePage extends StatelessWidget {
     // topic controller
     final TopicController topicController = Get.put(TopicController());
 
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: Obx(
-        () => topicController.allTopics.isEmpty
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Lottie.asset(
-                    "assets/lotties/study.json",
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Your anki space is a clean slate! 📝 Create your first topic and let Academia Anki help you ace those grades!",
-                      style: Theme.of(context).textTheme.headlineSmall,
-                      textAlign: TextAlign.center,
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Obx(
+          () => topicController.allTopics.isEmpty
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Lottie.asset(
+                      "assets/lotties/study.json",
                     ),
-                  ),
-                  CreateTopicWidget(
-                    topicController: topicController,
-                  )
-                ],
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  ElevatedButton(
-                    onPressed: () => Get.back(),
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Your anki space is a clean slate! 📝 Create your first topic and let Academia Anki help you ace those grades!",
+                        style: Theme.of(context).textTheme.headlineSmall,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    child: const Icon(
-                      Icons.arrow_back,
+                    CreateTopicWidget(
+                      topicController: topicController,
+                    )
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        "Starred Topics",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15),
+                      ),
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text(
-                      "Starred Topics",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    topicController.allFavourites.isEmpty
+                        ? SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.27,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.18,
+                                  child: Lottie.asset(
+                                    "assets/lotties/empty.json",
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "You Have No Favourite Topics, Favourite A Topic To Find It Easily",
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Align(
+                            alignment: Alignment.center,
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.27,
+                              width: MediaQuery.of(context).size.width * 0.87,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, idx) {
+                                  return StarredTopics(
+                                    idx: topicController.allFavourites[idx].id!,
+                                    topic:
+                                        topicController.allFavourites[idx].name,
+                                    desc:
+                                        topicController.allFavourites[idx].desc,
+                                    topicController: topicController,
+                                  );
+                                },
+                                itemCount: topicController.allFavourites.length,
+                              ),
+                            ),
+                          ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CreateTopicWidget(
+                          topicController: topicController,
+                        ),
+                      ),
                     ),
-                  ),
-                  topicController.allFavourites.isEmpty
-                      ? SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.27,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                    // displays topicics
+                    // displayed in a grid view if they are more than five
+                    topicController.allTopics.length <= 5
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.18,
+                                    MediaQuery.of(context).size.height * 0.35,
                                 child: Lottie.asset(
                                   "assets/lotties/empty.json",
-                                  fit: BoxFit.fitHeight,
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  "You Have No Favourite Topics, Favourite A Topic To Find It Easily",
+                                  "Once you have more than five topics, they’ll pop into a cool grid view! Don’t forget to star your favorites for quick access—but heads up, you can only star five at a time. If you add a new one, the oldest star gets bumped! ⭐",
                                   style: Theme.of(context).textTheme.titleSmall,
                                   textAlign: TextAlign.center,
                                 ),
                               ),
                             ],
-                          ),
-                        )
-                      : Align(
-                          alignment: Alignment.center,
-                          child: SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.27,
-                            width: MediaQuery.of(context).size.width * 0.87,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, idx) {
-                                return StarredTopics(
-                                  idx: topicController.allFavourites[idx].id!,
-                                  topic:
-                                      topicController.allFavourites[idx].name,
-                                  desc: topicController.allFavourites[idx].desc,
-                                  topicController: topicController,
-                                );
-                              },
-                              itemCount: topicController.allFavourites.length,
-                            ),
-                          ),
-                        ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CreateTopicWidget(
-                        topicController: topicController,
-                      ),
-                    ),
-                  ),
-                  // displays topicics
-                  // displayed in a grid view if they are more than five
-                  topicController.allTopics.length <= 5
-                      ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.35,
-                              child: Lottie.asset(
-                                "assets/lotties/empty.json",
+                          )
+                        : Container(
+                            height: MediaQuery.of(context).size.height * 0.53,
+                            decoration: BoxDecoration(
+                              color: lightColorScheme.primaryContainer,
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(28),
+                                topRight: Radius.circular(28),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "Once you have more than five topics, they’ll pop into a cool grid view! Don’t forget to star your favorites for quick access—but heads up, you can only star five at a time. If you add a new one, the oldest star gets bumped! ⭐",
-                                style: Theme.of(context).textTheme.titleSmall,
-                                textAlign: TextAlign.center,
+                            child: Padding(
+                              padding: const EdgeInsets.all(22.0),
+                              child: GridView.builder(
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10,
+                                ),
+                                itemBuilder: (context, idx) {
+                                  return GridViewTopic(
+                                    idx: idx,
+                                    topicId: topicController.allTopics[idx].id!,
+                                    topic: topicController.allTopics[idx].name,
+                                    topicDesc:
+                                        topicController.allTopics[idx].desc,
+                                    isFavourite: topicController
+                                        .allTopics[idx].isFavourite,
+                                    controller: topicController,
+                                  );
+                                },
+                                itemCount: topicController.allTopics.length,
+                                scrollDirection: Axis.vertical,
                               ),
                             ),
-                          ],
-                        )
-                      : Container(
-                          height: MediaQuery.of(context).size.height * 0.53,
-                          decoration: BoxDecoration(
-                            color: lightColorScheme.primaryContainer,
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(28),
-                              topRight: Radius.circular(28),
-                            ),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(22.0),
-                            child: GridView.builder(
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
-                              ),
-                              itemBuilder: (context, idx) {
-                                return GridViewTopic(
-                                  idx: idx,
-                                  topicId: topicController.allTopics[idx].id!,
-                                  topic: topicController.allTopics[idx].name,
-                                  topicDesc:
-                                      topicController.allTopics[idx].desc,
-                                  isFavourite: topicController
-                                      .allTopics[idx].isFavourite,
-                                  controller: topicController,
-                                );
-                              },
-                              itemCount: topicController.allTopics.length,
-                              scrollDirection: Axis.vertical,
-                            ),
-                          ),
-                        ),
-                ],
-              ),
+                  ],
+                ),
+        ),
       ),
     );
   }
