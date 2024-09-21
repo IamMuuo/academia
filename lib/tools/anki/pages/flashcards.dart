@@ -165,7 +165,14 @@ class TopicFlashCards extends StatelessWidget {
                                 ansCardController.ansCard.value = "";
                                 // reload the anki cards
                                 await ankiCardController.getAllTopicCards();
-                                // tell user the card is successfully added
+                                // ignore: use_build_context_synchronously
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content:
+                                        Text("AnkiCard Created Successfully"),
+                                    duration: Duration(seconds: 1),
+                                  ),
+                                );
                               } else {
                                 // remove highlighted answer from the question
                                 String question = cardInfo.text.trim();
@@ -182,7 +189,15 @@ class TopicFlashCards extends StatelessWidget {
                                 ansCardController.ansCard.value = "";
                                 // reload the anki cards
                                 await ankiCardController.getAllTopicCards();
-                                // tell user the card is successfully added
+
+                                // ignore: use_build_context_synchronously
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content:
+                                        Text("AnkiCard Created Successfully"),
+                                    duration: Duration(seconds: 1),
+                                  ),
+                                );
                               }
                             },
                             child: const Text("Create Card"),
@@ -219,7 +234,13 @@ class TopicFlashCards extends StatelessWidget {
                     ),
                   );
                 } else {
-                  debugPrint("Anki Cards Should be More than 4");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content:
+                          Text("Anki Cards Should be More than 4, To Play"),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
                 }
               },
               child: const Icon(Icons.play_arrow),
@@ -285,25 +306,26 @@ class TopicFlashCards extends StatelessWidget {
                         Positioned(
                           bottom: 30,
                           child: Container(
-                            padding: const EdgeInsets.all(0),
-                            height: MediaQuery.of(context).size.height * 0.09,
-                            width: MediaQuery.of(context).size.width * 0.37,
-                            decoration: const BoxDecoration(
-                              color: Color(0xffe5ffcd),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(20),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "${ankiCardController.allCards.length}",
-                                style: const TextStyle(
-                                  fontSize: 20,
+                              padding: const EdgeInsets.all(0),
+                              height: MediaQuery.of(context).size.height * 0.09,
+                              width: MediaQuery.of(context).size.width * 0.37,
+                              decoration: const BoxDecoration(
+                                color: Color(0xffe5ffcd),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
                                 ),
                               ),
-                            ),
-                          ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Obx(
+                                  () => Text(
+                                    "${ankiCardController.allCards.length}",
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                              )),
                         ),
                       ],
                     ),

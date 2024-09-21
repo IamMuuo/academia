@@ -153,7 +153,8 @@ class AnkiHomePage extends StatelessWidget {
                               ),
                               itemBuilder: (context, idx) {
                                 return GridViewTopic(
-                                  idx: topicController.allTopics[idx].id!,
+                                  idx: idx,
+                                  topicId: topicController.allTopics[idx].id!,
                                   topic: topicController.allTopics[idx].name,
                                   topicDesc:
                                       topicController.allTopics[idx].desc,
@@ -250,16 +251,28 @@ class CreateTopicWidget extends StatelessWidget {
                   onPressed: () {
                     if (titleController.text.trim().isEmpty ||
                         descController.text.trim().isEmpty) {
-                      // tell user they can't be empty
-                      debugPrint("All Above Fields are required");
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("All Above Fields are required"),
+                          duration: Duration(seconds: 1),
+                        ),
+                      );
                     } else if (titleController.text.trim().length <= 3) {
-                      // tell user topic length should be greater than 2 characters
-                      debugPrint(
-                          "Topic Length should be more than 2 characters");
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                              "Topic Length should be more than 2 characters"),
+                          duration: Duration(seconds: 1),
+                        ),
+                      );
                     } else if (descController.text.trim().length <= 12) {
-                      // tell user desc length should be greater than 11 characters
-                      debugPrint(
-                          "Desc Length should be more than 11 characters");
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                              "Desc Length should be more than 11 characters"),
+                          duration: Duration(seconds: 1),
+                        ),
+                      );
                     } else {
                       // create topic
                       AnkiTopic ankiTopic = AnkiTopic(
@@ -276,8 +289,9 @@ class CreateTopicWidget extends StatelessWidget {
                         // updating favourites
                         topicController.getAllFavourites();
                       }
-                      // updating topic list
+                      // updating topic list and favorites
                       topicController.getAllTopics();
+                      topicController.getAllFavourites();
                       Navigator.of(context).pop();
                     }
                   },

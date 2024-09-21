@@ -44,7 +44,7 @@ class AnkiCardController extends GetxController {
     return allCards;
   }
 
-  Future<bool> deleteTopic(AnkiCard ankiCard) async {
+  Future<bool> deleteCard(AnkiCard ankiCard) async {
     int value = await AnkiCardModelHelper().delete(ankiCard.toJson());
     getAllTopicCards();
     return value == 0 ? false : true;

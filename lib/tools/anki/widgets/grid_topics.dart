@@ -2,12 +2,12 @@ import 'package:academia/exports/barrel.dart';
 import 'package:academia/tools/anki/controllers/controllers.dart';
 import 'package:academia/tools/anki/models/models.dart';
 import 'package:academia/tools/anki/pages/flashcards.dart';
-import 'package:flutter/material.dart';
 
 class GridViewTopic extends StatelessWidget {
   const GridViewTopic({
     super.key,
     required this.idx,
+    required this.topicId,
     required this.topic,
     required this.topicDesc,
     required this.isFavourite,
@@ -15,6 +15,7 @@ class GridViewTopic extends StatelessWidget {
   });
 
   final int idx;
+  final int topicId;
   final String topic;
   final String topicDesc;
   final bool isFavourite;
@@ -72,13 +73,6 @@ class GridViewTopic extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.2,
                 child: Row(
                   children: [
-                    GestureDetector(
-                      onTap: () => debugPrint("Feature Coming Real Soon"),
-                      child: Icon(
-                        Icons.play_arrow,
-                        size: MediaQuery.of(context).size.height * 0.041,
-                      ),
-                    ),
                     // favourite a topic
                     GestureDetector(
                       onTap: () async {
@@ -95,14 +89,72 @@ class GridViewTopic extends StatelessWidget {
                         await controller?.getAllTopics();
                         // ignore: use_build_context_synchronously
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Topic Successfully Favourited"),
-                            duration: Duration(seconds: 1),
+                          SnackBar(
+                            content: !isFavourite
+                                ? const Text("Topic Successfully Favourited")
+                                : const Text("Topic Successfully Unfavourited"),
+                            duration: const Duration(seconds: 1),
                           ),
                         );
                       },
                       child: Icon(
                         isFavourite ? Icons.star : Icons.star_border_outlined,
+                        size: MediaQuery.of(context).size.height * 0.035,
+                      ),
+                    ),
+                    // delete for topics
+                    GestureDetector(
+                      onTap: () => showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          content: const Text(
+                            "Are You Sure You Want To Delete Topic?",
+                          ),
+                          actions: [
+                            TextButton(
+                              style: ButtonStyle(
+                                foregroundColor: WidgetStatePropertyAll(
+                                  lightColorScheme.error,
+                                ),
+                              ),
+                              onPressed: () async {
+                                AnkiTopic topic = AnkiTopic(
+                                  id: idx,
+                                  name: this.topic,
+                                  desc: topicDesc,
+                                );
+                                bool? deleted =
+                                    await controller?.deleteTopic(topic);
+                                // ignore: use_build_context_synchronously
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: (deleted != null && deleted)
+                                        ? const Text(
+                                            "Topic Successfully Deleted")
+                                        : const Text(
+                                            "Something happened! Kindly Retry!!"),
+                                    duration: const Duration(seconds: 1),
+                                  ),
+                                );
+                                // update favourites and all topics
+                                await controller?.getAllFavourites();
+                                await controller?.getAllTopics();
+                                // ignore: use_build_context_synchronously
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text("Yes"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text("No"),
+                            ),
+                          ],
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.delete,
                         size: MediaQuery.of(context).size.height * 0.035,
                       ),
                     ),
