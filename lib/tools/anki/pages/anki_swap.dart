@@ -55,7 +55,6 @@ class _AnkiSwapState extends State<AnkiSwap> {
                       showAnswer = false;
                     });
                     if (activity.direction == AxisDirection.left) {
-                      // cards.print(cards[previousIndex].answer);
                       cards.insert(targetIndex + 2, cards[previousIndex]);
                     } else {
                       cards.add(cards[previousIndex]);
@@ -64,59 +63,68 @@ class _AnkiSwapState extends State<AnkiSwap> {
                   maxAngle: 60,
                   swipeOptions: const SwipeOptions.symmetric(horizontal: true),
                   cardCount: cards.length,
-                  cardBuilder: (context, index) => GestureDetector(
-                    onDoubleTap: () {
-                      setState(() {
-                        showAnswer = true;
-                      });
-                    },
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.45,
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12),
+                  cardBuilder: (context, index) {
+                    var colorDet = index % 4;
+                    return GestureDetector(
+                      onDoubleTap: () {
+                        setState(() {
+                          showAnswer = true;
+                        });
+                      },
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.45,
+                        decoration: BoxDecoration(
+                          color: colorDet == 0
+                              ? const Color(0xff8999aa)
+                              : colorDet == 1
+                                  ? const Color(0xffffcdfe)
+                                  : colorDet == 2
+                                      ? const Color(0xffffe7cd)
+                                      : const Color(0xffcdffce),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(12),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              const Text(
+                                "Question",
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                cards[index].question,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                              const Text(
+                                "Answer",
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              showAnswer
+                                  ? Text(
+                                      cards[index].answer,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    )
+                                  : const SizedBox(),
+                            ],
+                          ),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          children: [
-                            const Text(
-                              "Question",
-                              style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              cards[index].question,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                            const Text(
-                              "Answer",
-                              style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            showAnswer
-                                ? Text(
-                                    cards[index].answer,
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                    ),
-                                  )
-                                : const SizedBox(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
               ),
             ),
@@ -133,7 +141,6 @@ class _AnkiSwapState extends State<AnkiSwap> {
                       padding: EdgeInsets.all(8.0),
                       child: Text("If Good"),
                     ),
-                    // Spacer(),
                   ],
                 ),
                 Row(

@@ -93,7 +93,13 @@ class GridViewTopic extends StatelessWidget {
                         // update favourites and all topics
                         await controller?.getAllFavourites();
                         await controller?.getAllTopics();
-                        // TODO tell user that the topic has been favourited
+                        // ignore: use_build_context_synchronously
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Topic Successfully Favourited"),
+                            duration: Duration(seconds: 1),
+                          ),
+                        );
                       },
                       child: Icon(
                         isFavourite ? Icons.star : Icons.star_border_outlined,

@@ -1,3 +1,4 @@
+import 'package:academia/exports/barrel.dart';
 import 'package:academia/tools/anki/controllers/controllers.dart';
 import 'package:academia/tools/anki/models/ankicard_model.dart';
 import 'package:flutter/material.dart';
@@ -193,9 +194,14 @@ class _EditAnkiCardState extends State<EditAnkiCard> {
                     // updating anki card
                     await ankiCardController.updateAnkiCard(widget.ankiCard);
                     await ankiCardController.getAllTopicCards();
-                    // TODO check on replacing of a character while highlighting
-                    // TODO tell user card has been successfully edited
-                    debugPrint("Card Successfully editted");
+                    if (!mounted) return;
+                    // ignore: use_build_context_synchronously
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Card Successfully editted"),
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
                   },
                   child: const Text("Update"),
                 ),
