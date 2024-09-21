@@ -1,5 +1,5 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/notifier/local_notifier_service.dart';
+import 'package:academia/notifier/notifier.dart';
 import 'package:get/get.dart';
 
 void main() async {
@@ -11,6 +11,7 @@ void main() async {
   // );
 
   await LocalNotifierService().initialize();
+  await LocalNotificationStatusManager().initialize();
 
   runApp(
     GetMaterialApp(

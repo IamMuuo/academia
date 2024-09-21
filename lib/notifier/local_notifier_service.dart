@@ -1,3 +1,4 @@
+import 'package:academia/notifier/notifier.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
@@ -112,6 +113,7 @@ class LocalNotifierService {
     String? payload,
     NotificationCategory? category,
     Color? color,
+    bool criticalAlert = false,
   }) async {
     NotificationLayout layout = _getNotificationLayout(notificationType);
 
@@ -122,6 +124,7 @@ class LocalNotifierService {
         title: title,
         body: body,
         notificationLayout: layout,
+        criticalAlert: criticalAlert,
         bigPicture:
             notificationType == NotificationType.bigPicture ? imageUrl : null,
         payload: {'payload_data': payload ?? 'No data'},
@@ -129,6 +132,8 @@ class LocalNotifierService {
         color: color,
       ),
     );
+
+    LocalNotificationStatusManager().setNotificationShown(id, true);
   }
 
   /// Schedules a notification to be displayed at a specific time.
@@ -158,6 +163,8 @@ class LocalNotifierService {
     NotificationCategory? category,
     Color? color,
     String? imageUrl, // For BigPicture notifications
+
+    bool criticalAlert = false,
   }) async {
     NotificationLayout layout = _getNotificationLayout(notificationType);
 
@@ -172,9 +179,12 @@ class LocalNotifierService {
             notificationType == NotificationType.bigPicture ? imageUrl : null,
         category: category,
         color: color,
+        criticalAlert: criticalAlert,
       ),
       schedule: NotificationCalendar.fromDate(date: scheduledTime),
     );
+
+    LocalNotificationStatusManager().setNotificationShown(id, true);
   }
 
   /// Cancels a specific notification by its unique ID.
@@ -187,6 +197,7 @@ class LocalNotifierService {
   /// await LocalNotifierService().cancelNotification(1);
   /// ```
   Future<void> cancelNotification(int id) async {
+    LocalNotificationStatusManager().resetNotificationStatus(id);
     await AwesomeNotifications().cancel(id);
   }
 
