@@ -154,4 +154,26 @@ class PostService with ChirpService {
       return Left("Failed to post comment error: ${e.toString()}");
     }
   }
+
+  Future<Either<String, bool>> postVote(
+      Map<String, String> authHeaders, String action, String postID) async {
+    try {
+      authHeaders.addAll({"content-type": "application/json"});
+      final response = await http.get(
+        Uri.parse("${ChirpService.urlPrefix}/posts/vote/$action/$postID"),
+        headers: authHeaders,
+      );
+
+      if (response.statusCode == 200) {
+        return right(true);
+      }
+      if (response.statusCode == 404) {
+        return right(false);
+      }
+
+      return left("Something went wrong while attempting to vote for post");
+    } catch (e) {
+      return left("Please check your internet connection and try again");
+    }
+  }
 }

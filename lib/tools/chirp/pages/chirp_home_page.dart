@@ -14,7 +14,7 @@ class ChirpHomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
       body: DefaultTabController(
-        length: 2,
+        length: 3,
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
@@ -64,6 +64,7 @@ class ChirpHomePage extends StatelessWidget {
                 tabs: [
                   Tab(text: 'Trending'),
                   Tab(text: "Your Posts"),
+                  Tab(text: "Organizations"),
                 ],
               ),
             ),
@@ -82,6 +83,7 @@ class ChirpHomePage extends StatelessWidget {
                 children: [
                   FeedPage(),
                   PersonalPostsPage(),
+                  OrganizationsPage(),
                 ],
               ),
             ),

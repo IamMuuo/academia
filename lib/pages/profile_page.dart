@@ -16,16 +16,6 @@ class ProfilePage extends StatelessWidget {
           snap: true,
           floating: true,
           centerTitle: true,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const OrganizationsPage(),
-                ),
-              );
-            },
-            icon: const Icon(Ionicons.planet_outline),
-          ),
           title: const Text("Your profile"),
           actions: [
             IconButton(
@@ -93,7 +83,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                     );
                   },
-                  child: const Text("Preview school ID"),
+                  child: const Text("Show Memberships"),
                 ),
                 const SizedBox(height: 16),
               ],

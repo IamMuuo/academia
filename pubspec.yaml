@@ -73,6 +73,7 @@ dependencies:
   swipe_to: ^1.0.6
   file_picker: ^8.0.5
   appinio_swiper: ^2.1.1
+  flutter_html: ^3.0.0-beta.2
   
 
 

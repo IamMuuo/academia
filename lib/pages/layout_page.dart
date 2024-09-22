@@ -1,5 +1,4 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:get/get.dart';
 
 class LayoutPage extends StatefulWidget {
   const LayoutPage({super.key});
@@ -12,8 +11,6 @@ class _LayoutPageState extends State<LayoutPage> {
   int currentIndex = 2;
   @override
   Widget build(BuildContext context) {
-    Get.put(StoryController());
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
