@@ -2,6 +2,7 @@ import 'package:academia/tools/anki/controllers/controllers.dart';
 import 'package:academia/tools/anki/models/ankicard_model.dart';
 import 'package:academia/tools/anki/pages/edit_anki_card.dart';
 import 'package:academia/tools/anki/widgets/eclipses.dart';
+import 'package:academia/tools/anki/widgets/preview_card.dart';
 import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
 
@@ -20,6 +21,14 @@ class FlashCardTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return PreviewAnkiCard(ankiCard: ankiCard);
+            },
+          );
+        },
         onDoubleTap: () {
           showDialog(
             context: context,
