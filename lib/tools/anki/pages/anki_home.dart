@@ -129,7 +129,7 @@ class AnkiHomePage extends StatelessWidget {
                             ],
                           )
                         : Container(
-                            height: MediaQuery.of(context).size.height * 0.53,
+                            height: MediaQuery.of(context).size.height * 0.58,
                             decoration: BoxDecoration(
                               color: lightColorScheme.primaryContainer,
                               borderRadius: const BorderRadius.only(
