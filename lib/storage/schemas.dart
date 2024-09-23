@@ -123,7 +123,6 @@ const schemas = <String, String>{
       end_date TEXT NOT NULL
     );
   """,
-
   "course_topics": """
     CREATE TABLE IF NOT EXISTS course_topics (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -132,6 +131,28 @@ const schemas = <String, String>{
       description TEXT NOT NULL
     );
   """,
+  // Anki
+  // Topic
+  "ankiTopics": """
+    CREATE TABLE IF NOT EXISTS ankiTopics (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT UNIQUE NOT NULL,
+      desc TEXT NOT NULL,
+      is_favourite INTEGER DEFAULT 0 NOT NULL,
+      num_cards INTERGER DEFAULT 0 NOT NULL
+    );
+  """,
+  // AnkiCard
+  "ankiCards": """
+    CREATE TABLE IF NOT EXISTS ankiCards (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      topic_id INTERGER NOT NULL,
+      question TEXT NOT NULL,
+      answer TEXT NOT NULL,
+      FOREIGN KEY(topic_id) REFERENCES ankiTopics(id)
+    );
+  """,
+
   //Ask Me
   //Files from Ask Me from which questions are being generated
   "askme_files": """
@@ -142,7 +163,6 @@ const schemas = <String, String>{
       avgScore INTEGER NOT NULL
     );
   """,
-  
   //AskMe Scores
   "askme_scores": """
     CREATE TABLE IF NOT EXISTS askme_scores (

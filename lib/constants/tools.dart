@@ -115,6 +115,17 @@ final List<Map<String, dynamic>> allTools = [
   },
   {
     "id": 10,
+    "name": "Academia Anki",
+    "action": "Lets Up That Grade",
+    "image": "assets/images/tasks_manager.png",
+    "ontap": () {
+      Get.to(const AnkiHomePage());
+    },
+    "description":
+        "Ready to revolutionize your study habits?\nLet's help you master courses effortlessly",
+  },
+  {
+    "id": 11,
     "name": "Ask Me",
     "action": "Ask Me",
     "image": "assets/images/think.jpeg",
