@@ -101,6 +101,7 @@ const schemas = <String, String>{
       name TEXT NOT NULL,
       sub_tasks INTEGER NOT NULL,
       complete INTEGER NOT NULL,
+      notify INTEGER NOT NULL,
       description TEXT NOT NULL,
       due TEXT NOT NULL,
       dateAdded TEXT NOT NULL,
