@@ -1,7 +1,4 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/notifier/local_notification_channel.dart';
-import 'package:academia/notifier/local_notification_status_manager.dart';
-import 'package:academia/notifier/local_notifier_service.dart';
 
 // background services
 @pragma('vm:entry-point')
@@ -11,16 +8,19 @@ void callbackDispatcher() {
       case BackgroundConfig.todosIDentifier:
         TodoBackgroundService().notifyPendingTasks();
         break;
+      case BackgroundConfig.coursesIDentifier:
+        CoursesBackgroundService().notifyTodaysCourses();
+        break;
       default:
     }
-    LocalNotifierService().showNotification(
-      id: LocalNotificationStatusManager().getNextId(),
-      title: "Dick",
-      body: "How are you doing pussy",
-      channelKey: LocalNotificationChannelType.general.channelKey,
-    );
     return Future.value(true);
   });
+}
+
+Duration timeUntilNextTarget(DateTime targetTime) {
+  DateTime now = DateTime.now();
+  Duration difference = targetTime.difference(now);
+  return difference;
 }
 
 class BackgroundWorker {
@@ -38,6 +38,18 @@ class BackgroundWorker {
       await Workmanager().initialize(
         callbackDispatcher,
         isInDebugMode: true,
+      );
+
+      DateTime now = DateTime.now();
+
+      /// Courses background service
+      Workmanager().registerPeriodicTask(
+        BackgroundConfig.coursesIDentifier,
+        BackgroundConfig.coursesIDentifier,
+        initialDelay: timeUntilNextTarget(
+          DateTime(now.year, now.month, now.day, 12, 0, 0),
+        ),
+        frequency: const Duration(minutes: 15),
       );
 
       /// Todos task that is suppossed to run after every 24 hours at 8 am
