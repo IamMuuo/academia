@@ -1,5 +1,7 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:academia/main.dart';
+import 'package:academia/notifier/local_notification_channel.dart';
+import 'package:academia/notifier/local_notifier_service.dart';
 import 'package:get/get.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -190,6 +192,46 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                     ListTile(
+                      leading: const Icon(Ionicons.alarm_outline),
+                      title: const Text("Cancel All notifications"),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text("Confirmation"),
+                            content: const Text(
+                              "Cancel all notifications? You won't get any reminders and updates for your existing tasks and assignments",
+                            ),
+                            actions: [
+                              OutlinedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Cancel"),
+                              ),
+                              FilledButton(
+                                onPressed: () async {
+                                  await HapticFeedback.heavyImpact();
+                                  await LocalNotifierService()
+                                      .cancelAllNotifications();
+                                  await LocalNotifierService().showNotification(
+                                    id: 0,
+                                    title: "Notifications",
+                                    color: Colors.red,
+                                    body:
+                                        "You have successfully cleared all pending notifications",
+                                    channelKey: LocalNotificationChannelType
+                                        .general.channelKey,
+                                  );
+                                },
+                                child: const Text("Yes cancel them"),
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                    ListTile(
                       leading: const Icon(Ionicons.trash),
                       title: const Text("Delete my account"),
                       onTap: () {
@@ -212,6 +254,16 @@ class _SettingsPageState extends State<SettingsPage> {
                                   await HapticFeedback.heavyImpact();
                                   await settingsController.logout();
                                   await userController.deleteUser();
+                                  await LocalNotifierService().showNotification(
+                                    id: 0,
+                                    title: "Damn",
+                                    notificationType: NotificationType.bigText,
+                                    body:
+                                        "Goodbye, your entire user information has been deleted from our platform, it was a pleasure being a part of your academic journey",
+                                    channelKey: LocalNotificationChannelType
+                                        .general.channelKey,
+                                  );
+
                                   if (context.mounted) {
                                     Navigator.pop(context);
                                     Navigator.of(context).pushReplacement(
@@ -250,6 +302,15 @@ class _SettingsPageState extends State<SettingsPage> {
                                   onPressed: () async {
                                     await HapticFeedback.heavyImpact();
                                     await settingsController.logout();
+                                    await LocalNotifierService()
+                                        .showNotification(
+                                      id: 0,
+                                      title: "Goodbye",
+                                      body:
+                                          "Bye ${userController.user.value!.firstName.title()}, why did you leave? we hope to see you again",
+                                      channelKey: LocalNotificationChannelType
+                                          .general.channelKey,
+                                    );
                                     if (context.mounted) {
                                       Navigator.pop(context);
                                       Navigator.of(context).pushReplacement(
