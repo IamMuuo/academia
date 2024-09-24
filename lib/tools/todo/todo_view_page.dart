@@ -270,7 +270,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                       id: LocalNotificationStatusManager().getNextId(),
                       title: "Todos",
                       body:
-                          "Todo ${titleController.text} has been scheduled successfully",
+                          "Todo ${titleController.text} has been scheduled successfully ${Emojis.smile_clown_face}",
                       channelKey:
                           LocalNotificationChannelType.reminders.channelKey,
                     );
@@ -314,7 +314,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                       id: LocalNotificationStatusManager().getNextId(),
                       title: "Todos",
                       body:
-                          "Todo ${titleController.text} has been scheduled successfully",
+                          "Todo ${titleController.text} has been scheduled successfully ${Emojis.smile_clown_face}",
                       channelKey:
                           LocalNotificationChannelType.reminders.channelKey,
                     );
