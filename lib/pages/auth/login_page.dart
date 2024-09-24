@@ -49,11 +49,11 @@ class _LoginPageState extends State<LoginPage> {
         HapticFeedback.heavyImpact().then((value) {
           if (userController.isLoggedIn.value) {
             if (!mounted) return;
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => const LayoutPage(),
-              ),
-            );
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const LayoutPage()),
+                (predicate) => false
+                // (Route<dynamic route>) => false,
+                );
             return;
           }
         });

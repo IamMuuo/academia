@@ -40,10 +40,11 @@ class _RegisterPageState extends State<RegisterPage> {
     }, (r) {
       if (r && userController.isLoggedIn.value) {
         HapticFeedback.heavyImpact().then((value) {});
-        Navigator.of(context).pushReplacement(
+        Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => const LayoutPage(),
           ),
+          (predicate) => false,
         );
         return;
       }
