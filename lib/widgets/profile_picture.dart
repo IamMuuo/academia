@@ -51,7 +51,7 @@ class ProfilePictureWidget extends StatelessWidget {
                       : Image.memory(
                           Uint8List.fromList(
                             base64Decode(
-                              userController.user.value!.profileUrl
+                              userController.user.value!.schoolProfile
                                   .replaceFirst("data:image/gif;base64,", ""),
                             ),
                           ),

@@ -108,3 +108,27 @@ double calculateSemesterPercent(DateTime start, DateTime end) {
     return percentage;
   }
 }
+
+// Extension method to convert weekday number to string
+extension WeekdayToString on DateTime {
+  String weekdayToString() {
+    switch (weekday) {
+      case DateTime.monday:
+        return "MONDAY";
+      case DateTime.tuesday:
+        return "TUESDAY";
+      case DateTime.wednesday:
+        return "WEDNESDAY";
+      case DateTime.thursday:
+        return "THURSDAY";
+      case DateTime.friday:
+        return "FRIDAY";
+      case DateTime.saturday:
+        return "SATURDAY";
+      case DateTime.sunday:
+        return "SUNDAY";
+      default:
+        return "";
+    }
+  }
+}

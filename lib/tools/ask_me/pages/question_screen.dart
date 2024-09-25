@@ -38,7 +38,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   List<int> scores = [];
 
   final quizSettingsController = Get.find<QuizSettingsController>();
-  final filesController = Get.find<FilesController>();
+  final filesAndScoresController = Get.find<FilesAndScoresController>();
 
   @override
   void initState() {
@@ -79,12 +79,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
           score: scoreValue,
           filesId: widget.id!, // ID of the associated file
         );
-        await filesController.addScores(newScore);
+        await filesAndScoresController.addScores(newScore);
       }
       //loading both the files and the scores to get the latest changes
-      await filesController.loadFiles();
+      await filesAndScoresController.loadFilesAndScores();
       // Load the scores associated with the current file ID (widget.id)
-      final fileScores = filesController.scores
+      final fileScores = filesAndScoresController.scores
           .where((score) => score.filesId == widget.id)
           .map((e) => e.score)
           .toList();
@@ -99,7 +99,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
         filePath: widget.filePath,
         avgScore: avgScore,
       );
-      await filesController.updateFile(updatedFile);
+      await filesAndScoresController.updateFile(updatedFile);
 
       // Optionally, handle success (e.g., show a message)
     } catch (e) {

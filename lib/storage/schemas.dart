@@ -19,6 +19,7 @@ const schemas = <String, String>{
       date_of_birth TEXT,
       campus TEXT,
       profile_url TEXT,
+      school_profile TEXT,
       password TEXT,
       active INTEGER,
       vibe_points INTEGER,
@@ -37,7 +38,9 @@ const schemas = <String, String>{
       period TEXT NOT NULL,
       campus TEXT NOT NULL,
       room TEXT NOT NULL,
-      lecturer TEXT NOT NULL
+      lecturer TEXT NOT NULL,
+      start_time TEXT NOT NULL,
+      stop_time TEXT NOT NULL
     );
   """,
 
@@ -100,6 +103,7 @@ const schemas = <String, String>{
       name TEXT NOT NULL,
       sub_tasks INTEGER NOT NULL,
       complete INTEGER NOT NULL,
+      notify INTEGER NOT NULL,
       description TEXT NOT NULL,
       due TEXT NOT NULL,
       dateAdded TEXT NOT NULL,

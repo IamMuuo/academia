@@ -1,4 +1,6 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/notifier/local_notification_channel.dart';
+import 'package:academia/notifier/notifier.dart';
 import 'package:get/get.dart';
 
 class TodoViewPage extends StatefulWidget {
@@ -48,6 +50,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
       descriptionController.text = widget.todo!.description;
       duedateController.text = formatDateTime(widget.todo!.due);
       dueDate = widget.todo!.due;
+      notify = widget.todo!.notify;
       subtasks.addAll(widget.todo!.subTasks ?? {});
     }
     setState(() {});
@@ -255,6 +258,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                       description: descriptionController.text,
                       dateAdded: DateTime.now(),
                       due: dueDate,
+                      notify: notify,
                       complete: false),
                 );
 
@@ -262,17 +266,13 @@ class _TodoViewPageState extends State<TodoViewPage> {
                   if (!context.mounted) return;
                   if (notify) {
                     // notification logic
-                    notificationsController.scheduleNotification(
-                      DateTime.now().copyWith(
-                        hour: 8,
-                        month: null,
-                        day: null,
-                      ),
-                      "Todos",
-                      "Todo $todoController needs your attention",
-                      repeats: true,
-                      channelKey: "reminders",
-                      notificationLayout: NotificationLayout.Inbox,
+                    LocalNotifierService().showNotification(
+                      id: LocalNotificationStatusManager().getNextId(),
+                      title: "Todos",
+                      body:
+                          "Todo ${titleController.text} has been scheduled successfully ${Emojis.smile_clown_face}",
+                      channelKey:
+                          LocalNotificationChannelType.reminders.channelKey,
                     );
                   }
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -303,10 +303,23 @@ class _TodoViewPageState extends State<TodoViewPage> {
                 widget.todo?.description = descriptionController.text;
                 widget.todo?.subTasks = subtasks;
                 widget.todo?.due = dueDate;
+                widget.todo?.notify = notify;
 
                 final ok = await todoController.updateTodo(widget.todo!);
                 if (ok) {
                   if (!context.mounted) return;
+                  if (notify) {
+                    // notification logic
+                    LocalNotifierService().showNotification(
+                      id: LocalNotificationStatusManager().getNextId(),
+                      title: "Todos",
+                      body:
+                          "Todo ${titleController.text} has been scheduled successfully ${Emojis.smile_clown_face}",
+                      channelKey:
+                          LocalNotificationChannelType.reminders.channelKey,
+                    );
+                  }
+
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text(
                       "Your task has been sucessfully updated",

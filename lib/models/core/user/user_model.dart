@@ -16,6 +16,7 @@ class User {
   DateTime dateOfBirth;
   String campus;
   String profileUrl;
+  String schoolProfile;
   String password;
   bool active;
   int vibePoints;
@@ -40,6 +41,7 @@ class User {
     required this.active,
     required this.vibePoints,
     required this.pointTransactions,
+    required this.schoolProfile,
     this.dateCreated,
     this.dateUpdated,
   });
@@ -58,6 +60,7 @@ class User {
       dateOfBirth: DateTime.parse(json['date_of_birth']),
       campus: json['campus'],
       profileUrl: json['profile_url'],
+      schoolProfile: json['school_profile'],
       password: json['password'],
       active: json["active"] is int
           ? json["active"] == 1
@@ -111,7 +114,8 @@ class User {
       dateOfBirth: dateOfBirth,
       campus: campus,
       active: active,
-      profileUrl: profileUrl,
+      profileUrl: "",
+      schoolProfile: profileUrl,
       pointTransactions: null,
       vibePoints: 0,
       password: password,
@@ -136,6 +140,7 @@ class User {
       ),
       'campus': campus,
       'profile_url': profileUrl,
+      'school_profile': schoolProfile,
       'password': password,
       'active': active == true ? 1 : 0,
       'vibe_points': vibePoints,
@@ -164,6 +169,7 @@ class User {
       ),
       'campus': campus,
       'profile_url': profileUrl,
+      'school_profile': schoolProfile,
       'password': password,
       'active': active,
       'vibe_points': vibePoints,
