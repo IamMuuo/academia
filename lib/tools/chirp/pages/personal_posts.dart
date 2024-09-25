@@ -3,6 +3,7 @@ import 'package:academia/tools/chirp/widgets/widgets.dart';
 import 'package:dartz/dartz.dart' as dartz;
 import '../controllers/chirp_controller.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class PersonalPostsPage extends StatefulWidget {
   const PersonalPostsPage({super.key});
@@ -50,6 +51,18 @@ class _PersonalPostsPageState extends State<PersonalPostsPage>
               child: Text("Snap! $l"),
             );
           }, (r) {
+            if (r.isEmpty) {
+              return Column(
+                children: [
+                  Lottie.asset("assets/lotties/empty.json"),
+                  const SizedBox(height: 22),
+                  Text(
+                    "You have no posts, create a post to get started",
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                ],
+              );
+            }
             return ListView.separated(
                 itemBuilder: (context, index) {
                   final post = r[index];
