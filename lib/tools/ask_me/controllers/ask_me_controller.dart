@@ -4,10 +4,11 @@ import 'package:dartz/dartz.dart';
 import 'package:get/get.dart';
 import 'controllers.dart';
 
-class AskMeController extends GetxController{
+class AskMeController extends GetxController {
   final AskMeService _service = AskMeService();
   UserController userController = Get.find<UserController>();
-  QuizSettingsController quizSettingsController = Get.find<QuizSettingsController>();
+  QuizSettingsController quizSettingsController =
+      Get.find<QuizSettingsController>();
   // final userId = 'MQ4';
   /*
     For testing purposes as of now, I would recommend you to uncomment the above 
@@ -19,18 +20,18 @@ class AskMeController extends GetxController{
     The above issue is currently being fixed though.
   */
 
-  Future<Either<String, dynamic>> fetchQuestions() async{
+  Future<Either<String, dynamic>> fetchQuestions() async {
     final result = await _service.fetchQuestions(
-      userController.user.value?.id,
-      // userId,
-      quizSettingsController.fileTitle.value, 
-      quizSettingsController.filePath.value, 
-      quizSettingsController.multipleChoice.value);
+        userController.user.value?.id?.substring(0, 12),
+        // userId,
+        quizSettingsController.fileTitle.value,
+        quizSettingsController.filePath.value,
+        quizSettingsController.multipleChoice.value);
 
     return result.fold((l) {
       return left(l);
     }, (r) {
       return right(r);
-    }); 
+    });
   }
 }

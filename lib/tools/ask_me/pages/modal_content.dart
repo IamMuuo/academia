@@ -31,7 +31,8 @@ class _ModalContentState extends State<ModalContent> {
 
   final QuizSettingsController quizSettingsController =
       Get.put(QuizSettingsController());
-  final FilesAndScoresController filesAndScoresController = Get.put(FilesAndScoresController());
+  final FilesAndScoresController filesAndScoresController =
+      Get.put(FilesAndScoresController());
   final askMeController = Get.put(AskMeController());
 
   late TextEditingController titleController;
@@ -345,8 +346,7 @@ class _ModalContentState extends State<ModalContent> {
                               minuteValue!, secondsValue!);
                           quizSettingsController
                               .setFileTitle(titleController.text);
-                          quizSettingsController
-                              .setFilePath(_filePath!);
+                          quizSettingsController.setFilePath(_filePath!);
                           try {
                             setState(() {
                               isLoading = true;
@@ -361,7 +361,8 @@ class _ModalContentState extends State<ModalContent> {
                                 filePath: _filePath!,
                                 avgScore: widget.avgScore!,
                               );
-                              await filesAndScoresController.updateFile(sameFile);
+                              await filesAndScoresController
+                                  .updateFile(sameFile);
                               fileId = widget.id; // Use the existing file ID
                               debugPrint(
                                   "Field Id of existing file is $fileId");
@@ -375,7 +376,8 @@ class _ModalContentState extends State<ModalContent> {
                               await filesAndScoresController.addFile(file);
 
                               // Reload files to get the updated list
-                              await filesAndScoresController.loadFilesAndScores();
+                              await filesAndScoresController
+                                  .loadFilesAndScores();
 
                               // Find the newly added file
                               final addedFiles = filesAndScoresController.files

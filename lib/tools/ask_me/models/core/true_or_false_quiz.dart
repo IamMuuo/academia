@@ -8,7 +8,9 @@ class TrueFalseQuiz {
   factory TrueFalseQuiz.fromJson(Map<String, dynamic> json) {
     return TrueFalseQuiz(
       questions: List<TrueFalseQuestion>.from(
-        json['questions'].map((questionJson) => TrueFalseQuestion.fromJson(questionJson)),
+        json['questions'].map((questionJson) {
+          return TrueFalseQuestion.fromJson(questionJson);
+        }),
       ),
     );
   }

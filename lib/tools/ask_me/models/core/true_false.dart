@@ -4,16 +4,16 @@ class TrueFalseQuestion {
   String answer;
 
   TrueFalseQuestion({
-    required this.question, 
+    required this.question,
     this.choices = const ['True', 'False'],
     required this.answer,
   });
 
   factory TrueFalseQuestion.fromJson(Map<String, dynamic> json) {
-    final question = json.keys.first;
-    final answer = json[question];
+    final question = json[json.keys.first];
+    final answer = json[json.keys.toList()[1]];
     return TrueFalseQuestion(
-      question: question, 
+      question: question,
       answer: answer,
     );
   }
@@ -25,4 +25,3 @@ class TrueFalseQuestion {
     };
   }
 }
-
