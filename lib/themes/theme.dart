@@ -2,6 +2,7 @@ import 'package:academia/exports/barrel.dart';
 export 'package:academia/themes/colors.dart';
 
 ThemeData lightModeTheme = ThemeData(
+  useMaterial3: true,
   fontFamily: "helvetica",
   colorScheme: lightColorScheme,
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
@@ -11,6 +12,7 @@ ThemeData lightModeTheme = ThemeData(
 );
 
 ThemeData darkModeTheme = ThemeData(
+  useMaterial3: true,
   fontFamily: "helvetica",
   colorScheme: darkColorScheme,
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
