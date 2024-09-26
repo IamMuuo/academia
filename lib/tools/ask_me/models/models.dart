@@ -6,4 +6,6 @@ export 'core/askme_scores.dart';
 export 'core/scores_model_helper.dart';
 export 'core/multiple_choice.dart';
 export 'core/true_false.dart';
+export 'core/multiple_choice_quiz.dart';
+export 'core/true_or_false_quiz.dart';
 export 'services/askme_service.dart.dart';
