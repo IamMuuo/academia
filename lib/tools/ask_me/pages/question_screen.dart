@@ -11,6 +11,7 @@ class QuestionScreen extends StatefulWidget {
   final int? id;
   final String title;
   final String filePath;
+
   const QuestionScreen({
     super.key,
     this.multipleChoiceQuiz,
@@ -43,7 +44,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
   @override
   void initState() {
     super.initState();
-    _totalTime = quizSettingsController.minute.value * 60 + quizSettingsController.seconds.value; // use minutes and seconds
+    _totalTime = quizSettingsController.minute.value * 60 +
+        quizSettingsController.seconds.value; // use minutes and seconds
     _timeLeft = _totalTime;
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -127,27 +129,26 @@ class _QuestionScreenState extends State<QuestionScreen> {
           ],
         ),
       );
-    }
-    else {
+    } else {
       setState(() {
-      isAnswered = true;
-      correctAnswer =
-          widget.multipleChoiceQuiz?.questions[currentIndex].correctAnswer ??
-              widget.trueFalseQuiz?.questions[currentIndex].answer;
-      if (widget.multipleChoiceQuiz != null) {
-        if (widget.multipleChoiceQuiz!.questions[currentIndex]
-                .choices[selectedOptionIndex!] ==
-            correctAnswer) {
-          score++;
+        isAnswered = true;
+        correctAnswer =
+            widget.multipleChoiceQuiz?.questions[currentIndex].correctAnswer ??
+                widget.trueFalseQuiz?.questions[currentIndex].answer;
+        if (widget.multipleChoiceQuiz != null) {
+          if (widget.multipleChoiceQuiz!.questions[currentIndex]
+                  .choices[selectedOptionIndex!] ==
+              correctAnswer) {
+            score++;
+          }
+        } else if (widget.trueFalseQuiz != null) {
+          if (widget.trueFalseQuiz!.questions[currentIndex]
+                  .choices[selectedOptionIndex!] ==
+              correctAnswer) {
+            score++;
+          }
         }
-      } else if (widget.trueFalseQuiz != null) {
-        if (widget.trueFalseQuiz!.questions[currentIndex]
-                .choices[selectedOptionIndex!] ==
-            correctAnswer) {
-          score++;
-        }
-      }
-      isNextButton = true;
+        isNextButton = true;
       });
     }
   }
