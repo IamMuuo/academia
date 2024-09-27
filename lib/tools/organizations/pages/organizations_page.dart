@@ -39,12 +39,19 @@ class _OrganizationsPageState extends State<OrganizationsPage>
         future: _loader,
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
-            return const Text("loading");
+            return ListView.builder(
+              itemBuilder: (context, index) => const ListTile(
+                  leading: CircleAvatar(), trailing: CircleAvatar(radius: 5)),
+            );
           }
 
           return snapshot.data!.fold((l) {
             return Center(
-              child: Text("Holly .. $l"),
+              child: Text(
+                "Holly .. $l",
+                style: Theme.of(context).textTheme.headlineSmall,
+                textAlign: TextAlign.center,
+              ),
             );
           }, (r) {
             return ListView.separated(

@@ -52,15 +52,21 @@ class _PersonalPostsPageState extends State<PersonalPostsPage>
             );
           }, (r) {
             if (r.isEmpty) {
-              return Column(
-                children: [
-                  Lottie.asset("assets/lotties/empty.json"),
-                  const SizedBox(height: 22),
-                  Text(
-                    "You have no posts, create a post to get started",
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                ],
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Lottie.asset(
+                      "assets/lotties/empty.json",
+                      height: 250,
+                    ),
+                    const SizedBox(height: 22),
+                    Text(
+                      "You have no posts, create a post to get started",
+                      style: Theme.of(context).textTheme.headlineSmall,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               );
             }
             return ListView.separated(

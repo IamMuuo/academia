@@ -17,9 +17,8 @@ Widget bluecircle = Padding(
   child: Container(
     width: 15,
     height: 15,
-    decoration: BoxDecoration(
+    decoration: const BoxDecoration(
       shape: BoxShape.circle,
-      color: lightColorScheme.primaryContainer,
     ),
   ),
 );

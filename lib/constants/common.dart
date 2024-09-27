@@ -1,7 +1,7 @@
 // const String urlPrefix = "https://daystar-backend-atrocious-jpg.vercel.app";
 // For local development
 
-import 'package:magnet/magnet.dart';
+import 'package:academia/exports/barrel.dart';
 
 late Magnet magnet;
 

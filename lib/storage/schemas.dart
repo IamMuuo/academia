@@ -39,8 +39,8 @@ const schemas = <String, String>{
       campus TEXT NOT NULL,
       room TEXT NOT NULL,
       lecturer TEXT NOT NULL,
-      start_time TEXT NOT NULL,
-      stop_time TEXT NOT NULL
+      start_time TEXT,
+      stop_time TEXT 
     );
   """,
 

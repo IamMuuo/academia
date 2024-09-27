@@ -112,11 +112,6 @@ class GridViewTopic extends StatelessWidget {
                           ),
                           actions: [
                             TextButton(
-                              style: ButtonStyle(
-                                foregroundColor: WidgetStatePropertyAll(
-                                  lightColorScheme.error,
-                                ),
-                              ),
                               onPressed: () async {
                                 AnkiTopic topic = AnkiTopic(
                                   id: idx,

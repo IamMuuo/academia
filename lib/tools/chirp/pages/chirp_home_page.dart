@@ -12,7 +12,6 @@ class ChirpHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(ChirpController());
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceDim,
       body: DefaultTabController(
         length: 3,
         child: CustomScrollView(

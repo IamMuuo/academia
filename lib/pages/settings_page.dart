@@ -51,11 +51,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         value: settingsController
                             .settings.value.showProfilePicture,
                         onChanged: (value) {
-                          settingsController.settings.update(
-                            (val) {
-                              val?.showProfilePicture = value;
-                            },
-                          );
+                          settingsController.settings.value = settingsController
+                              .settings.value
+                              .copyWith(showProfilePicture: value);
                         },
                       ),
                     ),
@@ -104,11 +102,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         value:
                             settingsController.settings.value.showFeeStatistics,
                         onChanged: (value) {
-                          settingsController.settings.update(
-                            (val) {
-                              val?.showFeeStatistics = value;
-                            },
-                          );
+                          settingsController.settings.value = settingsController
+                              .settings.value
+                              .copyWith(showFeeStatistics: value);
                         },
                       ),
                     ),
@@ -118,11 +114,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       trailing: Switch(
                         value: settingsController.settings.value.showBirthDay,
                         onChanged: (value) {
-                          settingsController.settings.update(
-                            (val) {
-                              val?.showBirthDay = value;
-                            },
-                          );
+                          settingsController.settings.value = settingsController
+                              .settings.value
+                              .copyWith(showBirthDay: value);
                         },
                       ),
                     ),
@@ -139,11 +133,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       trailing: Switch(
                         value: settingsController.settings.value.showTranscript,
                         onChanged: (value) {
-                          settingsController.settings.update(
-                            (val) {
-                              val?.showTranscript = value;
-                            },
-                          );
+                          settingsController.settings.value = settingsController
+                              .settings.value
+                              .copyWith(showTranscript: value);
                         },
                       ),
                     ),
@@ -153,11 +145,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       trailing: Switch(
                         value: settingsController.settings.value.showAudit,
                         onChanged: (value) {
-                          settingsController.settings.update(
-                            (val) {
-                              val?.showAudit = value;
-                            },
-                          );
+                          settingsController.settings
+                              .update((val) => val?.copyWith(showAudit: value));
                         },
                       ),
                     ),
@@ -173,10 +162,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             settingsController.settings.value.showExamTimetable,
                         onChanged: (value) {
                           settingsController.settings.update(
-                            (val) {
-                              val?.showExamTimetable = value;
-                            },
-                          );
+                              (val) => val?.copyWith(showExamTimetable: value));
                         },
                       ),
                     ),

@@ -38,11 +38,6 @@ class FlashCardTile extends StatelessWidget {
               ),
               actions: [
                 TextButton(
-                  style: ButtonStyle(
-                    foregroundColor: WidgetStatePropertyAll(
-                      lightColorScheme.error,
-                    ),
-                  ),
                   onPressed: () async {
                     bool? deleted =
                         await ankiCardController.deleteCard(ankiCard);

@@ -15,8 +15,9 @@ class ProfilePage extends StatelessWidget {
           pinned: true,
           snap: true,
           floating: true,
-          centerTitle: true,
-          title: const Text("Your profile"),
+          flexibleSpace: const FlexibleSpaceBar(
+            title: Text("Your profile"),
+          ),
           actions: [
             IconButton(
               onPressed: () {

@@ -1,27 +1,16 @@
-class CourseTopic {
-  final String course;
-  final String name;
-  final String description;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  CourseTopic({
-    required this.course,
-    required this.name,
-    required this.description,
-  });
+part 'course_topic.freezed.dart';
+part 'course_topic.g.dart';
 
-  factory CourseTopic.fromJson(Map<String, dynamic> json) {
-    return CourseTopic(
-      course: json["course"],
-      name: json['name'],
-      description: json['description'],
-    );
-  }
+@freezed
+class CourseTopic with _$CourseTopic {
+  const factory CourseTopic({
+    required String course,
+    required String name,
+    required String description,
+  }) = _CourseTopic;
 
-  Map<String, dynamic> toJson() {
-    return {
-      'course': course,
-      'name': name,
-      'description': description,
-    };
-  }
+  factory CourseTopic.fromJson(Map<String, dynamic> json) =>
+      _$CourseTopicFromJson(json);
 }

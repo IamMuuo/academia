@@ -19,7 +19,7 @@ class _AskMeHomeState extends State<AskMeHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Ask Me"),
+        title: const Text("Ask Me"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -226,7 +226,6 @@ class _AskMeHomeState extends State<AskMeHome> {
   Future<void> _bottomSheet(BuildContext context,
       {int? id, String? title, String? filepath, int? avgScore}) {
     return showModalBottomSheet(
-      backgroundColor: lightColorScheme.onPrimary,
       context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),

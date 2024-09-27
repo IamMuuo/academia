@@ -44,7 +44,8 @@ class _PostCardState extends State<PostCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                widget.post.user!.profilePhoto != null
+                widget.post.user!.profilePhoto != null &&
+                        widget.post.user!.profilePhoto != ""
                     ? CircleAvatar(
                         backgroundImage: CachedNetworkImageProvider(
                           widget.post.user?.profilePhoto ?? '',
