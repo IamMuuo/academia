@@ -30,6 +30,14 @@ class OrganizationController extends GetxController {
     }
   }
 
+  Future<Either<String, bool>> markStoryAsViewed(
+      Map<String, String> authCreds, String storyID) async {
+    return _storyService.markStoryAsViewed(
+      authCreds,
+      storyID,
+    );
+  }
+
   String _encodeOrganizatons(List<Organization> organizations) {
     List<Map<String, dynamic>> jsonList =
         organizations.map((org) => org.toJson()).toList();

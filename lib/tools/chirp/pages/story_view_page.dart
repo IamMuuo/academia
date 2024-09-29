@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:get/get.dart';
 import 'package:story_view/story_view.dart';
 
 class StoryViewPage extends StatefulWidget {
@@ -17,6 +18,9 @@ class StoryViewPage extends StatefulWidget {
 
 class _StoryViewPageState extends State<StoryViewPage> {
   final StoryController _storyController = StoryController();
+  final OrganizationController _organizationController =
+      Get.find<OrganizationController>();
+  final UserController _userController = Get.find<UserController>();
 
   List<StoryItem> buildStoryItems(List<Story> stories) {
     List<StoryItem> storyItems = [];
@@ -95,6 +99,12 @@ class _StoryViewPageState extends State<StoryViewPage> {
       ),
       body: StoryView(
         repeat: false,
+        onStoryShow: (storyitem, index) async {
+          await _organizationController.markStoryAsViewed(
+            _userController.authHeaders,
+            widget.stories.elementAt(index).id,
+          );
+        },
         onComplete: () {
           Navigator.pop(context);
         },

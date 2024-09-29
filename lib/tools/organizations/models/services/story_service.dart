@@ -6,7 +6,6 @@ class StoryService with ChirpService {
   Future<Either<String, List<Map<String, List<Story>>>>> fetchStories(
       Map<String, String> authHeaders) async {
     try {
-      // fetch organizations
       final response = await http.get(
         Uri.parse("${ChirpService.urlPrefix}/stories/"),
         headers: authHeaders,
@@ -39,6 +38,30 @@ class StoryService with ChirpService {
 
       return const Left(
         "Something went wrong white attempting to fetch organizations",
+      );
+    } catch (e) {
+      return const Left(
+        "Please check your internet connection and try that again",
+      );
+    }
+  }
+
+  Future<Either<String, bool>> markStoryAsViewed(
+    Map<String, String> authHeaders,
+    String storyID,
+  ) async {
+    try {
+      final response = await http.get(
+        Uri.parse("${ChirpService.urlPrefix}/stories/view/$storyID/"),
+        headers: authHeaders,
+      );
+
+      if (response.statusCode == 200) {
+        return right(true);
+      }
+
+      return const Left(
+        "Something went wrong white attempting to mark story as viewed",
       );
     } catch (e) {
       return const Left(
