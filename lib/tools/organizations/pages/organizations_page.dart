@@ -13,10 +13,10 @@ class OrganizationsPage extends StatefulWidget {
 class _OrganizationsPageState extends State<OrganizationsPage>
     with AutomaticKeepAliveClientMixin {
   final UserController userController = Get.find<UserController>();
+  final OrganizationController organizationController =
+      Get.find<OrganizationController>();
   @override
   bool get wantKeepAlive => true;
-
-  final OrganizationService _service = OrganizationService();
 
   // TH loading state
   late Future<dartz.Either<String, List<Organization>>> _loader;
@@ -24,7 +24,8 @@ class _OrganizationsPageState extends State<OrganizationsPage>
   @override
   void initState() {
     super.initState();
-    _loader = _service.fetchOrganizations(userController.authHeaders);
+    _loader =
+        organizationController.fetchOrganizations(userController.authHeaders);
   }
 
   @override
@@ -32,7 +33,8 @@ class _OrganizationsPageState extends State<OrganizationsPage>
     super.build(context);
     return RefreshIndicator(
       onRefresh: () async {
-        _loader = _service.fetchOrganizations(userController.authHeaders);
+        _loader = organizationController
+            .fetchOrganizations(userController.authHeaders);
         setState(() {});
       },
       child: FutureBuilder(
@@ -44,6 +46,12 @@ class _OrganizationsPageState extends State<OrganizationsPage>
                   leading: CircleAvatar(), trailing: CircleAvatar(radius: 5)),
             );
           }
+          //
+          // if (snapshot.hasError) {
+          //   return const Center(
+          //     child: Text("Error"),
+          //   );
+          // }
 
           return snapshot.data!.fold((l) {
             return Center(

@@ -205,7 +205,7 @@ class _$SettingsImpl implements _Settings {
       this.showAudit = false,
       this.showExamTimetable = false,
       this.passcode = "",
-      this.primaryColor = "#FFFFFF"});
+      this.primaryColor = "##72D5E0"});
 
   factory _$SettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$SettingsImplFromJson(json);

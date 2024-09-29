@@ -68,34 +68,6 @@ const schemas = <String, String>{
       awarded_at TEXT NOT NULL
     );
   """,
-
-  // Organizations
-  "organizations": """
-    CREATE TABLE IF NOT EXISTS organizations (
-      id TEXT PRIMARY KEY,
-      name TEXT NOT NULL,
-      phone TEXT,
-      email TEXT,
-      description TEXT,
-      profile TEXT,
-      date_added TEXT
-    );
-  """,
-
-  // Stories
-  "stories": """
-    CREATE TABLE IF NOT EXISTS stories (
-      id TEXT PRIMARY KEY,
-      organization TEXT NOT NULL,
-      hex_code TEXT,
-      text TEXT,
-      media TEXT,
-      viewed INTEGER,
-      date_added TEXT,
-      date_of_expiry TEXT
-    );
-  """,
-
   // todos
   "todos": """
     CREATE TABLE IF NOT EXISTS todos (

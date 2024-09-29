@@ -44,40 +44,26 @@ class ChirpHomePage extends StatelessWidget {
                   icon: const Icon(Ionicons.flame_outline),
                 ),
               ],
-              expandedHeight: 300,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                        "assets/images/sketchbook-passersby-people-working-around-1.png",
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              expandedHeight: 200,
               pinned: true,
               floating: true,
               snap: true,
-              bottom: const TabBar(
-                tabs: [
-                  Tab(text: 'Trending'),
-                  Tab(text: "Your Posts"),
-                  Tab(text: "Organizations"),
-                ],
-              ),
-            ),
-            SliverVisibility(
-              visible: false,
-              sliver: SliverPersistentHeader(
-                floating: true,
-                delegate:
-                    PersistentStorySliverDelegate(child: const SizedBox()),
-              ),
+              bottom: PreferredSize(
+                  preferredSize: Size(MediaQuery.of(context).size.width, 140),
+                  child: const Column(
+                    children: [
+                      StoryHeader(),
+                      TabBar(tabs: [
+                        Tab(text: 'Trending'),
+                        Tab(text: "Your Posts"),
+                        Tab(text: "Organizations"),
+                      ]),
+                    ],
+                  )),
             ),
             const SliverFillRemaining(
               hasScrollBody: true,
-              fillOverscroll: true,
+              fillOverscroll: false,
               child: TabBarView(
                 children: [
                   FeedPage(),

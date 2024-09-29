@@ -15,7 +15,7 @@ _$SettingsImpl _$$SettingsImplFromJson(Map<String, dynamic> json) =>
       showAudit: json['showAudit'] as bool? ?? false,
       showExamTimetable: json['showExamTimetable'] as bool? ?? false,
       passcode: json['passcode'] as String? ?? "",
-      primaryColor: json['primaryColor'] as String? ?? "#FFFFFF",
+      primaryColor: json['primaryColor'] as String? ?? "##72D5E0",
     );
 
 Map<String, dynamic> _$$SettingsImplToJson(_$SettingsImpl instance) =>

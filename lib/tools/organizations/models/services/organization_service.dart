@@ -31,6 +31,34 @@ class OrganizationService with ChirpService {
     }
   }
 
+  Future<Either<String, List<Organization>>> fetchOrganization(
+      Map<String, String> authHeaders, String id) async {
+    try {
+      // fetch organizations
+      final response = await http.get(
+        Uri.parse("${ChirpService.urlPrefix}/organizations/find/$id"),
+        headers: authHeaders,
+      );
+
+      if (response.statusCode == 200) {
+        List<Map<String, dynamic>> rawOrganizations =
+            json.decode(response.body).cast<Map<String, dynamic>>();
+
+        return Right(
+          rawOrganizations.map((e) => Organization.fromJson(e)).toList(),
+        );
+      }
+
+      return const Left(
+        "Something went wrong white attempting to fetch organizations",
+      );
+    } catch (e) {
+      return const Left(
+        "Please check your internet connection and try that again",
+      );
+    }
+  }
+
   Future<Either<String, List<Membership>>> fetchUserMemberships(
       String userID, Map<String, String> authHeaders) async {
     try {
