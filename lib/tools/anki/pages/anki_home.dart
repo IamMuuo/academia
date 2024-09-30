@@ -3,6 +3,7 @@ import 'package:academia/tools/anki/controllers/controllers.dart';
 import 'package:get/get.dart';
 import './empty_anki_home_screen.dart';
 import './populated_anki_home_screen.dart';
+import './create_topic_form.dart';
 
 class AnkiHomePage extends StatelessWidget {
   const AnkiHomePage({super.key});
@@ -16,12 +17,13 @@ class AnkiHomePage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar(
+          SliverAppBar(
             expandedHeight: 250,
+            backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
             snap: true,
             pinned: true,
             floating: true,
-            flexibleSpace: FlexibleSpaceBar(
+            flexibleSpace: const FlexibleSpaceBar(
               title: Text("Anki"),
             ),
           ),
@@ -33,6 +35,16 @@ class AnkiHomePage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const CreateTopicForm(),
+            ),
+          );
+        },
+        child: const Icon(Ionicons.add),
       ),
     );
   }
