@@ -84,6 +84,7 @@ class TopicController extends GetxController {
       for (final val in values) {
         allTopics.add(AnkiTopic.fromJson(val));
       }
+      update();
     });
     return allTopics;
   }

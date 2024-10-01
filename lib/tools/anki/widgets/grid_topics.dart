@@ -43,120 +43,105 @@ class GridViewTopic extends StatelessWidget {
                       ? const Color(0xffffe7cd)
                       : const Color(0xffcdffce),
           borderRadius: const BorderRadius.all(
-            Radius.circular(12),
+            Radius.circular(8),
           ),
         ),
+        padding: const EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                topic,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
+            Text(
+              topic,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                topicDesc,
-              ),
+            const SizedBox(height: 4),
+            Text(
+              topicDesc,
             ),
             const Spacer(),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.05,
-                width: MediaQuery.of(context).size.width * 0.2,
-                child: Row(
-                  children: [
-                    // favourite a topic
-                    GestureDetector(
-                      onTap: () async {
-                        // create a topic object
-                        AnkiTopic topic = AnkiTopic(
-                          id: idx,
-                          name: this.topic,
-                          desc: topicDesc,
-                          isFavourite: isFavourite,
-                        );
-                        await controller?.favouriteTopic(topic);
-                        // update favourites and all topics
-                        await controller?.getAllFavourites();
-                        await controller?.getAllTopics();
-                        // ignore: use_build_context_synchronously
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: !isFavourite
-                                ? const Text("Topic Successfully Favourited")
-                                : const Text("Topic Successfully Unfavourited"),
-                            duration: const Duration(seconds: 1),
-                          ),
-                        );
-                      },
-                      child: Icon(
-                        isFavourite ? Icons.star : Icons.star_border_outlined,
-                        size: MediaQuery.of(context).size.height * 0.035,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                // favourite a topic
+                IconButton(
+                  onPressed: () async {
+                    // create a topic object
+                    AnkiTopic topic = AnkiTopic(
+                      id: idx,
+                      name: this.topic,
+                      desc: topicDesc,
+                      isFavourite: isFavourite,
+                    );
+                    await controller?.favouriteTopic(topic);
+                    // update favourites and all topics
+                    await controller?.getAllFavourites();
+                    await controller?.getAllTopics();
+                    // ignore: use_build_context_synchronously
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: !isFavourite
+                            ? const Text("Topic Successfully Favourited")
+                            : const Text("Topic Successfully Unfavourited"),
+                        duration: const Duration(seconds: 1),
                       ),
-                    ),
-                    // delete for topics
-                    GestureDetector(
-                      onTap: () => showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          content: const Text(
-                            "Are You Sure You Want To Delete Topic?",
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () async {
-                                AnkiTopic topic = AnkiTopic(
-                                  id: idx,
-                                  name: this.topic,
-                                  desc: topicDesc,
-                                );
-                                bool? deleted =
-                                    await controller?.deleteTopic(topic);
-                                // ignore: use_build_context_synchronously
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: (deleted != null && deleted)
-                                        ? const Text(
-                                            "Topic Successfully Deleted")
-                                        : const Text(
-                                            "Something happened! Kindly Retry!!"),
-                                    duration: const Duration(seconds: 1),
-                                  ),
-                                );
-                                // update favourites and all topics
-                                await controller?.getAllFavourites();
-                                await controller?.getAllTopics();
-                                // ignore: use_build_context_synchronously
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text("Yes"),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text("No"),
-                            ),
-                          ],
-                        ),
-                      ),
-                      child: Icon(
-                        Icons.delete,
-                        size: MediaQuery.of(context).size.height * 0.035,
-                      ),
-                    ),
-                  ],
+                    );
+                  },
+                  icon: Icon(
+                    isFavourite ? Icons.star : Icons.star_border_outlined,
+                  ),
                 ),
-              ),
-            )
+                // delete for topics
+                IconButton(
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text("Confirmation"),
+                      content: const Text(
+                        "Are you sure you want to delete topic?",
+                      ),
+                      actions: [
+                        OutlinedButton(
+                          onPressed: () async {
+                            AnkiTopic topic = AnkiTopic(
+                              id: idx,
+                              name: this.topic,
+                              desc: topicDesc,
+                            );
+                            bool? deleted =
+                                await controller?.deleteTopic(topic);
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: (deleted != null && deleted)
+                                    ? const Text("Topic Successfully Deleted")
+                                    : const Text(
+                                        "Something happened! Kindly Retry!!"),
+                                duration: const Duration(seconds: 1),
+                              ),
+                            );
+                            // update favourites and all topics
+                            await controller?.getAllFavourites();
+                            await controller?.getAllTopics();
+                            // ignore: use_build_context_synchronously
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("Yes"),
+                        ),
+                        FilledButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("No"),
+                        ),
+                      ],
+                    ),
+                  ),
+                  icon: const Icon(
+                    Icons.delete,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

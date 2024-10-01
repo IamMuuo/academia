@@ -49,7 +49,7 @@ class ChirpHomePage extends StatelessWidget {
               floating: true,
               snap: true,
               bottom: PreferredSize(
-                  preferredSize: Size(MediaQuery.of(context).size.width, 140),
+                  preferredSize: Size(MediaQuery.of(context).size.width, 160),
                   child: const Column(
                     children: [
                       StoryHeader(),

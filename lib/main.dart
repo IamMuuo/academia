@@ -37,11 +37,11 @@ class Academia extends StatelessWidget {
         useMaterial3: true,
         colorSchemeSeed: Colors.amber,
       ),
-      // darkTheme: ThemeData(
-      //   brightness: Brightness.dark,
-      //   useMaterial3: true,
-      //   colorSchemeSeed: Colors.amber,
-      // ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        useMaterial3: true,
+        colorSchemeSeed: Colors.amber,
+      ),
       home: Obx(
         () => userController.isLoggedIn.value
             ? const LayoutPage()
