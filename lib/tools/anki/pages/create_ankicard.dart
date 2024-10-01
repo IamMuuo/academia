@@ -28,6 +28,7 @@ class CreateAnkicard extends StatelessWidget {
               controller: cardInfo,
               maxLines: 5,
               decoration: InputDecoration(
+                hintText: "Some question you want to remember",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -89,10 +90,10 @@ class CreateAnkicard extends StatelessWidget {
                     ),
                   ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
-            child: Center(
-              child: ElevatedButton(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              OutlinedButton(
                 onPressed: () {
                   ansCardController.ansSwitch.value =
                       !ansCardController.ansSwitch.value;
@@ -107,12 +108,8 @@ class CreateAnkicard extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
-            child: Center(
-              child: ElevatedButton(
+              const SizedBox(width: 8),
+              FilledButton(
                 onPressed: () async {
                   // check for user inputs
                   if (cardInfo.text.trim().isEmpty ||
@@ -172,7 +169,7 @@ class CreateAnkicard extends StatelessWidget {
                 },
                 child: const Text("Create Card"),
               ),
-            ),
+            ],
           ),
         ],
       ),
