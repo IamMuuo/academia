@@ -14,8 +14,7 @@ class Settings with _$Settings {
     @Default(false) bool showTranscript,
     @Default(false) bool showAudit,
     @Default(false) bool showExamTimetable,
-    @Default("") String passcode,
-    @Default("##72D5E0") String primaryColor, // Default color set to white
+    @Default(false) bool requireAppUnlock,
   }) = _Settings;
 
   factory Settings.fromJson(Map<String, dynamic> json) =>
