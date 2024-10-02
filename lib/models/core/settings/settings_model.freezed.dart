@@ -26,8 +26,7 @@ mixin _$Settings {
   bool get showTranscript => throw _privateConstructorUsedError;
   bool get showAudit => throw _privateConstructorUsedError;
   bool get showExamTimetable => throw _privateConstructorUsedError;
-  String get passcode => throw _privateConstructorUsedError;
-  String get primaryColor => throw _privateConstructorUsedError;
+  bool get requireAppUnlock => throw _privateConstructorUsedError;
 
   /// Serializes this Settings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,8 +50,7 @@ abstract class $SettingsCopyWith<$Res> {
       bool showTranscript,
       bool showAudit,
       bool showExamTimetable,
-      String passcode,
-      String primaryColor});
+      bool requireAppUnlock});
 }
 
 /// @nodoc
@@ -76,8 +74,7 @@ class _$SettingsCopyWithImpl<$Res, $Val extends Settings>
     Object? showTranscript = null,
     Object? showAudit = null,
     Object? showExamTimetable = null,
-    Object? passcode = null,
-    Object? primaryColor = null,
+    Object? requireAppUnlock = null,
   }) {
     return _then(_value.copyWith(
       showProfilePicture: null == showProfilePicture
@@ -104,14 +101,10 @@ class _$SettingsCopyWithImpl<$Res, $Val extends Settings>
           ? _value.showExamTimetable
           : showExamTimetable // ignore: cast_nullable_to_non_nullable
               as bool,
-      passcode: null == passcode
-          ? _value.passcode
-          : passcode // ignore: cast_nullable_to_non_nullable
-              as String,
-      primaryColor: null == primaryColor
-          ? _value.primaryColor
-          : primaryColor // ignore: cast_nullable_to_non_nullable
-              as String,
+      requireAppUnlock: null == requireAppUnlock
+          ? _value.requireAppUnlock
+          : requireAppUnlock // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -131,8 +124,7 @@ abstract class _$$SettingsImplCopyWith<$Res>
       bool showTranscript,
       bool showAudit,
       bool showExamTimetable,
-      String passcode,
-      String primaryColor});
+      bool requireAppUnlock});
 }
 
 /// @nodoc
@@ -154,8 +146,7 @@ class __$$SettingsImplCopyWithImpl<$Res>
     Object? showTranscript = null,
     Object? showAudit = null,
     Object? showExamTimetable = null,
-    Object? passcode = null,
-    Object? primaryColor = null,
+    Object? requireAppUnlock = null,
   }) {
     return _then(_$SettingsImpl(
       showProfilePicture: null == showProfilePicture
@@ -182,14 +173,10 @@ class __$$SettingsImplCopyWithImpl<$Res>
           ? _value.showExamTimetable
           : showExamTimetable // ignore: cast_nullable_to_non_nullable
               as bool,
-      passcode: null == passcode
-          ? _value.passcode
-          : passcode // ignore: cast_nullable_to_non_nullable
-              as String,
-      primaryColor: null == primaryColor
-          ? _value.primaryColor
-          : primaryColor // ignore: cast_nullable_to_non_nullable
-              as String,
+      requireAppUnlock: null == requireAppUnlock
+          ? _value.requireAppUnlock
+          : requireAppUnlock // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -204,8 +191,7 @@ class _$SettingsImpl implements _Settings {
       this.showTranscript = false,
       this.showAudit = false,
       this.showExamTimetable = false,
-      this.passcode = "",
-      this.primaryColor = "##72D5E0"});
+      this.requireAppUnlock = false});
 
   factory _$SettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$SettingsImplFromJson(json);
@@ -230,14 +216,11 @@ class _$SettingsImpl implements _Settings {
   final bool showExamTimetable;
   @override
   @JsonKey()
-  final String passcode;
-  @override
-  @JsonKey()
-  final String primaryColor;
+  final bool requireAppUnlock;
 
   @override
   String toString() {
-    return 'Settings(showProfilePicture: $showProfilePicture, showFeeStatistics: $showFeeStatistics, showBirthDay: $showBirthDay, showTranscript: $showTranscript, showAudit: $showAudit, showExamTimetable: $showExamTimetable, passcode: $passcode, primaryColor: $primaryColor)';
+    return 'Settings(showProfilePicture: $showProfilePicture, showFeeStatistics: $showFeeStatistics, showBirthDay: $showBirthDay, showTranscript: $showTranscript, showAudit: $showAudit, showExamTimetable: $showExamTimetable, requireAppUnlock: $requireAppUnlock)';
   }
 
   @override
@@ -257,10 +240,8 @@ class _$SettingsImpl implements _Settings {
                 other.showAudit == showAudit) &&
             (identical(other.showExamTimetable, showExamTimetable) ||
                 other.showExamTimetable == showExamTimetable) &&
-            (identical(other.passcode, passcode) ||
-                other.passcode == passcode) &&
-            (identical(other.primaryColor, primaryColor) ||
-                other.primaryColor == primaryColor));
+            (identical(other.requireAppUnlock, requireAppUnlock) ||
+                other.requireAppUnlock == requireAppUnlock));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -273,8 +254,7 @@ class _$SettingsImpl implements _Settings {
       showTranscript,
       showAudit,
       showExamTimetable,
-      passcode,
-      primaryColor);
+      requireAppUnlock);
 
   /// Create a copy of Settings
   /// with the given fields replaced by the non-null parameter values.
@@ -300,8 +280,7 @@ abstract class _Settings implements Settings {
       final bool showTranscript,
       final bool showAudit,
       final bool showExamTimetable,
-      final String passcode,
-      final String primaryColor}) = _$SettingsImpl;
+      final bool requireAppUnlock}) = _$SettingsImpl;
 
   factory _Settings.fromJson(Map<String, dynamic> json) =
       _$SettingsImpl.fromJson;
@@ -319,9 +298,7 @@ abstract class _Settings implements Settings {
   @override
   bool get showExamTimetable;
   @override
-  String get passcode;
-  @override
-  String get primaryColor;
+  bool get requireAppUnlock;
 
   /// Create a copy of Settings
   /// with the given fields replaced by the non-null parameter values.

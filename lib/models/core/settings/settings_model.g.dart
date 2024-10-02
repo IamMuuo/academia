@@ -14,8 +14,7 @@ _$SettingsImpl _$$SettingsImplFromJson(Map<String, dynamic> json) =>
       showTranscript: json['showTranscript'] as bool? ?? false,
       showAudit: json['showAudit'] as bool? ?? false,
       showExamTimetable: json['showExamTimetable'] as bool? ?? false,
-      passcode: json['passcode'] as String? ?? "",
-      primaryColor: json['primaryColor'] as String? ?? "##72D5E0",
+      requireAppUnlock: json['requireAppUnlock'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$SettingsImplToJson(_$SettingsImpl instance) =>
@@ -26,6 +25,5 @@ Map<String, dynamic> _$$SettingsImplToJson(_$SettingsImpl instance) =>
       'showTranscript': instance.showTranscript,
       'showAudit': instance.showAudit,
       'showExamTimetable': instance.showExamTimetable,
-      'passcode': instance.passcode,
-      'primaryColor': instance.primaryColor,
+      'requireAppUnlock': instance.requireAppUnlock,
     };

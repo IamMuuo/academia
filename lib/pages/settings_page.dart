@@ -45,6 +45,22 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                     ListTile(
+                      leading: const Icon(Ionicons.lock_closed),
+                      title: const Text("Require authentication for academia"),
+                      subtitle: const Text(
+                        "Will require you authenticate the app each time you launch academia",
+                      ),
+                      trailing: Switch(
+                        value:
+                            settingsController.settings.value.requireAppUnlock,
+                        onChanged: (value) {
+                          settingsController.settings.value = settingsController
+                              .settings.value
+                              .copyWith(requireAppUnlock: value);
+                        },
+                      ),
+                    ),
+                    ListTile(
                       leading: const Icon(Ionicons.person_circle),
                       title: const Text("Show Profile Picture"),
                       trailing: Switch(
