@@ -31,22 +31,25 @@ class SettingsController extends GetxController with StateMixin {
   Future<bool> performLocalAuthentication(String reason) async {
     bool authenticated = false;
 
-    try {
-      authenticated = await localAuthentication.authenticate(
-        localizedReason: reason,
-        options: const AuthenticationOptions(
-          stickyAuth: true,
-          sensitiveTransaction: true,
-        ),
-      );
-    } on PlatformException catch (e) {
-      authenticated = false;
-      debugPrint(e.toString());
-    } catch (e) {
-      debugPrint(e.toString());
-    }
+    if (Platform.isIOS || Platform.isAndroid) {
+      try {
+        authenticated = await localAuthentication.authenticate(
+          localizedReason: reason,
+          options: const AuthenticationOptions(
+            stickyAuth: true,
+            sensitiveTransaction: true,
+          ),
+        );
+      } on PlatformException catch (e) {
+        authenticated = false;
+        debugPrint(e.toString());
+      } catch (e) {
+        debugPrint(e.toString());
+      }
 
-    return authenticated;
+      return authenticated;
+    }
+    return true;
   }
 
   Future<bool> deviceSupportsLocalAuth() async {
