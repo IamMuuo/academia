@@ -16,17 +16,12 @@ class PopulatedAnkiHomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              "Starred Topics",
-            ),
-          ),
           Visibility(
             visible: topicController.allFavourites.isNotEmpty,
             child: Align(
               alignment: Alignment.center,
-              child: SizedBox(
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 height: MediaQuery.of(context).size.height * 0.27,
                 width: MediaQuery.of(context).size.width * 0.87,
                 child: ListView.builder(

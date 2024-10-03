@@ -44,7 +44,7 @@ class StarredTopics extends StatelessWidget {
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.267,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onTertiaryFixed,
+                  color: Theme.of(context).colorScheme.tertiaryContainer,
                   borderRadius: const BorderRadius.all(
                     Radius.circular(16),
                   ),
