@@ -78,6 +78,7 @@ dependencies:
   freezed_annotation: ^2.4.4
   json_serializable: ^6.8.0
   flutter_colorpicker: ^1.1.0
+  local_auth: ^2.3.0
   
 
 
