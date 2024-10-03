@@ -161,8 +161,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       trailing: Switch(
                         value: settingsController.settings.value.showAudit,
                         onChanged: (value) {
-                          settingsController.settings
-                              .update((val) => val?.copyWith(showAudit: value));
+                          settingsController.settings.value = settingsController
+                              .settings.value
+                              .copyWith(showAudit: value);
                         },
                       ),
                     ),
@@ -177,8 +178,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         value:
                             settingsController.settings.value.showExamTimetable,
                         onChanged: (value) {
-                          settingsController.settings.update(
-                              (val) => val?.copyWith(showExamTimetable: value));
+                          settingsController.settings.value = settingsController
+                              .settings.value
+                              .copyWith(showExamTimetable: value);
                         },
                       ),
                     ),
