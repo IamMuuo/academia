@@ -10,6 +10,7 @@ class PostCard extends StatefulWidget {
   });
 
   final Post post;
+
   @override
   State<PostCard> createState() => _PostCardState();
 }
@@ -38,7 +39,7 @@ class _PostCardState extends State<PostCard> {
         ));
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         child: Column(
           children: [
             Row(
@@ -114,7 +115,7 @@ class _PostCardState extends State<PostCard> {
                 const SizedBox(height: 4),
                 Text(
                   trimTo99Characters(widget.post.content),
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
             ),
@@ -122,7 +123,7 @@ class _PostCardState extends State<PostCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                FilledButton.tonalIcon(
+                OutlinedButton.icon(
                   icon: const Icon(Ionicons.arrow_up_circle_outline),
                   onPressed: () {
                     ps
@@ -147,7 +148,7 @@ class _PostCardState extends State<PostCard> {
                   label: Text(upvotes.toString()),
                 ),
                 const SizedBox(width: 4),
-                FilledButton.tonalIcon(
+                OutlinedButton.icon(
                   label: Text(downvotes.toString()),
                   onPressed: () {
                     ps
@@ -171,6 +172,16 @@ class _PostCardState extends State<PostCard> {
                   },
                   icon: const Icon(Ionicons.arrow_down_circle_outline),
                 ),
+                const Spacer(),
+                Row(
+                  children: [
+                    const Icon(
+                      Ionicons.chatbubble_ellipses,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(widget.post.commentsCount.toString())
+                  ],
+                )
               ],
             ),
           ],
