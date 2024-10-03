@@ -205,6 +205,8 @@ class _PostViewPageState extends State<PostViewPage> {
                     child: TextFormField(
                       controller: replyController,
                       decoration: InputDecoration(
+                        fillColor:
+                            Theme.of(context).colorScheme.surfaceContainer,
                         suffixIcon: IconButton(
                           onPressed: () async {
                             final result = await controller.postComment(
@@ -225,12 +227,14 @@ class _PostViewPageState extends State<PostViewPage> {
                                 replyController.clear();
                               });
                             });
+                            FocusManager.instance.primaryFocus?.unfocus();
                           },
                           icon: const Icon(Ionicons.send),
                         ),
                         hintText: "Send a reply",
-                        border: const OutlineInputBorder(
-                          borderSide: BorderSide(width: 1),
+                        border: OutlineInputBorder(
+                          borderSide: const BorderSide(width: 1),
+                          borderRadius: BorderRadius.circular(24),
                         ),
                       ),
                     ),
