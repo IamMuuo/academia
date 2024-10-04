@@ -1,6 +1,6 @@
+import 'package:academia/exports/barrel.dart';
 import 'package:academia/tools/anki/controllers/controllers.dart';
 import 'package:academia/tools/anki/models/models.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CreateAnkicard extends StatelessWidget {
@@ -20,29 +20,44 @@ class CreateAnkicard extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: true,
         title: const Text("Create Card"),
-        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Get.defaultDialog(
+                title: "Academia Help",
+                content: const Text(
+                  "To create an Anki card, you can either type a question and its answer, then tap \"Create Card\" to save it, or type a statement, highlight the portion you want to hide, tap outside the text box to preview the hidden answer, and then tap \"Create Card\" to save. Both options let you quickly generate flashcards for efficient studying.",
+                ),
+              );
+            },
+            icon: const Icon(Ionicons.help),
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: cardInfo,
-              maxLines: 5,
-              decoration: InputDecoration(
-                hintText: "Some question you want to remember",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+            child: Obx(
+              () => TextField(
+                controller: cardInfo,
+                maxLines: 5,
+                decoration: InputDecoration(
+                  hintText: ansCardController.ansSwitch.value
+                      ? "Some question you want to remember"
+                      : "A stetement to highlight a section that you want to remember",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
+                onTapOutside: (event) {
+                  ansCardController.ansCard.value =
+                      cardInfo.selection.textInside(cardInfo.text);
+                  cardAns.text = ansCardController.ansCard.value;
+                },
               ),
-              onTapOutside: (event) {
-                ansCardController.ansCard.value =
-                    cardInfo.selection.textInside(cardInfo.text);
-                cardAns.text = ansCardController.ansCard.value;
-              },
             ),
           ),
           Obx(

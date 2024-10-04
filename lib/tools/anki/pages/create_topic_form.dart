@@ -1,5 +1,5 @@
+import 'package:academia/exports/barrel.dart';
 import 'package:academia/tools/anki/controllers/controllers.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/models.dart';
 

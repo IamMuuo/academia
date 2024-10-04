@@ -23,6 +23,19 @@ class TopicFlashCards extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("Topic flash cards"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Get.defaultDialog(
+                title: "Academia Help",
+                content: const Text(
+                  "Double Tap On AnkiCard To Delete\nTap On AnkiCard To Preview",
+                ),
+              );
+            },
+            icon: const Icon(Ionicons.help),
+          ),
+        ],
       ),
       floatingActionButton: SizedBox(
         height: MediaQuery.of(context).size.height * 0.18,

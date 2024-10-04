@@ -28,6 +28,19 @@ class AnkiHomePage extends StatelessWidget {
             flexibleSpace: const FlexibleSpaceBar(
               title: Text("Anki"),
             ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  Get.defaultDialog(
+                    title: "Academia Help",
+                    content: const Text(
+                      "Mark a topic as your favorite for easy access by tapping the star icon.\nTap on the cards to view their corresponding Anki cards.",
+                    ),
+                  );
+                },
+                icon: const Icon(Ionicons.help),
+              ),
+            ],
           ),
           SliverFillRemaining(
             child: Obx(
