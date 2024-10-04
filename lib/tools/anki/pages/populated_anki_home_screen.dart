@@ -43,7 +43,8 @@ class PopulatedAnkiHomeScreen extends StatelessWidget {
           ),
           // displays topicics
           Container(
-            height: MediaQuery.of(context).size.height * 0.6,
+            height: MediaQuery.of(context).size.height *
+                (topicController.allFavourites.isNotEmpty ? 0.6 : 1),
             padding: const EdgeInsets.all(12),
             child: Obx(
               () => GridView.builder(
