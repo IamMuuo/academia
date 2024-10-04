@@ -36,12 +36,12 @@ class GridViewTopic extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: colorDet == 0
-              ? const Color(0xff8999aa)
+              ? Theme.of(context).colorScheme.primaryContainer
               : colorDet == 1
-                  ? const Color(0xffffcdfe)
+                  ? Theme.of(context).colorScheme.secondaryContainer
                   : colorDet == 2
-                      ? const Color(0xffffe7cd)
-                      : const Color(0xffcdffce),
+                      ? Theme.of(context).colorScheme.tertiaryContainer
+                      : Theme.of(context).colorScheme.errorContainer,
           borderRadius: const BorderRadius.all(
             Radius.circular(8),
           ),

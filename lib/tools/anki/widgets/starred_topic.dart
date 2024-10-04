@@ -100,6 +100,7 @@ class StarredTopics extends StatelessWidget {
               right: 0,
               child: Row(
                 children: [
+                  // unfavourite a topic from favourited topics
                   IconButton(
                     onPressed: () async {
                       AnkiTopic topic = AnkiTopic(

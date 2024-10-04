@@ -16,25 +16,28 @@ class PopulatedAnkiHomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Visibility(
-            visible: topicController.allFavourites.isNotEmpty,
-            child: Align(
-              alignment: Alignment.center,
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                height: MediaQuery.of(context).size.height * 0.27,
-                width: MediaQuery.of(context).size.width * 0.87,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, idx) {
-                    return StarredTopics(
-                      idx: topicController.allFavourites[idx].id!,
-                      topic: topicController.allFavourites[idx].name,
-                      desc: topicController.allFavourites[idx].desc,
-                      topicController: topicController,
-                    );
-                  },
-                  itemCount: topicController.allFavourites.length,
+          // displays favourite topics
+          Obx(
+            () => Visibility(
+              visible: topicController.allFavourites.isNotEmpty,
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  height: MediaQuery.of(context).size.height * 0.27,
+                  width: MediaQuery.of(context).size.width * 0.87,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, idx) {
+                      return StarredTopics(
+                        idx: topicController.allFavourites[idx].id!,
+                        topic: topicController.allFavourites[idx].name,
+                        desc: topicController.allFavourites[idx].desc,
+                        topicController: topicController,
+                      );
+                    },
+                    itemCount: topicController.allFavourites.length,
+                  ),
                 ),
               ),
             ),
