@@ -24,16 +24,23 @@ class GridViewTopic extends StatelessWidget {
   Widget build(BuildContext context) {
     var colorDet = idx % 4;
     final TopicController controller = Get.find<TopicController>();
+    final AnkiCardController ankiCardController =
+        Get.find<AnkiCardController>();
 
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (builder) => TopicFlashCards(
-            topicId: idx,
+      onTap: () async {
+        // getting all topic cards before opening flashcard page
+        await ankiCardController.getAllTopicCards(topicId);
+        Navigator.push(
+          // ignore: use_build_context_synchronously
+          context,
+          MaterialPageRoute(
+            builder: (builder) => TopicFlashCards(
+              topicId: topicId,
+            ),
           ),
-        ),
-      ),
+        );
+      },
       child: Container(
         decoration: BoxDecoration(
           color: colorDet == 0

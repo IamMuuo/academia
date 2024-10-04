@@ -12,6 +12,8 @@ class AnkiHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // topic controller
     final TopicController topicController = Get.put(TopicController());
+    //  putting ankicard controller
+    Get.put(AnkiCardController());
 
     return Scaffold(
       resizeToAvoidBottomInset: false,

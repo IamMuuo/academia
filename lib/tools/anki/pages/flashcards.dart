@@ -16,12 +16,9 @@ class TopicFlashCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // adding AnkiCardController
-    AnkiCardController ankiCardController = Get.put(
-      AnkiCardController(
-        topicId: topicId,
-      ),
-    );
+    // finding AnkiCardController
+    AnkiCardController ankiCardController = Get.find<AnkiCardController>();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -39,7 +36,9 @@ class TopicFlashCards extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CreateAnkicard(),
+                    builder: (context) => CreateAnkicard(
+                      topicId: topicId,
+                    ),
                   ),
                 );
               },

@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CreateAnkicard extends StatelessWidget {
-  const CreateAnkicard({super.key});
+  const CreateAnkicard({
+    super.key,
+    required this.topicId,
+  });
+
+  final int topicId;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +64,7 @@ class CreateAnkicard extends StatelessWidget {
             ),
           ),
           Obx(
-            () => ansCardController.ansSwitch.value
+            () => !ansCardController.ansSwitch.value
                 // TextField for Showing Highlighted Answer
                 ? Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -104,7 +109,7 @@ class CreateAnkicard extends StatelessWidget {
                 },
                 child: Obx(
                   () => Text(
-                    "Switch To ${ansCardController.ansSwitch.value ? "Writing" : "Highlight"}",
+                    "Switch To ${!ansCardController.ansSwitch.value ? "Writing" : "Highlight"}",
                   ),
                 ),
               ),
@@ -123,9 +128,9 @@ class CreateAnkicard extends StatelessWidget {
                     );
                   }
                   // user chose to write the answer
-                  else if (!ansCardController.ansSwitch.value) {
+                  else if (ansCardController.ansSwitch.value) {
                     AnkiCard ankiCard = AnkiCard(
-                        topicId: ankiCardController.topicId,
+                        topicId: topicId,
                         question: cardInfo.text.trim(),
                         answer: cardAns.text.trim());
                     await ankiCardController.addAnkiCard(ankiCard);
@@ -134,7 +139,7 @@ class CreateAnkicard extends StatelessWidget {
                     cardAns.clear();
                     ansCardController.ansCard.value = "";
                     // reload the anki cards
-                    await ankiCardController.getAllTopicCards();
+                    await ankiCardController.getAllTopicCards(topicId);
                     // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -147,7 +152,7 @@ class CreateAnkicard extends StatelessWidget {
                     String question = cardInfo.text.trim();
                     question = question.replaceAll(cardAns.text.trim(), "_");
                     AnkiCard ankiCard = AnkiCard(
-                        topicId: ankiCardController.topicId,
+                        topicId: topicId,
                         question: question,
                         answer: cardAns.text.trim());
                     await ankiCardController.addAnkiCard(ankiCard);
@@ -156,7 +161,7 @@ class CreateAnkicard extends StatelessWidget {
                     cardAns.clear();
                     ansCardController.ansCard.value = "";
                     // reload the anki cards
-                    await ankiCardController.getAllTopicCards();
+                    await ankiCardController.getAllTopicCards(topicId);
 
                     // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context).showSnackBar(

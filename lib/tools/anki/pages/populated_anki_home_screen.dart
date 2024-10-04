@@ -30,10 +30,9 @@ class PopulatedAnkiHomeScreen extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, idx) {
                       return StarredTopics(
-                        idx: topicController.allFavourites[idx].id!,
+                        topicId: topicController.allFavourites[idx].id!,
                         topic: topicController.allFavourites[idx].name,
                         desc: topicController.allFavourites[idx].desc,
-                        topicController: topicController,
                       );
                     },
                     itemCount: topicController.allFavourites.length,
@@ -60,7 +59,6 @@ class PopulatedAnkiHomeScreen extends StatelessWidget {
                     topic: topicController.allTopics[idx].name,
                     topicDesc: topicController.allTopics[idx].desc,
                     isFavourite: topicController.allTopics[idx].isFavourite,
-                    // controller: topicController,
                   );
                 },
                 itemCount: topicController.allTopics.length,
