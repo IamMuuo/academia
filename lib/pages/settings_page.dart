@@ -260,7 +260,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   await userController.deleteUser();
                                   await LocalNotifierService().showNotification(
                                     id: 0,
-                                    title: "Damn",
+                                    title: "Goodbye see you soon!",
                                     notificationType: NotificationType.bigText,
                                     body:
                                         "Goodbye, your entire user information has been deleted from our platform, it was a pleasure being a part of your academic journey",
@@ -269,11 +269,11 @@ class _SettingsPageState extends State<SettingsPage> {
                                   );
 
                                   if (context.mounted) {
-                                    Navigator.pop(context);
-                                    Navigator.of(context).pushReplacement(
+                                    Navigator.of(context).pushAndRemoveUntil(
                                       MaterialPageRoute(
-                                        builder: (context) => const Academia(),
+                                        builder: (context) => const IntroPage(),
                                       ),
+                                      (predicate) => false,
                                     );
                                   }
                                 },
@@ -317,11 +317,12 @@ class _SettingsPageState extends State<SettingsPage> {
                                     );
                                     if (context.mounted) {
                                       Navigator.pop(context);
-                                      Navigator.of(context).pushReplacement(
+                                      Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const Academia(),
+                                              const IntroPage(),
                                         ),
+                                        (predicate) => false,
                                       );
                                     }
                                   },

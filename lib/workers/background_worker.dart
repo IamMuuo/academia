@@ -47,9 +47,9 @@ class BackgroundWorker {
         BackgroundConfig.coursesIDentifier,
         BackgroundConfig.coursesIDentifier,
         initialDelay: timeUntilNextTarget(
-          DateTime(now.year, now.month, now.day, 12, 0, 0),
+          DateTime(now.year, now.month, now.day, 7, 0, 0),
         ),
-        frequency: const Duration(minutes: 15),
+        frequency: const Duration(hours: 8),
       );
 
       /// Todos task that is suppossed to run after every 24 hours at 8 am
@@ -57,7 +57,7 @@ class BackgroundWorker {
         BackgroundConfig.todosIDentifier,
         BackgroundConfig.todosIDentifier,
         initialDelay: const Duration(seconds: 10),
-        frequency: const Duration(minutes: 15),
+        frequency: const Duration(hours: 8),
       );
     }
   }
