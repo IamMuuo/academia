@@ -16,32 +16,35 @@ class PopulatedAnkiHomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Visibility(
-            visible: topicController.allFavourites.isNotEmpty,
-            child: Align(
-              alignment: Alignment.center,
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                height: MediaQuery.of(context).size.height * 0.27,
-                width: MediaQuery.of(context).size.width * 0.87,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, idx) {
-                    return StarredTopics(
-                      idx: topicController.allFavourites[idx].id!,
-                      topic: topicController.allFavourites[idx].name,
-                      desc: topicController.allFavourites[idx].desc,
-                      topicController: topicController,
-                    );
-                  },
-                  itemCount: topicController.allFavourites.length,
+          // displays favourite topics
+          Obx(
+            () => Visibility(
+              visible: topicController.allFavourites.isNotEmpty,
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  height: MediaQuery.of(context).size.height * 0.27,
+                  width: MediaQuery.of(context).size.width * 0.87,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, idx) {
+                      return StarredTopics(
+                        topicId: topicController.allFavourites[idx].id!,
+                        topic: topicController.allFavourites[idx].name,
+                        desc: topicController.allFavourites[idx].desc,
+                      );
+                    },
+                    itemCount: topicController.allFavourites.length,
+                  ),
                 ),
               ),
             ),
           ),
           // displays topicics
           Container(
-            height: MediaQuery.of(context).size.height * 0.6,
+            height: MediaQuery.of(context).size.height *
+                (topicController.allFavourites.isNotEmpty ? 0.6 : 1),
             padding: const EdgeInsets.all(12),
             child: Obx(
               () => GridView.builder(
@@ -57,7 +60,6 @@ class PopulatedAnkiHomeScreen extends StatelessWidget {
                     topic: topicController.allTopics[idx].name,
                     topicDesc: topicController.allTopics[idx].desc,
                     isFavourite: topicController.allTopics[idx].isFavourite,
-                    controller: topicController,
                   );
                 },
                 itemCount: topicController.allTopics.length,

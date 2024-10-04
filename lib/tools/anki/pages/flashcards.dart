@@ -16,16 +16,26 @@ class TopicFlashCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // adding AnkiCardController
-    AnkiCardController ankiCardController = Get.put(
-      AnkiCardController(
-        topicId: topicId,
-      ),
-    );
+    // finding AnkiCardController
+    AnkiCardController ankiCardController = Get.find<AnkiCardController>();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("Topic flash cards"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Get.defaultDialog(
+                title: "Academia Help",
+                content: const Text(
+                  "Double Tap On AnkiCard To Delete\nTap On AnkiCard To Preview",
+                ),
+              );
+            },
+            icon: const Icon(Ionicons.help),
+          ),
+        ],
       ),
       floatingActionButton: SizedBox(
         height: MediaQuery.of(context).size.height * 0.18,
@@ -39,7 +49,9 @@ class TopicFlashCards extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CreateAnkicard(),
+                    builder: (context) => CreateAnkicard(
+                      topicId: topicId,
+                    ),
                   ),
                 );
               },

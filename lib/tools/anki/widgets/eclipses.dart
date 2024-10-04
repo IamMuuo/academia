@@ -12,41 +12,6 @@ Widget blackcircle = Padding(
   ),
 );
 
-Widget bluecircle = Padding(
-  padding: const EdgeInsets.all(1.0),
-  child: Container(
-    width: 15,
-    height: 15,
-    decoration: const BoxDecoration(
-      shape: BoxShape.circle,
-    ),
-  ),
-);
-
-Widget redcircle = Padding(
-  padding: const EdgeInsets.all(1.0),
-  child: Container(
-    width: 15,
-    height: 15,
-    decoration: const BoxDecoration(
-      shape: BoxShape.circle,
-      color: Color(0xffffcde5),
-    ),
-  ),
-);
-
-Widget greencircle = Padding(
-  padding: const EdgeInsets.all(1.0),
-  child: Container(
-    width: 15,
-    height: 15,
-    decoration: const BoxDecoration(
-      shape: BoxShape.circle,
-      color: Color(0xffe5ffcd),
-    ),
-  ),
-);
-
 class CustomEclipse extends StatelessWidget {
   const CustomEclipse({super.key});
 
@@ -76,9 +41,39 @@ class CustomMixEclipse extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.05,
       child: Row(
         children: [
-          bluecircle,
-          redcircle,
-          greencircle,
+          Padding(
+            padding: const EdgeInsets.all(1.0),
+            child: Container(
+              width: 15,
+              height: 15,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Theme.of(context).colorScheme.secondaryContainer,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(1.0),
+            child: Container(
+              width: 15,
+              height: 15,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Theme.of(context).colorScheme.tertiaryContainer,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(1.0),
+            child: Container(
+              width: 15,
+              height: 15,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Theme.of(context).colorScheme.primaryContainer,
+              ),
+            ),
+          ),
         ],
       ),
     );

@@ -51,7 +51,7 @@ class FlashCardTile extends StatelessWidget {
                       ),
                     );
                     // update favourites and all topics
-                    await ankiCardController.getAllTopicCards();
+                    await ankiCardController.getAllTopicCards(ankiCard.topicId);
                     // ignore: use_build_context_synchronously
                     Navigator.of(context).pop();
                   },

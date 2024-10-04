@@ -1,22 +1,8 @@
-import 'package:academia/exports/barrel.dart';
 import 'package:academia/tools/anki/models/models.dart';
 import 'package:get/get.dart';
 
 class AnkiCardController extends GetxController {
-  AnkiCardController({
-    required this.topicId,
-  });
-
   final RxList<AnkiCard> allCards = <AnkiCard>[].obs;
-  final int topicId;
-
-  @override
-  void onInit() {
-    super.onInit();
-    getAllTopicCards().then((value) {
-      debugPrint("[+] Anki Topic Cards Loaded");
-    });
-  }
 
   // returns the number of topics
   int numAnkiCards() {
@@ -33,7 +19,7 @@ class AnkiCardController extends GetxController {
     return value == 0 ? false : true;
   }
 
-  Future<List<AnkiCard>> getAllTopicCards() async {
+  Future<List<AnkiCard>> getAllTopicCards(int topicId) async {
     AnkiCardModelHelper().queryAnkiCardsByTopic(topicId).then((values) {
       allCards.clear();
       values = values.reversed.toList();
@@ -46,7 +32,7 @@ class AnkiCardController extends GetxController {
 
   Future<bool> deleteCard(AnkiCard ankiCard) async {
     int value = await AnkiCardModelHelper().delete(ankiCard.toJson());
-    getAllTopicCards();
+    getAllTopicCards(ankiCard.topicId);
     return value == 0 ? false : true;
   }
 }

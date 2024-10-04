@@ -194,7 +194,8 @@ class _EditAnkiCardState extends State<EditAnkiCard> {
                   onPressed: () async {
                     // updating anki card
                     await ankiCardController.updateAnkiCard(widget.ankiCard);
-                    await ankiCardController.getAllTopicCards();
+                    await ankiCardController
+                        .getAllTopicCards(widget.ankiCard.topicId);
                     if (!mounted) return;
                     // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context).showSnackBar(

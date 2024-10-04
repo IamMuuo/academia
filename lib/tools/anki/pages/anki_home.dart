@@ -12,6 +12,8 @@ class AnkiHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // topic controller
     final TopicController topicController = Get.put(TopicController());
+    //  putting ankicard controller
+    Get.put(AnkiCardController());
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -26,6 +28,19 @@ class AnkiHomePage extends StatelessWidget {
             flexibleSpace: const FlexibleSpaceBar(
               title: Text("Anki"),
             ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  Get.defaultDialog(
+                    title: "Academia Help",
+                    content: const Text(
+                      "Mark a topic as your favorite for easy access by tapping the star icon.\nTap on the cards to view their corresponding Anki cards.",
+                    ),
+                  );
+                },
+                icon: const Icon(Ionicons.help),
+              ),
+            ],
           ),
           SliverFillRemaining(
             child: Obx(

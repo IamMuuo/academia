@@ -1,5 +1,5 @@
+import 'package:academia/exports/barrel.dart';
 import 'package:academia/tools/anki/controllers/controllers.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/models.dart';
 
@@ -36,6 +36,7 @@ class CreateTopicForm extends StatelessWidget {
               const SizedBox(height: 8),
               TextFormField(
                 controller: descController,
+                maxLength: 50,
                 maxLines: 10,
                 decoration: InputDecoration(
                   hintText: "Write a description for your topic",
@@ -55,7 +56,7 @@ class CreateTopicForm extends StatelessWidget {
                         duration: Duration(seconds: 1),
                       ),
                     );
-                  } else if (titleController.text.trim().length <= 3) {
+                  } else if (titleController.text.trim().length < 3) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
@@ -90,6 +91,13 @@ class CreateTopicForm extends StatelessWidget {
                     // updating topic list and favorites
                     topicController.getAllTopics();
                     topicController.getAllFavourites();
+                    // informing user successful creation
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Topic successfully created!!"),
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
                     Navigator.of(context).pop();
                   }
                 },

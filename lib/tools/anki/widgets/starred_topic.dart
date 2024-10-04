@@ -2,32 +2,31 @@ import 'package:academia/exports/barrel.dart';
 import 'package:academia/tools/anki/controllers/controllers.dart';
 import 'package:academia/tools/anki/pages/flashcards.dart';
 import 'package:academia/tools/anki/widgets/widgets.dart';
+import 'package:get/get.dart';
 import '../models/models.dart';
 
-// TODO: Make this widget just require a topic instance and maybe index
-// TODO: Find the controller don't pass it!
 class StarredTopics extends StatelessWidget {
   const StarredTopics({
     super.key,
-    required this.idx,
+    required this.topicId,
     required this.topic,
     required this.desc,
-    this.topicController,
   });
 
-  final int idx;
+  final int topicId;
   final String topic;
   final String desc;
-  final TopicController? topicController;
 
   @override
   Widget build(BuildContext context) {
+    TopicController topicController = Get.find<TopicController>();
+
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
           builder: (builder) => TopicFlashCards(
-            topicId: idx,
+            topicId: topicId,
           ),
         ),
       ),
@@ -100,18 +99,19 @@ class StarredTopics extends StatelessWidget {
               right: 0,
               child: Row(
                 children: [
+                  // unfavourite a topic from favourited topics
                   IconButton(
                     onPressed: () async {
                       AnkiTopic topic = AnkiTopic(
-                        id: idx,
+                        id: topicId,
                         name: this.topic,
                         desc: desc,
                         isFavourite: true,
                       );
-                      await topicController?.favouriteTopic(topic);
+                      await topicController.favouriteTopic(topic);
                       // update favourites and all topics
-                      await topicController?.getAllFavourites();
-                      await topicController?.getAllTopics();
+                      await topicController.getAllFavourites();
+                      await topicController.getAllTopics();
                     },
                     icon: const Icon(Ionicons.star),
                   ),
@@ -127,18 +127,18 @@ class StarredTopics extends StatelessWidget {
                           OutlinedButton(
                             onPressed: () async {
                               AnkiTopic topic = AnkiTopic(
-                                id: idx,
+                                id: topicId,
                                 name: this.topic,
                                 desc: desc,
                               );
                               bool? deleted =
-                                  await topicController?.deleteTopic(topic);
+                                  await topicController.deleteTopic(topic);
 
                               HapticFeedback.heavyImpact().then((val) {
                                 if (!context.mounted) return;
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: (deleted != null && deleted)
+                                    content: (deleted)
                                         ? const Text(
                                             "Topic Successfully Deleted")
                                         : const Text(
@@ -147,8 +147,8 @@ class StarredTopics extends StatelessWidget {
                                 );
                               });
                               // update favourites and all topics
-                              await topicController?.getAllFavourites();
-                              await topicController?.getAllTopics();
+                              await topicController.getAllFavourites();
+                              await topicController.getAllTopics();
                               // ignore: use_build_context_synchronously
                               Navigator.of(context).pop();
                             },
