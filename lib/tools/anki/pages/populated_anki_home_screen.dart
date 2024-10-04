@@ -60,7 +60,7 @@ class PopulatedAnkiHomeScreen extends StatelessWidget {
                     topic: topicController.allTopics[idx].name,
                     topicDesc: topicController.allTopics[idx].desc,
                     isFavourite: topicController.allTopics[idx].isFavourite,
-                    controller: topicController,
+                    // controller: topicController,
                   );
                 },
                 itemCount: topicController.allTopics.length,

@@ -2,6 +2,7 @@ import 'package:academia/exports/barrel.dart';
 import 'package:academia/tools/anki/controllers/controllers.dart';
 import 'package:academia/tools/anki/models/models.dart';
 import 'package:academia/tools/anki/pages/flashcards.dart';
+import 'package:get/get.dart';
 
 class GridViewTopic extends StatelessWidget {
   const GridViewTopic({
@@ -11,7 +12,6 @@ class GridViewTopic extends StatelessWidget {
     required this.topic,
     required this.topicDesc,
     required this.isFavourite,
-    this.controller,
   });
 
   final int idx;
@@ -19,11 +19,12 @@ class GridViewTopic extends StatelessWidget {
   final String topic;
   final String topicDesc;
   final bool isFavourite;
-  final TopicController? controller;
 
   @override
   Widget build(BuildContext context) {
     var colorDet = idx % 4;
+    final TopicController controller = Get.find<TopicController>();
+
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
@@ -67,15 +68,15 @@ class GridViewTopic extends StatelessWidget {
                   onPressed: () async {
                     // create a topic object
                     AnkiTopic topic = AnkiTopic(
-                      id: idx,
+                      id: topicId,
                       name: this.topic,
                       desc: topicDesc,
                       isFavourite: isFavourite,
                     );
-                    await controller?.favouriteTopic(topic);
+                    await controller.favouriteTopic(topic);
                     // update favourites and all topics
-                    await controller?.getAllFavourites();
-                    await controller?.getAllTopics();
+                    await controller.getAllFavourites();
+                    await controller.getAllTopics();
                     // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -103,16 +104,15 @@ class GridViewTopic extends StatelessWidget {
                         OutlinedButton(
                           onPressed: () async {
                             AnkiTopic topic = AnkiTopic(
-                              id: idx,
+                              id: topicId,
                               name: this.topic,
                               desc: topicDesc,
                             );
-                            bool? deleted =
-                                await controller?.deleteTopic(topic);
+                            bool deleted = await controller.deleteTopic(topic);
                             // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: (deleted != null && deleted)
+                                content: (deleted)
                                     ? const Text("Topic Successfully Deleted")
                                     : const Text(
                                         "Something happened! Kindly Retry!!"),
@@ -120,8 +120,8 @@ class GridViewTopic extends StatelessWidget {
                               ),
                             );
                             // update favourites and all topics
-                            await controller?.getAllFavourites();
-                            await controller?.getAllTopics();
+                            await controller.getAllFavourites();
+                            await controller.getAllTopics();
                             // ignore: use_build_context_synchronously
                             Navigator.of(context).pop();
                           },
