@@ -25,13 +25,15 @@ class CoursesBackgroundService {
         }
       });
 
-      LocalNotifierService().showNotification(
-        id: LocalNotificationStatusManager().getNextId(),
-        title: "Class! Class! Class! ${Emojis.building_school}",
-        body:
-            "Hey, you have $coursestoday classes today ${Emojis.smile_face_screaming_in_fear}",
-        channelKey: LocalNotificationChannelType.reminders.channelKey,
-      );
+      if (coursestoday > 0) {
+        LocalNotifierService().showNotification(
+          id: LocalNotificationStatusManager().getNextId(),
+          title: "Class! Class! Class! ${Emojis.building_school}",
+          body:
+              "Hey, you have $coursestoday classes today ${Emojis.smile_face_screaming_in_fear}",
+          channelKey: LocalNotificationChannelType.reminders.channelKey,
+        );
+      }
     });
   }
 }

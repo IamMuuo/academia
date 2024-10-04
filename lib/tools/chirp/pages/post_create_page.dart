@@ -15,11 +15,13 @@ class _PostCreatePageState extends State<PostCreatePage> {
   final TextEditingController bodyController = TextEditingController();
   final List<XFile> imageFiles = [];
   final ChirpController chirpController = Get.find<ChirpController>();
+
   bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -121,6 +123,7 @@ class _PostCreatePageState extends State<PostCreatePage> {
                         );
                         postresponse.fold((l) {
                           showDialog(
+                              barrierDismissible: false,
                               context: context,
                               builder: (context) => AlertDialog(
                                     title: const Text("Error"),
@@ -135,6 +138,7 @@ class _PostCreatePageState extends State<PostCreatePage> {
                                   ));
                         }, (r) {
                           showDialog(
+                              barrierDismissible: false,
                               context: context,
                               builder: (context) => AlertDialog(
                                     title: const Text("Success"),
@@ -143,6 +147,7 @@ class _PostCreatePageState extends State<PostCreatePage> {
                                     actions: [
                                       FilledButton(
                                           onPressed: () {
+                                            Navigator.pop(context);
                                             Navigator.pop(context);
                                           },
                                           child: const Text("okay"))

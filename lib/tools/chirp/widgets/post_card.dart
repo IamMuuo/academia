@@ -76,9 +76,30 @@ class _PostCardState extends State<PostCard> {
                   ),
                 ),
                 const Spacer(),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Ionicons.ellipsis_vertical),
+                Visibility(
+                  visible: widget.post.upvotes > 1000 ? true : false,
+                  child: IconButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text("Awesome post ✨✨"),
+                              content: const Text(
+                                  "This post has been handpicked by the community"),
+                              actions: [
+                                FilledButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("Cool"),
+                                ),
+                              ],
+                            );
+                          });
+                    },
+                    icon: const Icon(Ionicons.ribbon),
+                  ),
                 ),
               ],
             ),
