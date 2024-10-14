@@ -43,7 +43,9 @@ class _OrganizationsPageState extends State<OrganizationsPage>
           if (snapshot.connectionState != ConnectionState.done) {
             return ListView.builder(
               itemBuilder: (context, index) => const ListTile(
-                  leading: CircleAvatar(), trailing: CircleAvatar(radius: 5)),
+                leading: CircleAvatar(),
+                trailing: CircleAvatar(radius: 5),
+              ),
             );
           }
           //
