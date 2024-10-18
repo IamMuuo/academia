@@ -217,6 +217,8 @@ class _AskMeHomeState extends State<AskMeHome> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _bottomSheet(context);
+          // final screenHeight = MediaQuery.of(context).size.height;
+          // debugPrint("Screen Height is $screenHeight");
         },
         child: const Icon(Icons.add),
       ),
@@ -232,15 +234,29 @@ class _AskMeHomeState extends State<AskMeHome> {
       ),
       isScrollControlled: true,
       showDragHandle: true,
-      builder: (context) => FractionallySizedBox(
-        heightFactor: 0.7,
-        child: ModalContent(
-          id: id,
-          title: title,
-          filepath: filepath,
-          avgScore: avgScore,
-        ),
-      ),
+      builder: (context) {
+        //Get the screen height
+        final screenHeight = MediaQuery.of(context).size.height;
+  
+        //adjusting height factor based on screen height
+        double heightFactor = 0.7;
+
+        if (screenHeight < 600) {
+          heightFactor = 0.9;
+        } else if (screenHeight < 800) {
+          heightFactor = 0.8;
+        }
+
+        return FractionallySizedBox(
+          heightFactor: heightFactor,
+          child: ModalContent(
+            id: id,
+            title: title,
+            filepath: filepath,
+            avgScore: avgScore,
+          ),
+        );
+      },
     );
   }
 }
