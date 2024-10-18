@@ -1,4 +1,7 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:academia/notifier/local_notification_channel.dart';
+import 'package:academia/notifier/local_notification_type.dart';
+import 'package:academia/notifier/local_notifier_service.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
@@ -40,10 +43,19 @@ class _RegisterPageState extends State<RegisterPage> {
     }, (r) {
       if (r && userController.isLoggedIn.value) {
         HapticFeedback.heavyImpact().then((value) {});
-        Navigator.of(context).pushReplacement(
+        Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => const LayoutPage(),
           ),
+          (predicate) => false,
+        );
+
+        LocalNotifierService().showNotification(
+          id: 0,
+          title: "Welcome",
+          body: "Hi @${data['username']}! Welcome to Academia",
+          channelKey: LocalNotificationChannelType.general.channelKey,
+          notificationType: NotificationType.defaultNotification,
         );
         return;
       }

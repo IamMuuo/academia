@@ -50,7 +50,7 @@ class IntroPage extends StatelessWidget {
         ),
         floatingActionButton: FutureBuilder(
             future: Future.delayed(
-              const Duration(seconds: 3),
+              const Duration(seconds: 7),
             ),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {

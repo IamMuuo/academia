@@ -1,43 +1,24 @@
 /// Represents the settings in the application.
-class Settings {
-  bool showProfilePicture = false;
-  bool showFeeStatistics = false;
-  bool showBirthDay = true;
-  bool showTranscript = false;
-  bool showAudit = false;
-  bool showExamTimetable = false;
-  String passcode = "";
 
-  Settings.empty() : showProfilePicture = false;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  Settings({
-    required this.showProfilePicture,
-    required this.showFeeStatistics,
-    required this.showBirthDay,
-    required this.showTranscript,
-    required this.showAudit,
-    required this.showExamTimetable,
-  });
+part 'settings_model.freezed.dart';
+part 'settings_model.g.dart';
 
-  factory Settings.fromJson(Map<String, dynamic> json) {
-    return Settings(
-      showProfilePicture: json['showProfilePicture'] ?? false,
-      showFeeStatistics: json['showFeeStatistics'] ?? false,
-      showBirthDay: json['showBirthDay'] ?? false,
-      showTranscript: json['showTranscript'] ?? false,
-      showAudit: json['showAudit'] ?? false,
-      showExamTimetable: json['showExamTimetable'] ?? false,
-    );
-  }
+@freezed
+class Settings with _$Settings {
+  const factory Settings({
+    @Default(false) bool showProfilePicture,
+    @Default(false) bool showFeeStatistics,
+    @Default(true) bool showBirthDay,
+    @Default(false) bool showTranscript,
+    @Default(false) bool showAudit,
+    @Default(false) bool showExamTimetable,
+    @Default(false) bool requireAppUnlock,
+  }) = _Settings;
 
-  Map<String, dynamic> toJson() {
-    return {
-      'showProfilePicture': showProfilePicture,
-      'showFeeStatistics': showFeeStatistics,
-      'showBirthDay': showBirthDay,
-      'showTranscript': showTranscript,
-      'showAudit': showAudit,
-      'showExamTimetable': showExamTimetable,
-    };
-  }
+  factory Settings.fromJson(Map<String, dynamic> json) =>
+      _$SettingsFromJson(json);
+
+  factory Settings.empty() => const Settings();
 }

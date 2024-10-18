@@ -61,7 +61,13 @@ class _ToolsPageState extends State<ToolsPage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            title: const Text("Tools"),
+            pinned: true,
+            floating: true,
+            snap: true,
+            expandedHeight: 120,
+            flexibleSpace: const FlexibleSpaceBar(
+              title: Text("Tools"),
+            ),
             actions: [
               IconButton(
                 onPressed: () {
@@ -91,6 +97,7 @@ class _ToolsPageState extends State<ToolsPage> {
           SliverPadding(
             padding: const EdgeInsets.all(8),
             sliver: SliverFillRemaining(
+              hasScrollBody: true,
               child: ListView.builder(
                 itemCount: _allTools.length,
                 itemBuilder: (context, index) {

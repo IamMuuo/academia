@@ -1,7 +1,7 @@
 // const String urlPrefix = "https://daystar-backend-atrocious-jpg.vercel.app";
 // For local development
 
-import 'package:magnet/magnet.dart';
+import 'package:academia/exports/barrel.dart';
 
 late Magnet magnet;
 
@@ -106,5 +106,29 @@ double calculateSemesterPercent(DateTime start, DateTime end) {
     return 100;
   } else {
     return percentage;
+  }
+}
+
+// Extension method to convert weekday number to string
+extension WeekdayToString on DateTime {
+  String weekdayToString() {
+    switch (weekday) {
+      case DateTime.monday:
+        return "MONDAY";
+      case DateTime.tuesday:
+        return "TUESDAY";
+      case DateTime.wednesday:
+        return "WEDNESDAY";
+      case DateTime.thursday:
+        return "THURSDAY";
+      case DateTime.friday:
+        return "FRIDAY";
+      case DateTime.saturday:
+        return "SATURDAY";
+      case DateTime.sunday:
+        return "SUNDAY";
+      default:
+        return "";
+    }
   }
 }

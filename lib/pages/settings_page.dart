@@ -1,5 +1,7 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:academia/main.dart';
+import 'package:academia/notifier/local_notification_channel.dart';
+import 'package:academia/notifier/local_notifier_service.dart';
 import 'package:get/get.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -43,17 +45,31 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                     ListTile(
+                      leading: const Icon(Ionicons.lock_closed),
+                      title: const Text("Require authentication for academia"),
+                      subtitle: const Text(
+                        "Will require you authenticate the app each time you launch academia",
+                      ),
+                      trailing: Switch(
+                        value:
+                            settingsController.settings.value.requireAppUnlock,
+                        onChanged: (value) {
+                          settingsController.settings.value = settingsController
+                              .settings.value
+                              .copyWith(requireAppUnlock: value);
+                        },
+                      ),
+                    ),
+                    ListTile(
                       leading: const Icon(Ionicons.person_circle),
                       title: const Text("Show Profile Picture"),
                       trailing: Switch(
                         value: settingsController
                             .settings.value.showProfilePicture,
                         onChanged: (value) {
-                          settingsController.settings.update(
-                            (val) {
-                              val?.showProfilePicture = value;
-                            },
-                          );
+                          settingsController.settings.value = settingsController
+                              .settings.value
+                              .copyWith(showProfilePicture: value);
                         },
                       ),
                     ),
@@ -102,11 +118,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         value:
                             settingsController.settings.value.showFeeStatistics,
                         onChanged: (value) {
-                          settingsController.settings.update(
-                            (val) {
-                              val?.showFeeStatistics = value;
-                            },
-                          );
+                          settingsController.settings.value = settingsController
+                              .settings.value
+                              .copyWith(showFeeStatistics: value);
                         },
                       ),
                     ),
@@ -116,11 +130,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       trailing: Switch(
                         value: settingsController.settings.value.showBirthDay,
                         onChanged: (value) {
-                          settingsController.settings.update(
-                            (val) {
-                              val?.showBirthDay = value;
-                            },
-                          );
+                          settingsController.settings.value = settingsController
+                              .settings.value
+                              .copyWith(showBirthDay: value);
                         },
                       ),
                     ),
@@ -137,11 +149,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       trailing: Switch(
                         value: settingsController.settings.value.showTranscript,
                         onChanged: (value) {
-                          settingsController.settings.update(
-                            (val) {
-                              val?.showTranscript = value;
-                            },
-                          );
+                          settingsController.settings.value = settingsController
+                              .settings.value
+                              .copyWith(showTranscript: value);
                         },
                       ),
                     ),
@@ -151,11 +161,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       trailing: Switch(
                         value: settingsController.settings.value.showAudit,
                         onChanged: (value) {
-                          settingsController.settings.update(
-                            (val) {
-                              val?.showAudit = value;
-                            },
-                          );
+                          settingsController.settings.value = settingsController
+                              .settings.value
+                              .copyWith(showAudit: value);
                         },
                       ),
                     ),
@@ -170,11 +178,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         value:
                             settingsController.settings.value.showExamTimetable,
                         onChanged: (value) {
-                          settingsController.settings.update(
-                            (val) {
-                              val?.showExamTimetable = value;
-                            },
-                          );
+                          settingsController.settings.value = settingsController
+                              .settings.value
+                              .copyWith(showExamTimetable: value);
                         },
                       ),
                     ),
@@ -190,9 +196,93 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                     ListTile(
+                      leading: const Icon(Ionicons.alarm_outline),
+                      title: const Text("Cancel All notifications"),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text("Confirmation"),
+                            content: const Text(
+                              "Cancel all notifications? You won't get any reminders and updates for your existing tasks and assignments",
+                            ),
+                            actions: [
+                              OutlinedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Cancel"),
+                              ),
+                              FilledButton(
+                                onPressed: () async {
+                                  await HapticFeedback.heavyImpact();
+                                  await LocalNotifierService()
+                                      .cancelAllNotifications();
+                                  await LocalNotifierService().showNotification(
+                                    id: 0,
+                                    title: "Notifications",
+                                    color: Colors.red,
+                                    body:
+                                        "You have successfully cleared all pending notifications",
+                                    channelKey: LocalNotificationChannelType
+                                        .general.channelKey,
+                                  );
+                                },
+                                child: const Text("Yes cancel them"),
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                    ListTile(
                       leading: const Icon(Ionicons.trash),
                       title: const Text("Delete my account"),
-                      onTap: () {},
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text("Confirmation"),
+                            content: const Text(
+                              "Are you sure you want to delete this acount? Doing this will result to  data loss and cannot be restored!",
+                            ),
+                            actions: [
+                              OutlinedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Cancel"),
+                              ),
+                              FilledButton(
+                                onPressed: () async {
+                                  await HapticFeedback.heavyImpact();
+                                  await settingsController.logout();
+                                  await userController.deleteUser();
+                                  await LocalNotifierService().showNotification(
+                                    id: 0,
+                                    title: "Goodbye see you soon!",
+                                    notificationType: NotificationType.bigText,
+                                    body:
+                                        "Goodbye, your entire user information has been deleted from our platform, it was a pleasure being a part of your academic journey",
+                                    channelKey: LocalNotificationChannelType
+                                        .general.channelKey,
+                                  );
+
+                                  if (context.mounted) {
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                        builder: (context) => const IntroPage(),
+                                      ),
+                                      (predicate) => false,
+                                    );
+                                  }
+                                },
+                                child: const Text("Yes delete it"),
+                              )
+                            ],
+                          ),
+                        );
+                      },
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12),
@@ -203,7 +293,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             builder: (context) => AlertDialog(
                               title: const Text("Confirmation"),
                               content: const Text(
-                                "Are you sure you want to logout? Doing this will result to  data loss! and will also terminate application",
+                                "Are you sure you want to logout? Doing this will result to  data loss!",
                               ),
                               actions: [
                                 OutlinedButton(
@@ -214,18 +304,27 @@ class _SettingsPageState extends State<SettingsPage> {
                                 ),
                                 FilledButton(
                                   onPressed: () async {
+                                    await HapticFeedback.heavyImpact();
                                     await settingsController.logout();
+                                    await LocalNotifierService()
+                                        .showNotification(
+                                      id: 0,
+                                      title: "Goodbye",
+                                      body:
+                                          "Bye ${userController.user.value!.firstName.title()}, why did you leave? we hope to see you again",
+                                      channelKey: LocalNotificationChannelType
+                                          .general.channelKey,
+                                    );
                                     if (context.mounted) {
-                                      Navigator.of(context).pushReplacement(
+                                      Navigator.pop(context);
+                                      Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const Academia(),
+                                              const IntroPage(),
                                         ),
+                                        (predicate) => false,
                                       );
                                     }
-
-                                    if (context.mounted) Navigator.pop(context);
-                                    exit(0);
                                   },
                                   child: const Text("Yes leave"),
                                 )

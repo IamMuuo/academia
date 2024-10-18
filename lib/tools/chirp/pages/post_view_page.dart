@@ -18,6 +18,17 @@ class _PostViewPageState extends State<PostViewPage> {
   final userController = Get.find<UserController>();
   final TextEditingController replyController = TextEditingController();
 
+  int upvotes = 0;
+  int downvotes = 0;
+  PostService ps = PostService();
+
+  @override
+  void initState() {
+    super.initState();
+    upvotes = widget.post.upvotes;
+    downvotes = widget.post.downvotes;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +36,9 @@ class _PostViewPageState extends State<PostViewPage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            pinned: true,
+            floating: true,
+            snap: true,
             backgroundColor: Theme.of(context).colorScheme.primaryContainer,
             title: Text("@${widget.post.user?.username ?? 'anon'}"),
           ),
@@ -36,7 +50,7 @@ class _PostViewPageState extends State<PostViewPage> {
             sliver: SliverToBoxAdapter(
               child: Text(
                 widget.post.title,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
               ),
@@ -74,7 +88,26 @@ class _PostViewPageState extends State<PostViewPage> {
             child: Row(
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    ps
+                        .postVote(userController.authHeaders, "upvote",
+                            widget.post.id)
+                        .then((value) {
+                      value.fold((l) {
+                        debugPrint(l);
+                      }, (r) {
+                        if (r) {
+                          setState(() {
+                            upvotes++;
+                          });
+                        } else {
+                          setState(() {
+                            upvotes--;
+                          });
+                        }
+                      });
+                    });
+                  },
                   icon: Row(
                     children: [
                       const Icon(
@@ -82,25 +115,51 @@ class _PostViewPageState extends State<PostViewPage> {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        widget.post.upvotes.toString(),
+                        upvotes.toString(),
                       )
                     ],
                   ),
                 ),
                 const SizedBox(width: 2),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    ps
+                        .postVote(userController.authHeaders, "downvote",
+                            widget.post.id)
+                        .then((value) {
+                      value.fold((l) {
+                        debugPrint(l);
+                      }, (r) {
+                        if (r) {
+                          setState(() {
+                            downvotes++;
+                          });
+                        } else {
+                          setState(() {
+                            downvotes--;
+                          });
+                        }
+                      });
+                    });
+                  },
                   icon: const Icon(Ionicons.arrow_down_circle_outline),
                 ),
               ],
             ),
           ),
-          SliverToBoxAdapter(
-            child: Container(
-              color: Theme.of(context).colorScheme.tertiaryContainer,
-              child: const Text(
-                "Swipe a comment to reply to it 😉",
-                textAlign: TextAlign.center,
+          SliverPadding(
+            padding: const EdgeInsets.all(8),
+            sliver: SliverToBoxAdapter(
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: Theme.of(context).colorScheme.tertiaryContainer,
+                ),
+                child: const Text(
+                  "Swipe a comment to reply to it 😉",
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           ),
@@ -113,14 +172,16 @@ class _PostViewPageState extends State<PostViewPage> {
                     future: controller.fetchPostComments(widget.post),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState != ConnectionState.done) {
-                        return const Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CircularProgressIndicator(),
-                            SizedBox(height: 12),
-                            Text("Fetching awesome comments"),
-                          ],
+                        return const Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircularProgressIndicator(),
+                              SizedBox(height: 12),
+                              Text("Fetching awesome comments"),
+                            ],
+                          ),
                         );
                       }
                       return snapshot.data!.fold((l) {
@@ -144,6 +205,8 @@ class _PostViewPageState extends State<PostViewPage> {
                     child: TextFormField(
                       controller: replyController,
                       decoration: InputDecoration(
+                        fillColor:
+                            Theme.of(context).colorScheme.surfaceContainer,
                         suffixIcon: IconButton(
                           onPressed: () async {
                             final result = await controller.postComment(
@@ -164,12 +227,14 @@ class _PostViewPageState extends State<PostViewPage> {
                                 replyController.clear();
                               });
                             });
+                            FocusManager.instance.primaryFocus?.unfocus();
                           },
                           icon: const Icon(Ionicons.send),
                         ),
                         hintText: "Send a reply",
-                        border: const OutlineInputBorder(
-                          borderSide: BorderSide(width: 1),
+                        border: OutlineInputBorder(
+                          borderSide: const BorderSide(width: 1),
+                          borderRadius: BorderRadius.circular(24),
                         ),
                       ),
                     ),

@@ -72,6 +72,13 @@ dependencies:
   timeago: ^3.7.0
   swipe_to: ^1.0.6
   file_picker: ^8.0.5
+  appinio_swiper: ^2.1.1
+  flutter_html: ^3.0.0-beta.2
+  freezed: ^2.5.7
+  freezed_annotation: ^2.4.4
+  json_serializable: ^6.8.0
+  flutter_colorpicker: ^1.1.0
+  local_auth: ^2.3.0
   
 
 

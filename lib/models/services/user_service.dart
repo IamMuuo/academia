@@ -34,6 +34,30 @@ class UserService with VerisafeService {
     }
   }
 
+  Future<Either<String, bool>> deleteStudent(
+      Map<String, String> authheaders, String userID) async {
+    try {
+      final response = await http.delete(
+        Uri.parse("${VerisafeService.urlPrefix}/students/delete/$userID"),
+        headers: authheaders,
+      );
+
+      if (response.statusCode == 200) {
+        return right(true);
+      }
+
+      return const Left(
+        "We ran into an error please retry again later!",
+      );
+    } catch (e) {
+      if (e is http.ClientException) {
+        return const Left(
+            "Error communicating to server please check your network and try again later");
+      }
+      return Left(e.toString());
+    }
+  }
+
   /// Register
   /// Registers a user to verisafe
   Future<Either<String, User>> register(Map<String, dynamic> data) async {

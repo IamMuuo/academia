@@ -86,9 +86,8 @@ class DashBoard extends StatelessWidget {
                     height: 250,
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      border: Border.all(
-                          color:
-                              Theme.of(context).colorScheme.primaryContainer),
+                      color: Theme.of(context).colorScheme.tertiaryContainer,
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -109,9 +108,8 @@ class DashBoard extends StatelessWidget {
                     height: 250,
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      border: Border.all(
-                          color:
-                              Theme.of(context).colorScheme.primaryContainer),
+                      color: Theme.of(context).colorScheme.tertiaryContainer,
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -158,12 +156,14 @@ class DashBoard extends StatelessWidget {
                                 )
                               ],
                             )
-                          : ListView.builder(
+                          : ListView.separated(
                               itemBuilder: (context, index) {
                                 final data =
                                     coursesController.coursesToday[index];
                                 return CourseCard(course: data);
                               },
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(height: 4),
                               itemCount: coursesController.coursesToday.length,
                             ),
                     )

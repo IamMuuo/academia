@@ -50,36 +50,61 @@ class _FeedPageState extends State<FeedPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return pageLoading
-        ? ListView.separated(
-            itemBuilder: (context, index) {
-              return const EmptyPostCard();
-            },
-            separatorBuilder: (context, index) => const SizedBox(
-                  height: 4,
-                ),
-            itemCount: 12)
-        : feedPosts.isEmpty
-            ? const Center(
-                child: Text("No posts here yet"),
-              )
-            : ListView.separated(
-                itemBuilder: (context, index) {
-                  if (index < feedPosts.length) {
-                    final post = feedPosts[index];
-                    return PostCard(post: post);
-                  }
-                  return hasMorePages
-                      ? morePostsLoading
-                          ? const LinearProgressIndicator()
-                          : TextButton(
-                              onPressed: fetchMorePosts,
-                              child: const Text("Load more"),
-                            )
-                      : const Text("You have reached the end of feed!");
-                },
-                separatorBuilder: (context, index) => const SizedBox(height: 2),
-                itemCount: feedPosts.length + 1);
+    return RefreshIndicator(
+      onRefresh: () async {
+        feedPosts.clear();
+        _service.fetchPosts(userController.authHeaders).then((value) {
+          value.fold((l) {
+            debugPrint(l);
+          }, (r) {
+            feedPosts.addAll(r["posts"]);
+            if (nextPage == r["nextPage"]) {
+              setState(() {
+                hasMorePages = false;
+              });
+              return;
+            }
+
+            nextPage = r["nextPage"];
+            setState(() {});
+          });
+        });
+        setState(() {
+          pageLoading = false;
+        });
+      },
+      child: pageLoading
+          ? ListView.separated(
+              itemBuilder: (context, index) {
+                return const EmptyPostCard();
+              },
+              separatorBuilder: (context, index) => const SizedBox(
+                    height: 4,
+                  ),
+              itemCount: 12)
+          : feedPosts.isEmpty
+              ? const Center(
+                  child: Text("No posts here yet"),
+                )
+              : ListView.separated(
+                  itemBuilder: (context, index) {
+                    if (index < feedPosts.length) {
+                      final post = feedPosts[index];
+                      return PostCard(post: post);
+                    }
+                    return hasMorePages
+                        ? morePostsLoading
+                            ? const LinearProgressIndicator()
+                            : TextButton(
+                                onPressed: fetchMorePosts,
+                                child: const Text("Load more"),
+                              )
+                        : const Text("You have reached the end of feed!");
+                  },
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 2),
+                  itemCount: feedPosts.length + 1),
+    );
   }
 
   Future<void> fetchMorePosts() async {

@@ -19,20 +19,11 @@ class _AskMeHomeState extends State<AskMeHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Ask Me".toUpperCase(),
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 32,
-          ),
-        ),
-        centerTitle: true,
-        // toolbarHeight: 75,
-        backgroundColor: Colors.transparent,
+        title: const Text("Ask Me"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);   
+            Navigator.pop(context);
           },
         ),
         actions: [
@@ -62,7 +53,7 @@ class _AskMeHomeState extends State<AskMeHome> {
         children: [
           Center(
             child: Image.asset(
-              'assets/images/askMe_Home.jpeg',
+              'assets/images/study.gif',
               fit: BoxFit.cover,
               height: 400,
             ),
@@ -235,7 +226,6 @@ class _AskMeHomeState extends State<AskMeHome> {
   Future<void> _bottomSheet(BuildContext context,
       {int? id, String? title, String? filepath, int? avgScore}) {
     return showModalBottomSheet(
-      backgroundColor: lightColorScheme.onPrimary,
       context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),

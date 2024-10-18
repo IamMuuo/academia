@@ -4,6 +4,7 @@ class Todo {
   int? id;
   String name;
   bool complete;
+  bool notify;
   String description;
   Map<String, bool>? subTasks;
   DateTime due;
@@ -19,6 +20,7 @@ class Todo {
     required this.due,
     required this.dateAdded,
     this.dateCompleted,
+    this.notify = false,
   });
   // Method to convert Todo object to JSON Map
   Map<String, dynamic> toJson() {
@@ -27,6 +29,7 @@ class Todo {
       'name': name,
       'sub_tasks': json.encode(subTasks),
       'complete': complete ? 1 : 0,
+      'notify': notify ? 1 : 0,
       'description': description,
       'due': due.toIso8601String(),
       'dateAdded': dateAdded.toIso8601String(),
@@ -41,6 +44,7 @@ class Todo {
       name: data['name'],
       subTasks: json.decode(data["sub_tasks"]).cast<String, bool>(),
       complete: data['complete'] == 1 ? true : false,
+      notify: data['notify'] == 1 ? true : false,
       description: data['description'],
       due: DateTime.parse(data['due']),
       dateAdded: DateTime.parse(data['dateAdded']),

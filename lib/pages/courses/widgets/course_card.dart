@@ -13,10 +13,12 @@ class CourseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.secondaryContainer,
           border: Border.all(
             color: Theme.of(context).colorScheme.primaryContainer,
+            width: 2,
           ),
-          borderRadius: BorderRadius.circular(4)),
+          borderRadius: BorderRadius.circular(12)),
       child: ListTile(
         onTap: () {
           Navigator.of(context).push(

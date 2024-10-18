@@ -12,9 +12,8 @@ class ChirpHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(ChirpController());
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceDim,
       body: DefaultTabController(
-        length: 2,
+        length: 3,
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
@@ -45,43 +44,31 @@ class ChirpHomePage extends StatelessWidget {
                   icon: const Icon(Ionicons.flame_outline),
                 ),
               ],
-              expandedHeight: 300,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                        "assets/images/sketchbook-passersby-people-working-around-1.png",
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              expandedHeight: 200,
               pinned: true,
               floating: true,
               snap: true,
-              bottom: const TabBar(
-                tabs: [
-                  Tab(text: 'Trending'),
-                  Tab(text: "Your Posts"),
-                ],
-              ),
-            ),
-            SliverVisibility(
-              visible: false,
-              sliver: SliverPersistentHeader(
-                floating: true,
-                delegate:
-                    PersistentStorySliverDelegate(child: const SizedBox()),
-              ),
+              bottom: PreferredSize(
+                  preferredSize: Size(MediaQuery.of(context).size.width, 160),
+                  child: const Column(
+                    children: [
+                      StoryHeader(),
+                      TabBar(tabs: [
+                        Tab(text: 'Trending'),
+                        Tab(text: "Your Posts"),
+                        Tab(text: "Organizations"),
+                      ]),
+                    ],
+                  )),
             ),
             const SliverFillRemaining(
               hasScrollBody: true,
-              fillOverscroll: true,
+              fillOverscroll: false,
               child: TabBarView(
                 children: [
                   FeedPage(),
                   PersonalPostsPage(),
+                  OrganizationsPage(),
                 ],
               ),
             ),

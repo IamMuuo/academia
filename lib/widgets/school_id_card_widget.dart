@@ -1,5 +1,6 @@
 import 'package:academia/exports/barrel.dart';
 import 'package:academia/models/models.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SchoolIDCard extends StatelessWidget {
@@ -8,6 +9,7 @@ class SchoolIDCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final UserController userController = Get.find<UserController>();
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -50,12 +52,23 @@ class SchoolIDCard extends StatelessWidget {
           const SizedBox(height: 8),
           Row(
             children: [
-              const Flexible(
-                flex: 1,
-                child: ProfilePictureWidget(
-                  profileSize: 60,
-                ),
-              ),
+              Flexible(
+                  flex: 1,
+                  child: CircleAvatar(
+                    radius: 60,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(800),
+                      child: Image.memory(
+                        Uint8List.fromList(
+                          base64Decode(
+                            userController.user.value!.schoolProfile
+                                .replaceFirst("data:image/gif;base64,", ""),
+                          ),
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )),
               const SizedBox(width: 12),
               Flexible(
                 flex: 2,

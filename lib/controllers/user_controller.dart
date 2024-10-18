@@ -153,4 +153,9 @@ class UserController extends GetxController {
       debugPrint("Error during logout: ${e.toString()}");
     }
   }
+
+  Future<Either<String, bool>> deleteUser() async {
+    final result = await service.deleteStudent(authHeaders, user.value!.id!);
+    return result;
+  }
 }

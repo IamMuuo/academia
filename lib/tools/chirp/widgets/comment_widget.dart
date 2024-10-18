@@ -26,137 +26,152 @@ class _CommentWidgetState extends State<CommentWidget> {
   void initState() {
     super.initState();
     setState(() {
-      showSubPosts = widget.depth > 0 ? false : true;
+      showSubPosts = widget.depth > 10 ? false : true;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return SwipeTo(
-      onRightSwipe: (data) {
-        showModalBottomSheet(
-          useSafeArea: true,
-          context: context,
-          builder: (context) => Container(
-            height: 120,
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              children: [
-                Text(
-                  "Send a reply to @${widget.comment.user.username}",
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 22),
-                TextFormField(
-                  controller: replyController,
-                  decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                      onPressed: () async {
-                        final result = await chirpController.postComment(
-                          userController.user.value!.id!,
-                          widget.comment.post.id,
-                          widget.comment.id,
-                          replyController.text,
-                        );
-                        result.fold((l) {
-                          showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    title: const Text("Error"),
-                                    content: Text(l),
-                                  ));
-                        }, (r) {
-                          setState(() {
-                            widget.comment.replies.add(r);
-                          });
-                        });
-                      },
-                      icon: const Icon(Ionicons.send),
-                    ),
-                    hintText: "Send a reply",
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide(width: 1),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          showSubPosts = !showSubPosts;
+        });
       },
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            left: BorderSide(
-              color: Theme.of(context).colorScheme.tertiary,
-              width: 1.0,
-            ),
-          ),
-        ),
-        padding: const EdgeInsets.all(4),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                widget.comment.user.profilePhoto != null
-                    ? CircleAvatar(
-                        backgroundImage: CachedNetworkImageProvider(
-                          widget.comment.user.profilePhoto ?? '',
-                        ),
-                      )
-                    : Image.asset(
-                        "assets/images/male_student.png",
-                        height: 30,
-                      ),
-                const SizedBox(width: 4),
-                Text((userController.user.value?.id ?? "") ==
-                        widget.comment.user.id
-                    ? "You"
-                    : "@${widget.comment.user.username}"),
-                const SizedBox(width: 12),
-                Text(
-                  timeago.format(widget.comment.createdAt),
-                  style: Theme.of(context).textTheme.bodySmall,
+      child: SwipeTo(
+        onRightSwipe: (data) {
+          showModalBottomSheet(
+            useSafeArea: true,
+            context: context,
+            isScrollControlled: true,
+            builder: (context) => SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.only(
+                  top: 8,
+                  right: 8,
+                  left: 8,
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
-              ],
-            ),
-            const SizedBox(height: 4),
-            Text(
-              widget.comment.content,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            const SizedBox(height: 4),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 8,
-              ),
-              child: showSubPosts
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        final data = widget.comment.replies[index];
-                        return CommentWidget(
-                          comment: data,
-                          depth: widget.depth + 1,
-                        );
-                      },
-                      itemCount: widget.comment.replies.length,
-                    )
-                  : Visibility(
-                      visible: widget.comment.replies.isNotEmpty,
-                      child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            showSubPosts = !showSubPosts;
-                          });
-                        },
-                        child: const Text("Show replies"),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Send a reply to @${widget.comment.user.username}",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 22),
+                    TextFormField(
+                      controller: replyController,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          onPressed: () async {
+                            final result = await chirpController.postComment(
+                              userController.user.value!.id!,
+                              widget.comment.post.id,
+                              widget.comment.id,
+                              replyController.text,
+                            );
+                            result.fold((l) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                        title: const Text("Error"),
+                                        content: Text(l),
+                                      ));
+                            }, (r) {
+                              setState(() {
+                                widget.comment.replies.add(r);
+                              });
+                            });
+                          },
+                          icon: const Icon(Ionicons.send),
+                        ),
+                        hintText: "Send a reply",
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 1),
+                        ),
                       ),
                     ),
+                  ],
+                ),
+              ),
             ),
-          ],
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              left: BorderSide(
+                color: Theme.of(context).colorScheme.tertiary,
+                width: 1.0,
+              ),
+            ),
+          ),
+          padding: const EdgeInsets.all(4),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  widget.comment.user.profilePhoto != null
+                      ? CircleAvatar(
+                          backgroundImage: CachedNetworkImageProvider(
+                            widget.comment.user.profilePhoto ?? '',
+                          ),
+                        )
+                      : Image.asset(
+                          "assets/images/male_student.png",
+                          height: 30,
+                        ),
+                  const SizedBox(width: 4),
+                  Text((userController.user.value?.id ?? "") ==
+                          widget.comment.user.id
+                      ? "You"
+                      : "@${widget.comment.user.username}"),
+                  const SizedBox(width: 12),
+                  Text(
+                    timeago.format(widget.comment.createdAt),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                widget.comment.content,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 4),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 8,
+                ),
+                child: showSubPosts
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          final data = widget.comment.replies[index];
+                          return CommentWidget(
+                            comment: data,
+                            depth: widget.depth + 1,
+                          );
+                        },
+                        itemCount: widget.comment.replies.length,
+                      )
+                    : Visibility(
+                        visible: widget.comment.replies.isNotEmpty,
+                        child: TextButton(
+                          onPressed: () {
+                            setState(() {
+                              showSubPosts = !showSubPosts;
+                            });
+                          },
+                          child: const Text("Show replies"),
+                        ),
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
     );
