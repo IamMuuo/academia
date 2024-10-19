@@ -114,7 +114,8 @@ class _CommentWidgetState extends State<CommentWidget> {
             children: [
               Row(
                 children: [
-                  widget.comment.user.profilePhoto != null
+                  widget.comment.user.profilePhoto != null &&
+                          widget.comment.user.profilePhoto != ""
                       ? CircleAvatar(
                           backgroundImage: CachedNetworkImageProvider(
                             widget.comment.user.profilePhoto ?? '',
