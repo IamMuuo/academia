@@ -139,7 +139,9 @@ class _CommentWidgetState extends State<CommentWidget> {
               ),
               const SizedBox(height: 4),
               Text(
-                widget.comment.content,
+                utf8convert(
+                  widget.comment.content,
+                ),
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               const SizedBox(height: 4),

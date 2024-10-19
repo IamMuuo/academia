@@ -18,6 +18,11 @@ extension StringExtension on String {
   }
 }
 
+String utf8convert(String text) {
+  List<int> bytes = text.toString().codeUnits;
+  return utf8.decode(bytes);
+}
+
 String trimTo99Characters(String text) {
   if (text.length <= 99) {
     return text;

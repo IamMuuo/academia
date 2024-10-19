@@ -135,7 +135,7 @@ class _PostCardState extends State<PostCard> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  trimTo99Characters(widget.post.content),
+                  utf8convert(trimTo99Characters(widget.post.content)),
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
