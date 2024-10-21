@@ -34,49 +34,48 @@ class _ToolCardState extends State<ToolCard> {
         });
       },
       child: Card(
-        elevation: 4.0,
-        child: Column(
-          children: [
-            ListTile(
-              title: Text(widget.heading),
-              // subtitle: Text(subheading),
-              // trailing: const Icon(Icons.favorite_outline),
-            ),
-            SizedBox(
-              height: 200.0,
-              child: _isLoading
-                  ? LoadingAnimationWidget.flickr(
-                      leftDotColor: Theme.of(context).primaryColor,
-                      rightDotColor: Theme.of(context).primaryColorDark,
-                      size: 80,
-                    )
-                  : Image.asset(
-                      widget.image,
-                      fit: BoxFit.fitWidth,
-                    ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              alignment: Alignment.centerLeft,
-              child: Text(widget.description),
-            ),
-            ButtonBar(
-              children: [
-                TextButton(
-                  child: Text(widget.action),
-                  onPressed: () async {
-                    setState(() {
-                      _isLoading = true;
-                    });
-                    await widget.ontap.call();
-                    setState(() {
-                      _isLoading = false;
-                    });
-                  },
-                ),
-              ],
-            )
-          ],
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 12, right: 12),
+          child: Column(
+            children: [
+              ListTile(
+                title: Text(widget.heading),
+                // subtitle: Text(subheading),
+                // trailing: const Icon(Icons.favorite_outline),
+              ),
+              SizedBox(
+                height: 200.0,
+                child: _isLoading
+                    ? const Text("Loading")
+                    : Image.asset(
+                        widget.image,
+                        fit: BoxFit.fitWidth,
+                      ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(16.0),
+                alignment: Alignment.centerLeft,
+                child: Text(widget.description),
+              ),
+              OverflowBar(
+                alignment: MainAxisAlignment.end,
+                children: [
+                  FilledButton.tonal(
+                    child: Text(widget.action),
+                    onPressed: () async {
+                      setState(() {
+                        _isLoading = true;
+                      });
+                      await widget.ontap.call();
+                      setState(() {
+                        _isLoading = false;
+                      });
+                    },
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

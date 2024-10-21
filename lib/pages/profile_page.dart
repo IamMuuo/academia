@@ -1,4 +1,5 @@
 import 'package:academia/exports/barrel.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -6,98 +7,148 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.find<SettingsController>();
-    final UserController userController = Get.find<UserController>();
-
-    return Container(
-      padding: const EdgeInsets.all(12),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            CircleAvatar(
-              radius: 70.0,
-              child: Obx(
-                () => Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(800),
-                      ),
-                      child: controller.showProfilePic.value
-                          ? Image.memory(
-                              Uint8List.fromList(
-                                base64Decode(userController.user.value!.profile!
-                                    .replaceFirst(
-                                        "data:image/gif;base64,", "")),
-                              ),
-                              fit: BoxFit.contain,
-                            )
-                          : Image.asset(
-                              userController.user.value!.gender == "male"
-                                  ? "assets/images/male_student.png"
-                                  : "assets/images/female_student.png",
+    final userController = Get.find<UserController>();
+    final SettingsController settingsController =
+        Get.find<SettingsController>();
+    return SafeArea(
+      minimum: const EdgeInsets.symmetric(horizontal: 8),
+      child: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            automaticallyImplyLeading: false,
+            pinned: true,
+            snap: true,
+            floating: true,
+            expandedHeight: 200,
+            flexibleSpace: const FlexibleSpaceBar(
+              title: Text("Your profile"),
+            ),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  if (await settingsController.performLocalAuthentication(
+                          "Attempting to change app settings") &&
+                      context.mounted) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => const SettingsPage()),
+                    );
+                  }
+                },
+                icon: const Icon(Ionicons.settings),
+              ),
+            ],
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 22),
+              // height:,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const ProfilePictureWidget(
+                    profileSize: 60,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "@${userController.user.value!.username}",
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        child: Column(
+                          children: [
+                            const Icon(Ionicons.id_card_outline),
+                            const SizedBox(height: 4),
+                            Text(
+                              userController.user.value!.admissionNumber,
+                              style: GoogleFonts.jetBrainsMono(),
                             ),
-                    ),
-                    Positioned(
-                      right: 3,
-                      bottom: 0,
-                      child: Icon(
-                        Ionicons.shield_checkmark,
-                        color: Theme.of(context).colorScheme.tertiary,
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                      SizedBox(
+                        child: Column(
+                          children: [
+                            const Icon(Ionicons.person_outline),
+                            const SizedBox(height: 4),
+                            Text(
+                              userController.user.value!.nationalId,
+                              style: GoogleFonts.jetBrainsMono(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const MembershipPage(),
+                        ),
+                      );
+                    },
+                    child: const Text("Show Memberships"),
+                  ),
+                  const SizedBox(height: 16),
+                ],
               ),
             ),
-            const SizedBox(
-              height: 12,
+          ),
+          SliverFillRemaining(
+            hasScrollBody: true,
+            child: ListView(
+              children: [
+                InfoCard(
+                  title: "Official Name",
+                  content:
+                      "${userController.user.value!.firstName.title()} ${userController.user.value!.lastName.title()}",
+                  icon: Ionicons.person,
+                ),
+                InfoCard(
+                  title: "Gender",
+                  content: (userController.user.value!.gender).title(),
+                  icon: Ionicons.male_female,
+                ),
+                InfoCard(
+                  title: "Address",
+                  content: userController.user.value!.address,
+                  icon: Ionicons.compass,
+                ),
+                InfoCard(
+                  title: "Email",
+                  content: userController.user.value!.email,
+                  icon: Ionicons.mail,
+                ),
+                InfoCard(
+                  title: "Campus",
+                  content: userController.user.value!.campus.title(),
+                  icon: Ionicons.telescope,
+                ),
+                InfoCard(
+                  title: "Academic Status",
+                  content:
+                      userController.user.value!.active ? "Active" : "Inactive",
+                  icon: Ionicons.calendar,
+                ),
+                Obx(
+                  () => InfoCard(
+                    title: "Vibe Points",
+                    content: userController.user.value!.vibePoints.toString(),
+                    icon: Ionicons.wallet,
+                  ),
+                ),
+              ],
             ),
-            Text(
-              userController.user.value!.name!.title(),
-              style: h4,
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            InfoCard(
-              title: "National ID",
-              content: userController.user.value!.idno ?? "Unknown",
-              icon: Ionicons.id_card,
-            ),
-            InfoCard(
-              title: "Admission Number",
-              content: userController.user.value!.admno ?? "00-0000",
-              icon: Ionicons.at_circle,
-            ),
-            InfoCard(
-              title: "Gender",
-              content: (userController.user.value!.gender ?? "unknown").title(),
-              icon: (userController.user.value!.gender ?? "unknown")
-                          .toLowerCase() ==
-                      "male"
-                  ? Icons.male
-                  : Icons.female,
-            ),
-            InfoCard(
-              title: "Email Address",
-              content:
-                  userController.user.value!.email ?? "someone@example.com",
-              icon: Ionicons.mail,
-            ),
-            InfoCard(
-              title: "Address",
-              content: userController.user.value!.address ?? "unknown",
-              icon: Ionicons.planet,
-            ),
-            InfoCard(
-              title: "Birthday",
-              content:
-                  (userController.user.value!.dateOfBirth ?? "unknown").title(),
-              icon: Icons.cake,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

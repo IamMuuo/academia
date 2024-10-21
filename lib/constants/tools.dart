@@ -3,22 +3,11 @@ import 'package:academia/exports/barrel.dart';
 
 final List<Map<String, dynamic>> allTools = [
   {
-    "id": 8,
-    "name": "Exam Timetable",
-    "action": "Show exam timetable",
-    "image": "assets/images/exam_timetable.png",
-    "ontap": () {
-      Get.to(const ExamTimeTablePage());
-    },
-    "description":
-        "Exams around the corner? Don't panic we've got you covered with the timetable",
-  },
-
-  {
     "id": 1,
     "name": "GPA Calculator",
     "action": "Calculate GPA",
-    "image": "assets/images/calculator.png",
+    "image":
+        "assets/images/sketchbook-young-businesswoman-giving-a-presentation-1.png",
     "ontap": () {
       Get.to(GpaCalculator());
     },
@@ -26,140 +15,109 @@ final List<Map<String, dynamic>> allTools = [
   },
   {
     "id": 2,
+    "name": "Fees statements",
+    "action": "Preview my fees statements",
+    "image": "assets/images/sketchbook-woman-and-a-man-analyze-data-2.png",
+    "ontap": () {
+      Get.to(const FeesPage());
+    },
+    "description": "Having trouble tracking your finaces? We're here for you"
+  },
+  {
+    "id": 3,
     "name": "Elearning",
-    "image": "assets/images/grade.png",
+    "image": "assets/images/sketchbook-coworkers-discussing-something-1.png",
     "action": "Visit Elearning",
     "ontap": () {
       Platform.isIOS || Platform.isAndroid
           ? Get.to(const WebviewPage(
               title: "Elearning", url: "https://elearning.daystar.ac.ke"))
-          : showCustomSnackbar(
-              "Missing Feature",
-              "Please use a mobile phone to access this service since it isn't supported on desktop",
-              icon: Icons.error,
+          : Get.rawSnackbar(
+              title: "Missing Feature",
+              message:
+                  "Current platform does not support this feature please try it on android",
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM,
             );
     },
     "description":
         "Psst! Elearning is here for you. Keep track of your assignments and notes!",
   },
   {
-    "id": 3,
-    "name": "Fees Statement",
-    "action": "Get my fee statement",
-    "image": "assets/images/fees.png",
-    "ontap": () async {
-      var controller = Get.find<SettingsController>();
-      if (!controller.showFees.value) {
-        showCustomSnackbar(
-          "Tool locked",
-          "Fees functionality is locked in the settings page, please unlock it to view your fees statement",
-          icon: Icons.lock,
-        );
-      } else {
-        try {
-          var statements = await magnet.fetchFeeStatement();
-          Get.to(FeesPage(allStatements: statements));
-        } catch (e) {
-          showCustomSnackbar(
-            "Error",
-            "Please check your internet connection and try again!",
-            icon: Icons.network_check,
-          );
-        }
-      }
-    },
-    "description": "Not sure about finances? We are here for you"
-  },
-  {
     "id": 4,
-    "name": "Generate Catering Token",
-    "action": "Generate Token",
-    "image": "assets/images/food.png",
-    "ontap": () async {
-      try {
-        var token = await magnet.fetchCateringToken();
-        await Get.defaultDialog(
-          title: "Your Token",
-          content: Text("Your Token is ${token['message'] ?? ''}"),
-        );
-      } catch (e) {
-        showCustomSnackbar(
-          "Error",
-          "Please check your internet connection and try again!",
-          icon: Icons.network_check,
-        );
-      }
+    "name": "Exam Timetable",
+    "action": "Show exam timetable",
+    "image": "assets/images/sketchbook-man-analyzing-business-data.png",
+    "ontap": () {
+      Get.to(const ExamTimeTablePage());
     },
-    "description": "Hungry? Maybe its time to generate your catering token!"
+    "description":
+        "Exams around the corner? Don't panic we've got you covered with the timetable",
   },
   {
     "id": 5,
-    "name": "Student Audit",
-    "action": "Get my audit",
-    "image": "assets/images/view.png",
-    "ontap": () async {
-      var controller = Get.find<SettingsController>();
-      if (controller.showAudit.value) {
-        showCustomSnackbar(
-          "Tool locked",
-          "Student Audit functionality is locked in the settings page, please unlock it to view your student audit",
-          icon: Icons.lock,
-        );
-      } else {
-        final UserController userController = Get.find<UserController>();
-        Get.to(PdfViewer(
-          title: "Your audit",
-          url:
-              "https://student.daystar.ac.ke/Downloads/STDAUDIT-${userController.user.value!.admno}.pdf",
-        ));
-      }
+    "name": "Task Manager",
+    "action": "Manage your tasks",
+    "image": "assets/images/organize.png",
+    "ontap": () {
+      Get.to(const TodoHomeScreen());
     },
-    "description": "Having trouble finding your audit? Here it is"
+    "description":
+        "Having trouble keeping track of your todos? We've got you covered",
   },
   {
     "id": 6,
-    "name": "Transcript",
-    "action": "Get my transcript",
-    "image": "assets/images/graduating.png",
-    "ontap": () async {
-      var controller = Get.find<SettingsController>();
-      if (controller.showTranscript.value) {
-        showCustomSnackbar(
-          "Tool locked",
-          "Transcript functionality is locked in the settings page, please unlock it to view your transcript",
-          icon: Icons.lock,
-        );
-      } else {
-        final UserController userController = Get.find<UserController>();
-        Get.to(PdfViewer(
-          title: "Your Transcript",
-          url:
-              "https://student.daystar.ac.ke/Downloads/PROVISIONAL%20RESULTS-${userController.user.value!.admno}.pdf",
-        ));
-      }
+    "name": "Anki Flash Cards",
+    "action": "Lets Up That Grade",
+    "image":
+        "assets/images/sketchbook-young-man-and-his-dog-are-having-a-picnic-in-the-park-1.png",
+    "ontap": () {
+      Get.to(const AnkiHomePage());
     },
-    "description": "Need your transcript ASAP? Find it here"
+    "description":
+        "Ready to revolutionize your study habits?\nLet's help you master courses effortlessly",
   },
   {
     "id": 7,
-    "name": "Class Attendance",
-    "action": "View class Attendance",
-    "image": "assets/images/girl_sitted.png",
+    "name": "Ask Me",
+    "action": "Study with Ai",
+    "image":
+        "assets/images/sketchbook-woman-taking-pictures-of-packaged-goods.png",
     "ontap": () {
-      Get.to(const AttendancePage());
+      Get.to(const AskMeHome());
     },
     "description":
-        "Curious to know how many classes you have missed this semester, this might be the tool",
+        "Generate quiz questions from your notes and study materials with our AI tool."
+  },
+  {
+    "id": 8,
+    "name": "Student Audit",
+    "action": "Get student Audit",
+    "image":
+        "assets/images/sketchbook-school-backpack-with-school-supplies-1.png",
+    "ontap": () {
+      Get.to(
+        const StudentPerformancePage(
+          parameter: StudentPerfomanceParameter.audit,
+        ),
+      );
+    },
+    "description": "Need your student audit? Get it here"
   },
   {
     "id": 9,
-    "name": "Task Manager",
-    "action": "Manage your tasks",
-    "image": "assets/images/tasks_manager.png",
+    "name": "Transcript",
+    "action": "Show my transcript",
+    "image":
+        "assets/images/sketchbook-young-businesswoman-giving-a-presentation-1.png",
     "ontap": () {
-      Get.to(TaskManagerPage());
+      Get.to(
+        const StudentPerformancePage(
+          parameter: StudentPerfomanceParameter.transcript,
+        ),
+      );
     },
     "description":
-        "Having trouble keeping track of your Assignments? We've got you covered",
+        "Worried of your entire student progression? Fetch your transcript here"
   }
 ];

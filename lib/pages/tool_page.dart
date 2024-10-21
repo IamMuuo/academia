@@ -1,5 +1,4 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -25,7 +24,7 @@ class _ToolsPageState extends State<ToolsPage> {
     foundTools = _allTools;
   }
 
-  void _runToolFilter(String enteredKeyWord) {
+  void runToolFilter(String enteredKeyWord) {
     List<Map<String, dynamic>> results = [];
     if (enteredKeyWord.isEmpty) {
       results = _allTools;
@@ -46,7 +45,9 @@ class _ToolsPageState extends State<ToolsPage> {
 
   bool get isBirthDay {
     DateFormat inputFormat = DateFormat('dd/MM/yyyy');
-    var dob = inputFormat.parse(userController.user.value!.dateOfBirth!);
+    var dob = inputFormat.parse(
+      userController.user.value!.dateOfBirth.toString(),
+    );
 
     if (dob.day == DateTime.now().day && dob.month == DateTime.now().month) {
       return true;
@@ -57,86 +58,64 @@ class _ToolsPageState extends State<ToolsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Tools"),
-        centerTitle: true,
-        leading: settingsController.birthdayNotify.value
-            ? isBirthDay
-                ? IconButton(
-                    onPressed: () {
-                      Get.to(const BirthDayPage());
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            pinned: true,
+            floating: true,
+            snap: true,
+            expandedHeight: 120,
+            flexibleSpace: const FlexibleSpaceBar(
+              title: Text("Tools"),
+            ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text("Tools"),
+                        content: const Text(
+                          "From calculating your hypothetical gpa to booking your ride, weve got you covered",
+                        ),
+                        actions: [
+                          FilledButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Oh, ok"))
+                        ],
+                      );
                     },
-                    icon: const Icon(Icons.cake))
-                : null
-            : null,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Get.defaultDialog(
-                title: "Information",
-                content: Column(
-                  children: [
-                    Image.asset("assets/images/bot_love.png", height: 100),
-                    const Text(
-                      "From calculating your GPA to generating your tokens, tools are the bare essentials",
-                    )
-                  ],
-                ),
-              );
-            },
-            icon: const Icon(CupertinoIcons.info),
+                  );
+                },
+                icon: const Icon(Ionicons.information_circle),
+              ),
+            ],
           ),
-        ],
-        elevation: 0,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 8, left: 12, right: 12),
-        child: Column(
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 60,
-              child: TextField(
-                onChanged: (value) => _runToolFilter(value),
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                  ),
-                  hintText: "GPA Calculator",
-                  label: Text("Search for a tool"),
-                  suffixIcon: Icon(CupertinoIcons.search),
-                ),
+          SliverPadding(
+            padding: const EdgeInsets.all(8),
+            sliver: SliverFillRemaining(
+              hasScrollBody: true,
+              child: ListView.builder(
+                itemCount: _allTools.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: ToolCard(
+                      heading: _allTools[index]["name"],
+                      description: _allTools[index]["description"],
+                      image: _allTools[index]["image"],
+                      ontap: _allTools[index]["ontap"],
+                      action: _allTools[index]["action"],
+                    ),
+                  );
+                },
               ),
             ),
-            const SizedBox(height: 12),
-            Expanded(
-              child: foundTools.isNotEmpty
-                  ? ListView.builder(
-                      itemCount: foundTools.length,
-                      itemBuilder: (context, index) {
-                        return ToolCard(
-                          heading: foundTools[index]["name"],
-                          description: foundTools[index]["description"],
-                          image: foundTools[index]["image"],
-                          ontap: foundTools[index]["ontap"],
-                          action: foundTools[index]["action"],
-                        );
-                      },
-                    )
-                  : Column(
-                      children: [
-                        const Text(
-                          "We can't find that requested tool at the moment. Please try using alternative keywords or",
-                          textAlign: TextAlign.center,
-                        ),
-                        TextButton(
-                            onPressed: () {},
-                            child: const Text("Tap to request this feature")),
-                      ],
-                    ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

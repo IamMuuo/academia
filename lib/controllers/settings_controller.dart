@@ -1,67 +1,74 @@
+import 'dart:async';
+
 import 'package:academia/exports/barrel.dart';
 import 'package:get/get.dart';
-import 'package:shorebird_code_push/shorebird_code_push.dart';
+import 'package:academia/models/models.dart';
+import 'package:academia/storage/storage.dart';
+import 'package:local_auth/local_auth.dart';
 
-class SettingsController extends GetxController {
-  Rx<bool> showGPA = true.obs;
-  Rx<bool> showProfilePic = true.obs;
-  Rx<bool> showExamTimeTable = false.obs;
-  Rx<bool> showTranscript = false.obs;
-  Rx<bool> showAudit = false.obs;
-  Rx<bool> showFees = true.obs;
-  Rx<bool> birthdayNotify = true.obs;
-  Rx<bool> hasUpdates = false.obs;
-  Rx<String> patch = "0.0.0".obs;
-  late Map<dynamic, dynamic> settings;
-  late ShorebirdCodePush? shorebirdCodePush;
+class SettingsController extends GetxController with StateMixin {
+  Rx<Settings> settings = Settings.empty().obs;
+
+  final LocalAuthentication localAuthentication = LocalAuthentication();
 
   @override
   void onInit() async {
-    settings = await appDB.get("settings") ?? {};
-    showGPA.value = settings["show_gpa"] ?? true;
-    showProfilePic.value = settings["show_profile_pic"] ?? true;
-    showExamTimeTable.value = settings["show_exam_timetable"] ?? true;
-    showAudit.value = settings["show_audit"] ?? true;
-    showTranscript.value = settings["show_transcript"] ?? true;
-    showFees.value = settings["show_fees"] ?? false;
-    birthdayNotify.value = settings["birthday_notify"] ?? true;
-
-    debugPrint("Settings loaded!");
     super.onInit();
+    ever(settings, (value) {
+      saveSettings(value);
+    });
 
-    if (Platform.isAndroid) {
-      shorebirdCodePush = ShorebirdCodePush();
-      shorebirdCodePush?.currentPatchNumber().then(
-        (value) {
-          patch.value = value?.toString() ?? "monkey";
-          debugPrint("Current patch number is: $value");
-        },
-      );
+    change(null, status: RxStatus.loading());
+    await SettingsHelper().init();
 
-      checkForUpdates();
-    }
+    settings.value = SettingsHelper().getSettings();
+    // print(settings.value.toJson());
+    debugPrint("[+] Settings Loaded!");
+
+    change(null, status: RxStatus.success());
   }
 
-  Future<void> saveSettings() async {
-    settings["show_profile_pic"] = showProfilePic.value;
-    settings["show_gpa"] = showGPA.value;
-    settings["show_exam_timetable"] = showExamTimeTable.value;
-    settings["show_transcript"] = showTranscript.value;
-    settings["show_audit"] = showAudit.value;
-    settings["show_fees"] = showFees.value;
-    settings["birthday_notify"] = birthdayNotify.value;
-    await appDB.put("settings", settings);
+  Future<bool> performLocalAuthentication(String reason) async {
+    bool authenticated = false;
+
+    if (Platform.isIOS || Platform.isAndroid) {
+      try {
+        authenticated = await localAuthentication.authenticate(
+          localizedReason: reason,
+          options: const AuthenticationOptions(
+            stickyAuth: true,
+            sensitiveTransaction: true,
+          ),
+        );
+      } on PlatformException catch (e) {
+        authenticated = false;
+        debugPrint(e.toString());
+      } catch (e) {
+        debugPrint(e.toString());
+      }
+
+      return authenticated;
+    }
+    return true;
   }
 
-  Future<void> checkForUpdates() async {
-    // Check whether a patch is available to install.
-    hasUpdates.value =
-        await shorebirdCodePush?.isNewPatchAvailableForDownload() ?? false;
+  Future<bool> deviceSupportsLocalAuth() async {
+    return localAuthentication.isDeviceSupported();
+  }
 
-    if (hasUpdates.value) {
-      // Download the new patch if it's available.
-      await shorebirdCodePush?.downloadUpdateIfAvailable();
-    }
-    hasUpdates.value = false;
+  /// Saves the current settings
+  void saveSettings(Settings settings) async {
+    this.settings.value = settings;
+    await SettingsHelper().saveSettings(settings);
+  }
+
+  Future<void> _truncateDatabase() async {
+    await DatabaseHelper().truncateDataBase();
+  }
+
+  Future<void> logout() async {
+    await _truncateDatabase();
+    final userController = Get.find<UserController>();
+    userController.isLoggedIn.value = false;
   }
 }

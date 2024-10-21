@@ -1,97 +1,107 @@
 import 'package:academia/exports/barrel.dart';
-import 'package:academia/services/services.dart';
+import 'package:academia/notifier/notifier.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  /// Initialize the flutter notifications plugin
-  AwesomeNotifications().initialize(
-    'resource://drawable/app_icon',
-    [
-      NotificationChannel(
-        channelKey: "basic_channel",
-        channelName: "Basic Notifications",
-        channelDescription: "All Academia Notification Channel",
-        importance: NotificationImportance.High,
-        enableLights: true,
-        defaultColor: Colors.blueGrey,
-        playSound: true,
-        enableVibration: true,
-        channelShowBadge: true,
-      )
-    ],
-  );
+  // Initialize the background services
+  await LocalNotifierService().initialize();
+  await LocalNotificationStatusManager().initialize();
+  await BackgroundWorker().initialize();
 
-  /// Init the type adapters for storage
-  await Hive.initFlutter();
-  Hive.registerAdapter(UserAdapter());
-  Hive.registerAdapter(ScheduleAdapter());
-  Hive.registerAdapter(CoursesAdapter());
-  Hive.registerAdapter(TaskAdapter());
-  Hive.registerAdapter(ExamAdapter());
-  appDB = await Hive.openBox(dbName);
+  // initialize the controllers
+  Get.put(UserController());
+  Get.put(SettingsController());
+  Get.put(NotificationsController());
+  Get.put(NetworkController());
+  Get.put(TodoController());
+  Get.put(RewardController());
+  Get.put(CoursesController());
+  Get.put(EventsController());
+  Get.put(OrganizationController());
 
-  // Initialize the various controllers
-  // once you append the controller onto the list don't inject it again
-  // since it will be placed in the context
-  ControllerService().injectMultipleControllers(
-    <GetxController>[
-      SettingsController(),
-      NotificationsController(),
-      TaskManagerController(),
-    ],
-  );
-
-  ControllerService().injectController(UserController());
+  // launch the application
   runApp(
-    GetMaterialApp(
-      home: const Academia(),
-      theme: lightModeTheme,
-      darkTheme: darkModeTheme,
-    ),
+    const Academia(),
   );
 }
 
-class Academia extends StatelessWidget {
+class Academia extends StatefulWidget {
   const Academia({super.key});
 
   @override
+  State<Academia> createState() => _AcademiaState();
+}
+
+class _AcademiaState extends State<Academia> {
+  late Future<bool> _authState;
+  final UserController _userController = Get.find<UserController>();
+  final SettingsController _settingsController = Get.find<SettingsController>();
+
+  @override
+  void initState() {
+    super.initState();
+    LocalNotifierService().requestPermission();
+
+    if (_settingsController.settings.value.requireAppUnlock) {
+      _authState = _settingsController.performLocalAuthentication(
+        "Your app is locked, to continue unloack it using your authentication mechanism",
+      );
+    } else {
+      _authState = Future.value(true);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    AwesomeNotifications().isNotificationAllowed().then((value) {
-      if ((!value) && (Platform.isAndroid || Platform.isIOS)) {
-        showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text("Allow Notifications"),
-                content: const Text(
-                  "Academia would like to send you notifications about classes and your school work",
+    /// Init the controllers here
+    return GetMaterialApp(
+      theme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: const Color(0xFF3D5A80),
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        useMaterial3: true,
+        colorSchemeSeed: const Color(0xFF3D5A80),
+      ),
+      home: FutureBuilder(
+        future: _authState,
+        builder: (context, snapshot) {
+          if (snapshot.data == true) {
+            return Obx(
+              () => _userController.isLoggedIn.value
+                  ? const LayoutPage()
+                  : const IntroPage(),
+            );
+          }
+          return Scaffold(
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset(
+                  "assets/lotties/studying.json",
                 ),
-                actions: [
-                  FilledButton(
-                    onPressed: () {
-                      AwesomeNotifications()
-                          .requestPermissionToSendNotifications()
-                          .then((value) => Navigator.pop(context));
-                    },
-                    child: const Text("Allow"),
-                  ),
-                  OutlinedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text("No"),
-                  ),
-                ],
-              );
-            });
-      }
-    });
-    final UserController userController = Get.find<UserController>();
-    return userController.isLoggedIn.value
-        ? const HomePage()
-        : const IntroPage();
+                const SizedBox(height: 22),
+                Text(
+                  "Please authenticate 🔐 with Academia to continue",
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                FilledButton.icon(
+                  onPressed: () {
+                    _authState = _settingsController.performLocalAuthentication(
+                      "Your app is locked, to continue unloack it using your authentication mechanism",
+                    );
+                  },
+                  label: const Text("Authenticate"),
+                )
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 }
