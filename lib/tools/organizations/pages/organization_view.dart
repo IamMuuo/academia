@@ -34,8 +34,12 @@ class OrganizationView extends StatelessWidget {
             sliver: SliverToBoxAdapter(
               child: CircleAvatar(
                 radius: 60,
-                backgroundImage: CachedNetworkImageProvider(
-                  organization.logo!,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(60),
+                  child: CachedNetworkImage(
+                    imageUrl: organization.logo!,
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
             ),

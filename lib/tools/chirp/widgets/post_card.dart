@@ -107,7 +107,7 @@ class _PostCardState extends State<PostCard> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  widget.post.title,
+                  utf8convert(widget.post.title),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
@@ -135,7 +135,7 @@ class _PostCardState extends State<PostCard> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  trimTo99Characters(widget.post.content),
+                  utf8convert(trimTo99Characters(widget.post.content)),
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],

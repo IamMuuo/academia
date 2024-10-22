@@ -26,6 +26,9 @@ class _FeedPageState extends State<FeedPage>
   @override
   void initState() {
     super.initState();
+    setState(() {
+      pageLoading = true;
+    });
     _service.fetchPosts(userController.authHeaders).then((value) {
       value.fold((l) {
         debugPrint(l);
@@ -52,25 +55,31 @@ class _FeedPageState extends State<FeedPage>
     super.build(context);
     return RefreshIndicator(
       onRefresh: () async {
-        feedPosts.clear();
-        _service.fetchPosts(userController.authHeaders).then((value) {
-          value.fold((l) {
-            debugPrint(l);
-          }, (r) {
-            feedPosts.addAll(r["posts"]);
-            if (nextPage == r["nextPage"]) {
-              setState(() {
-                hasMorePages = false;
-              });
-              return;
-            }
-
-            nextPage = r["nextPage"];
-            setState(() {});
-          });
-        });
         setState(() {
-          pageLoading = false;
+          pageLoading = true;
+        });
+
+        feedPosts.clear();
+        final result = await _service.fetchPosts(userController.authHeaders);
+        return result.fold((l) {
+          debugPrint(l);
+          setState(() {
+            pageLoading = false;
+          });
+        }, (r) {
+          feedPosts.addAll(r["posts"]);
+          if (nextPage == r["nextPage"]) {
+            setState(() {
+              hasMorePages = false;
+              pageLoading = false;
+            });
+            return;
+          }
+
+          nextPage = r["nextPage"];
+          setState(() {
+            pageLoading = false;
+          });
         });
       },
       child: pageLoading
@@ -79,9 +88,10 @@ class _FeedPageState extends State<FeedPage>
                 return const EmptyPostCard();
               },
               separatorBuilder: (context, index) => const SizedBox(
-                    height: 4,
-                  ),
-              itemCount: 12)
+                height: 4,
+              ),
+              itemCount: 12,
+            )
           : feedPosts.isEmpty
               ? const Center(
                   child: Text("No posts here yet"),

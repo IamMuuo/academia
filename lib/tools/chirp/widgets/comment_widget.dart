@@ -114,7 +114,8 @@ class _CommentWidgetState extends State<CommentWidget> {
             children: [
               Row(
                 children: [
-                  widget.comment.user.profilePhoto != null
+                  widget.comment.user.profilePhoto != null &&
+                          widget.comment.user.profilePhoto != ""
                       ? CircleAvatar(
                           backgroundImage: CachedNetworkImageProvider(
                             widget.comment.user.profilePhoto ?? '',
@@ -138,7 +139,9 @@ class _CommentWidgetState extends State<CommentWidget> {
               ),
               const SizedBox(height: 4),
               Text(
-                widget.comment.content,
+                utf8convert(
+                  widget.comment.content,
+                ),
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               const SizedBox(height: 4),

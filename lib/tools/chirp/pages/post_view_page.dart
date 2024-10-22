@@ -40,7 +40,10 @@ class _PostViewPageState extends State<PostViewPage> {
             floating: true,
             snap: true,
             backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            title: Text("@${widget.post.user?.username ?? 'anon'}"),
+            flexibleSpace: FlexibleSpaceBar(
+              title:
+                  Text("@${widget.post.user?.username ?? 'anon'}${"'"}s post"),
+            ),
           ),
           SliverPadding(
             padding: const EdgeInsets.symmetric(
@@ -49,7 +52,7 @@ class _PostViewPageState extends State<PostViewPage> {
             ),
             sliver: SliverToBoxAdapter(
               child: Text(
-                widget.post.title,
+                utf8convert(widget.post.title),
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -80,7 +83,7 @@ class _PostViewPageState extends State<PostViewPage> {
             padding: const EdgeInsets.only(left: 12),
             sliver: SliverToBoxAdapter(
               child: Text(
-                widget.post.content,
+                utf8convert(widget.post.content),
               ),
             ),
           ),
@@ -165,7 +168,6 @@ class _PostViewPageState extends State<PostViewPage> {
           ),
           SliverFillRemaining(
             hasScrollBody: true,
-            fillOverscroll: true,
             child: Stack(
               children: [
                 FutureBuilder(
