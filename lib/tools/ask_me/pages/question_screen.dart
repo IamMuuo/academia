@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:academia/exports/barrel.dart';
 import 'package:academia/tools/tools.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import '../controllers/controllers.dart';
 import '../models/models.dart';
@@ -357,23 +359,16 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 if (isAnswered)
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Correct Answer:',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Correct Answer is $correctAnswer',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Flexible(
-                          child: Text(
-                            correctAnswer,
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                            maxLines: null,
-                          ),
-                        ),
-                      ],
+                        maxLines: 2,
+                      ),
                     ),
                   ),
               ],
