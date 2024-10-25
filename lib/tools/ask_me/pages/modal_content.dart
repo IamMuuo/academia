@@ -132,6 +132,7 @@ class _ModalContentState extends State<ModalContent> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     // The maximum allowed time in seconds
     const int maxTimeInSeconds = 1800; // 30 minutes
 
@@ -238,20 +239,11 @@ class _ModalContentState extends State<ModalContent> {
             const SizedBox(
               height: 5,
             ),
-            Row(
-              children: [
-                FilledButton(
-                  onPressed: () async {
-                    await _pickFile();
-                  },
-                  style: FilledButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ),
-                  child: const Text("Upload a File"),
-                ),
-              ],
+            OutlinedButton(
+              onPressed: () async {
+                await _pickFile();
+              },
+              child: const Text("Upload a File"),
             ),
             if (_filePath != null)
               Padding(
@@ -267,11 +259,6 @@ class _ModalContentState extends State<ModalContent> {
                         height: 45,
                       )
                     : FilledButton(
-                        style: FilledButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                        ),
                         onPressed: () async {
                           int? minuteValue =
                               int.tryParse(minuteController.text);

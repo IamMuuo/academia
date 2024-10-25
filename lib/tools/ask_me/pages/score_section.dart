@@ -23,122 +23,68 @@ class ScoreSection extends StatelessWidget {
       quotes = 'Outstanding, You’ve Really Excelled!';
       emoji = '🏆';
     }
-
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text("The End"),
-      // ),
       body: Column(
         children: [
-          Expanded(
-            flex: 2,
-            child: Image.asset(
-              'assets/images/congratulations_askMe.jpeg',
-              width: 400,
-              fit: BoxFit.cover,
+          Image.asset(
+            'assets/images/congratulations_askMe.jpeg',
+            fit: BoxFit.fill,
+          ),
+          const Spacer(),
+          const Text(
+            "Congratulations",
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          Expanded(
-            flex: 3,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Positioned.fill(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          //color: const Color(0xFFB9D9EB),
-                          color: const Color(0xFF006399),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          color: const Color(0xFF006399),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                  width: 500,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        "Congratulations",
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        "You completed the test!",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w300),
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        "your score".toUpperCase(),
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        "$score/10",
-                        style: const TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        emoji,
-                        style: const TextStyle(fontSize: 30),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        quotes,
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+          const SizedBox(height: 8),
+          const Text(
+            "You completed the test!",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w300,
             ),
           ),
-          Container(
-            height: 100,
-            color: const Color(0xFF006399),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AskMeHome()),
-                    );
-                  },
-                  child: const Text("Complete"),
-                ),
-              ),
+          const SizedBox(height: 20),
+          Text(
+            "your score".toUpperCase(),
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            "$score/10",
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            emoji,
+            style: const TextStyle(fontSize: 30),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            quotes,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w300,
+              //
+            ),
+          ),
+          const Spacer(),
+          FilledButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const AskMeHome()),
+              );
+            },
+            child: const Text("Complete"),
           ),
         ],
       ),

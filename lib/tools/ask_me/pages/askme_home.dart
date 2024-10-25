@@ -17,6 +17,7 @@ class _AskMeHomeState extends State<AskMeHome> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Ask Me"),
@@ -220,6 +221,8 @@ class _AskMeHomeState extends State<AskMeHome> {
           // final screenHeight = MediaQuery.of(context).size.height;
           // debugPrint("Screen Height is $screenHeight");
         },
+        backgroundColor: theme.colorScheme.primaryContainer,
+        foregroundColor: theme.colorScheme.onPrimaryContainer,
         child: const Icon(Icons.add),
       ),
     );

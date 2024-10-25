@@ -210,241 +210,197 @@ class _QuestionScreenState extends State<QuestionScreen> {
             : '';
     int minutes = _timeLeft ~/ 60;
     int seconds = _timeLeft % 60;
+    final theme = Theme.of(context);
 
     return Scaffold(
       body: Column(
         children: [
-          Expanded(
-            flex: 1,
-            child: Column(
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 30, 16, 30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 30, 16, 30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text("Confirm Exit"),
-                                content: const Text(
-                                    "Are you sure you want to quit?"),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      // Dismiss the dialog and stay on the current screen
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text("Cancel"),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      // Dismiss the dialog and navigate to the previous screen
-                                      Navigator.of(context)
-                                          .pop(); // Dismiss the dialog first
-                                      Navigator.pop(
-                                          context); // Then pop the current screen
-                                    },
-                                    child: const Text("Quit"),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        icon: const Icon(Icons.arrow_back),
-                      ),
-                      Text(
-                        "${currentIndex + 1} of ${questions.length}",
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      Text(
-                        "${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}",
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                    ],
-                  ),
+                IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text("Confirm Exit"),
+                          content: const Text("Are you sure you want to quit?"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                // Dismiss the dialog and stay on the current screen
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text("Cancel"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                // Dismiss the dialog and navigate to the previous screen
+                                Navigator.of(context)
+                                    .pop(); // Dismiss the dialog first
+                                Navigator.pop(
+                                    context); // Then pop the current screen
+                              },
+                              child: const Text("Quit"),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  icon: const Icon(Icons.arrow_back),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: LinearProgressIndicator(
-                    value: progressvalue / questions.length,
-                    minHeight: 10,
-                    backgroundColor: const Color(0xFF006399),
-                    valueColor:
-                        const AlwaysStoppedAnimation<Color>(Color(0xFF934171)),
-                  ),
+                Text(
+                  "${currentIndex + 1} of ${questions.length}",
+                  style: const TextStyle(fontSize: 18),
+                ),
+                Text(
+                  "${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}",
+                  style: const TextStyle(fontSize: 18),
                 ),
               ],
             ),
           ),
-          Expanded(
-            flex: 3,
-            child: Stack(
-              alignment: Alignment.center,
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: LinearProgressIndicator(
+              value: progressvalue / questions.length,
+              minHeight: 10,
+              backgroundColor: theme.colorScheme.secondaryContainer,
+              valueColor:
+                  AlwaysStoppedAnimation<Color>(theme.colorScheme.primary),
+            ),
+          ),
+          const Spacer(),
+          Container(
+            padding: const EdgeInsets.all(20),
+            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surface,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: theme.colorScheme.outlineVariant,
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Positioned.fill(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          color: Colors.white,
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          color: const Color(0xFF006399),
-                        ),
-                      ),
-                    ],
+                Flexible(
+                  child: Text(
+                    questionText,
+                    style: const TextStyle(fontSize: 18),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          questionText,
-                          style: const TextStyle(fontSize: 18),
+                const SizedBox(height: 20),
+                Wrap(
+                  spacing: 8.0,
+                  runSpacing: 8.0,
+                  children: List.generate(choices.length, (index) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedOptionIndex = index;
+                        });
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.85,
+                        padding: const EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                          color: selectedOptionIndex == index
+                              ? theme.colorScheme.primaryContainer
+                              : theme.colorScheme.surface,
+                          border: Border.all(
+                            color: theme.colorScheme.outline,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      Wrap(
-                        spacing: 8.0,
-                        runSpacing: 8.0,
-                        children: List.generate(choices.length, (index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedOptionIndex = index;
-                              });
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.85,
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: BoxDecoration(
-                                color: selectedOptionIndex == index
-                                    ? Colors.blue.shade100
-                                    : Colors.white,
-                                border: Border.all(
-                                  color: Colors.grey,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Row(
-                                children: [
-                                  Radio<int>(
-                                    value: index,
-                                    groupValue: selectedOptionIndex,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedOptionIndex = value;
-                                      });
-                                    },
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      choices[index],
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                  ),
-                                  if (isAnswered)
-                                    Icon(
-                                      choices[index] == correctAnswer
-                                          ? Icons.check
-                                          : Icons.close,
-                                      color: choices[index] == correctAnswer
-                                          ? Colors.green
-                                          : Colors.red,
-                                    ),
-                                ],
+                        child: Row(
+                          children: [
+                            Radio<int>(
+                              value: index,
+                              groupValue: selectedOptionIndex,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedOptionIndex = value;
+                                });
+                              },
+                            ),
+                            Expanded(
+                              child: Text(
+                                choices[index],
+                                style: const TextStyle(fontSize: 14),
                               ),
                             ),
-                          );
-                        }),
+                            if (isAnswered)
+                              Icon(
+                                choices[index] == correctAnswer
+                                    ? Icons.check
+                                    : Icons.close,
+                                color: choices[index] == correctAnswer
+                                    ? Colors.green
+                                    : Colors.red,
+                              ),
+                          ],
+                        ),
                       ),
-                      if (isAnswered)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Correct Answer:',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              Flexible(
-                                child: Text(
-                                  correctAnswer,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                  maxLines: null,
-                                ),
-                              ),
-                            ],
+                    );
+                  }),
+                ),
+                if (isAnswered)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Correct Answer:',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        Flexible(
+                          child: Text(
+                            correctAnswer,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                            maxLines: null,
                           ),
                         ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              color: const Color(0xFF006399),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ElevatedButton(
-                    onPressed: isNextButton
-                        ? (currentIndex == questions.length - 1
-                            ? () {
-                                setState(() {
-                                  isNextButton = false;
-                                  _saveScores();
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ScoreSection(score: score)),
-                                  );
-                                });
-                              }
-                            : _nextQuestion)
-                        : _submitAnswer,
-                    child: Text(
-                      isNextButton
-                          ? (currentIndex == questions.length - 1
-                              ? "Score"
-                              : "Next")
-                          : "Submit",
-                    ),
-                  ),
-                ),
-              ),
+          const Spacer(),
+          FilledButton(
+            onPressed: isNextButton
+                ? (currentIndex == questions.length - 1
+                    ? () {
+                        setState(() {
+                          isNextButton = false;
+                          _saveScores();
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ScoreSection(score: score)),
+                          );
+                        });
+                      }
+                    : _nextQuestion)
+                : _submitAnswer,
+            child: Text(
+              isNextButton
+                  ? (currentIndex == questions.length - 1 ? "Score" : "Next")
+                  : "Submit",
             ),
           ),
         ],
