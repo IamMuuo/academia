@@ -11,14 +11,17 @@ class ChoiceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Obx(() => ChoiceChip(
       label: Text(label), 
       selected: settingsController.questionType.value == label,
       onSelected: (bool selected) {
         settingsController.setQuestionType(label, multipleChoice);
       },
-      selectedColor: Colors.pink[100],
-      backgroundColor: Colors.grey[100],
+      // selectedColor: Colors.pink[100],
+      // backgroundColor: Colors.grey[100],
+      selectedColor: theme.colorScheme.tertiaryContainer,
+      backgroundColor: theme.colorScheme.secondaryContainer,
       ));
   }
 }
