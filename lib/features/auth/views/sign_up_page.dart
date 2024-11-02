@@ -1,7 +1,11 @@
+import 'package:academia/features/auth/cubit/auth_cubit.dart';
 import 'package:academia/utils/validator/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:intl/intl.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -25,6 +29,14 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _showPassword = false;
   bool _dataFetched = false;
   DateTime? _dateOfBirth;
+
+  late AuthCubit authCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    authCubit = BlocProvider.of<AuthCubit>(context);
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -55,13 +67,37 @@ class _SignUpPageState extends State<SignUpPage> {
     super.dispose();
   }
 
-  void _checkValidity() {
+  void _checkValidity() async {
     if (_formKey.currentState?.validate() ?? false) {
       // Perform your validity check (e.g., check admission number and password)
       // This is a placeholder for your validity check logic
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Checking validity...")),
+        const SnackBar(content: Text("Checking validity...", softWrap: true)),
       );
+
+      final result = await authCubit.fetchUserDataFromMagnet(
+        _admissionNumberController.text,
+        _passwordController.text,
+      );
+
+      result.fold((l) {
+        _showAlertDialog(l);
+      }, (r) {
+        // print(r);
+        // print(r.toJson());
+
+        _nationalIdController.text = r.nationalId;
+        _firstNameController.text = r.firstname;
+        _lastNameController.text = r.othernames;
+        _phoneController.text = r.phone;
+        _emailController.text = r.email;
+        _usernameController.text = r.username;
+        _dateOfBirth = r.dateOfBirth;
+        _dateOfBirthController.text =
+            DateFormat.yMMMMEEEEd().format(r.dateOfBirth);
+
+        setState(() {});
+      });
 
       setState(() {
         _dataFetched = true;
@@ -105,7 +141,9 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("Add your info"),
+      ),
       body: SafeArea(
         minimum: const EdgeInsets.all(12),
         child: SingleChildScrollView(
@@ -114,10 +152,6 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Column(
               spacing: 8,
               children: [
-                Text(
-                  "Add your info",
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
                 TextFormField(
                   controller: _admissionNumberController,
                   textAlign: TextAlign.center,
@@ -179,7 +213,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     controller: _usernameController,
                     textAlign: TextAlign.center,
                     inputFormatters: [
-                      EmailInputFormatter(),
+                      FilteringTextInputFormatter.singleLineFormatter,
                     ],
                     decoration: InputDecoration(
                       label: const Text("Username"),
@@ -192,7 +226,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your email.';
+                        return 'Please fill your username';
                       }
                       return null;
                     },
@@ -272,26 +306,21 @@ class _SignUpPageState extends State<SignUpPage> {
 
                 Visibility(
                   visible: _dataFetched,
-                  child: TextFormField(
+                  child: IntlPhoneField(
                     controller: _phoneController,
-                    textAlign: TextAlign.center,
-                    inputFormatters: [
-                      KenyanPhoneNumberFormatter(),
-                    ],
+                    showCountryFlag: true,
+                    keyboardType: TextInputType.phone,
+                    initialCountryCode: "KE",
+                    disableLengthCheck: true,
+                    invalidNumberMessage: "Please enter a valid phone number",
                     decoration: InputDecoration(
                       label: const Text("Phone"),
-                      hintText: "+254 000111222",
+                      hintText: "712345678",
                       border: OutlineInputBorder(
                         borderSide: const BorderSide(width: 2),
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your phone number.';
-                      }
-                      return null;
-                    },
                   ),
                 ),
 
@@ -352,7 +381,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                 _dataFetched
                     ? FilledButton.icon(
-                        icon: const Icon(EvaIcons.person_add_outline),
+                        icon: const Icon(Bootstrap.person_fill_add),
                         onPressed: _getStarted,
                         label: const Text("Get started"),
                       )

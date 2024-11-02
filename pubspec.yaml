@@ -55,6 +55,9 @@ dependencies:
   drift: ^2.21.0
   drift_flutter: ^0.2.1
   flutter_bloc: ^8.1.6
+  sliver_tools: ^0.2.12
+  dynamic_color: ^1.7.0
+  intl_phone_field: ^3.2.0
   
 dev_dependencies:
   flutter_test:
