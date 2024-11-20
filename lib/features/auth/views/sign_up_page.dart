@@ -150,6 +150,7 @@ class _SignUpPageState extends State<SignUpPage> {
           child: Form(
             key: _formKey,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               spacing: 8,
               children: [
                 TextFormField(

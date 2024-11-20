@@ -58,6 +58,7 @@ dependencies:
   sliver_tools: ^0.2.12
   dynamic_color: ^1.7.0
   intl_phone_field: ^3.2.0
+  flutter_svg: ^2.0.14
   
 dev_dependencies:
   flutter_test:

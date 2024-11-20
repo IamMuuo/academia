@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:academia/features/auth/auth.dart';
+import 'package:academia/features/features.dart';
 
 class AcademiaRouter {
   static GoRouter get router => _router;
   static GlobalKey<NavigatorState> get globalNavigatorKey =>
       GlobalKey<NavigatorState>();
+
+  static const String registerRoute = "/register";
+  static const String auth = "/auth";
 
   static final GoRouter _router = GoRouter(
     initialLocation: "/",
@@ -50,9 +54,7 @@ class DefaultRoute extends StatelessWidget {
           ),
         );
       }
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const OnboardingPage();
     });
   }
 }
