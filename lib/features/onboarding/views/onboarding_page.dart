@@ -12,7 +12,6 @@ class OnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -51,25 +50,27 @@ class OnboardingPage extends StatelessWidget {
                 children: [
                   const Spacer(),
                   Text(
-                    "Welcome to Academia! A space for students by students ❤️‍🔥",
+                    "Welcome to Academia! A platform for students by students 🔥",
                     style: Theme.of(context).textTheme.headlineSmall,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
-                  authCubit.state is AuthInitialState ||
-                          authCubit.state is AuthLoadingState
-                      ? const CircularProgressIndicator.adaptive()
-                      : SizedBox(
-                          width: double.infinity,
-                          child: FilledButton(
-                            onPressed: () {
-                              context.pushReplacementNamed(
-                                AcademiaRouter.auth,
-                              );
-                            },
-                            child: const Text("Get Started"),
-                          ),
-                        ),
+                  BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
+                    return state is AuthInitialState ||
+                            state is AuthLoadingState
+                        ? const CircularProgressIndicator.adaptive()
+                        : SizedBox(
+                            width: double.infinity,
+                            child: FilledButton(
+                              onPressed: () {
+                                context.push(
+                                  AcademiaRouter.auth,
+                                );
+                              },
+                              child: const Text("Get Started"),
+                            ),
+                          );
+                  }),
                   const SizedBox(height: 16),
                 ],
               ),

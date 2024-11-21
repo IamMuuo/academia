@@ -43,16 +43,13 @@ class DefaultRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
-      if (state is UnAuthenticatedState) {
-        return const LoginPage();
-      } else if (state is AuthErrorState) {
-        return Scaffold(
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [Text("Argh snap: ${state.message}")],
-          ),
-        );
+      switch (state.runtimeType) {
+        case AuthErrorState:
+          return const Center(
+            child: Text("error"),
+          );
+        // case AuthCachedUsersRetrieved:
+        //   return const UserSelectionPage();
       }
       return const OnboardingPage();
     });

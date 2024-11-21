@@ -15,12 +15,11 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final allUsers = await appDatabase.select(appDatabase.user).get();
       if (allUsers.isEmpty) {
-        emit(UnAuthenticatedState());
+        emit(AuthFirstAppLaunch());
         return;
       }
-      emit(AuthenticatedState(user: allUsers.first));
+      emit(AuthCachedUsersRetrieved(cachedUsers: allUsers));
     } catch (e) {
-      // rethrow;
       emit(AuthErrorState(e.toString()));
     }
   }
