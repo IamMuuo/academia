@@ -75,7 +75,7 @@ class _SignUpPageState extends State<SignUpPage> {
         const SnackBar(content: Text("Checking validity...", softWrap: true)),
       );
 
-      final result = await authCubit.fetchUserDataFromMagnet(
+      final result = await authCubit.authenticate(
         _admissionNumberController.text,
         _passwordController.text,
       );

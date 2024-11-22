@@ -27,18 +27,16 @@ final class AuthErrorState extends AuthState {
   AuthErrorState(this.message);
 }
 
-class AuthenticatedState extends AuthState {}
-
 // Represents a partially authenticated state in the event that a user
 // does not have internet access
-class PartiallyAuthenticatedState extends AuthenticatedState {
+class PartiallyAuthenticatedState extends AuthState {
   final UserData user;
   PartiallyAuthenticatedState({required this.user});
 }
 
 // Represents a fully authenticated state whereby the user is authenticated
 // both by verisafe and magnet
-final class FullyAuthenticatedState extends AuthenticatedState {
+final class FullyAuthenticatedState extends AuthState {
   final UserData user;
   final String verisafeToken;
   final Magnet magnet;

@@ -24,7 +24,27 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<Either<String, UserData>> fetchUserDataFromMagnet(
+  /// Authenticates a user
+  Future<Either<String, UserData>> authenticate(
+      String admno, String password) async {
+    emit(AuthLoadingState());
+    final result = await _fetchUserDataFromMagnet(admno, password);
+
+    return result.fold((l) {
+      emit(AuthErrorState(l));
+      return left(l);
+    }, (r) async {
+      await appDatabase
+          .into(appDatabase.user)
+          .insertOnConflictUpdate(r.toCompanion(true));
+
+      // emit the authenticated state
+      emit(PartiallyAuthenticatedState(user: r));
+      return right(r);
+    });
+  }
+
+  Future<Either<String, UserData>> _fetchUserDataFromMagnet(
       String admno, String password) async {
     final Magnet magnet = Magnet(
       admno,
