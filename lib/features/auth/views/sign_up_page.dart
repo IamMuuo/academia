@@ -88,9 +88,9 @@ class _SignUpPageState extends State<SignUpPage> {
 
         _nationalIdController.text = r.nationalId;
         _firstNameController.text = r.firstname;
-        _lastNameController.text = r.othernames;
+        _lastNameController.text = r.othernames!;
         _phoneController.text = r.phone;
-        _emailController.text = r.email;
+        _emailController.text = r.email!;
         _usernameController.text = r.username;
         _dateOfBirth = r.dateOfBirth;
         _dateOfBirthController.text =

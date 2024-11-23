@@ -1,8 +1,10 @@
 import 'package:academia/database/database.dart';
 import 'package:academia/features/auth/cubit/auth_cubit.dart';
 import 'package:academia/features/auth/cubit/auth_states.dart';
+import 'package:academia/utils/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
@@ -68,11 +70,29 @@ class _UserSelectionPageState extends State<UserSelectionPage> {
                       users[index].username,
                     ),
                     subtitle: const Text("The user bio will appear here"),
-                    trailing: const Icon(Bootstrap.newspaper),
+                    trailing: const Icon(Bootstrap.person_check),
                   );
                 },
               );
             },
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(12),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton.icon(
+                    onPressed: () {
+                      context.pushNamed(AcademiaRouter.auth);
+                    },
+                    label: const Text("Add Account"),
+                    icon: const Icon(Bootstrap.person_add),
+                  ),
+                  const SizedBox(height: 12)
+                ],
+              ),
+            ),
           )
         ],
       ),

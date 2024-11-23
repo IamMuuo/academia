@@ -11,47 +11,59 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
-      'id', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _usernameMeta =
       const VerificationMeta('username');
   @override
   late final GeneratedColumn<String> username = GeneratedColumn<String>(
       'username', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 50),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
   static const VerificationMeta _firstnameMeta =
       const VerificationMeta('firstname');
   @override
   late final GeneratedColumn<String> firstname = GeneratedColumn<String>(
       'firstname', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 100),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
   static const VerificationMeta _othernamesMeta =
       const VerificationMeta('othernames');
   @override
   late final GeneratedColumn<String> othernames = GeneratedColumn<String>(
-      'othernames', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      'othernames', aliasedName, true,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 100),
+      type: DriftSqlType.string,
+      requiredDuringInsert: false);
   static const VerificationMeta _phoneMeta = const VerificationMeta('phone');
   @override
   late final GeneratedColumn<String> phone = GeneratedColumn<String>(
       'phone', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 10, maxTextLength: 15),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
   static const VerificationMeta _emailMeta = const VerificationMeta('email');
   @override
   late final GeneratedColumn<String> email = GeneratedColumn<String>(
-      'email', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      'email', aliasedName, true,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 5, maxTextLength: 100),
+      type: DriftSqlType.string,
+      requiredDuringInsert: false);
   static const VerificationMeta _genderMeta = const VerificationMeta('gender');
   @override
   late final GeneratedColumn<String> gender = GeneratedColumn<String>(
       'gender', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _nationalIdMeta =
-      const VerificationMeta('nationalId');
-  @override
-  late final GeneratedColumn<String> nationalId = GeneratedColumn<String>(
-      'national_id', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 10),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
   static const VerificationMeta _activeMeta = const VerificationMeta('active');
   @override
   late final GeneratedColumn<bool> active = GeneratedColumn<bool>(
@@ -65,8 +77,8 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
       const VerificationMeta('createdAt');
   @override
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
-      'created_at', aliasedName, true,
-      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
   static const VerificationMeta _modifiedAtMeta =
       const VerificationMeta('modifiedAt');
   @override
@@ -79,6 +91,15 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
   late final GeneratedColumn<DateTime> dateOfBirth = GeneratedColumn<DateTime>(
       'date_of_birth', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _nationalIdMeta =
+      const VerificationMeta('nationalId');
+  @override
+  late final GeneratedColumn<String> nationalId = GeneratedColumn<String>(
+      'national_id', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 20),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -88,11 +109,11 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
         phone,
         email,
         gender,
-        nationalId,
         active,
         createdAt,
         modifiedAt,
-        dateOfBirth
+        dateOfBirth,
+        nationalId
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -106,6 +127,8 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
     }
     if (data.containsKey('username')) {
       context.handle(_usernameMeta,
@@ -124,8 +147,6 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
           _othernamesMeta,
           othernames.isAcceptableOrUnknown(
               data['othernames']!, _othernamesMeta));
-    } else if (isInserting) {
-      context.missing(_othernamesMeta);
     }
     if (data.containsKey('phone')) {
       context.handle(
@@ -136,22 +157,12 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
     if (data.containsKey('email')) {
       context.handle(
           _emailMeta, email.isAcceptableOrUnknown(data['email']!, _emailMeta));
-    } else if (isInserting) {
-      context.missing(_emailMeta);
     }
     if (data.containsKey('gender')) {
       context.handle(_genderMeta,
           gender.isAcceptableOrUnknown(data['gender']!, _genderMeta));
     } else if (isInserting) {
       context.missing(_genderMeta);
-    }
-    if (data.containsKey('national_id')) {
-      context.handle(
-          _nationalIdMeta,
-          nationalId.isAcceptableOrUnknown(
-              data['national_id']!, _nationalIdMeta));
-    } else if (isInserting) {
-      context.missing(_nationalIdMeta);
     }
     if (data.containsKey('active')) {
       context.handle(_activeMeta,
@@ -160,6 +171,8 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
     }
     if (data.containsKey('modified_at')) {
       context.handle(
@@ -177,6 +190,14 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
     } else if (isInserting) {
       context.missing(_dateOfBirthMeta);
     }
+    if (data.containsKey('national_id')) {
+      context.handle(
+          _nationalIdMeta,
+          nationalId.isAcceptableOrUnknown(
+              data['national_id']!, _nationalIdMeta));
+    } else if (isInserting) {
+      context.missing(_nationalIdMeta);
+    }
     return context;
   }
 
@@ -187,29 +208,29 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return UserData(
       id: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}id']),
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
       username: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}username'])!,
       firstname: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}firstname'])!,
       othernames: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}othernames'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}othernames']),
       phone: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}phone'])!,
       email: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}email'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}email']),
       gender: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}gender'])!,
-      nationalId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}national_id'])!,
       active: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}active'])!,
       createdAt: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
       modifiedAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}modified_at'])!,
       dateOfBirth: attachedDatabase.typeMapping.read(
           DriftSqlType.dateTime, data['${effectivePrefix}date_of_birth'])!,
+      nationalId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}national_id'])!,
     );
   }
 
@@ -220,69 +241,70 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
 }
 
 class UserData extends DataClass implements Insertable<UserData> {
-  final String? id;
+  final String id;
   final String username;
   final String firstname;
-  final String othernames;
+  final String? othernames;
   final String phone;
-  final String email;
+  final String? email;
   final String gender;
-  final String nationalId;
   final bool active;
-  final DateTime? createdAt;
+  final DateTime createdAt;
   final DateTime modifiedAt;
   final DateTime dateOfBirth;
+  final String nationalId;
   const UserData(
-      {this.id,
+      {required this.id,
       required this.username,
       required this.firstname,
-      required this.othernames,
+      this.othernames,
       required this.phone,
-      required this.email,
+      this.email,
       required this.gender,
-      required this.nationalId,
       required this.active,
-      this.createdAt,
+      required this.createdAt,
       required this.modifiedAt,
-      required this.dateOfBirth});
+      required this.dateOfBirth,
+      required this.nationalId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || id != null) {
-      map['id'] = Variable<String>(id);
-    }
+    map['id'] = Variable<String>(id);
     map['username'] = Variable<String>(username);
     map['firstname'] = Variable<String>(firstname);
-    map['othernames'] = Variable<String>(othernames);
-    map['phone'] = Variable<String>(phone);
-    map['email'] = Variable<String>(email);
-    map['gender'] = Variable<String>(gender);
-    map['national_id'] = Variable<String>(nationalId);
-    map['active'] = Variable<bool>(active);
-    if (!nullToAbsent || createdAt != null) {
-      map['created_at'] = Variable<DateTime>(createdAt);
+    if (!nullToAbsent || othernames != null) {
+      map['othernames'] = Variable<String>(othernames);
     }
+    map['phone'] = Variable<String>(phone);
+    if (!nullToAbsent || email != null) {
+      map['email'] = Variable<String>(email);
+    }
+    map['gender'] = Variable<String>(gender);
+    map['active'] = Variable<bool>(active);
+    map['created_at'] = Variable<DateTime>(createdAt);
     map['modified_at'] = Variable<DateTime>(modifiedAt);
     map['date_of_birth'] = Variable<DateTime>(dateOfBirth);
+    map['national_id'] = Variable<String>(nationalId);
     return map;
   }
 
   UserCompanion toCompanion(bool nullToAbsent) {
     return UserCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      id: Value(id),
       username: Value(username),
       firstname: Value(firstname),
-      othernames: Value(othernames),
-      phone: Value(phone),
-      email: Value(email),
-      gender: Value(gender),
-      nationalId: Value(nationalId),
-      active: Value(active),
-      createdAt: createdAt == null && nullToAbsent
+      othernames: othernames == null && nullToAbsent
           ? const Value.absent()
-          : Value(createdAt),
+          : Value(othernames),
+      phone: Value(phone),
+      email:
+          email == null && nullToAbsent ? const Value.absent() : Value(email),
+      gender: Value(gender),
+      active: Value(active),
+      createdAt: Value(createdAt),
       modifiedAt: Value(modifiedAt),
       dateOfBirth: Value(dateOfBirth),
+      nationalId: Value(nationalId),
     );
   }
 
@@ -290,65 +312,65 @@ class UserData extends DataClass implements Insertable<UserData> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return UserData(
-      id: serializer.fromJson<String?>(json['id']),
+      id: serializer.fromJson<String>(json['id']),
       username: serializer.fromJson<String>(json['username']),
       firstname: serializer.fromJson<String>(json['firstname']),
-      othernames: serializer.fromJson<String>(json['othernames']),
+      othernames: serializer.fromJson<String?>(json['othernames']),
       phone: serializer.fromJson<String>(json['phone']),
-      email: serializer.fromJson<String>(json['email']),
+      email: serializer.fromJson<String?>(json['email']),
       gender: serializer.fromJson<String>(json['gender']),
-      nationalId: serializer.fromJson<String>(json['nationalId']),
       active: serializer.fromJson<bool>(json['active']),
-      createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
-      modifiedAt: serializer.fromJson<DateTime>(json['modifiedAt']),
-      dateOfBirth: serializer.fromJson<DateTime>(json['dateOfBirth']),
+      createdAt: serializer.fromJson<DateTime>(json['created_at']),
+      modifiedAt: serializer.fromJson<DateTime>(json['modified_at']),
+      dateOfBirth: serializer.fromJson<DateTime>(json['date_of_bith']),
+      nationalId: serializer.fromJson<String>(json['national_id']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<String?>(id),
+      'id': serializer.toJson<String>(id),
       'username': serializer.toJson<String>(username),
       'firstname': serializer.toJson<String>(firstname),
-      'othernames': serializer.toJson<String>(othernames),
+      'othernames': serializer.toJson<String?>(othernames),
       'phone': serializer.toJson<String>(phone),
-      'email': serializer.toJson<String>(email),
+      'email': serializer.toJson<String?>(email),
       'gender': serializer.toJson<String>(gender),
-      'nationalId': serializer.toJson<String>(nationalId),
       'active': serializer.toJson<bool>(active),
-      'createdAt': serializer.toJson<DateTime?>(createdAt),
-      'modifiedAt': serializer.toJson<DateTime>(modifiedAt),
-      'dateOfBirth': serializer.toJson<DateTime>(dateOfBirth),
+      'created_at': serializer.toJson<DateTime>(createdAt),
+      'modified_at': serializer.toJson<DateTime>(modifiedAt),
+      'date_of_bith': serializer.toJson<DateTime>(dateOfBirth),
+      'national_id': serializer.toJson<String>(nationalId),
     };
   }
 
   UserData copyWith(
-          {Value<String?> id = const Value.absent(),
+          {String? id,
           String? username,
           String? firstname,
-          String? othernames,
+          Value<String?> othernames = const Value.absent(),
           String? phone,
-          String? email,
+          Value<String?> email = const Value.absent(),
           String? gender,
-          String? nationalId,
           bool? active,
-          Value<DateTime?> createdAt = const Value.absent(),
+          DateTime? createdAt,
           DateTime? modifiedAt,
-          DateTime? dateOfBirth}) =>
+          DateTime? dateOfBirth,
+          String? nationalId}) =>
       UserData(
-        id: id.present ? id.value : this.id,
+        id: id ?? this.id,
         username: username ?? this.username,
         firstname: firstname ?? this.firstname,
-        othernames: othernames ?? this.othernames,
+        othernames: othernames.present ? othernames.value : this.othernames,
         phone: phone ?? this.phone,
-        email: email ?? this.email,
+        email: email.present ? email.value : this.email,
         gender: gender ?? this.gender,
-        nationalId: nationalId ?? this.nationalId,
         active: active ?? this.active,
-        createdAt: createdAt.present ? createdAt.value : this.createdAt,
+        createdAt: createdAt ?? this.createdAt,
         modifiedAt: modifiedAt ?? this.modifiedAt,
         dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+        nationalId: nationalId ?? this.nationalId,
       );
   UserData copyWithCompanion(UserCompanion data) {
     return UserData(
@@ -360,14 +382,14 @@ class UserData extends DataClass implements Insertable<UserData> {
       phone: data.phone.present ? data.phone.value : this.phone,
       email: data.email.present ? data.email.value : this.email,
       gender: data.gender.present ? data.gender.value : this.gender,
-      nationalId:
-          data.nationalId.present ? data.nationalId.value : this.nationalId,
       active: data.active.present ? data.active.value : this.active,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       modifiedAt:
           data.modifiedAt.present ? data.modifiedAt.value : this.modifiedAt,
       dateOfBirth:
           data.dateOfBirth.present ? data.dateOfBirth.value : this.dateOfBirth,
+      nationalId:
+          data.nationalId.present ? data.nationalId.value : this.nationalId,
     );
   }
 
@@ -381,18 +403,18 @@ class UserData extends DataClass implements Insertable<UserData> {
           ..write('phone: $phone, ')
           ..write('email: $email, ')
           ..write('gender: $gender, ')
-          ..write('nationalId: $nationalId, ')
           ..write('active: $active, ')
           ..write('createdAt: $createdAt, ')
           ..write('modifiedAt: $modifiedAt, ')
-          ..write('dateOfBirth: $dateOfBirth')
+          ..write('dateOfBirth: $dateOfBirth, ')
+          ..write('nationalId: $nationalId')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(id, username, firstname, othernames, phone,
-      email, gender, nationalId, active, createdAt, modifiedAt, dateOfBirth);
+      email, gender, active, createdAt, modifiedAt, dateOfBirth, nationalId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -404,26 +426,26 @@ class UserData extends DataClass implements Insertable<UserData> {
           other.phone == this.phone &&
           other.email == this.email &&
           other.gender == this.gender &&
-          other.nationalId == this.nationalId &&
           other.active == this.active &&
           other.createdAt == this.createdAt &&
           other.modifiedAt == this.modifiedAt &&
-          other.dateOfBirth == this.dateOfBirth);
+          other.dateOfBirth == this.dateOfBirth &&
+          other.nationalId == this.nationalId);
 }
 
 class UserCompanion extends UpdateCompanion<UserData> {
-  final Value<String?> id;
+  final Value<String> id;
   final Value<String> username;
   final Value<String> firstname;
-  final Value<String> othernames;
+  final Value<String?> othernames;
   final Value<String> phone;
-  final Value<String> email;
+  final Value<String?> email;
   final Value<String> gender;
-  final Value<String> nationalId;
   final Value<bool> active;
-  final Value<DateTime?> createdAt;
+  final Value<DateTime> createdAt;
   final Value<DateTime> modifiedAt;
   final Value<DateTime> dateOfBirth;
+  final Value<String> nationalId;
   final Value<int> rowid;
   const UserCompanion({
     this.id = const Value.absent(),
@@ -433,36 +455,36 @@ class UserCompanion extends UpdateCompanion<UserData> {
     this.phone = const Value.absent(),
     this.email = const Value.absent(),
     this.gender = const Value.absent(),
-    this.nationalId = const Value.absent(),
     this.active = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.modifiedAt = const Value.absent(),
     this.dateOfBirth = const Value.absent(),
+    this.nationalId = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   UserCompanion.insert({
-    this.id = const Value.absent(),
+    required String id,
     required String username,
     required String firstname,
-    required String othernames,
+    this.othernames = const Value.absent(),
     required String phone,
-    required String email,
+    this.email = const Value.absent(),
     required String gender,
-    required String nationalId,
     this.active = const Value.absent(),
-    this.createdAt = const Value.absent(),
+    required DateTime createdAt,
     required DateTime modifiedAt,
     required DateTime dateOfBirth,
+    required String nationalId,
     this.rowid = const Value.absent(),
-  })  : username = Value(username),
+  })  : id = Value(id),
+        username = Value(username),
         firstname = Value(firstname),
-        othernames = Value(othernames),
         phone = Value(phone),
-        email = Value(email),
         gender = Value(gender),
-        nationalId = Value(nationalId),
+        createdAt = Value(createdAt),
         modifiedAt = Value(modifiedAt),
-        dateOfBirth = Value(dateOfBirth);
+        dateOfBirth = Value(dateOfBirth),
+        nationalId = Value(nationalId);
   static Insertable<UserData> custom({
     Expression<String>? id,
     Expression<String>? username,
@@ -471,11 +493,11 @@ class UserCompanion extends UpdateCompanion<UserData> {
     Expression<String>? phone,
     Expression<String>? email,
     Expression<String>? gender,
-    Expression<String>? nationalId,
     Expression<bool>? active,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? modifiedAt,
     Expression<DateTime>? dateOfBirth,
+    Expression<String>? nationalId,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -486,28 +508,28 @@ class UserCompanion extends UpdateCompanion<UserData> {
       if (phone != null) 'phone': phone,
       if (email != null) 'email': email,
       if (gender != null) 'gender': gender,
-      if (nationalId != null) 'national_id': nationalId,
       if (active != null) 'active': active,
       if (createdAt != null) 'created_at': createdAt,
       if (modifiedAt != null) 'modified_at': modifiedAt,
       if (dateOfBirth != null) 'date_of_birth': dateOfBirth,
+      if (nationalId != null) 'national_id': nationalId,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
   UserCompanion copyWith(
-      {Value<String?>? id,
+      {Value<String>? id,
       Value<String>? username,
       Value<String>? firstname,
-      Value<String>? othernames,
+      Value<String?>? othernames,
       Value<String>? phone,
-      Value<String>? email,
+      Value<String?>? email,
       Value<String>? gender,
-      Value<String>? nationalId,
       Value<bool>? active,
-      Value<DateTime?>? createdAt,
+      Value<DateTime>? createdAt,
       Value<DateTime>? modifiedAt,
       Value<DateTime>? dateOfBirth,
+      Value<String>? nationalId,
       Value<int>? rowid}) {
     return UserCompanion(
       id: id ?? this.id,
@@ -517,11 +539,11 @@ class UserCompanion extends UpdateCompanion<UserData> {
       phone: phone ?? this.phone,
       email: email ?? this.email,
       gender: gender ?? this.gender,
-      nationalId: nationalId ?? this.nationalId,
       active: active ?? this.active,
       createdAt: createdAt ?? this.createdAt,
       modifiedAt: modifiedAt ?? this.modifiedAt,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      nationalId: nationalId ?? this.nationalId,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -550,9 +572,6 @@ class UserCompanion extends UpdateCompanion<UserData> {
     if (gender.present) {
       map['gender'] = Variable<String>(gender.value);
     }
-    if (nationalId.present) {
-      map['national_id'] = Variable<String>(nationalId.value);
-    }
     if (active.present) {
       map['active'] = Variable<bool>(active.value);
     }
@@ -564,6 +583,9 @@ class UserCompanion extends UpdateCompanion<UserData> {
     }
     if (dateOfBirth.present) {
       map['date_of_birth'] = Variable<DateTime>(dateOfBirth.value);
+    }
+    if (nationalId.present) {
+      map['national_id'] = Variable<String>(nationalId.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -581,11 +603,11 @@ class UserCompanion extends UpdateCompanion<UserData> {
           ..write('phone: $phone, ')
           ..write('email: $email, ')
           ..write('gender: $gender, ')
-          ..write('nationalId: $nationalId, ')
           ..write('active: $active, ')
           ..write('createdAt: $createdAt, ')
           ..write('modifiedAt: $modifiedAt, ')
           ..write('dateOfBirth: $dateOfBirth, ')
+          ..write('nationalId: $nationalId, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -604,33 +626,33 @@ abstract class _$AppDatabase extends GeneratedDatabase {
 }
 
 typedef $$UserTableCreateCompanionBuilder = UserCompanion Function({
-  Value<String?> id,
+  required String id,
   required String username,
   required String firstname,
-  required String othernames,
+  Value<String?> othernames,
   required String phone,
-  required String email,
+  Value<String?> email,
   required String gender,
-  required String nationalId,
   Value<bool> active,
-  Value<DateTime?> createdAt,
+  required DateTime createdAt,
   required DateTime modifiedAt,
   required DateTime dateOfBirth,
+  required String nationalId,
   Value<int> rowid,
 });
 typedef $$UserTableUpdateCompanionBuilder = UserCompanion Function({
-  Value<String?> id,
+  Value<String> id,
   Value<String> username,
   Value<String> firstname,
-  Value<String> othernames,
+  Value<String?> othernames,
   Value<String> phone,
-  Value<String> email,
+  Value<String?> email,
   Value<String> gender,
-  Value<String> nationalId,
   Value<bool> active,
-  Value<DateTime?> createdAt,
+  Value<DateTime> createdAt,
   Value<DateTime> modifiedAt,
   Value<DateTime> dateOfBirth,
+  Value<String> nationalId,
   Value<int> rowid,
 });
 
@@ -663,9 +685,6 @@ class $$UserTableFilterComposer extends Composer<_$AppDatabase, $UserTable> {
   ColumnFilters<String> get gender => $composableBuilder(
       column: $table.gender, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get nationalId => $composableBuilder(
-      column: $table.nationalId, builder: (column) => ColumnFilters(column));
-
   ColumnFilters<bool> get active => $composableBuilder(
       column: $table.active, builder: (column) => ColumnFilters(column));
 
@@ -677,6 +696,9 @@ class $$UserTableFilterComposer extends Composer<_$AppDatabase, $UserTable> {
 
   ColumnFilters<DateTime> get dateOfBirth => $composableBuilder(
       column: $table.dateOfBirth, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get nationalId => $composableBuilder(
+      column: $table.nationalId, builder: (column) => ColumnFilters(column));
 }
 
 class $$UserTableOrderingComposer extends Composer<_$AppDatabase, $UserTable> {
@@ -708,9 +730,6 @@ class $$UserTableOrderingComposer extends Composer<_$AppDatabase, $UserTable> {
   ColumnOrderings<String> get gender => $composableBuilder(
       column: $table.gender, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get nationalId => $composableBuilder(
-      column: $table.nationalId, builder: (column) => ColumnOrderings(column));
-
   ColumnOrderings<bool> get active => $composableBuilder(
       column: $table.active, builder: (column) => ColumnOrderings(column));
 
@@ -722,6 +741,9 @@ class $$UserTableOrderingComposer extends Composer<_$AppDatabase, $UserTable> {
 
   ColumnOrderings<DateTime> get dateOfBirth => $composableBuilder(
       column: $table.dateOfBirth, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get nationalId => $composableBuilder(
+      column: $table.nationalId, builder: (column) => ColumnOrderings(column));
 }
 
 class $$UserTableAnnotationComposer
@@ -754,9 +776,6 @@ class $$UserTableAnnotationComposer
   GeneratedColumn<String> get gender =>
       $composableBuilder(column: $table.gender, builder: (column) => column);
 
-  GeneratedColumn<String> get nationalId => $composableBuilder(
-      column: $table.nationalId, builder: (column) => column);
-
   GeneratedColumn<bool> get active =>
       $composableBuilder(column: $table.active, builder: (column) => column);
 
@@ -768,6 +787,9 @@ class $$UserTableAnnotationComposer
 
   GeneratedColumn<DateTime> get dateOfBirth => $composableBuilder(
       column: $table.dateOfBirth, builder: (column) => column);
+
+  GeneratedColumn<String> get nationalId => $composableBuilder(
+      column: $table.nationalId, builder: (column) => column);
 }
 
 class $$UserTableTableManager extends RootTableManager<
@@ -793,18 +815,18 @@ class $$UserTableTableManager extends RootTableManager<
           createComputedFieldComposer: () =>
               $$UserTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
-            Value<String?> id = const Value.absent(),
+            Value<String> id = const Value.absent(),
             Value<String> username = const Value.absent(),
             Value<String> firstname = const Value.absent(),
-            Value<String> othernames = const Value.absent(),
+            Value<String?> othernames = const Value.absent(),
             Value<String> phone = const Value.absent(),
-            Value<String> email = const Value.absent(),
+            Value<String?> email = const Value.absent(),
             Value<String> gender = const Value.absent(),
-            Value<String> nationalId = const Value.absent(),
             Value<bool> active = const Value.absent(),
-            Value<DateTime?> createdAt = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
             Value<DateTime> modifiedAt = const Value.absent(),
             Value<DateTime> dateOfBirth = const Value.absent(),
+            Value<String> nationalId = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               UserCompanion(
@@ -815,26 +837,26 @@ class $$UserTableTableManager extends RootTableManager<
             phone: phone,
             email: email,
             gender: gender,
-            nationalId: nationalId,
             active: active,
             createdAt: createdAt,
             modifiedAt: modifiedAt,
             dateOfBirth: dateOfBirth,
+            nationalId: nationalId,
             rowid: rowid,
           ),
           createCompanionCallback: ({
-            Value<String?> id = const Value.absent(),
+            required String id,
             required String username,
             required String firstname,
-            required String othernames,
+            Value<String?> othernames = const Value.absent(),
             required String phone,
-            required String email,
+            Value<String?> email = const Value.absent(),
             required String gender,
-            required String nationalId,
             Value<bool> active = const Value.absent(),
-            Value<DateTime?> createdAt = const Value.absent(),
+            required DateTime createdAt,
             required DateTime modifiedAt,
             required DateTime dateOfBirth,
+            required String nationalId,
             Value<int> rowid = const Value.absent(),
           }) =>
               UserCompanion.insert(
@@ -845,11 +867,11 @@ class $$UserTableTableManager extends RootTableManager<
             phone: phone,
             email: email,
             gender: gender,
-            nationalId: nationalId,
             active: active,
             createdAt: createdAt,
             modifiedAt: modifiedAt,
             dateOfBirth: dateOfBirth,
+            nationalId: nationalId,
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0

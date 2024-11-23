@@ -21,6 +21,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthCachedUsersRetrieved(cachedUsers: allUsers));
     } catch (e) {
       emit(AuthErrorState(e.toString()));
+      rethrow;
     }
   }
 
@@ -34,9 +35,10 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthErrorState(l));
       return left(l);
     }, (r) async {
-      await appDatabase
-          .into(appDatabase.user)
-          .insertOnConflictUpdate(r.toCompanion(true));
+      print(r.toJson());
+      // await appDatabase
+      //     .into(appDatabase.user)
+      //     .insertOnConflictUpdate(r.toCompanion(true));
 
       // emit the authenticated state
       emit(PartiallyAuthenticatedState(user: r));
@@ -68,6 +70,7 @@ class AuthCubit extends Cubit<AuthState> {
         String lastName = nameParts.sublist(1).join(' ');
 
         final userData = UserData(
+          id: "",
           username: "",
           firstname: firstName,
           othernames: lastName,
@@ -78,6 +81,7 @@ class AuthCubit extends Cubit<AuthState> {
           active: (r["academicstatus"] ?? "true") == "true" ? true : false,
           modifiedAt: DateTime.now(),
           dateOfBirth: dOB,
+          createdAt: DateTime.now(),
         );
         return right(userData);
       });

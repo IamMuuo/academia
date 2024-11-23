@@ -44,8 +44,8 @@ class DefaultRoute extends StatelessWidget {
     return BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
       switch (state.runtimeType) {
         case AuthErrorState:
-          return const Center(
-            child: Text("error"),
+          return Center(
+            child: Text((state as AuthErrorState).message),
           );
         case AuthCachedUsersRetrieved:
           return const UserSelectionPage();
