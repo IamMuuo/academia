@@ -1,16 +1,17 @@
+import 'package:academia/features/auth/repository/user.dart';
 import 'package:drift/drift.dart';
 
 class UserProfile extends Table {
   IntColumn get id => integer().autoIncrement()();
 
   @JsonKey("user_id")
-  TextColumn get userId => text().customConstraint('REFERENCES user(id)')();
+  TextColumn get userId => text().references(User, #id)();
 
   TextColumn get bio => text().nullable()();
   @JsonKey("vibe_points")
   IntColumn get vibePoints => integer().withDefault(const Constant(0))();
   @JsonKey("profile_picture_url")
-  TextColumn get profilePictureUrl => text()();
+  TextColumn get profilePictureUrl => text().nullable()();
   @JsonKey("last_seen")
   DateTimeColumn get lastSeen =>
       dateTime().withDefault(Constant(DateTime.now()))();

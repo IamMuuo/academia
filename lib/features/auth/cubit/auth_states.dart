@@ -38,13 +38,11 @@ class PartiallyAuthenticatedState extends AuthState {
 // both by verisafe and magnet
 final class FullyAuthenticatedState extends AuthState {
   final UserData user;
-  final String verisafeToken;
-  final Magnet magnet;
+  final UserCredentialData creds;
 
   FullyAuthenticatedState({
     required this.user,
-    required this.verisafeToken,
-    required this.magnet,
+    required this.creds,
   });
 }
 

@@ -322,7 +322,7 @@ class UserData extends DataClass implements Insertable<UserData> {
       active: serializer.fromJson<bool>(json['active']),
       createdAt: serializer.fromJson<DateTime>(json['created_at']),
       modifiedAt: serializer.fromJson<DateTime>(json['modified_at']),
-      dateOfBirth: serializer.fromJson<DateTime>(json['date_of_bith']),
+      dateOfBirth: serializer.fromJson<DateTime>(json['date_of_birth']),
       nationalId: serializer.fromJson<String>(json['national_id']),
     );
   }
@@ -340,7 +340,7 @@ class UserData extends DataClass implements Insertable<UserData> {
       'active': serializer.toJson<bool>(active),
       'created_at': serializer.toJson<DateTime>(createdAt),
       'modified_at': serializer.toJson<DateTime>(modifiedAt),
-      'date_of_bith': serializer.toJson<DateTime>(dateOfBirth),
+      'date_of_birth': serializer.toJson<DateTime>(dateOfBirth),
       'national_id': serializer.toJson<String>(nationalId),
     };
   }
@@ -635,7 +635,8 @@ class $UserProfileTable extends UserProfile
       'user_id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: true,
-      $customConstraints: 'REFERENCES user(id)');
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES user (id)'));
   static const VerificationMeta _bioMeta = const VerificationMeta('bio');
   @override
   late final GeneratedColumn<String> bio = GeneratedColumn<String>(
@@ -653,8 +654,8 @@ class $UserProfileTable extends UserProfile
       const VerificationMeta('profilePictureUrl');
   @override
   late final GeneratedColumn<String> profilePictureUrl =
-      GeneratedColumn<String>('profile_picture_url', aliasedName, false,
-          type: DriftSqlType.string, requiredDuringInsert: true);
+      GeneratedColumn<String>('profile_picture_url', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _lastSeenMeta =
       const VerificationMeta('lastSeen');
   @override
@@ -739,8 +740,6 @@ class $UserProfileTable extends UserProfile
           _profilePictureUrlMeta,
           profilePictureUrl.isAcceptableOrUnknown(
               data['profile_picture_url']!, _profilePictureUrlMeta));
-    } else if (isInserting) {
-      context.missing(_profilePictureUrlMeta);
     }
     if (data.containsKey('last_seen')) {
       context.handle(_lastSeenMeta,
@@ -784,7 +783,7 @@ class $UserProfileTable extends UserProfile
       vibePoints: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}vibe_points'])!,
       profilePictureUrl: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}profile_picture_url'])!,
+          DriftSqlType.string, data['${effectivePrefix}profile_picture_url']),
       lastSeen: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}last_seen'])!,
       createdAt: attachedDatabase.typeMapping
@@ -809,7 +808,7 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
   final String userId;
   final String? bio;
   final int vibePoints;
-  final String profilePictureUrl;
+  final String? profilePictureUrl;
   final DateTime lastSeen;
   final DateTime createdAt;
   final DateTime modifiedAt;
@@ -820,7 +819,7 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
       required this.userId,
       this.bio,
       required this.vibePoints,
-      required this.profilePictureUrl,
+      this.profilePictureUrl,
       required this.lastSeen,
       required this.createdAt,
       required this.modifiedAt,
@@ -835,7 +834,9 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
       map['bio'] = Variable<String>(bio);
     }
     map['vibe_points'] = Variable<int>(vibePoints);
-    map['profile_picture_url'] = Variable<String>(profilePictureUrl);
+    if (!nullToAbsent || profilePictureUrl != null) {
+      map['profile_picture_url'] = Variable<String>(profilePictureUrl);
+    }
     map['last_seen'] = Variable<DateTime>(lastSeen);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['modified_at'] = Variable<DateTime>(modifiedAt);
@@ -852,7 +853,9 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
       userId: Value(userId),
       bio: bio == null && nullToAbsent ? const Value.absent() : Value(bio),
       vibePoints: Value(vibePoints),
-      profilePictureUrl: Value(profilePictureUrl),
+      profilePictureUrl: profilePictureUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profilePictureUrl),
       lastSeen: Value(lastSeen),
       createdAt: Value(createdAt),
       modifiedAt: Value(modifiedAt),
@@ -872,7 +875,7 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
       bio: serializer.fromJson<String?>(json['bio']),
       vibePoints: serializer.fromJson<int>(json['vibe_points']),
       profilePictureUrl:
-          serializer.fromJson<String>(json['profile_picture_url']),
+          serializer.fromJson<String?>(json['profile_picture_url']),
       lastSeen: serializer.fromJson<DateTime>(json['last_seen']),
       createdAt: serializer.fromJson<DateTime>(json['created_at']),
       modifiedAt: serializer.fromJson<DateTime>(json['modified_at']),
@@ -888,7 +891,7 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
       'user_id': serializer.toJson<String>(userId),
       'bio': serializer.toJson<String?>(bio),
       'vibe_points': serializer.toJson<int>(vibePoints),
-      'profile_picture_url': serializer.toJson<String>(profilePictureUrl),
+      'profile_picture_url': serializer.toJson<String?>(profilePictureUrl),
       'last_seen': serializer.toJson<DateTime>(lastSeen),
       'created_at': serializer.toJson<DateTime>(createdAt),
       'modified_at': serializer.toJson<DateTime>(modifiedAt),
@@ -902,7 +905,7 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
           String? userId,
           Value<String?> bio = const Value.absent(),
           int? vibePoints,
-          String? profilePictureUrl,
+          Value<String?> profilePictureUrl = const Value.absent(),
           DateTime? lastSeen,
           DateTime? createdAt,
           DateTime? modifiedAt,
@@ -913,7 +916,9 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
         userId: userId ?? this.userId,
         bio: bio.present ? bio.value : this.bio,
         vibePoints: vibePoints ?? this.vibePoints,
-        profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
+        profilePictureUrl: profilePictureUrl.present
+            ? profilePictureUrl.value
+            : this.profilePictureUrl,
         lastSeen: lastSeen ?? this.lastSeen,
         createdAt: createdAt ?? this.createdAt,
         modifiedAt: modifiedAt ?? this.modifiedAt,
@@ -993,7 +998,7 @@ class UserProfileCompanion extends UpdateCompanion<UserProfileData> {
   final Value<String> userId;
   final Value<String?> bio;
   final Value<int> vibePoints;
-  final Value<String> profilePictureUrl;
+  final Value<String?> profilePictureUrl;
   final Value<DateTime> lastSeen;
   final Value<DateTime> createdAt;
   final Value<DateTime> modifiedAt;
@@ -1016,14 +1021,13 @@ class UserProfileCompanion extends UpdateCompanion<UserProfileData> {
     required String userId,
     this.bio = const Value.absent(),
     this.vibePoints = const Value.absent(),
-    required String profilePictureUrl,
+    this.profilePictureUrl = const Value.absent(),
     this.lastSeen = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.modifiedAt = const Value.absent(),
     this.admissionNumber = const Value.absent(),
     this.campus = const Value.absent(),
-  })  : userId = Value(userId),
-        profilePictureUrl = Value(profilePictureUrl);
+  }) : userId = Value(userId);
   static Insertable<UserProfileData> custom({
     Expression<int>? id,
     Expression<String>? userId,
@@ -1055,7 +1059,7 @@ class UserProfileCompanion extends UpdateCompanion<UserProfileData> {
       Value<String>? userId,
       Value<String?>? bio,
       Value<int>? vibePoints,
-      Value<String>? profilePictureUrl,
+      Value<String?>? profilePictureUrl,
       Value<DateTime>? lastSeen,
       Value<DateTime>? createdAt,
       Value<DateTime>? modifiedAt,
@@ -1129,16 +1133,416 @@ class UserProfileCompanion extends UpdateCompanion<UserProfileData> {
   }
 }
 
+class $UserCredentialTable extends UserCredential
+    with TableInfo<$UserCredentialTable, UserCredentialData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UserCredentialTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+      'user_id', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES user (id)'));
+  static const VerificationMeta _admnoMeta = const VerificationMeta('admno');
+  @override
+  late final GeneratedColumn<String> admno = GeneratedColumn<String>(
+      'admno', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _accessTokenMeta =
+      const VerificationMeta('accessToken');
+  @override
+  late final GeneratedColumn<String> accessToken = GeneratedColumn<String>(
+      'access_token', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _usernameMeta =
+      const VerificationMeta('username');
+  @override
+  late final GeneratedColumn<String> username = GeneratedColumn<String>(
+      'username', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES user (username)'));
+  static const VerificationMeta _emailMeta = const VerificationMeta('email');
+  @override
+  late final GeneratedColumn<String> email = GeneratedColumn<String>(
+      'email', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES user (email)'));
+  static const VerificationMeta _passwordMeta =
+      const VerificationMeta('password');
+  @override
+  late final GeneratedColumn<String> password = GeneratedColumn<String>(
+      'password', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _lastLoginMeta =
+      const VerificationMeta('lastLogin');
+  @override
+  late final GeneratedColumn<DateTime> lastLogin = GeneratedColumn<DateTime>(
+      'last_login', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [userId, admno, accessToken, username, email, password, lastLogin];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'user_credential';
+  @override
+  VerificationContext validateIntegrity(Insertable<UserCredentialData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    }
+    if (data.containsKey('admno')) {
+      context.handle(
+          _admnoMeta, admno.isAcceptableOrUnknown(data['admno']!, _admnoMeta));
+    } else if (isInserting) {
+      context.missing(_admnoMeta);
+    }
+    if (data.containsKey('access_token')) {
+      context.handle(
+          _accessTokenMeta,
+          accessToken.isAcceptableOrUnknown(
+              data['access_token']!, _accessTokenMeta));
+    }
+    if (data.containsKey('username')) {
+      context.handle(_usernameMeta,
+          username.isAcceptableOrUnknown(data['username']!, _usernameMeta));
+    } else if (isInserting) {
+      context.missing(_usernameMeta);
+    }
+    if (data.containsKey('email')) {
+      context.handle(
+          _emailMeta, email.isAcceptableOrUnknown(data['email']!, _emailMeta));
+    } else if (isInserting) {
+      context.missing(_emailMeta);
+    }
+    if (data.containsKey('password')) {
+      context.handle(_passwordMeta,
+          password.isAcceptableOrUnknown(data['password']!, _passwordMeta));
+    } else if (isInserting) {
+      context.missing(_passwordMeta);
+    }
+    if (data.containsKey('last_login')) {
+      context.handle(_lastLoginMeta,
+          lastLogin.isAcceptableOrUnknown(data['last_login']!, _lastLoginMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId};
+  @override
+  UserCredentialData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UserCredentialData(
+      userId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_id']),
+      admno: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}admno'])!,
+      accessToken: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}access_token']),
+      username: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}username'])!,
+      email: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}email'])!,
+      password: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}password'])!,
+      lastLogin: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}last_login']),
+    );
+  }
+
+  @override
+  $UserCredentialTable createAlias(String alias) {
+    return $UserCredentialTable(attachedDatabase, alias);
+  }
+}
+
+class UserCredentialData extends DataClass
+    implements Insertable<UserCredentialData> {
+  final String? userId;
+  final String admno;
+  final String? accessToken;
+  final String username;
+  final String email;
+  final String password;
+  final DateTime? lastLogin;
+  const UserCredentialData(
+      {this.userId,
+      required this.admno,
+      this.accessToken,
+      required this.username,
+      required this.email,
+      required this.password,
+      this.lastLogin});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || userId != null) {
+      map['user_id'] = Variable<String>(userId);
+    }
+    map['admno'] = Variable<String>(admno);
+    if (!nullToAbsent || accessToken != null) {
+      map['access_token'] = Variable<String>(accessToken);
+    }
+    map['username'] = Variable<String>(username);
+    map['email'] = Variable<String>(email);
+    map['password'] = Variable<String>(password);
+    if (!nullToAbsent || lastLogin != null) {
+      map['last_login'] = Variable<DateTime>(lastLogin);
+    }
+    return map;
+  }
+
+  UserCredentialCompanion toCompanion(bool nullToAbsent) {
+    return UserCredentialCompanion(
+      userId:
+          userId == null && nullToAbsent ? const Value.absent() : Value(userId),
+      admno: Value(admno),
+      accessToken: accessToken == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accessToken),
+      username: Value(username),
+      email: Value(email),
+      password: Value(password),
+      lastLogin: lastLogin == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastLogin),
+    );
+  }
+
+  factory UserCredentialData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UserCredentialData(
+      userId: serializer.fromJson<String?>(json['userId']),
+      admno: serializer.fromJson<String>(json['admission_number']),
+      accessToken: serializer.fromJson<String?>(json['access_token']),
+      username: serializer.fromJson<String>(json['username']),
+      email: serializer.fromJson<String>(json['email']),
+      password: serializer.fromJson<String>(json['password']),
+      lastLogin: serializer.fromJson<DateTime?>(json['last_login']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String?>(userId),
+      'admission_number': serializer.toJson<String>(admno),
+      'access_token': serializer.toJson<String?>(accessToken),
+      'username': serializer.toJson<String>(username),
+      'email': serializer.toJson<String>(email),
+      'password': serializer.toJson<String>(password),
+      'last_login': serializer.toJson<DateTime?>(lastLogin),
+    };
+  }
+
+  UserCredentialData copyWith(
+          {Value<String?> userId = const Value.absent(),
+          String? admno,
+          Value<String?> accessToken = const Value.absent(),
+          String? username,
+          String? email,
+          String? password,
+          Value<DateTime?> lastLogin = const Value.absent()}) =>
+      UserCredentialData(
+        userId: userId.present ? userId.value : this.userId,
+        admno: admno ?? this.admno,
+        accessToken: accessToken.present ? accessToken.value : this.accessToken,
+        username: username ?? this.username,
+        email: email ?? this.email,
+        password: password ?? this.password,
+        lastLogin: lastLogin.present ? lastLogin.value : this.lastLogin,
+      );
+  UserCredentialData copyWithCompanion(UserCredentialCompanion data) {
+    return UserCredentialData(
+      userId: data.userId.present ? data.userId.value : this.userId,
+      admno: data.admno.present ? data.admno.value : this.admno,
+      accessToken:
+          data.accessToken.present ? data.accessToken.value : this.accessToken,
+      username: data.username.present ? data.username.value : this.username,
+      email: data.email.present ? data.email.value : this.email,
+      password: data.password.present ? data.password.value : this.password,
+      lastLogin: data.lastLogin.present ? data.lastLogin.value : this.lastLogin,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserCredentialData(')
+          ..write('userId: $userId, ')
+          ..write('admno: $admno, ')
+          ..write('accessToken: $accessToken, ')
+          ..write('username: $username, ')
+          ..write('email: $email, ')
+          ..write('password: $password, ')
+          ..write('lastLogin: $lastLogin')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      userId, admno, accessToken, username, email, password, lastLogin);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserCredentialData &&
+          other.userId == this.userId &&
+          other.admno == this.admno &&
+          other.accessToken == this.accessToken &&
+          other.username == this.username &&
+          other.email == this.email &&
+          other.password == this.password &&
+          other.lastLogin == this.lastLogin);
+}
+
+class UserCredentialCompanion extends UpdateCompanion<UserCredentialData> {
+  final Value<String?> userId;
+  final Value<String> admno;
+  final Value<String?> accessToken;
+  final Value<String> username;
+  final Value<String> email;
+  final Value<String> password;
+  final Value<DateTime?> lastLogin;
+  final Value<int> rowid;
+  const UserCredentialCompanion({
+    this.userId = const Value.absent(),
+    this.admno = const Value.absent(),
+    this.accessToken = const Value.absent(),
+    this.username = const Value.absent(),
+    this.email = const Value.absent(),
+    this.password = const Value.absent(),
+    this.lastLogin = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  UserCredentialCompanion.insert({
+    this.userId = const Value.absent(),
+    required String admno,
+    this.accessToken = const Value.absent(),
+    required String username,
+    required String email,
+    required String password,
+    this.lastLogin = const Value.absent(),
+    this.rowid = const Value.absent(),
+  })  : admno = Value(admno),
+        username = Value(username),
+        email = Value(email),
+        password = Value(password);
+  static Insertable<UserCredentialData> custom({
+    Expression<String>? userId,
+    Expression<String>? admno,
+    Expression<String>? accessToken,
+    Expression<String>? username,
+    Expression<String>? email,
+    Expression<String>? password,
+    Expression<DateTime>? lastLogin,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (admno != null) 'admno': admno,
+      if (accessToken != null) 'access_token': accessToken,
+      if (username != null) 'username': username,
+      if (email != null) 'email': email,
+      if (password != null) 'password': password,
+      if (lastLogin != null) 'last_login': lastLogin,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  UserCredentialCompanion copyWith(
+      {Value<String?>? userId,
+      Value<String>? admno,
+      Value<String?>? accessToken,
+      Value<String>? username,
+      Value<String>? email,
+      Value<String>? password,
+      Value<DateTime?>? lastLogin,
+      Value<int>? rowid}) {
+    return UserCredentialCompanion(
+      userId: userId ?? this.userId,
+      admno: admno ?? this.admno,
+      accessToken: accessToken ?? this.accessToken,
+      username: username ?? this.username,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      lastLogin: lastLogin ?? this.lastLogin,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (admno.present) {
+      map['admno'] = Variable<String>(admno.value);
+    }
+    if (accessToken.present) {
+      map['access_token'] = Variable<String>(accessToken.value);
+    }
+    if (username.present) {
+      map['username'] = Variable<String>(username.value);
+    }
+    if (email.present) {
+      map['email'] = Variable<String>(email.value);
+    }
+    if (password.present) {
+      map['password'] = Variable<String>(password.value);
+    }
+    if (lastLogin.present) {
+      map['last_login'] = Variable<DateTime>(lastLogin.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserCredentialCompanion(')
+          ..write('userId: $userId, ')
+          ..write('admno: $admno, ')
+          ..write('accessToken: $accessToken, ')
+          ..write('username: $username, ')
+          ..write('email: $email, ')
+          ..write('password: $password, ')
+          ..write('lastLogin: $lastLogin, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $UserTable user = $UserTable(this);
   late final $UserProfileTable userProfile = $UserProfileTable(this);
+  late final $UserCredentialTable userCredential = $UserCredentialTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [user, userProfile];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [user, userProfile, userCredential];
 }
 
 typedef $$UserTableCreateCompanionBuilder = UserCompanion Function({
@@ -1171,6 +1575,25 @@ typedef $$UserTableUpdateCompanionBuilder = UserCompanion Function({
   Value<String> nationalId,
   Value<int> rowid,
 });
+
+final class $$UserTableReferences
+    extends BaseReferences<_$AppDatabase, $UserTable, UserData> {
+  $$UserTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$UserProfileTable, List<UserProfileData>>
+      _userProfileRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+          db.userProfile,
+          aliasName: $_aliasNameGenerator(db.user.id, db.userProfile.userId));
+
+  $$UserProfileTableProcessedTableManager get userProfileRefs {
+    final manager = $$UserProfileTableTableManager($_db, $_db.userProfile)
+        .filter((f) => f.userId.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_userProfileRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+}
 
 class $$UserTableFilterComposer extends Composer<_$AppDatabase, $UserTable> {
   $$UserTableFilterComposer({
@@ -1215,6 +1638,27 @@ class $$UserTableFilterComposer extends Composer<_$AppDatabase, $UserTable> {
 
   ColumnFilters<String> get nationalId => $composableBuilder(
       column: $table.nationalId, builder: (column) => ColumnFilters(column));
+
+  Expression<bool> userProfileRefs(
+      Expression<bool> Function($$UserProfileTableFilterComposer f) f) {
+    final $$UserProfileTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.userProfile,
+        getReferencedColumn: (t) => t.userId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserProfileTableFilterComposer(
+              $db: $db,
+              $table: $db.userProfile,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$UserTableOrderingComposer extends Composer<_$AppDatabase, $UserTable> {
@@ -1306,6 +1750,27 @@ class $$UserTableAnnotationComposer
 
   GeneratedColumn<String> get nationalId => $composableBuilder(
       column: $table.nationalId, builder: (column) => column);
+
+  Expression<T> userProfileRefs<T extends Object>(
+      Expression<T> Function($$UserProfileTableAnnotationComposer a) f) {
+    final $$UserProfileTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.userProfile,
+        getReferencedColumn: (t) => t.userId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserProfileTableAnnotationComposer(
+              $db: $db,
+              $table: $db.userProfile,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$UserTableTableManager extends RootTableManager<
@@ -1317,9 +1782,9 @@ class $$UserTableTableManager extends RootTableManager<
     $$UserTableAnnotationComposer,
     $$UserTableCreateCompanionBuilder,
     $$UserTableUpdateCompanionBuilder,
-    (UserData, BaseReferences<_$AppDatabase, $UserTable, UserData>),
+    (UserData, $$UserTableReferences),
     UserData,
-    PrefetchHooks Function()> {
+    PrefetchHooks Function({bool userProfileRefs})> {
   $$UserTableTableManager(_$AppDatabase db, $UserTable table)
       : super(TableManagerState(
           db: db,
@@ -1391,9 +1856,32 @@ class $$UserTableTableManager extends RootTableManager<
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map((e) =>
+                  (e.readTable(table), $$UserTableReferences(db, table, e)))
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({userProfileRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (userProfileRefs) db.userProfile],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (userProfileRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable:
+                            $$UserTableReferences._userProfileRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$UserTableReferences(db, table, p0)
+                                .userProfileRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.userId == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
         ));
 }
 
@@ -1406,16 +1894,16 @@ typedef $$UserTableProcessedTableManager = ProcessedTableManager<
     $$UserTableAnnotationComposer,
     $$UserTableCreateCompanionBuilder,
     $$UserTableUpdateCompanionBuilder,
-    (UserData, BaseReferences<_$AppDatabase, $UserTable, UserData>),
+    (UserData, $$UserTableReferences),
     UserData,
-    PrefetchHooks Function()>;
+    PrefetchHooks Function({bool userProfileRefs})>;
 typedef $$UserProfileTableCreateCompanionBuilder = UserProfileCompanion
     Function({
   Value<int> id,
   required String userId,
   Value<String?> bio,
   Value<int> vibePoints,
-  required String profilePictureUrl,
+  Value<String?> profilePictureUrl,
   Value<DateTime> lastSeen,
   Value<DateTime> createdAt,
   Value<DateTime> modifiedAt,
@@ -1428,13 +1916,31 @@ typedef $$UserProfileTableUpdateCompanionBuilder = UserProfileCompanion
   Value<String> userId,
   Value<String?> bio,
   Value<int> vibePoints,
-  Value<String> profilePictureUrl,
+  Value<String?> profilePictureUrl,
   Value<DateTime> lastSeen,
   Value<DateTime> createdAt,
   Value<DateTime> modifiedAt,
   Value<String?> admissionNumber,
   Value<String> campus,
 });
+
+final class $$UserProfileTableReferences
+    extends BaseReferences<_$AppDatabase, $UserProfileTable, UserProfileData> {
+  $$UserProfileTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $UserTable _userIdTable(_$AppDatabase db) => db.user
+      .createAlias($_aliasNameGenerator(db.userProfile.userId, db.user.id));
+
+  $$UserTableProcessedTableManager? get userId {
+    if ($_item.userId == null) return null;
+    final manager = $$UserTableTableManager($_db, $_db.user)
+        .filter((f) => f.id($_item.userId!));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
 
 class $$UserProfileTableFilterComposer
     extends Composer<_$AppDatabase, $UserProfileTable> {
@@ -1447,9 +1953,6 @@ class $$UserProfileTableFilterComposer
   });
   ColumnFilters<int> get id => $composableBuilder(
       column: $table.id, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get userId => $composableBuilder(
-      column: $table.userId, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get bio => $composableBuilder(
       column: $table.bio, builder: (column) => ColumnFilters(column));
@@ -1476,6 +1979,26 @@ class $$UserProfileTableFilterComposer
 
   ColumnFilters<String> get campus => $composableBuilder(
       column: $table.campus, builder: (column) => ColumnFilters(column));
+
+  $$UserTableFilterComposer get userId {
+    final $$UserTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.userId,
+        referencedTable: $db.user,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableFilterComposer(
+              $db: $db,
+              $table: $db.user,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
 }
 
 class $$UserProfileTableOrderingComposer
@@ -1489,9 +2012,6 @@ class $$UserProfileTableOrderingComposer
   });
   ColumnOrderings<int> get id => $composableBuilder(
       column: $table.id, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get userId => $composableBuilder(
-      column: $table.userId, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get bio => $composableBuilder(
       column: $table.bio, builder: (column) => ColumnOrderings(column));
@@ -1518,6 +2038,26 @@ class $$UserProfileTableOrderingComposer
 
   ColumnOrderings<String> get campus => $composableBuilder(
       column: $table.campus, builder: (column) => ColumnOrderings(column));
+
+  $$UserTableOrderingComposer get userId {
+    final $$UserTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.userId,
+        referencedTable: $db.user,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableOrderingComposer(
+              $db: $db,
+              $table: $db.user,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
 }
 
 class $$UserProfileTableAnnotationComposer
@@ -1531,9 +2071,6 @@ class $$UserProfileTableAnnotationComposer
   });
   GeneratedColumn<int> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
-
-  GeneratedColumn<String> get userId =>
-      $composableBuilder(column: $table.userId, builder: (column) => column);
 
   GeneratedColumn<String> get bio =>
       $composableBuilder(column: $table.bio, builder: (column) => column);
@@ -1558,6 +2095,26 @@ class $$UserProfileTableAnnotationComposer
 
   GeneratedColumn<String> get campus =>
       $composableBuilder(column: $table.campus, builder: (column) => column);
+
+  $$UserTableAnnotationComposer get userId {
+    final $$UserTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.userId,
+        referencedTable: $db.user,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableAnnotationComposer(
+              $db: $db,
+              $table: $db.user,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
 }
 
 class $$UserProfileTableTableManager extends RootTableManager<
@@ -1569,12 +2126,9 @@ class $$UserProfileTableTableManager extends RootTableManager<
     $$UserProfileTableAnnotationComposer,
     $$UserProfileTableCreateCompanionBuilder,
     $$UserProfileTableUpdateCompanionBuilder,
-    (
-      UserProfileData,
-      BaseReferences<_$AppDatabase, $UserProfileTable, UserProfileData>
-    ),
+    (UserProfileData, $$UserProfileTableReferences),
     UserProfileData,
-    PrefetchHooks Function()> {
+    PrefetchHooks Function({bool userId})> {
   $$UserProfileTableTableManager(_$AppDatabase db, $UserProfileTable table)
       : super(TableManagerState(
           db: db,
@@ -1590,7 +2144,7 @@ class $$UserProfileTableTableManager extends RootTableManager<
             Value<String> userId = const Value.absent(),
             Value<String?> bio = const Value.absent(),
             Value<int> vibePoints = const Value.absent(),
-            Value<String> profilePictureUrl = const Value.absent(),
+            Value<String?> profilePictureUrl = const Value.absent(),
             Value<DateTime> lastSeen = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
             Value<DateTime> modifiedAt = const Value.absent(),
@@ -1614,7 +2168,7 @@ class $$UserProfileTableTableManager extends RootTableManager<
             required String userId,
             Value<String?> bio = const Value.absent(),
             Value<int> vibePoints = const Value.absent(),
-            required String profilePictureUrl,
+            Value<String?> profilePictureUrl = const Value.absent(),
             Value<DateTime> lastSeen = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
             Value<DateTime> modifiedAt = const Value.absent(),
@@ -1634,9 +2188,46 @@ class $$UserProfileTableTableManager extends RootTableManager<
             campus: campus,
           ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map((e) => (
+                    e.readTable(table),
+                    $$UserProfileTableReferences(db, table, e)
+                  ))
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({userId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (userId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.userId,
+                    referencedTable:
+                        $$UserProfileTableReferences._userIdTable(db),
+                    referencedColumn:
+                        $$UserProfileTableReferences._userIdTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
         ));
 }
 
@@ -1649,12 +2240,464 @@ typedef $$UserProfileTableProcessedTableManager = ProcessedTableManager<
     $$UserProfileTableAnnotationComposer,
     $$UserProfileTableCreateCompanionBuilder,
     $$UserProfileTableUpdateCompanionBuilder,
-    (
-      UserProfileData,
-      BaseReferences<_$AppDatabase, $UserProfileTable, UserProfileData>
-    ),
+    (UserProfileData, $$UserProfileTableReferences),
     UserProfileData,
-    PrefetchHooks Function()>;
+    PrefetchHooks Function({bool userId})>;
+typedef $$UserCredentialTableCreateCompanionBuilder = UserCredentialCompanion
+    Function({
+  Value<String?> userId,
+  required String admno,
+  Value<String?> accessToken,
+  required String username,
+  required String email,
+  required String password,
+  Value<DateTime?> lastLogin,
+  Value<int> rowid,
+});
+typedef $$UserCredentialTableUpdateCompanionBuilder = UserCredentialCompanion
+    Function({
+  Value<String?> userId,
+  Value<String> admno,
+  Value<String?> accessToken,
+  Value<String> username,
+  Value<String> email,
+  Value<String> password,
+  Value<DateTime?> lastLogin,
+  Value<int> rowid,
+});
+
+final class $$UserCredentialTableReferences extends BaseReferences<
+    _$AppDatabase, $UserCredentialTable, UserCredentialData> {
+  $$UserCredentialTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $UserTable _userIdTable(_$AppDatabase db) => db.user
+      .createAlias($_aliasNameGenerator(db.userCredential.userId, db.user.id));
+
+  $$UserTableProcessedTableManager? get userId {
+    if ($_item.userId == null) return null;
+    final manager = $$UserTableTableManager($_db, $_db.user)
+        .filter((f) => f.id($_item.userId!));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $UserTable _usernameTable(_$AppDatabase db) => db.user.createAlias(
+      $_aliasNameGenerator(db.userCredential.username, db.user.username));
+
+  $$UserTableProcessedTableManager? get username {
+    if ($_item.username == null) return null;
+    final manager = $$UserTableTableManager($_db, $_db.user)
+        .filter((f) => f.username($_item.username!));
+    final item = $_typedResult.readTableOrNull(_usernameTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $UserTable _emailTable(_$AppDatabase db) => db.user.createAlias(
+      $_aliasNameGenerator(db.userCredential.email, db.user.email));
+
+  $$UserTableProcessedTableManager? get email {
+    if ($_item.email == null) return null;
+    final manager = $$UserTableTableManager($_db, $_db.user)
+        .filter((f) => f.email($_item.email!));
+    final item = $_typedResult.readTableOrNull(_emailTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$UserCredentialTableFilterComposer
+    extends Composer<_$AppDatabase, $UserCredentialTable> {
+  $$UserCredentialTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get admno => $composableBuilder(
+      column: $table.admno, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get accessToken => $composableBuilder(
+      column: $table.accessToken, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get password => $composableBuilder(
+      column: $table.password, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get lastLogin => $composableBuilder(
+      column: $table.lastLogin, builder: (column) => ColumnFilters(column));
+
+  $$UserTableFilterComposer get userId {
+    final $$UserTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.userId,
+        referencedTable: $db.user,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableFilterComposer(
+              $db: $db,
+              $table: $db.user,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$UserTableFilterComposer get username {
+    final $$UserTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.username,
+        referencedTable: $db.user,
+        getReferencedColumn: (t) => t.username,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableFilterComposer(
+              $db: $db,
+              $table: $db.user,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$UserTableFilterComposer get email {
+    final $$UserTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.email,
+        referencedTable: $db.user,
+        getReferencedColumn: (t) => t.email,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableFilterComposer(
+              $db: $db,
+              $table: $db.user,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$UserCredentialTableOrderingComposer
+    extends Composer<_$AppDatabase, $UserCredentialTable> {
+  $$UserCredentialTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get admno => $composableBuilder(
+      column: $table.admno, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get accessToken => $composableBuilder(
+      column: $table.accessToken, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get password => $composableBuilder(
+      column: $table.password, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get lastLogin => $composableBuilder(
+      column: $table.lastLogin, builder: (column) => ColumnOrderings(column));
+
+  $$UserTableOrderingComposer get userId {
+    final $$UserTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.userId,
+        referencedTable: $db.user,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableOrderingComposer(
+              $db: $db,
+              $table: $db.user,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$UserTableOrderingComposer get username {
+    final $$UserTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.username,
+        referencedTable: $db.user,
+        getReferencedColumn: (t) => t.username,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableOrderingComposer(
+              $db: $db,
+              $table: $db.user,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$UserTableOrderingComposer get email {
+    final $$UserTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.email,
+        referencedTable: $db.user,
+        getReferencedColumn: (t) => t.email,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableOrderingComposer(
+              $db: $db,
+              $table: $db.user,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$UserCredentialTableAnnotationComposer
+    extends Composer<_$AppDatabase, $UserCredentialTable> {
+  $$UserCredentialTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get admno =>
+      $composableBuilder(column: $table.admno, builder: (column) => column);
+
+  GeneratedColumn<String> get accessToken => $composableBuilder(
+      column: $table.accessToken, builder: (column) => column);
+
+  GeneratedColumn<String> get password =>
+      $composableBuilder(column: $table.password, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get lastLogin =>
+      $composableBuilder(column: $table.lastLogin, builder: (column) => column);
+
+  $$UserTableAnnotationComposer get userId {
+    final $$UserTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.userId,
+        referencedTable: $db.user,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableAnnotationComposer(
+              $db: $db,
+              $table: $db.user,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$UserTableAnnotationComposer get username {
+    final $$UserTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.username,
+        referencedTable: $db.user,
+        getReferencedColumn: (t) => t.username,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableAnnotationComposer(
+              $db: $db,
+              $table: $db.user,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$UserTableAnnotationComposer get email {
+    final $$UserTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.email,
+        referencedTable: $db.user,
+        getReferencedColumn: (t) => t.email,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableAnnotationComposer(
+              $db: $db,
+              $table: $db.user,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$UserCredentialTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $UserCredentialTable,
+    UserCredentialData,
+    $$UserCredentialTableFilterComposer,
+    $$UserCredentialTableOrderingComposer,
+    $$UserCredentialTableAnnotationComposer,
+    $$UserCredentialTableCreateCompanionBuilder,
+    $$UserCredentialTableUpdateCompanionBuilder,
+    (UserCredentialData, $$UserCredentialTableReferences),
+    UserCredentialData,
+    PrefetchHooks Function({bool userId, bool username, bool email})> {
+  $$UserCredentialTableTableManager(
+      _$AppDatabase db, $UserCredentialTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UserCredentialTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$UserCredentialTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$UserCredentialTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String?> userId = const Value.absent(),
+            Value<String> admno = const Value.absent(),
+            Value<String?> accessToken = const Value.absent(),
+            Value<String> username = const Value.absent(),
+            Value<String> email = const Value.absent(),
+            Value<String> password = const Value.absent(),
+            Value<DateTime?> lastLogin = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              UserCredentialCompanion(
+            userId: userId,
+            admno: admno,
+            accessToken: accessToken,
+            username: username,
+            email: email,
+            password: password,
+            lastLogin: lastLogin,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            Value<String?> userId = const Value.absent(),
+            required String admno,
+            Value<String?> accessToken = const Value.absent(),
+            required String username,
+            required String email,
+            required String password,
+            Value<DateTime?> lastLogin = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              UserCredentialCompanion.insert(
+            userId: userId,
+            admno: admno,
+            accessToken: accessToken,
+            username: username,
+            email: email,
+            password: password,
+            lastLogin: lastLogin,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$UserCredentialTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: (
+              {userId = false, username = false, email = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (userId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.userId,
+                    referencedTable:
+                        $$UserCredentialTableReferences._userIdTable(db),
+                    referencedColumn:
+                        $$UserCredentialTableReferences._userIdTable(db).id,
+                  ) as T;
+                }
+                if (username) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.username,
+                    referencedTable:
+                        $$UserCredentialTableReferences._usernameTable(db),
+                    referencedColumn: $$UserCredentialTableReferences
+                        ._usernameTable(db)
+                        .username,
+                  ) as T;
+                }
+                if (email) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.email,
+                    referencedTable:
+                        $$UserCredentialTableReferences._emailTable(db),
+                    referencedColumn:
+                        $$UserCredentialTableReferences._emailTable(db).email,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$UserCredentialTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $UserCredentialTable,
+    UserCredentialData,
+    $$UserCredentialTableFilterComposer,
+    $$UserCredentialTableOrderingComposer,
+    $$UserCredentialTableAnnotationComposer,
+    $$UserCredentialTableCreateCompanionBuilder,
+    $$UserCredentialTableUpdateCompanionBuilder,
+    (UserCredentialData, $$UserCredentialTableReferences),
+    UserCredentialData,
+    PrefetchHooks Function({bool userId, bool username, bool email})>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -1662,4 +2705,6 @@ class $AppDatabaseManager {
   $$UserTableTableManager get user => $$UserTableTableManager(_db, _db.user);
   $$UserProfileTableTableManager get userProfile =>
       $$UserProfileTableTableManager(_db, _db.userProfile);
+  $$UserCredentialTableTableManager get userCredential =>
+      $$UserCredentialTableTableManager(_db, _db.userCredential);
 }

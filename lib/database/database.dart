@@ -1,8 +1,9 @@
 import 'dart:io';
 
+import 'package:academia/features/auth/repository/user.dart';
+import 'package:academia/features/auth/repository/user_credentials.dart';
 import 'package:academia/features/auth/repository/user_profile.dart';
 import 'package:drift/drift.dart';
-import 'package:academia/features/auth/repository/user.dart';
 import 'package:drift/native.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -42,7 +43,7 @@ Future<Directory> _getDatabaseDirectory() async {
   }
 }
 
-@DriftDatabase(tables: [User, UserProfile])
+@DriftDatabase(tables: [User, UserProfile, UserCredential])
 class AppDatabase extends _$AppDatabase {
   // After generating code, this class needs to define a schemaVersion getter
   // and a constructor telling drift where the database should be stored.

@@ -1,3 +1,4 @@
+import 'package:academia/database/database.dart';
 import 'package:academia/features/auth/cubit/auth_cubit.dart';
 import 'package:academia/utils/validator/validator.dart';
 import 'package:flutter/material.dart';
@@ -75,10 +76,13 @@ class _SignUpPageState extends State<SignUpPage> {
         const SnackBar(content: Text("Checking validity...", softWrap: true)),
       );
 
-      final result = await authCubit.authenticate(
-        _admissionNumberController.text,
-        _passwordController.text,
-      );
+      final result = await authCubit.authenticate(UserCredentialData(
+        username: "",
+        email: "",
+        admno: _admissionNumberController.text,
+        password: _passwordController.text,
+        lastLogin: DateTime.now(),
+      ));
 
       result.fold((l) {
         _showAlertDialog(l);

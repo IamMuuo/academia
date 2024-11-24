@@ -1,3 +1,4 @@
+import 'package:academia/database/database.dart';
 import 'package:academia/features/auth/cubit/auth_cubit.dart';
 import 'package:academia/features/auth/cubit/auth_states.dart';
 import 'package:academia/utils/router/router.dart';
@@ -180,10 +181,14 @@ class _LoginPageState extends State<LoginPage> {
                                   );
                                   return;
                                 }
-                                final result = await authCubit.authenticate(
-                                  _admissionController.text,
-                                  _passwordController.text,
-                                );
+                                final result = await authCubit
+                                    .authenticate(UserCredentialData(
+                                  username: "",
+                                  email: "",
+                                  admno: _admissionController.text,
+                                  password: _passwordController.text,
+                                  lastLogin: DateTime.now(),
+                                ));
 
                                 result.fold((l) {
                                   _showMessageDialog("Authentication Error", l);
