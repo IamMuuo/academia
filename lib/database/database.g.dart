@@ -614,15 +614,531 @@ class UserCompanion extends UpdateCompanion<UserData> {
   }
 }
 
+class $UserProfileTable extends UserProfile
+    with TableInfo<$UserProfileTable, UserProfileData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UserProfileTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+      'user_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'REFERENCES user(id)');
+  static const VerificationMeta _bioMeta = const VerificationMeta('bio');
+  @override
+  late final GeneratedColumn<String> bio = GeneratedColumn<String>(
+      'bio', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _vibePointsMeta =
+      const VerificationMeta('vibePoints');
+  @override
+  late final GeneratedColumn<int> vibePoints = GeneratedColumn<int>(
+      'vibe_points', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _profilePictureUrlMeta =
+      const VerificationMeta('profilePictureUrl');
+  @override
+  late final GeneratedColumn<String> profilePictureUrl =
+      GeneratedColumn<String>('profile_picture_url', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _lastSeenMeta =
+      const VerificationMeta('lastSeen');
+  @override
+  late final GeneratedColumn<DateTime> lastSeen = GeneratedColumn<DateTime>(
+      'last_seen', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  static const VerificationMeta _modifiedAtMeta =
+      const VerificationMeta('modifiedAt');
+  @override
+  late final GeneratedColumn<DateTime> modifiedAt = GeneratedColumn<DateTime>(
+      'modified_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  static const VerificationMeta _admissionNumberMeta =
+      const VerificationMeta('admissionNumber');
+  @override
+  late final GeneratedColumn<String> admissionNumber = GeneratedColumn<String>(
+      'admission_number', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _campusMeta = const VerificationMeta('campus');
+  @override
+  late final GeneratedColumn<String> campus = GeneratedColumn<String>(
+      'campus', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant("athi"));
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        userId,
+        bio,
+        vibePoints,
+        profilePictureUrl,
+        lastSeen,
+        createdAt,
+        modifiedAt,
+        admissionNumber,
+        campus
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'user_profile';
+  @override
+  VerificationContext validateIntegrity(Insertable<UserProfileData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('bio')) {
+      context.handle(
+          _bioMeta, bio.isAcceptableOrUnknown(data['bio']!, _bioMeta));
+    }
+    if (data.containsKey('vibe_points')) {
+      context.handle(
+          _vibePointsMeta,
+          vibePoints.isAcceptableOrUnknown(
+              data['vibe_points']!, _vibePointsMeta));
+    }
+    if (data.containsKey('profile_picture_url')) {
+      context.handle(
+          _profilePictureUrlMeta,
+          profilePictureUrl.isAcceptableOrUnknown(
+              data['profile_picture_url']!, _profilePictureUrlMeta));
+    } else if (isInserting) {
+      context.missing(_profilePictureUrlMeta);
+    }
+    if (data.containsKey('last_seen')) {
+      context.handle(_lastSeenMeta,
+          lastSeen.isAcceptableOrUnknown(data['last_seen']!, _lastSeenMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('modified_at')) {
+      context.handle(
+          _modifiedAtMeta,
+          modifiedAt.isAcceptableOrUnknown(
+              data['modified_at']!, _modifiedAtMeta));
+    }
+    if (data.containsKey('admission_number')) {
+      context.handle(
+          _admissionNumberMeta,
+          admissionNumber.isAcceptableOrUnknown(
+              data['admission_number']!, _admissionNumberMeta));
+    }
+    if (data.containsKey('campus')) {
+      context.handle(_campusMeta,
+          campus.isAcceptableOrUnknown(data['campus']!, _campusMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  UserProfileData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UserProfileData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      userId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
+      bio: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}bio']),
+      vibePoints: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}vibe_points'])!,
+      profilePictureUrl: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}profile_picture_url'])!,
+      lastSeen: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}last_seen'])!,
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      modifiedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}modified_at'])!,
+      admissionNumber: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}admission_number']),
+      campus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}campus'])!,
+    );
+  }
+
+  @override
+  $UserProfileTable createAlias(String alias) {
+    return $UserProfileTable(attachedDatabase, alias);
+  }
+}
+
+class UserProfileData extends DataClass implements Insertable<UserProfileData> {
+  final int id;
+  final String userId;
+  final String? bio;
+  final int vibePoints;
+  final String profilePictureUrl;
+  final DateTime lastSeen;
+  final DateTime createdAt;
+  final DateTime modifiedAt;
+  final String? admissionNumber;
+  final String campus;
+  const UserProfileData(
+      {required this.id,
+      required this.userId,
+      this.bio,
+      required this.vibePoints,
+      required this.profilePictureUrl,
+      required this.lastSeen,
+      required this.createdAt,
+      required this.modifiedAt,
+      this.admissionNumber,
+      required this.campus});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['user_id'] = Variable<String>(userId);
+    if (!nullToAbsent || bio != null) {
+      map['bio'] = Variable<String>(bio);
+    }
+    map['vibe_points'] = Variable<int>(vibePoints);
+    map['profile_picture_url'] = Variable<String>(profilePictureUrl);
+    map['last_seen'] = Variable<DateTime>(lastSeen);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['modified_at'] = Variable<DateTime>(modifiedAt);
+    if (!nullToAbsent || admissionNumber != null) {
+      map['admission_number'] = Variable<String>(admissionNumber);
+    }
+    map['campus'] = Variable<String>(campus);
+    return map;
+  }
+
+  UserProfileCompanion toCompanion(bool nullToAbsent) {
+    return UserProfileCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      bio: bio == null && nullToAbsent ? const Value.absent() : Value(bio),
+      vibePoints: Value(vibePoints),
+      profilePictureUrl: Value(profilePictureUrl),
+      lastSeen: Value(lastSeen),
+      createdAt: Value(createdAt),
+      modifiedAt: Value(modifiedAt),
+      admissionNumber: admissionNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(admissionNumber),
+      campus: Value(campus),
+    );
+  }
+
+  factory UserProfileData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UserProfileData(
+      id: serializer.fromJson<int>(json['id']),
+      userId: serializer.fromJson<String>(json['user_id']),
+      bio: serializer.fromJson<String?>(json['bio']),
+      vibePoints: serializer.fromJson<int>(json['vibe_points']),
+      profilePictureUrl:
+          serializer.fromJson<String>(json['profile_picture_url']),
+      lastSeen: serializer.fromJson<DateTime>(json['last_seen']),
+      createdAt: serializer.fromJson<DateTime>(json['created_at']),
+      modifiedAt: serializer.fromJson<DateTime>(json['modified_at']),
+      admissionNumber: serializer.fromJson<String?>(json['admission_number']),
+      campus: serializer.fromJson<String>(json['campus']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'user_id': serializer.toJson<String>(userId),
+      'bio': serializer.toJson<String?>(bio),
+      'vibe_points': serializer.toJson<int>(vibePoints),
+      'profile_picture_url': serializer.toJson<String>(profilePictureUrl),
+      'last_seen': serializer.toJson<DateTime>(lastSeen),
+      'created_at': serializer.toJson<DateTime>(createdAt),
+      'modified_at': serializer.toJson<DateTime>(modifiedAt),
+      'admission_number': serializer.toJson<String?>(admissionNumber),
+      'campus': serializer.toJson<String>(campus),
+    };
+  }
+
+  UserProfileData copyWith(
+          {int? id,
+          String? userId,
+          Value<String?> bio = const Value.absent(),
+          int? vibePoints,
+          String? profilePictureUrl,
+          DateTime? lastSeen,
+          DateTime? createdAt,
+          DateTime? modifiedAt,
+          Value<String?> admissionNumber = const Value.absent(),
+          String? campus}) =>
+      UserProfileData(
+        id: id ?? this.id,
+        userId: userId ?? this.userId,
+        bio: bio.present ? bio.value : this.bio,
+        vibePoints: vibePoints ?? this.vibePoints,
+        profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
+        lastSeen: lastSeen ?? this.lastSeen,
+        createdAt: createdAt ?? this.createdAt,
+        modifiedAt: modifiedAt ?? this.modifiedAt,
+        admissionNumber: admissionNumber.present
+            ? admissionNumber.value
+            : this.admissionNumber,
+        campus: campus ?? this.campus,
+      );
+  UserProfileData copyWithCompanion(UserProfileCompanion data) {
+    return UserProfileData(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      bio: data.bio.present ? data.bio.value : this.bio,
+      vibePoints:
+          data.vibePoints.present ? data.vibePoints.value : this.vibePoints,
+      profilePictureUrl: data.profilePictureUrl.present
+          ? data.profilePictureUrl.value
+          : this.profilePictureUrl,
+      lastSeen: data.lastSeen.present ? data.lastSeen.value : this.lastSeen,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      modifiedAt:
+          data.modifiedAt.present ? data.modifiedAt.value : this.modifiedAt,
+      admissionNumber: data.admissionNumber.present
+          ? data.admissionNumber.value
+          : this.admissionNumber,
+      campus: data.campus.present ? data.campus.value : this.campus,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserProfileData(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('bio: $bio, ')
+          ..write('vibePoints: $vibePoints, ')
+          ..write('profilePictureUrl: $profilePictureUrl, ')
+          ..write('lastSeen: $lastSeen, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('modifiedAt: $modifiedAt, ')
+          ..write('admissionNumber: $admissionNumber, ')
+          ..write('campus: $campus')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id,
+      userId,
+      bio,
+      vibePoints,
+      profilePictureUrl,
+      lastSeen,
+      createdAt,
+      modifiedAt,
+      admissionNumber,
+      campus);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserProfileData &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.bio == this.bio &&
+          other.vibePoints == this.vibePoints &&
+          other.profilePictureUrl == this.profilePictureUrl &&
+          other.lastSeen == this.lastSeen &&
+          other.createdAt == this.createdAt &&
+          other.modifiedAt == this.modifiedAt &&
+          other.admissionNumber == this.admissionNumber &&
+          other.campus == this.campus);
+}
+
+class UserProfileCompanion extends UpdateCompanion<UserProfileData> {
+  final Value<int> id;
+  final Value<String> userId;
+  final Value<String?> bio;
+  final Value<int> vibePoints;
+  final Value<String> profilePictureUrl;
+  final Value<DateTime> lastSeen;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> modifiedAt;
+  final Value<String?> admissionNumber;
+  final Value<String> campus;
+  const UserProfileCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.bio = const Value.absent(),
+    this.vibePoints = const Value.absent(),
+    this.profilePictureUrl = const Value.absent(),
+    this.lastSeen = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.modifiedAt = const Value.absent(),
+    this.admissionNumber = const Value.absent(),
+    this.campus = const Value.absent(),
+  });
+  UserProfileCompanion.insert({
+    this.id = const Value.absent(),
+    required String userId,
+    this.bio = const Value.absent(),
+    this.vibePoints = const Value.absent(),
+    required String profilePictureUrl,
+    this.lastSeen = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.modifiedAt = const Value.absent(),
+    this.admissionNumber = const Value.absent(),
+    this.campus = const Value.absent(),
+  })  : userId = Value(userId),
+        profilePictureUrl = Value(profilePictureUrl);
+  static Insertable<UserProfileData> custom({
+    Expression<int>? id,
+    Expression<String>? userId,
+    Expression<String>? bio,
+    Expression<int>? vibePoints,
+    Expression<String>? profilePictureUrl,
+    Expression<DateTime>? lastSeen,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? modifiedAt,
+    Expression<String>? admissionNumber,
+    Expression<String>? campus,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (bio != null) 'bio': bio,
+      if (vibePoints != null) 'vibe_points': vibePoints,
+      if (profilePictureUrl != null) 'profile_picture_url': profilePictureUrl,
+      if (lastSeen != null) 'last_seen': lastSeen,
+      if (createdAt != null) 'created_at': createdAt,
+      if (modifiedAt != null) 'modified_at': modifiedAt,
+      if (admissionNumber != null) 'admission_number': admissionNumber,
+      if (campus != null) 'campus': campus,
+    });
+  }
+
+  UserProfileCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? userId,
+      Value<String?>? bio,
+      Value<int>? vibePoints,
+      Value<String>? profilePictureUrl,
+      Value<DateTime>? lastSeen,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? modifiedAt,
+      Value<String?>? admissionNumber,
+      Value<String>? campus}) {
+    return UserProfileCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      bio: bio ?? this.bio,
+      vibePoints: vibePoints ?? this.vibePoints,
+      profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
+      lastSeen: lastSeen ?? this.lastSeen,
+      createdAt: createdAt ?? this.createdAt,
+      modifiedAt: modifiedAt ?? this.modifiedAt,
+      admissionNumber: admissionNumber ?? this.admissionNumber,
+      campus: campus ?? this.campus,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (bio.present) {
+      map['bio'] = Variable<String>(bio.value);
+    }
+    if (vibePoints.present) {
+      map['vibe_points'] = Variable<int>(vibePoints.value);
+    }
+    if (profilePictureUrl.present) {
+      map['profile_picture_url'] = Variable<String>(profilePictureUrl.value);
+    }
+    if (lastSeen.present) {
+      map['last_seen'] = Variable<DateTime>(lastSeen.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (modifiedAt.present) {
+      map['modified_at'] = Variable<DateTime>(modifiedAt.value);
+    }
+    if (admissionNumber.present) {
+      map['admission_number'] = Variable<String>(admissionNumber.value);
+    }
+    if (campus.present) {
+      map['campus'] = Variable<String>(campus.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserProfileCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('bio: $bio, ')
+          ..write('vibePoints: $vibePoints, ')
+          ..write('profilePictureUrl: $profilePictureUrl, ')
+          ..write('lastSeen: $lastSeen, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('modifiedAt: $modifiedAt, ')
+          ..write('admissionNumber: $admissionNumber, ')
+          ..write('campus: $campus')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $UserTable user = $UserTable(this);
+  late final $UserProfileTable userProfile = $UserProfileTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [user];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [user, userProfile];
 }
 
 typedef $$UserTableCreateCompanionBuilder = UserCompanion Function({
@@ -893,9 +1409,257 @@ typedef $$UserTableProcessedTableManager = ProcessedTableManager<
     (UserData, BaseReferences<_$AppDatabase, $UserTable, UserData>),
     UserData,
     PrefetchHooks Function()>;
+typedef $$UserProfileTableCreateCompanionBuilder = UserProfileCompanion
+    Function({
+  Value<int> id,
+  required String userId,
+  Value<String?> bio,
+  Value<int> vibePoints,
+  required String profilePictureUrl,
+  Value<DateTime> lastSeen,
+  Value<DateTime> createdAt,
+  Value<DateTime> modifiedAt,
+  Value<String?> admissionNumber,
+  Value<String> campus,
+});
+typedef $$UserProfileTableUpdateCompanionBuilder = UserProfileCompanion
+    Function({
+  Value<int> id,
+  Value<String> userId,
+  Value<String?> bio,
+  Value<int> vibePoints,
+  Value<String> profilePictureUrl,
+  Value<DateTime> lastSeen,
+  Value<DateTime> createdAt,
+  Value<DateTime> modifiedAt,
+  Value<String?> admissionNumber,
+  Value<String> campus,
+});
+
+class $$UserProfileTableFilterComposer
+    extends Composer<_$AppDatabase, $UserProfileTable> {
+  $$UserProfileTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get bio => $composableBuilder(
+      column: $table.bio, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get vibePoints => $composableBuilder(
+      column: $table.vibePoints, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get profilePictureUrl => $composableBuilder(
+      column: $table.profilePictureUrl,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get lastSeen => $composableBuilder(
+      column: $table.lastSeen, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get modifiedAt => $composableBuilder(
+      column: $table.modifiedAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get admissionNumber => $composableBuilder(
+      column: $table.admissionNumber,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get campus => $composableBuilder(
+      column: $table.campus, builder: (column) => ColumnFilters(column));
+}
+
+class $$UserProfileTableOrderingComposer
+    extends Composer<_$AppDatabase, $UserProfileTable> {
+  $$UserProfileTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get bio => $composableBuilder(
+      column: $table.bio, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get vibePoints => $composableBuilder(
+      column: $table.vibePoints, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get profilePictureUrl => $composableBuilder(
+      column: $table.profilePictureUrl,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get lastSeen => $composableBuilder(
+      column: $table.lastSeen, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get modifiedAt => $composableBuilder(
+      column: $table.modifiedAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get admissionNumber => $composableBuilder(
+      column: $table.admissionNumber,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get campus => $composableBuilder(
+      column: $table.campus, builder: (column) => ColumnOrderings(column));
+}
+
+class $$UserProfileTableAnnotationComposer
+    extends Composer<_$AppDatabase, $UserProfileTable> {
+  $$UserProfileTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get bio =>
+      $composableBuilder(column: $table.bio, builder: (column) => column);
+
+  GeneratedColumn<int> get vibePoints => $composableBuilder(
+      column: $table.vibePoints, builder: (column) => column);
+
+  GeneratedColumn<String> get profilePictureUrl => $composableBuilder(
+      column: $table.profilePictureUrl, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get lastSeen =>
+      $composableBuilder(column: $table.lastSeen, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get modifiedAt => $composableBuilder(
+      column: $table.modifiedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get admissionNumber => $composableBuilder(
+      column: $table.admissionNumber, builder: (column) => column);
+
+  GeneratedColumn<String> get campus =>
+      $composableBuilder(column: $table.campus, builder: (column) => column);
+}
+
+class $$UserProfileTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $UserProfileTable,
+    UserProfileData,
+    $$UserProfileTableFilterComposer,
+    $$UserProfileTableOrderingComposer,
+    $$UserProfileTableAnnotationComposer,
+    $$UserProfileTableCreateCompanionBuilder,
+    $$UserProfileTableUpdateCompanionBuilder,
+    (
+      UserProfileData,
+      BaseReferences<_$AppDatabase, $UserProfileTable, UserProfileData>
+    ),
+    UserProfileData,
+    PrefetchHooks Function()> {
+  $$UserProfileTableTableManager(_$AppDatabase db, $UserProfileTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UserProfileTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$UserProfileTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$UserProfileTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> userId = const Value.absent(),
+            Value<String?> bio = const Value.absent(),
+            Value<int> vibePoints = const Value.absent(),
+            Value<String> profilePictureUrl = const Value.absent(),
+            Value<DateTime> lastSeen = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime> modifiedAt = const Value.absent(),
+            Value<String?> admissionNumber = const Value.absent(),
+            Value<String> campus = const Value.absent(),
+          }) =>
+              UserProfileCompanion(
+            id: id,
+            userId: userId,
+            bio: bio,
+            vibePoints: vibePoints,
+            profilePictureUrl: profilePictureUrl,
+            lastSeen: lastSeen,
+            createdAt: createdAt,
+            modifiedAt: modifiedAt,
+            admissionNumber: admissionNumber,
+            campus: campus,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String userId,
+            Value<String?> bio = const Value.absent(),
+            Value<int> vibePoints = const Value.absent(),
+            required String profilePictureUrl,
+            Value<DateTime> lastSeen = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime> modifiedAt = const Value.absent(),
+            Value<String?> admissionNumber = const Value.absent(),
+            Value<String> campus = const Value.absent(),
+          }) =>
+              UserProfileCompanion.insert(
+            id: id,
+            userId: userId,
+            bio: bio,
+            vibePoints: vibePoints,
+            profilePictureUrl: profilePictureUrl,
+            lastSeen: lastSeen,
+            createdAt: createdAt,
+            modifiedAt: modifiedAt,
+            admissionNumber: admissionNumber,
+            campus: campus,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$UserProfileTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $UserProfileTable,
+    UserProfileData,
+    $$UserProfileTableFilterComposer,
+    $$UserProfileTableOrderingComposer,
+    $$UserProfileTableAnnotationComposer,
+    $$UserProfileTableCreateCompanionBuilder,
+    $$UserProfileTableUpdateCompanionBuilder,
+    (
+      UserProfileData,
+      BaseReferences<_$AppDatabase, $UserProfileTable, UserProfileData>
+    ),
+    UserProfileData,
+    PrefetchHooks Function()>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
   $$UserTableTableManager get user => $$UserTableTableManager(_db, _db.user);
+  $$UserProfileTableTableManager get userProfile =>
+      $$UserProfileTableTableManager(_db, _db.userProfile);
 }

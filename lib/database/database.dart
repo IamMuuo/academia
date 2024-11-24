@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:academia/features/auth/repository/user_profile.dart';
 import 'package:drift/drift.dart';
 import 'package:academia/features/auth/repository/user.dart';
 import 'package:drift/native.dart';
@@ -34,7 +35,6 @@ Future<Directory> _getDatabaseDirectory() async {
   if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
     // On desktop, store the database in the home directory
     final homeDir = Directory.systemTemp;
-    print(homeDir.toString());
     return homeDir;
   } else {
     // On mobile platforms, use application documents directory
@@ -42,7 +42,7 @@ Future<Directory> _getDatabaseDirectory() async {
   }
 }
 
-@DriftDatabase(tables: [User])
+@DriftDatabase(tables: [User, UserProfile])
 class AppDatabase extends _$AppDatabase {
   // After generating code, this class needs to define a schemaVersion getter
   // and a constructor telling drift where the database should be stored.
