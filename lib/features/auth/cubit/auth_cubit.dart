@@ -40,8 +40,6 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthErrorState(l));
       return left(l);
     }, (r) async {
-      // print(r.toJson());
-
       // authenticate with verisafe
       final response = await _authenticateWithVerisafe(creds);
       return response.fold((l) {

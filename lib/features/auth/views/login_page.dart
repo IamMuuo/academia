@@ -193,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                                 result.fold((l) {
                                   _showMessageDialog("Authentication Error", l);
                                 }, (r) {
-                                  _showMessageDialog("Welcome", r.othernames!);
+                                  context.pushReplacementNamed("/home");
                                 });
                               },
                         child: state is AuthLoadingState

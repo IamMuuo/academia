@@ -32,6 +32,11 @@ class AcademiaRouter {
         name: "/register",
         builder: (context, state) => const SignUpPage(),
       ),
+      GoRoute(
+        path: "/home",
+        name: "/home",
+        builder: (context, state) => const Layout(),
+      ),
     ],
   );
 }

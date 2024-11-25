@@ -64,7 +64,9 @@ class _UserSelectionPageState extends State<UserSelectionPage> {
                 itemCount: users.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      context.pushReplacementNamed('/home');
+                    },
                     leading: const CircleAvatar(),
                     title: Text(
                       users[index].username,
