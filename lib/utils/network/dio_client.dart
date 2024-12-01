@@ -7,7 +7,7 @@ class DioClient {
   final UserCredentialData creds;
   final AppDatabase database;
   // static const String _baseUrl = "http://192.168.2.115:8000";
-  static const String _baseUrl = "http://192.168.100.2:8000/v2";
+  static const String _baseUrl = "http://192.168.26.183:8000/v2";
 
   DioClient({
     required this.creds,

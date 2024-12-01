@@ -19,7 +19,7 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    // [TODO] Add automatic token refreshing
+    // TODO Add automatic token refreshing
     if (err.response?.statusCode == 401) {
       return handler
           .resolve(await dio.fetch(err.requestOptions)); // Repeat the request.
