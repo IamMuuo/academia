@@ -12,6 +12,7 @@ class AcademiaRouter {
 
   static const String registerRoute = "/register";
   static const String auth = "/auth";
+  static const String profile = "profile";
 
   static final GoRouter _router = GoRouter(
     initialLocation: "/",
@@ -36,6 +37,11 @@ class AcademiaRouter {
         path: "/home",
         name: "/home",
         builder: (context, state) => const Layout(),
+      ),
+      GoRoute(
+        path: profile,
+        name: "/$profile",
+        builder: (context, state) => const ProfilePage(),
       ),
     ],
   );
