@@ -4,13 +4,17 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Academia extends StatelessWidget {
-  const Academia({super.key});
+  final String flavor;
+  const Academia({
+    super.key,
+    required this.flavor,
+  });
 
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
       builder: (lightscheme, darkscheme) => MaterialApp.router(
-        title: "Academia",
+        title: flavor,
         routerConfig: AcademiaRouter.router,
         theme: ThemeData(
           colorScheme: lightscheme,

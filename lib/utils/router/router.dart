@@ -52,16 +52,24 @@ class DefaultRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
-      switch (state.runtimeType) {
-        case AuthErrorState:
-          return Center(
-            child: Text((state as AuthErrorState).message),
-          );
-        case AuthCachedUsersRetrieved:
-          return const UserSelectionPage();
-      }
-      return const OnboardingPage();
-    });
+    return Scaffold(
+      body: Center(
+        child: Text(
+          "Academia",
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
+      ),
+    );
+    // return BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
+    //   switch (state.runtimeType) {
+    //     case AuthErrorState:
+    //       return Center(
+    //         child: Text((state as AuthErrorState).message),
+    //       );
+    //     case AuthCachedUsersRetrieved:
+    //       return const UserSelectionPage();
+    //   }
+    //   return const OnboardingPage();
+    // });
   }
 }

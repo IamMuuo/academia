@@ -67,6 +67,25 @@ android {
             signingConfig = signingConfigs.release
         }
     }
+
+    // flavors
+    flavorDimensions "default"
+    productFlavors{
+      production{
+        dimension "default"
+        resValue "string", "app_name", "Academia"
+      }
+      staging{
+        dimension "default"
+        resValue "string", "app_name", "Academia - Staging"
+      }
+      development{
+        dimension "default"
+        resValue "string", "app_name", "Academia - Dev"
+      }
+
+
+    }
 }
 
 flutter {
