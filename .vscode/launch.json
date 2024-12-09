@@ -1,0 +1,40 @@
+{
+    "configurations": [
+        {
+            "name": "Launch Development flavor",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_development.dart",
+            "args": [
+                "--flavor",
+                "development",
+                "--target",
+                "lib/main_development.dart"
+            ]
+        },
+        {
+            "name": "Launch Staging flavor",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_staging.dart",
+            "args": [
+                "--flavor",
+                "staging",
+                "--target",
+                "lib/main_staging.dart"
+            ]
+        },
+        {
+            "name": "Launch Production flavor",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_production.dart",
+            "args": [
+                "--flavor",
+                "staging",
+                "--target",
+                "lib/main_production.dart"
+            ]
+        }
+    ]
+}
