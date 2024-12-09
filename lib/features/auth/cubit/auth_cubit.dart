@@ -36,7 +36,7 @@ class AuthCubit extends Cubit<AuthState> {
       return left((result as Left).value);
     }
 
-    emit(AuthInitialState());
+    emit(AuthenticatedState(user: (result as Right).value));
     return right(true);
   }
 }

@@ -58,4 +58,26 @@ final class UserLocalRepository {
       );
     }
   }
+
+  /// Adds or updates a user's information into local credentials cache depending
+  /// on whether the user data exists
+  Future<Either<String, bool>> addUserCredsToCache(
+      UserCredentialData credentials) async {
+    try {
+      final ok =
+          await _localDb.into(_localDb.userCredential).insertOnConflictUpdate(
+                credentials.toCompanion(true),
+              );
+      if (ok != 0) {
+        return right(true);
+      }
+      return left(
+        "The specified user credentials data was not inserted since it exists and confliced",
+      );
+    } catch (e) {
+      return left(
+        "Failed to append user credentials to cache with error description ${e.toString()}",
+      );
+    }
+  }
 }

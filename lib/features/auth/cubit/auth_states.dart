@@ -28,3 +28,12 @@ final class AuthErrorState extends AuthState {
 
 // Represents the unauthenticated state
 final class UnAuthenticatedState extends AuthState {}
+
+final class AuthenticatedState extends AuthState {
+  final UserData user;
+  final bool localAuth;
+  AuthenticatedState({
+    required this.user,
+    this.localAuth = false,
+  });
+}

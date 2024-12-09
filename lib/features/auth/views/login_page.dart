@@ -4,6 +4,7 @@ import 'package:academia/features/auth/cubit/auth_states.dart';
 import 'package:academia/utils/router/router.dart';
 import 'package:academia/utils/validator/validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -180,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                                 }
 
                                 // attempt to autheticate
-                                authCubit.authenticate(
+                                final result = await authCubit.authenticate(
                                   UserCredentialData(
                                     password: _passwordController.text,
                                     admno: _admissionController.text,
@@ -188,6 +189,18 @@ class _LoginPageState extends State<LoginPage> {
                                     email: "",
                                   ),
                                 );
+
+                                result.fold((l) {
+                                  _showMessageDialog(
+                                    "Verification error",
+                                    "l",
+                                  );
+                                }, (r) {
+                                  HapticFeedback.heavyImpact();
+                                  GoRouter.of(context).pushNamed(
+                                    AcademiaRouter.home,
+                                  );
+                                });
                               },
                         child: state is AuthLoadingState
                             ? const CircularProgressIndicator.adaptive()

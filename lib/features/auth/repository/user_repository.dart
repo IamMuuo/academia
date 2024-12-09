@@ -2,6 +2,7 @@ import 'package:academia/database/database.dart';
 import 'package:academia/features/auth/repository/user_local_repository.dart';
 import 'package:academia/features/auth/repository/user_remote_repository.dart';
 import 'package:dartz/dartz.dart';
+import 'package:drift/drift.dart';
 import 'package:get_it/get_it.dart';
 import 'package:magnet/magnet.dart';
 
@@ -29,6 +30,13 @@ final class UserRepository {
     return await _userLocalRepository.deleteUserFromCache(userData);
   }
 
+  /// Adds or updates a user's information into local credentials cache depending
+  /// on whether the user data exists
+  Future<Either<String, bool>> addUserCredsToCache(
+      UserCredentialData credentials) async {
+    return await _userLocalRepository.addUserCredsToCache(credentials);
+  }
+
   Future<Either<String, UserData>> authenticateRemotely(
       UserCredentialData credentials) async {
     // Register a magnet singleton instance
@@ -50,6 +58,14 @@ final class UserRepository {
         return left(error);
       }, (user) async {
         await addUserToCache(user);
+        await addUserCredsToCache(UserCredentialData(
+          email: user.email!,
+          username: user.username,
+          admno: credentials.admno,
+          password: credentials.password,
+          userId: user.id,
+          lastLogin: DateTime.now(),
+        ));
         return right(user);
       });
     });
