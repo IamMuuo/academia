@@ -31,7 +31,7 @@
             "program": "lib/main_production.dart",
             "args": [
                 "--flavor",
-                "staging",
+                "production",
                 "--target",
                 "lib/main_production.dart"
             ]
