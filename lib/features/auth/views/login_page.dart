@@ -100,10 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         const Spacer(),
                         IconButton(
-                          onPressed: () {
-                            GoRouter.of(context)
-                                .pushNamed(AcademiaRouter.register);
-                          },
+                          onPressed: () {},
                           icon: const Icon(Bootstrap.question_circle),
                         ),
                       ],
@@ -181,20 +178,16 @@ class _LoginPageState extends State<LoginPage> {
                                   );
                                   return;
                                 }
-                                //   final result = await authCubit
-                                //       .authenticate(UserCredentialData(
-                                //     username: "",
-                                //     email: "",
-                                //     admno: _admissionController.text,
-                                //     password: _passwordController.text,
-                                //     lastLogin: DateTime.now(),
-                                //   ));
-                                //
-                                //   result.fold((l) {
-                                //     _showMessageDialog("Authentication Error", l);
-                                //   }, (r) {
-                                //     context.pushReplacementNamed("/home");
-                                //   });
+
+                                // attempt to autheticate
+                                authCubit.authenticate(
+                                  UserCredentialData(
+                                    password: _passwordController.text,
+                                    admno: _admissionController.text,
+                                    username: "",
+                                    email: "",
+                                  ),
+                                );
                               },
                         child: state is AuthLoadingState
                             ? const CircularProgressIndicator.adaptive()

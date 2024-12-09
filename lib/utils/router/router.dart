@@ -28,11 +28,6 @@ class AcademiaRouter {
         builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
-        path: "/$register",
-        name: register,
-        builder: (context, state) => const SignUpPage(),
-      ),
-      GoRoute(
         path: "/$home",
         name: home,
         builder: (context, state) => const Layout(),

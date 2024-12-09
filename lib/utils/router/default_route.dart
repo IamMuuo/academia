@@ -10,25 +10,20 @@ class DefaultRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => AuthCubit()),
-      ],
-      child: BlocBuilder<AuthCubit, AuthState>(
-        builder: (context, state) {
-          switch (state.runtimeType) {
-            case AuthErrorState:
-              return Center(
-                child: Text(
-                  (state as AuthErrorState).message,
-                ),
-              );
-            case AuthCachedUsersRetrieved:
-              return const UserSelectionPage();
-          }
-          return const OnboardingPage();
-        },
-      ),
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) {
+        switch (state.runtimeType) {
+          case AuthErrorState:
+            return Center(
+              child: Text(
+                (state as AuthErrorState).message,
+              ),
+            );
+          case AuthCachedUsersRetrieved:
+            return const UserSelectionPage();
+        }
+        return const OnboardingPage();
+      },
     );
   }
 }
