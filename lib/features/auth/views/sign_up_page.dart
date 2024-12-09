@@ -76,38 +76,38 @@ class _SignUpPageState extends State<SignUpPage> {
         const SnackBar(content: Text("Checking validity...", softWrap: true)),
       );
 
-      final result = await authCubit.authenticate(UserCredentialData(
-        username: "",
-        email: "",
-        admno: _admissionNumberController.text,
-        password: _passwordController.text,
-        lastLogin: DateTime.now(),
-      ));
-
-      result.fold((l) {
-        _showAlertDialog(l);
-      }, (r) {
-        // print(r);
-        // print(r.toJson());
-
-        _nationalIdController.text = r.nationalId;
-        _firstNameController.text = r.firstname;
-        _lastNameController.text = r.othernames!;
-        _phoneController.text = r.phone;
-        _emailController.text = r.email!;
-        _usernameController.text = r.username;
-        _dateOfBirth = r.dateOfBirth;
-        _dateOfBirthController.text =
-            DateFormat.yMMMMEEEEd().format(r.dateOfBirth);
-
-        setState(() {});
-      });
-
-      setState(() {
-        _dataFetched = true;
-      });
-    } else {
-      _showAlertDialog("Please fill in all required fields.");
+      // final result = await authCubit.authenticate(UserCredentialData(
+      //     username: "",
+      //     email: "",
+      //     admno: _admissionNumberController.text,
+      //     password: _passwordController.text,
+      //     lastLogin: DateTime.now(),
+      //   ));
+      //
+      //   result.fold((l) {
+      //     _showAlertDialog(l);
+      //   }, (r) {
+      //     // print(r);
+      //     // print(r.toJson());
+      //
+      //     _nationalIdController.text = r.nationalId;
+      //     _firstNameController.text = r.firstname;
+      //     _lastNameController.text = r.othernames!;
+      //     _phoneController.text = r.phone;
+      //     _emailController.text = r.email!;
+      //     _usernameController.text = r.username;
+      //     _dateOfBirth = r.dateOfBirth;
+      //     _dateOfBirthController.text =
+      //         DateFormat.yMMMMEEEEd().format(r.dateOfBirth);
+      //
+      //     setState(() {});
+      //   });
+      //
+      //   setState(() {
+      //     _dataFetched = true;
+      //   });
+      // } else {
+      //   _showAlertDialog("Please fill in all required fields.");
     }
   }
 

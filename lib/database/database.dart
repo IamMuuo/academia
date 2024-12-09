@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:academia/features/auth/repository/user.dart';
-import 'package:academia/features/auth/repository/user_credentials.dart';
-import 'package:academia/features/auth/repository/user_profile.dart';
+import 'package:academia/features/auth/models/user.dart';
+import 'package:academia/features/auth/models/user_credentials.dart';
+import 'package:academia/features/auth/models/user_profile.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:drift_flutter/drift_flutter.dart';
@@ -57,5 +57,22 @@ class AppDatabase extends _$AppDatabase {
     // driftDatabase from package:drift_flutter stores the database in
     // getApplicationDocumentsDirectory().
     return driftDatabase(name: 'academia');
+  }
+}
+
+/// A singleton class to reference the local database.
+/// Use this instead of AppDatabase to ensure you always
+/// have an initialized instance
+final class LocalDatabase {
+  static final LocalDatabase _instance = LocalDatabase._internal();
+
+  LocalDatabase._internal();
+
+  factory LocalDatabase() {
+    return _instance;
+  }
+
+  AppDatabase getInstance() {
+    return AppDatabase();
   }
 }

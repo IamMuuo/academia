@@ -1,5 +1,5 @@
-import 'package:academia/features/auth/repository/user.dart';
 import 'package:drift/drift.dart';
+import './user.dart';
 
 class UserProfile extends Table {
   IntColumn get id => integer().autoIncrement()();

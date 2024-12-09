@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                         IconButton(
                           onPressed: () {
                             GoRouter.of(context)
-                                .pushNamed(AcademiaRouter.registerRoute);
+                                .pushNamed(AcademiaRouter.register);
                           },
                           icon: const Icon(Bootstrap.question_circle),
                         ),
@@ -181,20 +181,20 @@ class _LoginPageState extends State<LoginPage> {
                                   );
                                   return;
                                 }
-                                final result = await authCubit
-                                    .authenticate(UserCredentialData(
-                                  username: "",
-                                  email: "",
-                                  admno: _admissionController.text,
-                                  password: _passwordController.text,
-                                  lastLogin: DateTime.now(),
-                                ));
-
-                                result.fold((l) {
-                                  _showMessageDialog("Authentication Error", l);
-                                }, (r) {
-                                  context.pushReplacementNamed("/home");
-                                });
+                                //   final result = await authCubit
+                                //       .authenticate(UserCredentialData(
+                                //     username: "",
+                                //     email: "",
+                                //     admno: _admissionController.text,
+                                //     password: _passwordController.text,
+                                //     lastLogin: DateTime.now(),
+                                //   ));
+                                //
+                                //   result.fold((l) {
+                                //     _showMessageDialog("Authentication Error", l);
+                                //   }, (r) {
+                                //     context.pushReplacementNamed("/home");
+                                //   });
                               },
                         child: state is AuthLoadingState
                             ? const CircularProgressIndicator.adaptive()
