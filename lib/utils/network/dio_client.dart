@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import './auth_interceptor.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class DioClient {
   static const String _baseUrl = "http://192.168.2.115:8000/v2";
@@ -8,14 +9,16 @@ class DioClient {
 
   DioClient() {
     dio.interceptors.add(
-      LogInterceptor(
+      PrettyDioLogger(
         error: true,
         responseBody: true,
         request: true,
         requestBody: true,
         requestHeader: true,
         responseHeader: true,
-        logPrint: (o) => debugPrint(o.toString()),
+        maxWidth: 90,
+        compact: true,
+        enabled: kDebugMode,
       ),
     );
 
