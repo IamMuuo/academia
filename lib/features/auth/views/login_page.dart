@@ -193,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                                 result.fold((l) {
                                   _showMessageDialog(
                                     "Verification error",
-                                    "l",
+                                    l,
                                   );
                                 }, (r) {
                                   HapticFeedback.heavyImpact();

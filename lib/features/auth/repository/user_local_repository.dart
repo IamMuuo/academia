@@ -80,4 +80,40 @@ final class UserLocalRepository {
       );
     }
   }
+
+  /// Retrieves user credentials from cache depending
+  /// on whether the user data exists
+  Future<Either<String, UserCredentialData>> fetchUserCredsFromCache(
+      UserData user) async {
+    try {
+      final creds = await _localDb.managers.userCredential
+          .filter((f) => f.userId.id.equals(user.id))
+          .getSingleOrNull(distinct: true);
+
+      if (creds == null) {
+        throw ("User credentials does not exist in cache!");
+      }
+      return right(creds);
+    } catch (e) {
+      return left(
+        "Failed to retrieve user credentials from cache with error description ${e.toString()}",
+      );
+    }
+  }
+
+  /// Retrieves a user's profile from the cache
+  Future<Either<String, UserProfileData?>> fetchUserProfile(
+      UserData user) async {
+    try {
+      // final profile =
+      final profile = await _localDb.managers.userProfile
+          .filter((f) => f.userId.id.equals(user.id))
+          .getSingleOrNull(distinct: true);
+      return right(profile);
+    } catch (e) {
+      return left(
+        "Failed to fetch cached user profile to cache with error description ${e.toString()}",
+      );
+    }
+  }
 }

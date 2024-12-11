@@ -51,11 +51,13 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   static QueryExecutor _openConnection() {
     // driftDatabase from package:drift_flutter stores the database in
     // getApplicationDocumentsDirectory().
+    driftRuntimeOptions.defaultSerializer =
+        const ValueSerializer.defaults(serializeDateTimeValuesAsString: true);
     return driftDatabase(name: 'academia');
   }
 }

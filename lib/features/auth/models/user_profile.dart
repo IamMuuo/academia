@@ -25,4 +25,6 @@ class UserProfile extends Table {
   TextColumn get admissionNumber => text().nullable()();
   @JsonKey("campus")
   TextColumn get campus => text().withDefault(const Constant("athi"))();
+  @JsonKey("date_of_birth")
+  DateTimeColumn get dateOfBirth => dateTime()();
 }

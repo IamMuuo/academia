@@ -13,8 +13,6 @@ class User extends Table {
   DateTimeColumn get createdAt => dateTime()();
   @JsonKey("modified_at")
   DateTimeColumn get modifiedAt => dateTime()();
-  @JsonKey("date_of_birth")
-  DateTimeColumn get dateOfBirth => dateTime()();
   @JsonKey("national_id")
   TextColumn get nationalId => text().withLength(min: 1, max: 20)();
 

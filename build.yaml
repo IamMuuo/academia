@@ -1,0 +1,9 @@
+# build.yaml for drift
+# build.yaml. This file is quite powerful, see https://pub.dev/packages/build_config
+
+targets:
+  $default:
+    builders:
+      drift_dev:
+        options:
+          store_date_time_values_as_text: true

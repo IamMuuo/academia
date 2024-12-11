@@ -2,7 +2,6 @@ import 'package:academia/database/database.dart';
 import 'package:academia/features/auth/repository/user_local_repository.dart';
 import 'package:academia/features/auth/repository/user_remote_repository.dart';
 import 'package:dartz/dartz.dart';
-import 'package:drift/drift.dart';
 import 'package:get_it/get_it.dart';
 import 'package:magnet/magnet.dart';
 
@@ -35,6 +34,13 @@ final class UserRepository {
   Future<Either<String, bool>> addUserCredsToCache(
       UserCredentialData credentials) async {
     return await _userLocalRepository.addUserCredsToCache(credentials);
+  }
+
+  /// Retrieves user credentials from cache depending
+  /// on whether the user data exists
+  Future<Either<String, UserCredentialData>> fetchUserCredsFromCache(
+      UserData user) async {
+    return await _userLocalRepository.fetchUserCredsFromCache(user);
   }
 
   Future<Either<String, UserData>> authenticateRemotely(
@@ -71,5 +77,12 @@ final class UserRepository {
     });
 
     // authenticate with verisafe
+  }
+
+  /// Retrieves a user's profile from the cache
+  Future<Either<String, UserProfileData?>> fetchUserProfile(
+    UserData user,
+  ) async {
+    return await _userLocalRepository.fetchUserProfile(user);
   }
 }
