@@ -1,9 +1,9 @@
 import 'package:academia/database/database.dart';
-import 'package:academia/utils/network/dio_client.dart';
+import 'package:academia/utils/network/network.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
-final class UserRemoteRepository {
+final class UserRemoteRepository with DioErrorHandler {
   final DioClient _client = DioClient();
 
   /// The function attempts to authenticate a users [credentials] with
@@ -24,7 +24,7 @@ final class UserRemoteRepository {
 
       return left(response.data["error"] ?? response.statusMessage);
     } on DioException catch (de) {
-      return left(de.response?.data["error"] ?? de.response!.statusMessage);
+      return handleDioError(de);
     } catch (e) {
       return left("Please check your internet connection and try that again!");
     }

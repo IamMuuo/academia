@@ -22,7 +22,6 @@ class UserSelectionTile extends StatefulWidget {
 }
 
 class _UserSelectionTileState extends State<UserSelectionTile> {
-  bool _isLoading = true;
   late AuthCubit _authCubit = BlocProvider.of<AuthCubit>(context);
 
   UserProfileData? profile;
@@ -76,7 +75,9 @@ class _UserSelectionTileState extends State<UserSelectionTile> {
               onTap: () async {
                 final result = await _authCubit.authenticate(creds!);
                 result.fold((l) {
-                  _showMessageDialog("Authentication Error", l);
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(l),
+                  ));
                 }, (r) {
                   if (!context.mounted) return;
                   GoRouter.of(context)
@@ -96,12 +97,9 @@ class _UserSelectionTileState extends State<UserSelectionTile> {
                   BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
                 if (state is AuthLoadingState) {
                   return const LinearProgressIndicator();
-                } else if (state is AuthErrorState) {
-                  return Text(state.message);
                 }
                 return Text(
-                  profile?.bio ??
-                      "${widget.user.firstname} ${widget.user.othernames}",
+                  profile?.bio ?? "No bio yet",
                 );
               }),
               trailing: const Icon(Bootstrap.arrow_right),

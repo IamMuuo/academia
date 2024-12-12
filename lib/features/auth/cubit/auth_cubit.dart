@@ -17,7 +17,23 @@ class AuthCubit extends Cubit<AuthState> {
         }, (users) {
           if (users.isEmpty) {
             emit(AuthFirstAppLaunch());
-            return;
+          } else if (users.length == 1) {
+            return fetchUserCredsFromCache(users.first).then((result) {
+              result.fold((error) {
+                emit(AuthErrorState(error));
+                return;
+              }, (creds) {
+                authenticate(creds).then((auth) {
+                  auth.fold((error) {
+                    emit(AuthErrorState(error));
+                    return;
+                  }, (r) {
+                    AuthenticatedState(user: users.first);
+                    return;
+                  });
+                });
+              });
+            });
           }
           emit(AuthCachedUsersRetrieved(cachedUsers: users));
         });

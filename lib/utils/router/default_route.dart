@@ -1,8 +1,10 @@
 import 'package:academia/features/auth/cubit/auth_cubit.dart';
 import 'package:academia/features/auth/cubit/auth_states.dart';
 import 'package:academia/features/features.dart';
+import 'package:academia/utils/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class DefaultRoute extends StatelessWidget {
   const DefaultRoute({super.key});
@@ -10,15 +12,16 @@ class DefaultRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<AuthCubit, AuthState>(
-        builder: (context, state) {
-          if (state is AuthenticatedState) {
-            return const Layout();
-          } else if (state is AuthCachedUsersRetrieved) {
-            return const UserSelectionPage();
+      body: BlocListener<AuthCubit, AuthState>(
+        listener: (context, state) {
+          if (state is AuthCachedUsersRetrieved) {
+            GoRouter.of(context)
+                .pushReplacementNamed(AcademiaRouter.userSelection);
+          } else if (state is AuthenticatedState) {
+            GoRouter.of(context).pushReplacementNamed(AcademiaRouter.home);
           }
-          return const OnboardingPage();
         },
+        child: const OnboardingPage(),
       ),
     );
   }
