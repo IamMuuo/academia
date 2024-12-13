@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:academia/database/database.dart';
 import 'package:academia/features/auth/repository/user_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:academia/features/auth/cubit/auth_states.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final UserRepository _userRepository = UserRepository();
@@ -40,6 +43,12 @@ class AuthCubit extends Cubit<AuthState> {
       },
     );
   }
+
+  StreamSubscription<List<ConnectivityResult>> subscription = Connectivity()
+      .onConnectivityChanged
+      .listen((List<ConnectivityResult> result) {
+    // Received changes in available connectivity types!
+  });
 
   /// Authenticate performs authentication mechanisms with both verisafe
   /// and magnet to authenticate a user

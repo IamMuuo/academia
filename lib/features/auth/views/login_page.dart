@@ -35,25 +35,25 @@ class _LoginPageState extends State<LoginPage> {
   bool validateForm() {
     return _formState.currentState!.validate();
   }
-
-  /// Shows a dialog with [title] and [content]
-  void _showMessageDialog(String title, String content) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: [
-          TextButton(
-            onPressed: () {
-              context.pop();
-            },
-            child: const Text("Ok"),
-          ),
-        ],
-      ),
-    );
-  }
+  //
+  // /// Shows a dialog with [title] and [content]
+  // void _showMessageDialog(String title, String content) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: Text(title),
+  //       content: Text(content),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () {
+  //             context.pop();
+  //           },
+  //           child: const Text("Ok"),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -173,9 +173,11 @@ class _LoginPageState extends State<LoginPage> {
                             ? null
                             : () async {
                                 if (!validateForm()) {
-                                  _showMessageDialog(
-                                    "Validation error",
-                                    "Please ensure that the form was well filled",
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          "Please ensure that the form was well filled"),
+                                    ),
                                   );
                                   return;
                                 }
@@ -191,9 +193,8 @@ class _LoginPageState extends State<LoginPage> {
                                 );
 
                                 result.fold((l) {
-                                  _showMessageDialog(
-                                    "Verification error",
-                                    l,
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(l)),
                                   );
                                 }, (r) {
                                   HapticFeedback.heavyImpact();

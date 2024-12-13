@@ -63,6 +63,7 @@ dependencies:
   skeletonizer: ^1.4.2
   get_it: ^8.0.2
   pretty_dio_logger: ^1.4.0
+  connectivity_plus: ^6.1.1
   
 dev_dependencies:
   flutter_test:
