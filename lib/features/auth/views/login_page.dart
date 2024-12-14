@@ -4,6 +4,7 @@ import 'package:academia/features/auth/cubit/auth_states.dart';
 import 'package:academia/utils/router/router.dart';
 import 'package:academia/utils/validator/validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -34,25 +35,25 @@ class _LoginPageState extends State<LoginPage> {
   bool validateForm() {
     return _formState.currentState!.validate();
   }
-
-  /// Shows a dialog with [title] and [content]
-  void _showMessageDialog(String title, String content) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: [
-          TextButton(
-            onPressed: () {
-              context.pop();
-            },
-            child: const Text("Ok"),
-          ),
-        ],
-      ),
-    );
-  }
+  //
+  // /// Shows a dialog with [title] and [content]
+  // void _showMessageDialog(String title, String content) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: Text(title),
+  //       content: Text(content),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () {
+  //             context.pop();
+  //           },
+  //           child: const Text("Ok"),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -100,10 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         const Spacer(),
                         IconButton(
-                          onPressed: () {
-                            GoRouter.of(context)
-                                .pushNamed(AcademiaRouter.registerRoute);
-                          },
+                          onPressed: () {},
                           icon: const Icon(Bootstrap.question_circle),
                         ),
                       ],
@@ -175,25 +173,34 @@ class _LoginPageState extends State<LoginPage> {
                             ? null
                             : () async {
                                 if (!validateForm()) {
-                                  _showMessageDialog(
-                                    "Validation error",
-                                    "Please ensure that the form was well filled",
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          "Please ensure that the form was well filled"),
+                                    ),
                                   );
                                   return;
                                 }
-                                final result = await authCubit
-                                    .authenticate(UserCredentialData(
-                                  username: "",
-                                  email: "",
-                                  admno: _admissionController.text,
-                                  password: _passwordController.text,
-                                  lastLogin: DateTime.now(),
-                                ));
+
+                                // attempt to autheticate
+                                final result = await authCubit.authenticate(
+                                  UserCredentialData(
+                                    password: _passwordController.text,
+                                    admno: _admissionController.text,
+                                    username: "",
+                                    email: "",
+                                  ),
+                                );
 
                                 result.fold((l) {
-                                  _showMessageDialog("Authentication Error", l);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(l)),
+                                  );
                                 }, (r) {
-                                  context.pushReplacementNamed("/home");
+                                  HapticFeedback.heavyImpact();
+                                  GoRouter.of(context).pushNamed(
+                                    AcademiaRouter.home,
+                                  );
                                 });
                               },
                         child: state is AuthLoadingState

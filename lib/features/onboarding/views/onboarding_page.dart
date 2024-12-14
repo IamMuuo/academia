@@ -63,7 +63,7 @@ class OnboardingPage extends StatelessWidget {
                             width: double.infinity,
                             child: FilledButton(
                               onPressed: () {
-                                context.push(
+                                GoRouter.of(context).pushNamed(
                                   AcademiaRouter.auth,
                                 );
                               },

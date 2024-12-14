@@ -1,146 +1,84 @@
+import 'dart:async';
+
 import 'package:academia/database/database.dart';
-import 'package:academia/utils/network/dio_client.dart';
+import 'package:academia/features/auth/repository/user_repository.dart';
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:academia/features/auth/cubit/auth_states.dart';
-import 'package:intl/intl.dart';
-import 'package:magnet/magnet.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final AppDatabase appDatabase;
-  AuthCubit(this.appDatabase) : super(AuthInitialState()) {
-    _loadStoredUser().then((val) {});
+  final UserRepository _userRepository = UserRepository();
+
+  // Load the cached user information
+  AuthCubit() : super(AuthInitialState()) {
+    _userRepository.fetchAllUsersFromCache().then(
+      (value) {
+        value.fold((error) {
+          emit(AuthErrorState(error));
+        }, (users) {
+          if (users.isEmpty) {
+            emit(AuthFirstAppLaunch());
+          } else if (users.length == 1) {
+            return fetchUserCredsFromCache(users.first).then((result) {
+              result.fold((error) {
+                emit(AuthErrorState(error));
+                return;
+              }, (creds) {
+                authenticate(creds).then((auth) {
+                  auth.fold((error) {
+                    emit(AuthErrorState(error));
+                    return;
+                  }, (r) {
+                    AuthenticatedState(user: users.first);
+                    return;
+                  });
+                });
+              });
+            });
+          }
+          emit(AuthCachedUsersRetrieved(cachedUsers: users));
+        });
+      },
+    );
   }
 
-  Future<void> _loadStoredUser() async {
-    try {
-      final allUsers = await appDatabase.select(appDatabase.user).get();
-      if (allUsers.isEmpty) {
-        emit(AuthFirstAppLaunch());
-        return;
-      }
-      emit(AuthCachedUsersRetrieved(cachedUsers: allUsers));
-    } catch (e) {
-      emit(AuthErrorState(e.toString()));
-      rethrow;
-    }
-  }
+  StreamSubscription<List<ConnectivityResult>> subscription = Connectivity()
+      .onConnectivityChanged
+      .listen((List<ConnectivityResult> result) {
+    // Received changes in available connectivity types!
+  });
 
-  /// Authenticates a user
-  Future<Either<String, UserData>> authenticate(
-      UserCredentialData creds) async {
+  /// Authenticate performs authentication mechanisms with both verisafe
+  /// and magnet to authenticate a user
+  Future<Either<String, bool>> authenticate(
+    UserCredentialData credentials,
+  ) async {
     emit(AuthLoadingState());
-    final result = await _fetchUserDataFromMagnet(
-      creds.admno,
-      creds.password,
-    );
+    final result = await _userRepository.authenticateRemotely(credentials);
 
-    return result.fold((l) {
-      emit(AuthErrorState(l));
-      return left(l);
-    }, (r) async {
-      // authenticate with verisafe
-      final response = await _authenticateWithVerisafe(creds);
-      return response.fold((l) {
-        emit(PartiallyAuthenticatedState(user: r));
-        return left(l);
-      }, (r) async {
-        /// Write the user data
-        await appDatabase
-            .into(appDatabase.user)
-            .insertOnConflictUpdate(r.toCompanion(true));
-
-        final credentials = UserCredentialData(
-          userId: r.id,
-          username: r.username,
-          email: r.email!,
-          admno: creds.admno,
-          password: creds.password,
-          lastLogin: DateTime.now(),
-        );
-
-        /// Write the credential data
-        await appDatabase
-            .into(appDatabase.userCredential)
-            .insertOnConflictUpdate(credentials);
-
-        // emit the fully autheticated state
-        emit(FullyAuthenticatedState(user: r, creds: credentials));
-
-        return right(r);
-      });
-      // emit the authenticated state
-    });
-  }
-
-  Future<Either<String, UserData>> _authenticateWithVerisafe(
-      UserCredentialData creds) async {
-    final DioClient dioClient = DioClient(
-      creds: creds,
-      database: appDatabase,
-    );
-
-    try {
-      final response = await dioClient.dio.post(
-        "/auth/authenticate",
-        data: {
-          "admission_number": creds.admno,
-          "password": creds.password,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        return right(UserData.fromJson(response.data));
-      }
-
-      return left(response.data["error"]);
-    } on DioException catch (e) {
-      return left(e.toString());
-    } catch (e) {
-      return left(e.toString());
+    if (result.isLeft()) {
+      emit(AuthErrorState((result as Left).value));
+      return left((result as Left).value);
     }
+
+    emit(AuthenticatedState(user: (result as Right).value));
+    return right(true);
   }
 
-  Future<Either<String, UserData>> _fetchUserDataFromMagnet(
-      String admno, String password) async {
-    final Magnet magnet = Magnet(
-      admno,
-      password,
-    );
-
-    final loginRes = await magnet.login();
-
-    return loginRes.fold((l) {
-      return left(l.toString());
-    }, (r) async {
-      final data = await magnet.fetchUserDetails();
-
-      return data.fold((l) {
-        return left(l.toString());
-      }, (r) {
-        var dOB = DateFormat('MM/dd/yyyy').parse(r["dateofbirth"] ?? "");
-        String name = r['name'] ?? "";
-        List<String> nameParts = name.split(' ');
-        String firstName = nameParts.first;
-        String lastName = nameParts.sublist(1).join(' ');
-
-        final userData = UserData(
-          id: "",
-          username: "",
-          firstname: firstName,
-          othernames: lastName,
-          phone: "",
-          email: r["email"] ?? "",
-          gender: r["gender"] ?? "",
-          nationalId: r["idno"] ?? "",
-          active: (r["academicstatus"] ?? "true") == "true" ? true : false,
-          modifiedAt: DateTime.now(),
-          dateOfBirth: dOB,
-          createdAt: DateTime.now(),
-        );
-        return right(userData);
-      });
+  Future<UserProfileData?> fetchUserProfile(UserData user) async {
+    final result = await _userRepository.fetchUserProfile(user);
+    result.fold((l) {
+      debugPrint(l);
+      return null;
+    }, (r) {
+      return r;
     });
+  }
+
+  Future<Either<String, UserCredentialData>> fetchUserCredsFromCache(
+      UserData user) async {
+    return await _userRepository.fetchUserCredsFromCache(user);
   }
 }

@@ -1,5 +1,5 @@
-import 'package:academia/features/auth/repository/user.dart';
 import 'package:drift/drift.dart';
+import './user.dart';
 
 class UserProfile extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -25,4 +25,6 @@ class UserProfile extends Table {
   TextColumn get admissionNumber => text().nullable()();
   @JsonKey("campus")
   TextColumn get campus => text().withDefault(const Constant("athi"))();
+  @JsonKey("date_of_birth")
+  DateTimeColumn get dateOfBirth => dateTime()();
 }

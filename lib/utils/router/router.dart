@@ -1,5 +1,6 @@
 import 'package:academia/features/auth/cubit/auth_cubit.dart';
 import 'package:academia/features/auth/cubit/auth_states.dart';
+import 'package:academia/utils/router/default_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -10,9 +11,12 @@ class AcademiaRouter {
   static GlobalKey<NavigatorState> get globalNavigatorKey =>
       GlobalKey<NavigatorState>();
 
-  static const String registerRoute = "/register";
-  static const String auth = "/auth";
+  static const String register = "register";
+  static const String auth = "auth";
   static const String profile = "profile";
+  static const String home = "home";
+  static const String userSelection = "user-selection";
+  static const String onboarding = "onboarding";
 
   static final GoRouter _router = GoRouter(
     initialLocation: "/",
@@ -24,52 +28,30 @@ class AcademiaRouter {
         builder: (context, state) => const DefaultRoute(),
       ),
       GoRoute(
-        path: "/auth",
-        name: "/auth",
+        path: "/$onboarding",
+        name: onboarding,
+        builder: (context, state) => const OnboardingPage(),
+      ),
+      GoRoute(
+        path: "/$auth",
+        name: auth,
         builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
-        path: "/register",
-        name: "/register",
-        builder: (context, state) => const SignUpPage(),
-      ),
-      GoRoute(
-        path: "/home",
-        name: "/home",
+        path: "/$home",
+        name: home,
         builder: (context, state) => const Layout(),
       ),
       GoRoute(
-        path: profile,
-        name: "/$profile",
+        name: profile,
+        path: "/$profile",
         builder: (context, state) => const ProfilePage(),
+      ),
+      GoRoute(
+        name: userSelection,
+        path: "/$userSelection",
+        builder: (context, state) => const UserSelectionPage(),
       ),
     ],
   );
-}
-
-class DefaultRoute extends StatelessWidget {
-  const DefaultRoute({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          "Academia",
-          style: Theme.of(context).textTheme.headlineLarge,
-        ),
-      ),
-    );
-    // return BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
-    //   switch (state.runtimeType) {
-    //     case AuthErrorState:
-    //       return Center(
-    //         child: Text((state as AuthErrorState).message),
-    //       );
-    //     case AuthCachedUsersRetrieved:
-    //       return const UserSelectionPage();
-    //   }
-    //   return const OnboardingPage();
-    // });
-  }
 }
