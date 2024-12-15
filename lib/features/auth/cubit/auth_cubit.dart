@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:academia/features/auth/cubit/auth_states.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
+/// TODO: erick figure out a way to automatically log in user when connection is established
 class AuthCubit extends Cubit<AuthState> {
   final UserRepository _userRepository = UserRepository();
 
@@ -25,7 +26,14 @@ class AuthCubit extends Cubit<AuthState> {
               result.fold((error) {
                 emit(AuthErrorState(error));
                 return;
-              }, (creds) {
+              }, (creds) async {
+                final List<ConnectivityResult> connectivityResult =
+                    await (Connectivity().checkConnectivity());
+                // Authenticate locally if no internet connection was found
+                if (connectivityResult.contains(ConnectivityResult.none)) {
+                  emit(AuthenticatedState(user: users.first, localAuth: true));
+                  return;
+                }
                 authenticate(creds).then((auth) {
                   auth.fold((error) {
                     emit(AuthErrorState(error));
