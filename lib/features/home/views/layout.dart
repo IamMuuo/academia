@@ -1,6 +1,8 @@
+import 'dart:async';
+
 import 'package:academia/features/features.dart';
-import 'package:academia/features/profile/profile_page_desktop.dart';
 import 'package:academia/utils/responsive/responsive.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -18,16 +20,50 @@ class _LayoutState extends State<Layout> {
       child: Text("Statistics"),
     ),
     Center(
-      child: Text("Statistics"),
+      child: Text("Courses"),
     ),
     Center(
-      child: Text("Statistics"),
+      child: Text("Social"),
     ),
     Center(
       child: Text("Statistics"),
     ),
     ProfilePage()
   ];
+
+  // Stream subscription for network notification
+  @override
+  void initState() {
+    super.initState();
+    StreamSubscription<List<ConnectivityResult>> subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((List<ConnectivityResult> result) {
+      // Received changes in available connectivity types!
+      if (result.contains(ConnectivityResult.none)) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(days: 30),
+            showCloseIcon: true,
+            content: Text(
+                "Your internet connection has been lost some features may not work"),
+          ),
+        );
+        return;
+      }
+      if (!result.contains(ConnectivityResult.none)) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            showCloseIcon: true,
+            content: Text("Your internet connection has been restored"),
+          ),
+        );
+        return;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
