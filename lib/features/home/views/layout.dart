@@ -41,6 +41,7 @@ class _LayoutState extends State<Layout> {
       // Received changes in available connectivity types!
       if (result.contains(ConnectivityResult.none)) {
         if (!mounted) return;
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             duration: Duration(days: 30),
@@ -53,6 +54,8 @@ class _LayoutState extends State<Layout> {
       }
       if (!result.contains(ConnectivityResult.none)) {
         if (!mounted) return;
+
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             showCloseIcon: true,
