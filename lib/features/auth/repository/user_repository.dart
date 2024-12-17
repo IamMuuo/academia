@@ -46,15 +46,16 @@ final class UserRepository {
   Future<Either<String, UserData>> authenticateRemotely(
       UserCredentialData credentials) async {
     // Register a magnet singleton instance
-    GetIt.instance.registerSingletonIfAbsent(
-      () => Magnet(credentials.admno, credentials.password),
-      instanceName: "magnet",
-    );
+    // GetIt.instance.registerSingletonIfAbsent(
+    //   () => Magnet(credentials.admno, credentials.password),
+    //   instanceName: "magnet",
+    // );
 
+    // TODO: (erick) enable auth with magnet
     // authenticate with magnet
-    final magnetResult =
-        await (GetIt.instance.get<Magnet>(instanceName: "magnet").login());
-
+    const magnetResult =  Right(Object());
+    //     await (GetIt.instance.get<Magnet>(instanceName: "magnet").login());
+    //
     return magnetResult.fold((error) {
       return left(error.toString());
     }, (session) async {
@@ -80,9 +81,32 @@ final class UserRepository {
   }
 
   /// Retrieves a user's profile from the cache
-  Future<Either<String, UserProfileData?>> fetchUserProfile(
+  Future<Either<String, UserProfileData>> fetchUserProfileFromCache(
     UserData user,
   ) async {
-    return await _userLocalRepository.fetchUserProfile(user);
+    final localResult = await _userLocalRepository.fetchUserProfile(user);
+    if (localResult.isRight()) {
+      final profile = (localResult as Right).value;
+      if (profile == null) {
+        return await refreshUserProfile(user);
+      }
+      return right((localResult as Right).value);
+    }
+
+    return Left((localResult as Left).value);
+  }
+
+  Future<Either<String, UserProfileData>> refreshUserProfile(
+    UserData user,
+  ) async {
+    // Fetch from the remote db
+    final remoteResult = await _userRemoteRepository.fetchUserProfile();
+    if (remoteResult.isRight()) {
+      final profile = (remoteResult as Right).value;
+      await _userLocalRepository.addUserProfile(profile);
+      return right(profile);
+    }
+
+    return (left((remoteResult as Left).value));
   }
 }

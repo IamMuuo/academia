@@ -61,20 +61,3 @@ class AppDatabase extends _$AppDatabase {
     return driftDatabase(name: 'academia');
   }
 }
-
-/// A singleton class to reference the local database.
-/// Use this instead of AppDatabase to ensure you always
-/// have an initialized instance
-final class LocalDatabase {
-  static final LocalDatabase _instance = LocalDatabase._internal();
-
-  LocalDatabase._internal();
-
-  factory LocalDatabase() {
-    return _instance;
-  }
-
-  AppDatabase getInstance() {
-    return AppDatabase();
-  }
-}

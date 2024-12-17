@@ -1,12 +1,13 @@
 import 'package:academia/database/database.dart';
 import 'package:dartz/dartz.dart';
 import 'package:drift/drift.dart';
+import 'package:get_it/get_it.dart';
 
 /// Repository for manipulation of user related information
 /// in the application's local cache
 final class UserLocalRepository {
   // the db's instance
-  final AppDatabase _localDb = LocalDatabase().getInstance();
+  final AppDatabase _localDb = GetIt.instance.get(instanceName: "cacheDB");
 
   /// Fetches all users from the local cache
   /// incase of an error it will return a [String] to the left
@@ -97,6 +98,26 @@ final class UserLocalRepository {
     } catch (e) {
       return left(
         "Failed to retrieve user credentials from cache with error description ${e.toString()}",
+      );
+    }
+  }
+
+  /// Sets a user's profile to the cache
+  Future<Either<String, bool>> addUserProfile(UserProfileData profile) async {
+    try {
+      final ok =
+          await _localDb.into(_localDb.userProfile).insertOnConflictUpdate(
+                profile.toCompanion(true),
+              );
+      if (ok != 0) {
+        return right(true);
+      }
+      return left(
+        "The specified user profile data was not inserted since it exists and confliced",
+      );
+    } catch (e) {
+      return left(
+        "Failed to append user profile to cache with error description ${e.toString()}",
       );
     }
   }

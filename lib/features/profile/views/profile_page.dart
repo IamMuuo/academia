@@ -1,7 +1,7 @@
-import 'package:academia/features/profile/profile_page_desktop.dart';
-import 'package:academia/features/profile/profile_page_mobile.dart';
 import 'package:academia/utils/responsive/responsive.dart';
 import 'package:flutter/material.dart';
+import 'profile_page_mobile.dart';
+import 'profile_page_desktop.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

@@ -15,21 +15,21 @@ class Layout extends StatefulWidget {
 
 class _LayoutState extends State<Layout> {
   int _selectedIndex = 0;
-  final pages = const [
-    Center(
-      child: Text("Statistics"),
-    ),
-    Center(
-      child: Text("Courses"),
-    ),
-    Center(
-      child: Text("Social"),
-    ),
-    Center(
-      child: Text("Statistics"),
-    ),
-    ProfilePage()
-  ];
+  // final pages = const [
+  //   Center(
+  //     child: Text("Statistics"),
+  //   ),
+  //   Center(
+  //     child: Text("Courses"),
+  //   ),
+  //   Center(
+  //     child: Text("Social"),
+  //   ),
+  //   Center(
+  //     child: Text("Statistics"),
+  //   ),
+  //   ProfilePage()
+  // ];
 
   // Stream subscription for network notification
   @override
@@ -74,7 +74,21 @@ class _LayoutState extends State<Layout> {
         body: constraints.maxWidth < ScreenDimension.mobileWidth
             ? IndexedStack(
                 index: _selectedIndex,
-                children: pages,
+                children: const [
+                  Center(
+                    child: Text("Statistics"),
+                  ),
+                  Center(
+                    child: Text("Courses"),
+                  ),
+                  Center(
+                    child: Text("Social"),
+                  ),
+                  Center(
+                    child: Text("Statistics"),
+                  ),
+                  ProfilePage()
+                ],
               )
             : Row(
                 children: [
@@ -119,7 +133,21 @@ class _LayoutState extends State<Layout> {
                   Expanded(
                     child: IndexedStack(
                       index: _selectedIndex,
-                      children: pages,
+                      children: const [
+                        Center(
+                          child: Text("Statistics"),
+                        ),
+                        Center(
+                          child: Text("Courses"),
+                        ),
+                        Center(
+                          child: Text("Social"),
+                        ),
+                        Center(
+                          child: Text("Statistics"),
+                        ),
+                        ProfilePage()
+                      ],
                     ),
                   )
                 ],

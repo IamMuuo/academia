@@ -21,19 +21,21 @@ class AuthCubit extends Cubit<AuthState> {
         }, (users) {
           if (users.isEmpty) {
             emit(AuthFirstAppLaunch());
+            return true;
           } else if (users.length == 1) {
             return fetchUserCredsFromCache(users.first).then((result) {
               result.fold((error) {
                 emit(AuthErrorState(error));
                 return;
               }, (creds) async {
+                // TODO: erick allow checking for connection result
                 final List<ConnectivityResult> connectivityResult =
                     await (Connectivity().checkConnectivity());
                 // Authenticate locally if no internet connection was found
-                if (connectivityResult.contains(ConnectivityResult.none)) {
-                  emit(AuthenticatedState(user: users.first, localAuth: true));
-                  return;
-                }
+                // if (connectivityResult.contains(ConnectivityResult.none)) {
+                //   emit(AuthenticatedState(user: users.first, localAuth: true));
+                //   return;
+                // }
                 authenticate(creds).then((auth) {
                   auth.fold((error) {
                     emit(AuthErrorState(error));
@@ -76,8 +78,8 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<UserProfileData?> fetchUserProfile(UserData user) async {
-    final result = await _userRepository.fetchUserProfile(user);
-    result.fold((l) {
+    final result = await _userRepository.fetchUserProfileFromCache(user);
+    return result.fold((l) {
       debugPrint(l);
       return null;
     }, (r) {

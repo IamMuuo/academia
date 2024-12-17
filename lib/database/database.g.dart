@@ -579,15 +579,6 @@ class $UserProfileTable extends UserProfile
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $UserProfileTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
   static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
   @override
   late final GeneratedColumn<String> userId = GeneratedColumn<String>(
@@ -660,7 +651,6 @@ class $UserProfileTable extends UserProfile
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [
-        id,
         userId,
         bio,
         vibePoints,
@@ -682,9 +672,6 @@ class $UserProfileTable extends UserProfile
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
     if (data.containsKey('user_id')) {
       context.handle(_userIdMeta,
           userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
@@ -743,13 +730,11 @@ class $UserProfileTable extends UserProfile
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => {userId};
   @override
   UserProfileData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return UserProfileData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       userId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
       bio: attachedDatabase.typeMapping
@@ -780,7 +765,6 @@ class $UserProfileTable extends UserProfile
 }
 
 class UserProfileData extends DataClass implements Insertable<UserProfileData> {
-  final int id;
   final String userId;
   final String? bio;
   final int vibePoints;
@@ -792,8 +776,7 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
   final String campus;
   final DateTime dateOfBirth;
   const UserProfileData(
-      {required this.id,
-      required this.userId,
+      {required this.userId,
       this.bio,
       required this.vibePoints,
       this.profilePictureUrl,
@@ -806,7 +789,6 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
     map['user_id'] = Variable<String>(userId);
     if (!nullToAbsent || bio != null) {
       map['bio'] = Variable<String>(bio);
@@ -828,7 +810,6 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
 
   UserProfileCompanion toCompanion(bool nullToAbsent) {
     return UserProfileCompanion(
-      id: Value(id),
       userId: Value(userId),
       bio: bio == null && nullToAbsent ? const Value.absent() : Value(bio),
       vibePoints: Value(vibePoints),
@@ -850,7 +831,6 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return UserProfileData(
-      id: serializer.fromJson<int>(json['id']),
       userId: serializer.fromJson<String>(json['user_id']),
       bio: serializer.fromJson<String?>(json['bio']),
       vibePoints: serializer.fromJson<int>(json['vibe_points']),
@@ -868,7 +848,6 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
       'user_id': serializer.toJson<String>(userId),
       'bio': serializer.toJson<String?>(bio),
       'vibe_points': serializer.toJson<int>(vibePoints),
@@ -883,8 +862,7 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
   }
 
   UserProfileData copyWith(
-          {int? id,
-          String? userId,
+          {String? userId,
           Value<String?> bio = const Value.absent(),
           int? vibePoints,
           Value<String?> profilePictureUrl = const Value.absent(),
@@ -895,7 +873,6 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
           String? campus,
           DateTime? dateOfBirth}) =>
       UserProfileData(
-        id: id ?? this.id,
         userId: userId ?? this.userId,
         bio: bio.present ? bio.value : this.bio,
         vibePoints: vibePoints ?? this.vibePoints,
@@ -913,7 +890,6 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
       );
   UserProfileData copyWithCompanion(UserProfileCompanion data) {
     return UserProfileData(
-      id: data.id.present ? data.id.value : this.id,
       userId: data.userId.present ? data.userId.value : this.userId,
       bio: data.bio.present ? data.bio.value : this.bio,
       vibePoints:
@@ -937,7 +913,6 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
   @override
   String toString() {
     return (StringBuffer('UserProfileData(')
-          ..write('id: $id, ')
           ..write('userId: $userId, ')
           ..write('bio: $bio, ')
           ..write('vibePoints: $vibePoints, ')
@@ -953,23 +928,12 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
   }
 
   @override
-  int get hashCode => Object.hash(
-      id,
-      userId,
-      bio,
-      vibePoints,
-      profilePictureUrl,
-      lastSeen,
-      createdAt,
-      modifiedAt,
-      admissionNumber,
-      campus,
-      dateOfBirth);
+  int get hashCode => Object.hash(userId, bio, vibePoints, profilePictureUrl,
+      lastSeen, createdAt, modifiedAt, admissionNumber, campus, dateOfBirth);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is UserProfileData &&
-          other.id == this.id &&
           other.userId == this.userId &&
           other.bio == this.bio &&
           other.vibePoints == this.vibePoints &&
@@ -983,7 +947,6 @@ class UserProfileData extends DataClass implements Insertable<UserProfileData> {
 }
 
 class UserProfileCompanion extends UpdateCompanion<UserProfileData> {
-  final Value<int> id;
   final Value<String> userId;
   final Value<String?> bio;
   final Value<int> vibePoints;
@@ -994,8 +957,8 @@ class UserProfileCompanion extends UpdateCompanion<UserProfileData> {
   final Value<String?> admissionNumber;
   final Value<String> campus;
   final Value<DateTime> dateOfBirth;
+  final Value<int> rowid;
   const UserProfileCompanion({
-    this.id = const Value.absent(),
     this.userId = const Value.absent(),
     this.bio = const Value.absent(),
     this.vibePoints = const Value.absent(),
@@ -1006,9 +969,9 @@ class UserProfileCompanion extends UpdateCompanion<UserProfileData> {
     this.admissionNumber = const Value.absent(),
     this.campus = const Value.absent(),
     this.dateOfBirth = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   UserProfileCompanion.insert({
-    this.id = const Value.absent(),
     required String userId,
     this.bio = const Value.absent(),
     this.vibePoints = const Value.absent(),
@@ -1019,10 +982,10 @@ class UserProfileCompanion extends UpdateCompanion<UserProfileData> {
     this.admissionNumber = const Value.absent(),
     this.campus = const Value.absent(),
     required DateTime dateOfBirth,
+    this.rowid = const Value.absent(),
   })  : userId = Value(userId),
         dateOfBirth = Value(dateOfBirth);
   static Insertable<UserProfileData> custom({
-    Expression<int>? id,
     Expression<String>? userId,
     Expression<String>? bio,
     Expression<int>? vibePoints,
@@ -1033,9 +996,9 @@ class UserProfileCompanion extends UpdateCompanion<UserProfileData> {
     Expression<String>? admissionNumber,
     Expression<String>? campus,
     Expression<DateTime>? dateOfBirth,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
       if (userId != null) 'user_id': userId,
       if (bio != null) 'bio': bio,
       if (vibePoints != null) 'vibe_points': vibePoints,
@@ -1046,12 +1009,12 @@ class UserProfileCompanion extends UpdateCompanion<UserProfileData> {
       if (admissionNumber != null) 'admission_number': admissionNumber,
       if (campus != null) 'campus': campus,
       if (dateOfBirth != null) 'date_of_birth': dateOfBirth,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
   UserProfileCompanion copyWith(
-      {Value<int>? id,
-      Value<String>? userId,
+      {Value<String>? userId,
       Value<String?>? bio,
       Value<int>? vibePoints,
       Value<String?>? profilePictureUrl,
@@ -1060,9 +1023,9 @@ class UserProfileCompanion extends UpdateCompanion<UserProfileData> {
       Value<DateTime>? modifiedAt,
       Value<String?>? admissionNumber,
       Value<String>? campus,
-      Value<DateTime>? dateOfBirth}) {
+      Value<DateTime>? dateOfBirth,
+      Value<int>? rowid}) {
     return UserProfileCompanion(
-      id: id ?? this.id,
       userId: userId ?? this.userId,
       bio: bio ?? this.bio,
       vibePoints: vibePoints ?? this.vibePoints,
@@ -1073,15 +1036,13 @@ class UserProfileCompanion extends UpdateCompanion<UserProfileData> {
       admissionNumber: admissionNumber ?? this.admissionNumber,
       campus: campus ?? this.campus,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      rowid: rowid ?? this.rowid,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
     if (userId.present) {
       map['user_id'] = Variable<String>(userId.value);
     }
@@ -1112,13 +1073,15 @@ class UserProfileCompanion extends UpdateCompanion<UserProfileData> {
     if (dateOfBirth.present) {
       map['date_of_birth'] = Variable<DateTime>(dateOfBirth.value);
     }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
     return map;
   }
 
   @override
   String toString() {
     return (StringBuffer('UserProfileCompanion(')
-          ..write('id: $id, ')
           ..write('userId: $userId, ')
           ..write('bio: $bio, ')
           ..write('vibePoints: $vibePoints, ')
@@ -1128,7 +1091,8 @@ class UserProfileCompanion extends UpdateCompanion<UserProfileData> {
           ..write('modifiedAt: $modifiedAt, ')
           ..write('admissionNumber: $admissionNumber, ')
           ..write('campus: $campus, ')
-          ..write('dateOfBirth: $dateOfBirth')
+          ..write('dateOfBirth: $dateOfBirth, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -1888,7 +1852,6 @@ typedef $$UserTableProcessedTableManager = ProcessedTableManager<
     PrefetchHooks Function({bool userProfileRefs})>;
 typedef $$UserProfileTableCreateCompanionBuilder = UserProfileCompanion
     Function({
-  Value<int> id,
   required String userId,
   Value<String?> bio,
   Value<int> vibePoints,
@@ -1899,10 +1862,10 @@ typedef $$UserProfileTableCreateCompanionBuilder = UserProfileCompanion
   Value<String?> admissionNumber,
   Value<String> campus,
   required DateTime dateOfBirth,
+  Value<int> rowid,
 });
 typedef $$UserProfileTableUpdateCompanionBuilder = UserProfileCompanion
     Function({
-  Value<int> id,
   Value<String> userId,
   Value<String?> bio,
   Value<int> vibePoints,
@@ -1913,6 +1876,7 @@ typedef $$UserProfileTableUpdateCompanionBuilder = UserProfileCompanion
   Value<String?> admissionNumber,
   Value<String> campus,
   Value<DateTime> dateOfBirth,
+  Value<int> rowid,
 });
 
 final class $$UserProfileTableReferences
@@ -1942,9 +1906,6 @@ class $$UserProfileTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
-
   ColumnFilters<String> get bio => $composableBuilder(
       column: $table.bio, builder: (column) => ColumnFilters(column));
 
@@ -2004,9 +1965,6 @@ class $$UserProfileTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
-
   ColumnOrderings<String> get bio => $composableBuilder(
       column: $table.bio, builder: (column) => ColumnOrderings(column));
 
@@ -2066,9 +2024,6 @@ class $$UserProfileTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<int> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
-
   GeneratedColumn<String> get bio =>
       $composableBuilder(column: $table.bio, builder: (column) => column);
 
@@ -2140,7 +2095,6 @@ class $$UserProfileTableTableManager extends RootTableManager<
           createComputedFieldComposer: () =>
               $$UserProfileTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
             Value<String> userId = const Value.absent(),
             Value<String?> bio = const Value.absent(),
             Value<int> vibePoints = const Value.absent(),
@@ -2151,9 +2105,9 @@ class $$UserProfileTableTableManager extends RootTableManager<
             Value<String?> admissionNumber = const Value.absent(),
             Value<String> campus = const Value.absent(),
             Value<DateTime> dateOfBirth = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
           }) =>
               UserProfileCompanion(
-            id: id,
             userId: userId,
             bio: bio,
             vibePoints: vibePoints,
@@ -2164,9 +2118,9 @@ class $$UserProfileTableTableManager extends RootTableManager<
             admissionNumber: admissionNumber,
             campus: campus,
             dateOfBirth: dateOfBirth,
+            rowid: rowid,
           ),
           createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
             required String userId,
             Value<String?> bio = const Value.absent(),
             Value<int> vibePoints = const Value.absent(),
@@ -2177,9 +2131,9 @@ class $$UserProfileTableTableManager extends RootTableManager<
             Value<String?> admissionNumber = const Value.absent(),
             Value<String> campus = const Value.absent(),
             required DateTime dateOfBirth,
+            Value<int> rowid = const Value.absent(),
           }) =>
               UserProfileCompanion.insert(
-            id: id,
             userId: userId,
             bio: bio,
             vibePoints: vibePoints,
@@ -2190,6 +2144,7 @@ class $$UserProfileTableTableManager extends RootTableManager<
             admissionNumber: admissionNumber,
             campus: campus,
             dateOfBirth: dateOfBirth,
+            rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (
