@@ -37,6 +37,7 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
+              automaticallyImplyLeading: false,
               actions: [
                 IconButton(
                   onPressed: () {},

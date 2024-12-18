@@ -21,21 +21,22 @@ class AuthCubit extends Cubit<AuthState> {
         }, (users) {
           if (users.isEmpty) {
             emit(AuthFirstAppLaunch());
-            return true;
+            return null;
           } else if (users.length == 1) {
             return fetchUserCredsFromCache(users.first).then((result) {
               result.fold((error) {
                 emit(AuthErrorState(error));
                 return;
               }, (creds) async {
-                // TODO: erick allow checking for connection result
                 final List<ConnectivityResult> connectivityResult =
                     await (Connectivity().checkConnectivity());
+
                 // Authenticate locally if no internet connection was found
-                // if (connectivityResult.contains(ConnectivityResult.none)) {
-                //   emit(AuthenticatedState(user: users.first, localAuth: true));
-                //   return;
-                // }
+                if (connectivityResult.contains(ConnectivityResult.none)) {
+                  emit(AuthenticatedState(user: users.first, localAuth: true));
+                  return;
+                }
+
                 authenticate(creds).then((auth) {
                   auth.fold((error) {
                     emit(AuthErrorState(error));
@@ -53,12 +54,6 @@ class AuthCubit extends Cubit<AuthState> {
       },
     );
   }
-
-  StreamSubscription<List<ConnectivityResult>> subscription = Connectivity()
-      .onConnectivityChanged
-      .listen((List<ConnectivityResult> result) {
-    // Received changes in available connectivity types!
-  });
 
   /// Authenticate performs authentication mechanisms with both verisafe
   /// and magnet to authenticate a user

@@ -35,25 +35,6 @@ class _LoginPageState extends State<LoginPage> {
   bool validateForm() {
     return _formState.currentState!.validate();
   }
-  //
-  // /// Shows a dialog with [title] and [content]
-  // void _showMessageDialog(String title, String content) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) => AlertDialog(
-  //       title: Text(title),
-  //       content: Text(content),
-  //       actions: [
-  //         TextButton(
-  //           onPressed: () {
-  //             context.pop();
-  //           },
-  //           child: const Text("Ok"),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                                   );
                                 }, (r) {
                                   HapticFeedback.heavyImpact();
-                                  GoRouter.of(context).pushNamed(
+                                  GoRouter.of(context).pushReplacementNamed(
                                     AcademiaRouter.home,
                                   );
                                 });
