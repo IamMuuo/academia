@@ -1,5 +1,6 @@
 import 'package:academia/database/database.dart';
 import 'package:academia/features/features.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -32,12 +33,32 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async {
-          return Future.delayed(const Duration(seconds: 10));
+          final localAuth = (authCubit.state as AuthenticatedState).localAuth;
+          if (localAuth) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  "Please check your internet connection and try again!",
+                ),
+              ),
+            );
+            return;
+          }
+          final response = await profileCubit.fetchUserProfileFromRemote(user);
+          response.fold((error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(error)),
+            );
+          }, (profile) {
+            setState(() {});
+          });
         },
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
               automaticallyImplyLeading: false,
+              pinned: true,
+              floating: true,
               actions: [
                 IconButton(
                   onPressed: () {},
@@ -56,8 +77,38 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                 child: Row(
                   spacing: 12,
                   children: [
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 60,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: BlocBuilder<ProfileCubit, ProfileState>(
+                          buildWhen: (previous, current) {
+                            if (current is ProfileLoadingState) {
+                              return true;
+                            } else if (current is ProfileLoadedState) {
+                              return true;
+                            }
+                            return false;
+                          },
+                          builder: (context, state) {
+                            if (state is ProfileLoadingState) {
+                              return const CircularProgressIndicator.adaptive();
+                            }
+                            final profile =
+                                (state as ProfileLoadedState).userProfiles;
+
+                            return CachedNetworkImage(
+                              imageUrl: profile.profilePictureUrl ?? "",
+                              fit: BoxFit.fill,
+                              errorWidget: (context, error, message) {
+                                return Image.asset(
+                                  "assets/icons/academia_prod.png",
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
                     ),
                     Expanded(
                       child: Column(
@@ -85,10 +136,6 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
               sliver: SliverClip(
                 child: BlocBuilder<ProfileCubit, ProfileState>(
                   builder: (context, state) {
-                    print(state.runtimeType.toString());
-                    if (state is ProfileErrorState) {
-                      print((state as ProfileErrorState).error);
-                    }
                     if (profileCubit.state is! ProfileLoadedState) {
                       return SliverFillRemaining(
                         child: Skeletonizer(
@@ -120,33 +167,97 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                     }
                     final profile = (state as ProfileLoadedState).userProfiles;
                     return MultiSliver(
+                      pushPinnedChildren: true,
                       children: [
-                        Text(
-                          "Some long bio here to be here",
-                          overflow: TextOverflow.visible,
-                          style: Theme.of(context).textTheme.bodyLarge,
+                        SliverPinnedHeader(
+                          child: Container(
+                            color: Theme.of(context).colorScheme.surface,
+                            child: Text(
+                              "Student information",
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                          ),
                         ),
-                        const Card(
+                        Card(
                           elevation: 0,
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
                               top: Radius.circular(12),
                             ),
                           ),
                           child: ListTile(
-                            leading: Icon(Bootstrap.hash),
-                            title: Text("Admission Number"),
-                            subtitle: Text("21-1000"),
+                            leading: const Icon(Bootstrap.hash),
+                            title: const Text("Admission Number"),
+                            subtitle: Text("${profile.admissionNumber}"),
                           ),
                         ),
-                        const Card(
+                        Card(
                           elevation: 0,
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(12),
+                            ),
+                          ),
+                          child: ListTile(
+                            leading: const Icon(Bootstrap.at),
+                            title: const Text("Academia Username"),
+                            subtitle: Text("@${user.username}"),
+                          ),
+                        ),
+                        Card(
+                          elevation: 0,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(12),
+                            ),
+                          ),
+                          child: ListTile(
+                            leading: const Icon(Bootstrap.chat_dots),
+                            title: const Text("Bio"),
+                            subtitle: Text(
+                              "${profile.bio}",
+                              overflow: TextOverflow.visible,
+                            ),
+                          ),
+                        ),
+                        Card(
+                          elevation: 0,
+                          shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.zero)),
                           child: ListTile(
-                            leading: Icon(Bootstrap.hash),
-                            title: Text("Admission Number"),
-                            subtitle: Text("21-1000"),
+                            leading: const Icon(Bootstrap.gender_ambiguous),
+                            title: const Text("Gender"),
+                            subtitle: Text(user.gender),
+                          ),
+                        ),
+                        Card(
+                          elevation: 0,
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.zero)),
+                          child: ListTile(
+                            leading: const Icon(Icons.card_giftcard),
+                            title: const Text("National ID"),
+                            subtitle: Text(user.nationalId),
+                          ),
+                        ),
+                        Card(
+                          elevation: 0,
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.zero)),
+                          child: ListTile(
+                            leading: const Icon(Bootstrap.phone),
+                            title: const Text("Phone"),
+                            subtitle: Text(user.phone),
+                          ),
+                        ),
+                        Card(
+                          elevation: 0,
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.zero)),
+                          child: ListTile(
+                            leading: const Icon(Bootstrap.envelope),
+                            title: const Text("Email"),
+                            subtitle: Text(user.email ?? "unknown"),
                           ),
                         ),
                         const Card(
