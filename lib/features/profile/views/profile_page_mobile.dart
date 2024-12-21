@@ -195,7 +195,7 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                           elevation: 0,
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(12),
+                              top: Radius.zero,
                             ),
                           ),
                           child: ListTile(
@@ -208,7 +208,7 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                           elevation: 0,
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(12),
+                              top: Radius.zero,
                             ),
                           ),
                           child: ListTile(
