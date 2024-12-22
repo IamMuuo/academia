@@ -1,8 +1,11 @@
 import 'package:academia/database/database.dart';
 import 'package:academia/features/features.dart';
+import 'package:academia/utils/router/router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -65,7 +68,12 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                   icon: const Icon(Bootstrap.pencil),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    HapticFeedback.heavyImpact().then((val) {
+                      if (!context.mounted) return;
+                      GoRouter.of(context).pushNamed(AcademiaRouter.auth);
+                    });
+                  },
                   icon: const Icon(Bootstrap.person_add),
                 )
               ],
