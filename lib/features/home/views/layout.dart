@@ -79,9 +79,7 @@ class _LayoutState extends State<Layout> {
                   Center(
                     child: Text("Statistics"),
                   ),
-                  Center(
-                    child: Text("Courses"),
-                  ),
+                  CoursesPage(),
                   Center(
                     child: Text("Social"),
                   ),
@@ -136,9 +134,7 @@ class _LayoutState extends State<Layout> {
                         Center(
                           child: Text("Statistics"),
                         ),
-                        Center(
-                          child: Text("Courses"),
-                        ),
+                        CoursesPage(),
                         Center(
                           child: Text("Social"),
                         ),
