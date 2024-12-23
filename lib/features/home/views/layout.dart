@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:academia/features/essentials/essentials.dart';
 import 'package:academia/features/features.dart';
 import 'package:academia/utils/responsive/responsive.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -84,9 +85,7 @@ class _LayoutState extends State<Layout> {
                   Center(
                     child: Text("Social"),
                   ),
-                  Center(
-                    child: Text("Statistics"),
-                  ),
+                  EssentialsPage(),
                   ProfilePage()
                 ],
               )
@@ -143,9 +142,7 @@ class _LayoutState extends State<Layout> {
                         Center(
                           child: Text("Social"),
                         ),
-                        Center(
-                          child: Text("Statistics"),
-                        ),
+                        EssentialsPage(),
                         ProfilePage()
                       ],
                     ),
