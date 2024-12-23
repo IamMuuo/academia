@@ -18,6 +18,7 @@ class _EssentialsMobilePageState extends State<EssentialsMobilePage> {
         slivers: [
           SliverAppBar(
             expandedHeight: 250,
+            backgroundColor: Theme.of(context).colorScheme.errorContainer,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 "Essentials",
