@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class UserSelectionPage extends StatefulWidget {
@@ -19,25 +18,6 @@ class UserSelectionPage extends StatefulWidget {
 
 class _UserSelectionPageState extends State<UserSelectionPage> {
   late AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
-
-  /// Shows a dialog with [title] and [content]
-  void _showMessageDialog(String title, String content) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: [
-          TextButton(
-            onPressed: () {
-              context.pop();
-            },
-            child: const Text("Ok"),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
