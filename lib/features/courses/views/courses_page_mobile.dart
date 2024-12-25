@@ -18,6 +18,9 @@ class _CoursesPageMobileState extends State<CoursesPageMobile> {
           slivers: [
             SliverAppBar(
               expandedHeight: 250,
+              pinned: true,
+              floating: true,
+              snap: true,
               flexibleSpace: FlexibleSpaceBar(
                 title: Text(
                   "Courses",
@@ -25,6 +28,16 @@ class _CoursesPageMobileState extends State<CoursesPageMobile> {
                         fontFamily: GoogleFonts.libreBaskerville().fontFamily,
                       ),
                 ),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              sliver: SliverList.separated(
+                itemBuilder: (context, index) => ListTile(
+                    leading: CircleAvatar(),
+                    title: Text("ACS 200"),
+                    subtitle: Text("PLAB * 10:00 - 13:00 * Fredrick Ogore")),
+                separatorBuilder: (context, index) => SizedBox(),
               ),
             ),
           ],

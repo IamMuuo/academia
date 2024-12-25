@@ -17,6 +17,9 @@ class _EssentialsMobilePageState extends State<EssentialsMobilePage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            pinned: true,
+            snap: true,
+            floating: true,
             expandedHeight: 250,
             backgroundColor: Theme.of(context).colorScheme.errorContainer,
             flexibleSpace: FlexibleSpaceBar(
@@ -27,6 +30,12 @@ class _EssentialsMobilePageState extends State<EssentialsMobilePage> {
                     ),
               ),
             ),
+            actions: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Bootstrap.qr_code_scan),
+              ),
+            ],
           ),
           SliverPadding(
             padding: const EdgeInsets.all(12),
