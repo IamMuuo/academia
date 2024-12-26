@@ -53,7 +53,7 @@ final class UserRepository {
 
     // TODO: (erick) enable auth with magnet
     // authenticate with magnet
-    const magnetResult =  Right(Object());
+    const magnetResult = Right(Object());
     //     await (GetIt.instance.get<Magnet>(instanceName: "magnet").login());
     //
     return magnetResult.fold((error) {
@@ -88,7 +88,9 @@ final class UserRepository {
     if (localResult.isRight()) {
       final profile = (localResult as Right).value;
       if (profile == null) {
-        return await refreshUserProfile(user);
+        return left(
+          "Failed to fetch your profile from cache please connect to the internet and refresh",
+        );
       }
       return right((localResult as Right).value);
     }
