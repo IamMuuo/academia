@@ -13,9 +13,13 @@ class CoursesPageMobile extends StatefulWidget {
 
 class _CoursesPageMobileState extends State<CoursesPageMobile> {
   late CourseCubit courseCubit = BlocProvider.of<CourseCubit>(context);
+  late AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
 
   @override
   void initState() {
+    courseCubit.fetchCachedCourses(
+      (authCubit.state as AuthenticatedState).user,
+    );
     super.initState();
   }
 
@@ -24,7 +28,9 @@ class _CoursesPageMobileState extends State<CoursesPageMobile> {
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async {
-          await courseCubit.syncCourses();
+          await courseCubit.syncCourses(
+            (authCubit.state as AuthenticatedState).user,
+          );
         },
         child: CustomScrollView(
           slivers: [

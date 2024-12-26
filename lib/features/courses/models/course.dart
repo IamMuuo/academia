@@ -1,8 +1,9 @@
+import 'package:academia/features/auth/models/user.dart';
 import 'package:drift/drift.dart';
 
 class Course extends Table {
-  TextColumn get id => text().nullable()();
   TextColumn get unit => text()();
+  TextColumn get user => text().references(User, #id).nullable()();
   TextColumn get section => text()();
   @JsonKey("day_of_the_week")
   TextColumn get weekDay => text()();
@@ -16,5 +17,5 @@ class Course extends Table {
       dateTime().nullable().withDefault(Constant(DateTime.now()))();
 
   @override
-  Set<Column<Object>>? get primaryKey => {id};
+  Set<Column<Object>>? get primaryKey => {unit};
 }
