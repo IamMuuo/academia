@@ -36,8 +36,9 @@ final class CourseLocalRepository {
   /// information on conflict
   Future<Either<String, bool>> addCourseToCache(CourseData course) async {
     try {
-      final ok = await _localDb.into(_localDb.course).insertOnConflictUpdate(
+      final ok = await _localDb.into(_localDb.course).insert(
             course.toCompanion(true),
+            mode: InsertMode.insertOrReplace,
           );
       if (ok != 0) {
         return right(true);

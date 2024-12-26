@@ -1,6 +1,8 @@
 import 'package:academia/features/features.dart';
+import 'package:academia/utils/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -57,6 +59,10 @@ class _CoursesPageMobileState extends State<CoursesPageMobile> {
                       itemBuilder: (context, index) {
                         final course = state.courses[index];
                         return ListTile(
+                          onTap: () => context.pushNamed(
+                            AcademiaRouter.courseView,
+                            extra: course,
+                          ),
                           leading: const CircleAvatar(),
                           title: Text("${course.unit} ${course.section}"),
                           subtitle: Text(

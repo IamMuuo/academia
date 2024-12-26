@@ -1,3 +1,4 @@
+import 'package:academia/database/database.dart';
 import 'package:academia/utils/router/default_route.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -14,6 +15,7 @@ class AcademiaRouter {
   static const String home = "home";
   static const String userSelection = "user-selection";
   static const String onboarding = "onboarding";
+  static const String courseView = "course-view";
 
   static final GoRouter _router = GoRouter(
     initialLocation: "/",
@@ -49,6 +51,13 @@ class AcademiaRouter {
         path: "/$userSelection",
         builder: (context, state) => const UserSelectionPage(),
       ),
+      GoRoute(
+          name: courseView,
+          path: "/$courseView",
+          builder: (context, state) {
+            final CourseData course = state.extra as CourseData;
+            return CourseMobileViewPage(course: course);
+          }),
     ],
   );
 }

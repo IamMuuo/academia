@@ -31,6 +31,7 @@ final class CourseRepository {
           course.copyWith(user: Value(user.id)),
         );
         if (res.isLeft()) {
+          print((res as Left).value);
           return left((res as Left).value);
         }
       }
