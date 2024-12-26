@@ -43,67 +43,72 @@ class _EssentialsMobilePageState extends State<EssentialsMobilePage> {
               children: const [
                 Card(
                   elevation: 0,
-                  shape: const RoundedRectangleBorder(
+                  margin: EdgeInsets.only(bottom: 2),
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(12),
                     ),
                   ),
                   child: ListTile(
-                    leading: const Icon(Bootstrap.bell),
-                    title: const Text("Todos & Assigments"),
+                    leading: Icon(Bootstrap.bell),
+                    title: Text("Todos & Assigments"),
                     subtitle: Text("Keep track of your assignments and todos"),
                   ),
                 ),
                 Card(
                   elevation: 0,
-                  shape: const RoundedRectangleBorder(
+                  margin: EdgeInsets.only(bottom: 2),
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(
                       top: Radius.zero,
                     ),
                   ),
                   child: ListTile(
-                    leading: const Icon(Bootstrap.clock),
-                    title: const Text("Exam timetable"),
+                    leading: Icon(Bootstrap.clock),
+                    title: Text("Exam timetable"),
                     subtitle: Text("Psst.. Never miss an exam"),
                   ),
                 ),
                 Card(
                   elevation: 0,
-                  shape: const RoundedRectangleBorder(
+                  margin: EdgeInsets.only(bottom: 2),
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(
                       top: Radius.zero,
                     ),
                   ),
                   child: ListTile(
-                    leading: const Icon(Bootstrap.filetype_pdf),
-                    title: const Text("Past Revision Papers"),
+                    leading: Icon(Bootstrap.filetype_pdf),
+                    title: Text("Past Revision Papers"),
                     subtitle: Text("You want them? You get them.."),
                   ),
                 ),
 
                 Card(
                   elevation: 0,
-                  shape: const RoundedRectangleBorder(
+                  margin: EdgeInsets.only(bottom: 2),
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(
                       bottom: Radius.zero,
                     ),
                   ),
                   child: ListTile(
-                    leading: const Icon(Bootstrap.file_ppt),
-                    title: const Text("Ask Me"),
+                    leading: Icon(Bootstrap.file_ppt),
+                    title: Text("Ask Me"),
                     subtitle: Text("Boring notes? We'll help you revise"),
                   ),
                 ),
                 Card(
                   elevation: 0,
-                  shape: const RoundedRectangleBorder(
+                  margin: EdgeInsets.only(bottom: 2),
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(
                       bottom: Radius.circular(12),
                     ),
                   ),
                   child: ListTile(
-                    leading: const Icon(Bootstrap.play),
-                    title: const Text("Flash Cards"),
+                    leading: Icon(Bootstrap.play),
+                    title: Text("Flash Cards"),
                     subtitle: Text(
                       "Curious if you really understood? Try our flashcards",
                     ),
@@ -113,42 +118,45 @@ class _EssentialsMobilePageState extends State<EssentialsMobilePage> {
                 //Page Break for student performance
                 SizedBox(height: 18),
                 Card(
+                  margin: EdgeInsets.only(bottom: 2),
                   elevation: 0,
-                  shape: const RoundedRectangleBorder(
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(12),
                     ),
                   ),
                   child: ListTile(
-                    leading: const Icon(Bootstrap.bell),
-                    title: const Text("Student Audit"),
+                    leading: Icon(Bootstrap.bell),
+                    title: Text("Student Audit"),
                     subtitle: Text("Keep track of your assignments and todos"),
                   ),
                 ),
                 Card(
                   elevation: 0,
-                  shape: const RoundedRectangleBorder(
+                  margin: EdgeInsets.only(bottom: 2),
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(
                       bottom: Radius.zero,
                     ),
                   ),
                   child: ListTile(
-                    leading: const Icon(Bootstrap.activity),
-                    title: const Text("GPA Calculator"),
+                    leading: Icon(Bootstrap.activity),
+                    title: Text("GPA Calculator"),
                     subtitle: Text("Watch out for those grades!"),
                   ),
                 ),
 
                 Card(
                   elevation: 0,
-                  shape: const RoundedRectangleBorder(
+                  margin: EdgeInsets.only(bottom: 2),
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(
                       bottom: Radius.circular(12),
                     ),
                   ),
                   child: ListTile(
-                    leading: const Icon(Bootstrap.play),
-                    title: const Text("Flash Cards"),
+                    leading: Icon(Bootstrap.play),
+                    title: Text("Flash Cards"),
                     subtitle: Text(
                       "Curious if you really understood? Try our flashcards",
                     ),

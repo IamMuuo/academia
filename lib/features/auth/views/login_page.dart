@@ -1,6 +1,4 @@
 import 'package:academia/database/database.dart';
-import 'package:academia/features/auth/cubit/auth_cubit.dart';
-import 'package:academia/features/auth/cubit/auth_states.dart';
 import 'package:academia/features/features.dart';
 import 'package:academia/utils/router/router.dart';
 import 'package:academia/utils/validator/validator.dart';
@@ -180,11 +178,10 @@ class _LoginPageState extends State<LoginPage> {
                                   );
                                 }, (r) {
                                   HapticFeedback.heavyImpact();
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                        builder: (context) => const Layout(),
-                                      ),
-                                      (Route<dynamic> route) => false);
+                                  context.pop();
+                                  GoRouter.of(context).pushReplacementNamed(
+                                    AcademiaRouter.home,
+                                  );
                                 });
                               },
                         child: state is AuthLoadingState
