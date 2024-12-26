@@ -188,6 +188,7 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                         ),
                         Card(
                           elevation: 0,
+                          margin: const EdgeInsets.only(bottom: 2),
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
                               top: Radius.circular(12),
@@ -201,6 +202,7 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                         ),
                         Card(
                           elevation: 0,
+                          margin: const EdgeInsets.only(bottom: 2),
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
                               top: Radius.zero,
@@ -214,6 +216,7 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                         ),
                         Card(
                           elevation: 0,
+                          margin: const EdgeInsets.only(bottom: 2),
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
                               top: Radius.zero,
@@ -230,6 +233,7 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                         ),
                         Card(
                           elevation: 0,
+                          margin: const EdgeInsets.only(bottom: 2),
                           shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.zero)),
                           child: ListTile(
@@ -240,6 +244,7 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                         ),
                         Card(
                           elevation: 0,
+                          margin: const EdgeInsets.only(bottom: 2),
                           shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.zero)),
                           child: ListTile(
@@ -250,6 +255,7 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                         ),
                         Card(
                           elevation: 0,
+                          margin: const EdgeInsets.only(bottom: 2),
                           shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.zero)),
                           child: ListTile(
@@ -260,6 +266,7 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                         ),
                         Card(
                           elevation: 0,
+                          margin: const EdgeInsets.only(bottom: 2),
                           shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.zero)),
                           child: ListTile(
@@ -268,17 +275,18 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                             subtitle: Text(user.email ?? "unknown"),
                           ),
                         ),
-                        const Card(
+                        Card(
+                          margin: EdgeInsets.zero,
                           elevation: 0,
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
                               bottom: Radius.circular(12),
                             ),
                           ),
                           child: ListTile(
-                            leading: Icon(Bootstrap.hash),
-                            title: Text("Admission Number"),
-                            subtitle: Text("21-1000"),
+                            leading: const Icon(Bootstrap.house_heart),
+                            title: const Text("Campus"),
+                            subtitle: Text(profile.campus),
                           ),
                         ),
                       ],

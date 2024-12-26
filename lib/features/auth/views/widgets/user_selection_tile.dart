@@ -81,11 +81,10 @@ class _UserSelectionTileState extends State<UserSelectionTile> {
                   ));
                 }, (r) {
                   if (!context.mounted) return;
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder: (context) => const Layout(),
-                      ),
-                      (Route<dynamic> route) => false);
+                  context.pop();
+                  GoRouter.of(context).pushReplacementNamed(
+                    AcademiaRouter.home,
+                  );
                 });
               },
               title: Text("@${widget.user.username}"),
