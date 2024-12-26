@@ -1510,9 +1510,7 @@ class $CourseTable extends Course with TableInfo<$CourseTable, CourseData> {
   @override
   late final GeneratedColumn<String> unit = GeneratedColumn<String>(
       'unit', aliasedName, false,
-      type: DriftSqlType.string,
-      requiredDuringInsert: true,
-      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _sectionMeta =
       const VerificationMeta('section');
   @override
@@ -1551,9 +1549,27 @@ class $CourseTable extends Course with TableInfo<$CourseTable, CourseData> {
   late final GeneratedColumn<int> color = GeneratedColumn<int>(
       'color', aliasedName, true,
       type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, unit, section, weekDay, campus, room, lecturer, period, color];
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, true,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        unit,
+        section,
+        weekDay,
+        campus,
+        room,
+        lecturer,
+        period,
+        color,
+        createdAt
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1613,6 +1629,10 @@ class $CourseTable extends Course with TableInfo<$CourseTable, CourseData> {
       context.handle(
           _colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
     }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
     return context;
   }
 
@@ -1640,6 +1660,8 @@ class $CourseTable extends Course with TableInfo<$CourseTable, CourseData> {
           .read(DriftSqlType.string, data['${effectivePrefix}period'])!,
       color: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}color']),
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
     );
   }
 
@@ -1659,6 +1681,7 @@ class CourseData extends DataClass implements Insertable<CourseData> {
   final String lecturer;
   final String period;
   final int? color;
+  final DateTime? createdAt;
   const CourseData(
       {this.id,
       required this.unit,
@@ -1668,7 +1691,8 @@ class CourseData extends DataClass implements Insertable<CourseData> {
       required this.room,
       required this.lecturer,
       required this.period,
-      this.color});
+      this.color,
+      this.createdAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1685,6 +1709,9 @@ class CourseData extends DataClass implements Insertable<CourseData> {
     if (!nullToAbsent || color != null) {
       map['color'] = Variable<int>(color);
     }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
     return map;
   }
 
@@ -1700,6 +1727,9 @@ class CourseData extends DataClass implements Insertable<CourseData> {
       period: Value(period),
       color:
           color == null && nullToAbsent ? const Value.absent() : Value(color),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
     );
   }
 
@@ -1716,6 +1746,7 @@ class CourseData extends DataClass implements Insertable<CourseData> {
       lecturer: serializer.fromJson<String>(json['lecturer']),
       period: serializer.fromJson<String>(json['period']),
       color: serializer.fromJson<int?>(json['color']),
+      createdAt: serializer.fromJson<DateTime?>(json['created_at']),
     );
   }
   @override
@@ -1731,6 +1762,7 @@ class CourseData extends DataClass implements Insertable<CourseData> {
       'lecturer': serializer.toJson<String>(lecturer),
       'period': serializer.toJson<String>(period),
       'color': serializer.toJson<int?>(color),
+      'created_at': serializer.toJson<DateTime?>(createdAt),
     };
   }
 
@@ -1743,7 +1775,8 @@ class CourseData extends DataClass implements Insertable<CourseData> {
           String? room,
           String? lecturer,
           String? period,
-          Value<int?> color = const Value.absent()}) =>
+          Value<int?> color = const Value.absent(),
+          Value<DateTime?> createdAt = const Value.absent()}) =>
       CourseData(
         id: id.present ? id.value : this.id,
         unit: unit ?? this.unit,
@@ -1754,6 +1787,7 @@ class CourseData extends DataClass implements Insertable<CourseData> {
         lecturer: lecturer ?? this.lecturer,
         period: period ?? this.period,
         color: color.present ? color.value : this.color,
+        createdAt: createdAt.present ? createdAt.value : this.createdAt,
       );
   CourseData copyWithCompanion(CourseCompanion data) {
     return CourseData(
@@ -1766,6 +1800,7 @@ class CourseData extends DataClass implements Insertable<CourseData> {
       lecturer: data.lecturer.present ? data.lecturer.value : this.lecturer,
       period: data.period.present ? data.period.value : this.period,
       color: data.color.present ? data.color.value : this.color,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
 
@@ -1780,14 +1815,15 @@ class CourseData extends DataClass implements Insertable<CourseData> {
           ..write('room: $room, ')
           ..write('lecturer: $lecturer, ')
           ..write('period: $period, ')
-          ..write('color: $color')
+          ..write('color: $color, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, unit, section, weekDay, campus, room, lecturer, period, color);
+  int get hashCode => Object.hash(id, unit, section, weekDay, campus, room,
+      lecturer, period, color, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1800,7 +1836,8 @@ class CourseData extends DataClass implements Insertable<CourseData> {
           other.room == this.room &&
           other.lecturer == this.lecturer &&
           other.period == this.period &&
-          other.color == this.color);
+          other.color == this.color &&
+          other.createdAt == this.createdAt);
 }
 
 class CourseCompanion extends UpdateCompanion<CourseData> {
@@ -1813,6 +1850,7 @@ class CourseCompanion extends UpdateCompanion<CourseData> {
   final Value<String> lecturer;
   final Value<String> period;
   final Value<int?> color;
+  final Value<DateTime?> createdAt;
   final Value<int> rowid;
   const CourseCompanion({
     this.id = const Value.absent(),
@@ -1824,6 +1862,7 @@ class CourseCompanion extends UpdateCompanion<CourseData> {
     this.lecturer = const Value.absent(),
     this.period = const Value.absent(),
     this.color = const Value.absent(),
+    this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   CourseCompanion.insert({
@@ -1836,6 +1875,7 @@ class CourseCompanion extends UpdateCompanion<CourseData> {
     required String lecturer,
     required String period,
     this.color = const Value.absent(),
+    this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : unit = Value(unit),
         section = Value(section),
@@ -1854,6 +1894,7 @@ class CourseCompanion extends UpdateCompanion<CourseData> {
     Expression<String>? lecturer,
     Expression<String>? period,
     Expression<int>? color,
+    Expression<DateTime>? createdAt,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1866,6 +1907,7 @@ class CourseCompanion extends UpdateCompanion<CourseData> {
       if (lecturer != null) 'lecturer': lecturer,
       if (period != null) 'period': period,
       if (color != null) 'color': color,
+      if (createdAt != null) 'created_at': createdAt,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1880,6 +1922,7 @@ class CourseCompanion extends UpdateCompanion<CourseData> {
       Value<String>? lecturer,
       Value<String>? period,
       Value<int?>? color,
+      Value<DateTime?>? createdAt,
       Value<int>? rowid}) {
     return CourseCompanion(
       id: id ?? this.id,
@@ -1891,6 +1934,7 @@ class CourseCompanion extends UpdateCompanion<CourseData> {
       lecturer: lecturer ?? this.lecturer,
       period: period ?? this.period,
       color: color ?? this.color,
+      createdAt: createdAt ?? this.createdAt,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1925,6 +1969,9 @@ class CourseCompanion extends UpdateCompanion<CourseData> {
     if (color.present) {
       map['color'] = Variable<int>(color.value);
     }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1943,6 +1990,7 @@ class CourseCompanion extends UpdateCompanion<CourseData> {
           ..write('lecturer: $lecturer, ')
           ..write('period: $period, ')
           ..write('color: $color, ')
+          ..write('createdAt: $createdAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -3121,6 +3169,7 @@ typedef $$CourseTableCreateCompanionBuilder = CourseCompanion Function({
   required String lecturer,
   required String period,
   Value<int?> color,
+  Value<DateTime?> createdAt,
   Value<int> rowid,
 });
 typedef $$CourseTableUpdateCompanionBuilder = CourseCompanion Function({
@@ -3133,6 +3182,7 @@ typedef $$CourseTableUpdateCompanionBuilder = CourseCompanion Function({
   Value<String> lecturer,
   Value<String> period,
   Value<int?> color,
+  Value<DateTime?> createdAt,
   Value<int> rowid,
 });
 
@@ -3171,6 +3221,9 @@ class $$CourseTableFilterComposer
 
   ColumnFilters<int> get color => $composableBuilder(
       column: $table.color, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
 }
 
 class $$CourseTableOrderingComposer
@@ -3208,6 +3261,9 @@ class $$CourseTableOrderingComposer
 
   ColumnOrderings<int> get color => $composableBuilder(
       column: $table.color, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
 }
 
 class $$CourseTableAnnotationComposer
@@ -3245,6 +3301,9 @@ class $$CourseTableAnnotationComposer
 
   GeneratedColumn<int> get color =>
       $composableBuilder(column: $table.color, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 }
 
 class $$CourseTableTableManager extends RootTableManager<
@@ -3279,6 +3338,7 @@ class $$CourseTableTableManager extends RootTableManager<
             Value<String> lecturer = const Value.absent(),
             Value<String> period = const Value.absent(),
             Value<int?> color = const Value.absent(),
+            Value<DateTime?> createdAt = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               CourseCompanion(
@@ -3291,6 +3351,7 @@ class $$CourseTableTableManager extends RootTableManager<
             lecturer: lecturer,
             period: period,
             color: color,
+            createdAt: createdAt,
             rowid: rowid,
           ),
           createCompanionCallback: ({
@@ -3303,6 +3364,7 @@ class $$CourseTableTableManager extends RootTableManager<
             required String lecturer,
             required String period,
             Value<int?> color = const Value.absent(),
+            Value<DateTime?> createdAt = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               CourseCompanion.insert(
@@ -3315,6 +3377,7 @@ class $$CourseTableTableManager extends RootTableManager<
             lecturer: lecturer,
             period: period,
             color: color,
+            createdAt: createdAt,
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0

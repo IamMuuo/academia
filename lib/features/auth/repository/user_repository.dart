@@ -46,16 +46,17 @@ final class UserRepository {
   Future<Either<String, UserData>> authenticateRemotely(
       UserCredentialData credentials) async {
     // Register a magnet singleton instance
+
+    // TODO: (erick) enable auth with magnet
     // GetIt.instance.registerSingletonIfAbsent(
     //   () => Magnet(credentials.admno, credentials.password),
     //   instanceName: "magnet",
     // );
 
-    // TODO: (erick) enable auth with magnet
     // authenticate with magnet
-    const magnetResult = Right(Object());
-    //     await (GetIt.instance.get<Magnet>(instanceName: "magnet").login());
-    //
+    const magnetResult =
+        // await (GetIt.instance.get<Magnet>(instanceName: "magnet").login());
+        Right(Object());
     return magnetResult.fold((error) {
       return left(error.toString());
     }, (session) async {

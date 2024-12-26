@@ -1,5 +1,8 @@
+import 'package:academia/features/features.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class CoursesPageMobile extends StatefulWidget {
   const CoursesPageMobile({super.key});
@@ -9,11 +12,20 @@ class CoursesPageMobile extends StatefulWidget {
 }
 
 class _CoursesPageMobileState extends State<CoursesPageMobile> {
+  late CourseCubit courseCubit = BlocProvider.of<CourseCubit>(context);
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: RefreshIndicator(
-        onRefresh: () async {},
+        onRefresh: () async {
+          await courseCubit.syncCourses();
+        },
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
@@ -30,16 +42,55 @@ class _CoursesPageMobileState extends State<CoursesPageMobile> {
                 ),
               ),
             ),
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              sliver: SliverList.separated(
-                itemBuilder: (context, index) => ListTile(
-                    leading: CircleAvatar(),
-                    title: Text("ACS 200"),
-                    subtitle: Text("PLAB * 10:00 - 13:00 * Fredrick Ogore")),
-                separatorBuilder: (context, index) => SizedBox(),
-              ),
-            ),
+            BlocBuilder<CourseCubit, CourseState>(builder: (context, state) {
+              if (state is CourseStateLoaded) {
+                if (state.courses.isNotEmpty) {
+                  return SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    sliver: SliverList.separated(
+                      itemBuilder: (context, index) {
+                        final course = state.courses[index];
+                        return ListTile(
+                          leading: const CircleAvatar(),
+                          title: Text("${course.unit} ${course.section}"),
+                          subtitle: Text(
+                            "${course.room} *  ${course.period} * ${course.lecturer}",
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) => const SizedBox(),
+                      itemCount: state.courses.length,
+                    ),
+                  );
+                }
+
+                return const SliverFillRemaining(
+                  // TODO: erick add an illustration or animation
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("You have no courses yet, please pull to refresh"),
+                    ],
+                  ),
+                );
+              }
+              return SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                sliver: SliverList.separated(
+                  itemCount: 8,
+                  itemBuilder: (context, index) => const Skeletonizer(
+                    enabled: true,
+                    child: ListTile(
+                      leading: CircleAvatar(),
+                      title: Text("Some Couse"),
+                      subtitle: Text("PLAB * 10:00 - 13:00 * Awesome Lecturer"),
+                    ),
+                  ),
+                  separatorBuilder: (context, index) => const SizedBox(),
+                ),
+              );
+            }),
           ],
         ),
       ),
