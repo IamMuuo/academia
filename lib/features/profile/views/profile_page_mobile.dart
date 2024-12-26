@@ -1,8 +1,11 @@
 import 'package:academia/database/database.dart';
 import 'package:academia/features/features.dart';
+import 'package:academia/utils/router/router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -65,7 +68,12 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                   icon: const Icon(Bootstrap.pencil),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    HapticFeedback.heavyImpact().then((val) {
+                      if (!context.mounted) return;
+                      GoRouter.of(context).pushNamed(AcademiaRouter.auth);
+                    });
+                  },
                   icon: const Icon(Bootstrap.person_add),
                 )
               ],
@@ -180,6 +188,7 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                         ),
                         Card(
                           elevation: 0,
+                          margin: const EdgeInsets.only(bottom: 2),
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
                               top: Radius.circular(12),
@@ -193,9 +202,10 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                         ),
                         Card(
                           elevation: 0,
+                          margin: const EdgeInsets.only(bottom: 2),
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(12),
+                              top: Radius.zero,
                             ),
                           ),
                           child: ListTile(
@@ -206,9 +216,10 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                         ),
                         Card(
                           elevation: 0,
+                          margin: const EdgeInsets.only(bottom: 2),
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(12),
+                              top: Radius.zero,
                             ),
                           ),
                           child: ListTile(
@@ -222,6 +233,7 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                         ),
                         Card(
                           elevation: 0,
+                          margin: const EdgeInsets.only(bottom: 2),
                           shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.zero)),
                           child: ListTile(
@@ -232,6 +244,7 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                         ),
                         Card(
                           elevation: 0,
+                          margin: const EdgeInsets.only(bottom: 2),
                           shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.zero)),
                           child: ListTile(
@@ -242,6 +255,7 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                         ),
                         Card(
                           elevation: 0,
+                          margin: const EdgeInsets.only(bottom: 2),
                           shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.zero)),
                           child: ListTile(
@@ -252,6 +266,7 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                         ),
                         Card(
                           elevation: 0,
+                          margin: const EdgeInsets.only(bottom: 2),
                           shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.zero)),
                           child: ListTile(
@@ -260,17 +275,18 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                             subtitle: Text(user.email ?? "unknown"),
                           ),
                         ),
-                        const Card(
+                        Card(
+                          margin: EdgeInsets.zero,
                           elevation: 0,
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
                               bottom: Radius.circular(12),
                             ),
                           ),
                           child: ListTile(
-                            leading: Icon(Bootstrap.hash),
-                            title: Text("Admission Number"),
-                            subtitle: Text("21-1000"),
+                            leading: const Icon(Bootstrap.house_heart),
+                            title: const Text("Campus"),
+                            subtitle: Text(profile.campus),
                           ),
                         ),
                       ],

@@ -1,6 +1,7 @@
 import 'package:academia/database/database.dart';
 import 'package:academia/features/auth/cubit/auth_cubit.dart';
 import 'package:academia/features/auth/cubit/auth_states.dart';
+import 'package:academia/features/home/views/layout.dart';
 import 'package:academia/utils/router/router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class UserSelectionTile extends StatefulWidget {
 }
 
 class _UserSelectionTileState extends State<UserSelectionTile> {
-  late AuthCubit _authCubit = BlocProvider.of<AuthCubit>(context);
+  late AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
 
   UserProfileData? profile;
   UserCredentialData? creds;
@@ -46,11 +47,11 @@ class _UserSelectionTileState extends State<UserSelectionTile> {
   }
 
   Future<UserProfileData?> _fetchUserProfile(UserData user) async {
-    return await _authCubit.fetchUserProfile(user);
+    return await authCubit.fetchUserProfile(user);
   }
 
   Future<UserCredentialData?> _fetchUserCredentials(UserData user) async {
-    final result = await _authCubit.fetchUserCredsFromCache(user);
+    final result = await authCubit.fetchUserCredsFromCache(user);
     return result.fold((l) {
       _showMessageDialog("Error", l);
       return null;
@@ -73,15 +74,17 @@ class _UserSelectionTileState extends State<UserSelectionTile> {
             enabled: snapshot.connectionState != ConnectionState.done,
             child: ListTile(
               onTap: () async {
-                final result = await _authCubit.authenticate(creds!);
+                final result = await authCubit.authenticate(creds!);
                 result.fold((l) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(l),
                   ));
                 }, (r) {
                   if (!context.mounted) return;
-                  GoRouter.of(context)
-                      .pushReplacementNamed(AcademiaRouter.home);
+                  context.pop();
+                  GoRouter.of(context).pushReplacementNamed(
+                    AcademiaRouter.home,
+                  );
                 });
               },
               title: Text("@${widget.user.username}"),
