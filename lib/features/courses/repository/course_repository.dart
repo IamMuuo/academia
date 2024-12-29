@@ -27,6 +27,7 @@ final class CourseRepository {
     }, (courses) async {
       // Cache them to local db
       for (final course in courses) {
+        syncCourseWithWookie(course);
         final res = await _localRepository.addCourseToCache(
           course.copyWith(user: Value(user.id)),
         );
@@ -42,5 +43,9 @@ final class CourseRepository {
   /// Useful for updating information on a course
   Future<Either<String, bool>> saveCourseToCache(CourseData course) async {
     return await _localRepository.addCourseToCache(course);
+  }
+
+  Future<Either<String, bool>> syncCourseWithWookie(CourseData course) async {
+    return await _courseRemoteRepository.syncCourseWithWookie(course);
   }
 }
