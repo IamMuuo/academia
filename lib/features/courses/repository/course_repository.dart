@@ -31,11 +31,16 @@ final class CourseRepository {
           course.copyWith(user: Value(user.id)),
         );
         if (res.isLeft()) {
-          print((res as Left).value);
           return left((res as Left).value);
         }
       }
       return right(courses);
     });
+  }
+
+  /// Saves [course] to the local cache
+  /// Useful for updating information on a course
+  Future<Either<String, bool>> saveCourseToCache(CourseData course) async {
+    return await _localRepository.addCourseToCache(course);
   }
 }

@@ -64,7 +64,11 @@ class _CoursesPageMobileState extends State<CoursesPageMobile> {
                             AcademiaRouter.courseView,
                             extra: course,
                           ),
-                          leading: const CircleAvatar(),
+                          leading: CircleAvatar(
+                            backgroundColor: course.color == null
+                                ? null
+                                : Color(course.color!),
+                          ),
                           title: Text("${course.unit} ${course.section}"),
                           subtitle: Text(
                             "${course.room} *  ${course.period} * ${course.lecturer.capitalize()}",

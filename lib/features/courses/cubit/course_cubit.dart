@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:academia/database/database.dart';
 import 'package:academia/features/courses/cubit/course_state.dart';
 import 'package:academia/features/courses/repository/course_repository.dart';
@@ -25,6 +27,24 @@ class CourseCubit extends Cubit<CourseState> {
       emit(CourseStateError(error: error));
     }, (courses) {
       emit(CourseStateLoaded(courses: courses));
+    });
+  }
+
+  Future<void> saveCouse(CourseData course) async {
+    if (state is! CourseStateLoaded) {
+      return;
+    }
+    var courses = <CourseData>[];
+    courses = (state as CourseStateLoaded).courses;
+    courses.removeWhere((c) => c.unit == course.unit);
+    emit(CourseStateLoading());
+    final result = await _courseRepository.saveCourseToCache(course);
+    result.fold((error) {
+      emit(CourseStateError(error: error));
+    }, (ok) {
+      courses.add(course);
+      emit(CourseStateLoaded(courses: courses));
+      log("Data saved to localdb sucessfully");
     });
   }
 }
