@@ -48,15 +48,15 @@ final class UserRepository {
     // Register a magnet singleton instance
 
     // TODO: (erick) enable auth with magnet
-    GetIt.instance.registerSingletonIfAbsent(
-      () => Magnet(credentials.admno, credentials.password),
-      instanceName: "magnet",
-    );
+    // GetIt.instance.registerSingletonIfAbsent(
+    //   () => Magnet(credentials.admno, credentials.password),
+    //   instanceName: "magnet",
+    // );
 
     // authenticate with magnet
-    final magnetResult =
-        await (GetIt.instance.get<Magnet>(instanceName: "magnet").login());
-    // Right(Object());
+    const magnetResult =
+        // await (GetIt.instance.get<Magnet>(instanceName: "magnet").login());
+        Right(Object());
     return magnetResult.fold((error) {
       return left(error.toString());
     }, (session) async {

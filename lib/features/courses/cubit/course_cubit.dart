@@ -21,6 +21,7 @@ class CourseCubit extends Cubit<CourseState> {
     emit(CourseStateLoading());
     final result = await _courseRepository.fetchAllCachedCourses(user);
     result.fold((error) {
+      print(error);
       emit(CourseStateError(error: error));
     }, (courses) {
       emit(CourseStateLoaded(courses: courses));

@@ -1,5 +1,6 @@
 import 'package:academia/features/features.dart';
 import 'package:academia/utils/router/router.dart';
+import 'package:academia/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -66,7 +67,7 @@ class _CoursesPageMobileState extends State<CoursesPageMobile> {
                           leading: const CircleAvatar(),
                           title: Text("${course.unit} ${course.section}"),
                           subtitle: Text(
-                            "${course.room} *  ${course.period} * ${course.lecturer}",
+                            "${course.room} *  ${course.period} * ${course.lecturer.capitalize()}",
                           ),
                         );
                       },

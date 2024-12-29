@@ -16,16 +16,10 @@ final class CourseLocalRepository {
   Future<Either<String, List<CourseData>>> fetchAllCachedCourses(
       UserData user) async {
     try {
-      final users = await (_localDb.course.select()
-            ..orderBy([
-              (c) => OrderingTerm(
-                    expression: c.createdAt,
-                    mode: OrderingMode.desc,
-                  ),
-            ]))
-          .get();
-      users.removeWhere((course) => course.user == user.id);
-      return right(users);
+      final courses = await _localDb.managers.course
+          .filter((c) => c.user.id.equals(user.id))
+          .get(distinct: true);
+      return right(courses);
     } catch (e) {
       return left("Failed to retrieve users with message ${e.toString()}");
     }
