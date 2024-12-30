@@ -1,4 +1,6 @@
+import 'package:academia/utils/router/router.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -40,22 +42,26 @@ class _EssentialsMobilePageState extends State<EssentialsMobilePage> {
           SliverPadding(
             padding: const EdgeInsets.all(12),
             sliver: MultiSliver(
-              children: const [
+              children: [
                 Card(
                   elevation: 0,
-                  margin: EdgeInsets.only(bottom: 2),
-                  shape: RoundedRectangleBorder(
+                  margin: const EdgeInsets.only(bottom: 2),
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(12),
                     ),
                   ),
                   child: ListTile(
-                    leading: Icon(Bootstrap.bell),
-                    title: Text("Todos & Assigments"),
-                    subtitle: Text("Keep track of your assignments and todos"),
+                    onTap: () {
+                      context.pushNamed(AcademiaRouter.todo);
+                    },
+                    leading: const Icon(Bootstrap.bell),
+                    title: const Text("Todos & Assigments"),
+                    subtitle:
+                        const Text("Keep track of your assignments and todos"),
                   ),
                 ),
-                Card(
+                const Card(
                   elevation: 0,
                   margin: EdgeInsets.only(bottom: 2),
                   shape: RoundedRectangleBorder(
@@ -69,7 +75,7 @@ class _EssentialsMobilePageState extends State<EssentialsMobilePage> {
                     subtitle: Text("Psst.. Never miss an exam"),
                   ),
                 ),
-                Card(
+                const Card(
                   elevation: 0,
                   margin: EdgeInsets.only(bottom: 2),
                   shape: RoundedRectangleBorder(
@@ -84,7 +90,7 @@ class _EssentialsMobilePageState extends State<EssentialsMobilePage> {
                   ),
                 ),
 
-                Card(
+                const Card(
                   elevation: 0,
                   margin: EdgeInsets.only(bottom: 2),
                   shape: RoundedRectangleBorder(
@@ -98,7 +104,7 @@ class _EssentialsMobilePageState extends State<EssentialsMobilePage> {
                     subtitle: Text("Boring notes? We'll help you revise"),
                   ),
                 ),
-                Card(
+                const Card(
                   elevation: 0,
                   margin: EdgeInsets.only(bottom: 2),
                   shape: RoundedRectangleBorder(
@@ -116,8 +122,8 @@ class _EssentialsMobilePageState extends State<EssentialsMobilePage> {
                 ),
 
                 //Page Break for student performance
-                SizedBox(height: 18),
-                Card(
+                const SizedBox(height: 18),
+                const Card(
                   margin: EdgeInsets.only(bottom: 2),
                   elevation: 0,
                   shape: RoundedRectangleBorder(
@@ -131,7 +137,7 @@ class _EssentialsMobilePageState extends State<EssentialsMobilePage> {
                     subtitle: Text("Keep track of your assignments and todos"),
                   ),
                 ),
-                Card(
+                const Card(
                   elevation: 0,
                   margin: EdgeInsets.only(bottom: 2),
                   shape: RoundedRectangleBorder(
@@ -146,7 +152,7 @@ class _EssentialsMobilePageState extends State<EssentialsMobilePage> {
                   ),
                 ),
 
-                Card(
+                const Card(
                   elevation: 0,
                   margin: EdgeInsets.only(bottom: 2),
                   shape: RoundedRectangleBorder(

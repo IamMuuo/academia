@@ -16,6 +16,8 @@ class AcademiaRouter {
   static const String userSelection = "user-selection";
   static const String onboarding = "onboarding";
   static const String courseView = "course-view";
+  static const String todo = "todo";
+  static const String todoView = "todo-view";
 
   static final GoRouter _router = GoRouter(
     initialLocation: "/",
@@ -52,12 +54,26 @@ class AcademiaRouter {
         builder: (context, state) => const UserSelectionPage(),
       ),
       GoRoute(
-          name: courseView,
-          path: "/$courseView",
-          builder: (context, state) {
-            final CourseData course = state.extra as CourseData;
-            return CourseMobileViewPage(course: course);
-          }),
+        name: todo,
+        path: "/$todo",
+        builder: (context, state) => const TodoPage(),
+      ),
+      GoRoute(
+        name: todoView,
+        path: "/$todoView",
+        builder: (context, state) {
+          TodoData? todo = state.extra as TodoData?;
+          return TodoViewPage(todoData: todo);
+        },
+      ),
+      GoRoute(
+        name: courseView,
+        path: "/$courseView",
+        builder: (context, state) {
+          final CourseData course = state.extra as CourseData;
+          return CourseMobileViewPage(course: course);
+        },
+      ),
     ],
   );
 }
