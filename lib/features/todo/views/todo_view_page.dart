@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:academia/database/database.dart';
+import 'package:academia/features/features.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -23,6 +25,7 @@ class TodoViewPage extends StatefulWidget {
 }
 
 class _TodoViewPageState extends State<TodoViewPage> {
+  late CourseCubit courseCubit = BlocProvider.of<CourseCubit>(context);
   late TodoEditState editState =
       widget.todoData == null ? TodoEditState.create : TodoEditState.modify;
 
@@ -132,6 +135,44 @@ class _TodoViewPageState extends State<TodoViewPage> {
         );
       });
     }
+  }
+
+  Future<void> _showCoursePickerDialog() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(16),
+        child: BlocBuilder<CourseCubit, CourseState>(builder: (context, state) {
+          if (state is! CourseStateLoaded) {
+            return const Center(
+              child: Text("Please refresh courses to continue"),
+            );
+          }
+
+          final courses = (state).courses;
+          return ListView.builder(
+              itemCount: courses.length,
+              itemBuilder: (context, index) {
+                return CheckboxListTile(
+                    title: Text(courses[index].unit),
+                    value: false,
+                    onChanged: (val) {
+                      setState(() {
+                        todo = todo.copyWith(
+                            unit: drift.Value(courses[index].unit));
+                      });
+                      context.pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                              "Successfully linked task to ${courses[index].unit}"),
+                        ),
+                      );
+                    });
+              });
+        }),
+      ),
+    );
   }
 
   @override
@@ -262,6 +303,25 @@ class _TodoViewPageState extends State<TodoViewPage> {
                             ? "Not configured yet"
                             : todo.duedate.toString(),
                       ),
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Card(
+                    elevation: 0,
+                    margin: const EdgeInsets.only(bottom: 2),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero,
+                    ),
+                    child: ListTile(
+                      leading: const Icon(Bootstrap.vinyl),
+                      enableFeedback: false,
+                      onTap: () {
+                        _showCoursePickerDialog();
+                        HapticFeedback.heavyImpact().then((value) {});
+                      },
+                      title: const Text("Pick a course for this task"),
+                      subtitle: todo.unit == null ? null : Text(todo.unit!),
                     ),
                   ),
                 ),

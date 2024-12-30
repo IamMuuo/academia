@@ -2009,7 +2009,7 @@ class $TodoTable extends Todo with TableInfo<$TodoTable, TodoData> {
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
+      'id', aliasedName, true,
       hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
@@ -2228,7 +2228,7 @@ class $TodoTable extends Todo with TableInfo<$TodoTable, TodoData> {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return TodoData(
       id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}id']),
       userId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
       unit: attachedDatabase.typeMapping
@@ -2267,7 +2267,7 @@ class $TodoTable extends Todo with TableInfo<$TodoTable, TodoData> {
 }
 
 class TodoData extends DataClass implements Insertable<TodoData> {
-  final int id;
+  final int? id;
   final String userId;
   final String? unit;
   final String title;
@@ -2283,7 +2283,7 @@ class TodoData extends DataClass implements Insertable<TodoData> {
   final DateTime dateModified;
   final DateTime completedAt;
   const TodoData(
-      {required this.id,
+      {this.id,
       required this.userId,
       this.unit,
       required this.title,
@@ -2301,7 +2301,9 @@ class TodoData extends DataClass implements Insertable<TodoData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
     map['user_id'] = Variable<String>(userId);
     if (!nullToAbsent || unit != null) {
       map['unit'] = Variable<String>(unit);
@@ -2331,7 +2333,7 @@ class TodoData extends DataClass implements Insertable<TodoData> {
 
   TodoCompanion toCompanion(bool nullToAbsent) {
     return TodoCompanion(
-      id: Value(id),
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       userId: Value(userId),
       unit: unit == null && nullToAbsent ? const Value.absent() : Value(unit),
       title: Value(title),
@@ -2360,7 +2362,7 @@ class TodoData extends DataClass implements Insertable<TodoData> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TodoData(
-      id: serializer.fromJson<int>(json['id']),
+      id: serializer.fromJson<int?>(json['id']),
       userId: serializer.fromJson<String>(json['userId']),
       unit: serializer.fromJson<String?>(json['unit']),
       title: serializer.fromJson<String>(json['title']),
@@ -2381,7 +2383,7 @@ class TodoData extends DataClass implements Insertable<TodoData> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
+      'id': serializer.toJson<int?>(id),
       'userId': serializer.toJson<String>(userId),
       'unit': serializer.toJson<String?>(unit),
       'title': serializer.toJson<String>(title),
@@ -2400,7 +2402,7 @@ class TodoData extends DataClass implements Insertable<TodoData> {
   }
 
   TodoData copyWith(
-          {int? id,
+          {Value<int?> id = const Value.absent(),
           String? userId,
           Value<String?> unit = const Value.absent(),
           String? title,
@@ -2416,7 +2418,7 @@ class TodoData extends DataClass implements Insertable<TodoData> {
           DateTime? dateModified,
           DateTime? completedAt}) =>
       TodoData(
-        id: id ?? this.id,
+        id: id.present ? id.value : this.id,
         userId: userId ?? this.userId,
         unit: unit.present ? unit.value : this.unit,
         title: title ?? this.title,
@@ -2519,7 +2521,7 @@ class TodoData extends DataClass implements Insertable<TodoData> {
 }
 
 class TodoCompanion extends UpdateCompanion<TodoData> {
-  final Value<int> id;
+  final Value<int?> id;
   final Value<String> userId;
   final Value<String?> unit;
   final Value<String> title;
@@ -2607,7 +2609,7 @@ class TodoCompanion extends UpdateCompanion<TodoData> {
   }
 
   TodoCompanion copyWith(
-      {Value<int>? id,
+      {Value<int?>? id,
       Value<String>? userId,
       Value<String?>? unit,
       Value<String>? title,
@@ -4430,7 +4432,7 @@ typedef $$CourseTableProcessedTableManager = ProcessedTableManager<
     CourseData,
     PrefetchHooks Function({bool user, bool todoRefs})>;
 typedef $$TodoTableCreateCompanionBuilder = TodoCompanion Function({
-  Value<int> id,
+  Value<int?> id,
   required String userId,
   Value<String?> unit,
   required String title,
@@ -4447,7 +4449,7 @@ typedef $$TodoTableCreateCompanionBuilder = TodoCompanion Function({
   Value<DateTime> completedAt,
 });
 typedef $$TodoTableUpdateCompanionBuilder = TodoCompanion Function({
-  Value<int> id,
+  Value<int?> id,
   Value<String> userId,
   Value<String?> unit,
   Value<String> title,
@@ -4785,7 +4787,7 @@ class $$TodoTableTableManager extends RootTableManager<
           createComputedFieldComposer: () =>
               $$TodoTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
+            Value<int?> id = const Value.absent(),
             Value<String> userId = const Value.absent(),
             Value<String?> unit = const Value.absent(),
             Value<String> title = const Value.absent(),
@@ -4819,7 +4821,7 @@ class $$TodoTableTableManager extends RootTableManager<
             completedAt: completedAt,
           ),
           createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
+            Value<int?> id = const Value.absent(),
             required String userId,
             Value<String?> unit = const Value.absent(),
             required String title,

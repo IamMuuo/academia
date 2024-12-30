@@ -3,7 +3,7 @@ import 'package:academia/features/courses/models/course.dart';
 import 'package:drift/drift.dart';
 
 class Todo extends Table {
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn get id => integer().autoIncrement().nullable()();
   TextColumn get userId => text().references(User, #id)();
   TextColumn get unit => text().references(Course, #unit).nullable()();
   TextColumn get title => text()();
