@@ -2,8 +2,6 @@ import 'package:drift/drift.dart';
 import './user.dart';
 
 class UserProfile extends Table {
-  IntColumn get id => integer().autoIncrement()();
-
   @JsonKey("user_id")
   TextColumn get userId => text().references(User, #id)();
 
@@ -27,4 +25,7 @@ class UserProfile extends Table {
   TextColumn get campus => text().withDefault(const Constant("athi"))();
   @JsonKey("date_of_birth")
   DateTimeColumn get dateOfBirth => dateTime()();
+
+  @override
+  Set<Column<Object>>? get primaryKey => {userId};
 }

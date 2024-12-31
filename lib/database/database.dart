@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:academia/features/auth/models/user.dart';
 import 'package:academia/features/auth/models/user_credentials.dart';
 import 'package:academia/features/auth/models/user_profile.dart';
+import 'package:academia/features/courses/models/course.dart';
+import 'package:academia/features/todo/models/todo.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:drift_flutter/drift_flutter.dart';
@@ -43,7 +45,13 @@ Future<Directory> _getDatabaseDirectory() async {
   }
 }
 
-@DriftDatabase(tables: [User, UserProfile, UserCredential])
+@DriftDatabase(tables: [
+  User,
+  UserProfile,
+  UserCredential,
+  Course,
+  Todo,
+])
 class AppDatabase extends _$AppDatabase {
   // After generating code, this class needs to define a schemaVersion getter
   // and a constructor telling drift where the database should be stored.
@@ -59,22 +67,5 @@ class AppDatabase extends _$AppDatabase {
     driftRuntimeOptions.defaultSerializer =
         const ValueSerializer.defaults(serializeDateTimeValuesAsString: true);
     return driftDatabase(name: 'academia');
-  }
-}
-
-/// A singleton class to reference the local database.
-/// Use this instead of AppDatabase to ensure you always
-/// have an initialized instance
-final class LocalDatabase {
-  static final LocalDatabase _instance = LocalDatabase._internal();
-
-  LocalDatabase._internal();
-
-  factory LocalDatabase() {
-    return _instance;
-  }
-
-  AppDatabase getInstance() {
-    return AppDatabase();
   }
 }

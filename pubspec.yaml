@@ -64,6 +64,7 @@ dependencies:
   get_it: ^8.0.2
   pretty_dio_logger: ^1.4.0
   connectivity_plus: ^6.1.1
+  flex_color_picker: ^3.6.0
   
 dev_dependencies:
   flutter_test:

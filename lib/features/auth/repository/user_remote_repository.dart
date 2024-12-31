@@ -14,7 +14,7 @@ final class UserRemoteRepository with DioErrorHandler {
   ) async {
     try {
       final response = await _client.dio.post(
-        "/auth/authenticate",
+        "/verisafe/v2/auth/authenticate",
         data: credentials.toJson(),
       );
 
@@ -26,7 +26,26 @@ final class UserRemoteRepository with DioErrorHandler {
     } on DioException catch (de) {
       return handleDioError(de);
     } catch (e) {
-      return left("Please check your internet connection and try that again!");
+      return left("Something went terribly wrong please try that later");
+    }
+  }
+
+  /// The function attempts to fetch a user's profile from verisafe
+  /// In the event of success it retuns the [UserProfileData]
+  /// and in case of failure it retuns a string indicating what exactly
+  /// went wrong
+  Future<Either<String, UserProfileData>> fetchUserProfile() async {
+    try {
+      final response = await _client.dio.get("verisafe/v2/users/profile");
+      if (response.statusCode == 200) {
+        return right(UserProfileData.fromJson(response.data));
+      }
+
+      return left(response.data["error"] ?? response.statusMessage);
+    } on DioException catch (de) {
+      return handleDioError(de);
+    } catch (e) {
+      return left("Something went terribly wrong please try that later");
     }
   }
 }

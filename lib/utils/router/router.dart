@@ -1,8 +1,6 @@
-import 'package:academia/features/auth/cubit/auth_cubit.dart';
-import 'package:academia/features/auth/cubit/auth_states.dart';
+import 'package:academia/database/database.dart';
 import 'package:academia/utils/router/default_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:academia/features/features.dart';
 
@@ -17,6 +15,9 @@ class AcademiaRouter {
   static const String home = "home";
   static const String userSelection = "user-selection";
   static const String onboarding = "onboarding";
+  static const String courseView = "course-view";
+  static const String todo = "todo";
+  static const String todoView = "todo-view";
 
   static final GoRouter _router = GoRouter(
     initialLocation: "/",
@@ -51,6 +52,27 @@ class AcademiaRouter {
         name: userSelection,
         path: "/$userSelection",
         builder: (context, state) => const UserSelectionPage(),
+      ),
+      GoRoute(
+        name: todo,
+        path: "/$todo",
+        builder: (context, state) => const TodoPage(),
+      ),
+      GoRoute(
+        name: todoView,
+        path: "/$todoView",
+        builder: (context, state) {
+          TodoData? todo = state.extra as TodoData?;
+          return TodoViewPage(todoData: todo);
+        },
+      ),
+      GoRoute(
+        name: courseView,
+        path: "/$courseView",
+        builder: (context, state) {
+          final CourseData course = state.extra as CourseData;
+          return CourseMobileViewPage(course: course);
+        },
       ),
     ],
   );

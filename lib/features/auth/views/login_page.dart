@@ -1,6 +1,5 @@
 import 'package:academia/database/database.dart';
-import 'package:academia/features/auth/cubit/auth_cubit.dart';
-import 'package:academia/features/auth/cubit/auth_states.dart';
+import 'package:academia/features/features.dart';
 import 'package:academia/utils/router/router.dart';
 import 'package:academia/utils/validator/validator.dart';
 import 'package:flutter/material.dart';
@@ -35,25 +34,6 @@ class _LoginPageState extends State<LoginPage> {
   bool validateForm() {
     return _formState.currentState!.validate();
   }
-  //
-  // /// Shows a dialog with [title] and [content]
-  // void _showMessageDialog(String title, String content) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) => AlertDialog(
-  //       title: Text(title),
-  //       content: Text(content),
-  //       actions: [
-  //         TextButton(
-  //           onPressed: () {
-  //             context.pop();
-  //           },
-  //           child: const Text("Ok"),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +178,8 @@ class _LoginPageState extends State<LoginPage> {
                                   );
                                 }, (r) {
                                   HapticFeedback.heavyImpact();
-                                  GoRouter.of(context).pushNamed(
+                                  context.pop();
+                                  GoRouter.of(context).pushReplacementNamed(
                                     AcademiaRouter.home,
                                   );
                                 });
