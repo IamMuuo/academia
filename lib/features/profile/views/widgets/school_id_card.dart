@@ -52,6 +52,10 @@ class SchoolIdCard extends StatelessWidget {
                   Image.memory(
                     state.user.picture!,
                     width: 140,
+                    errorBuilder: (context, obj, error) => CircleAvatar(
+                      radius: 40,
+                      child: Text(state.user.firstname[0]),
+                    ),
                   ),
                   BlocBuilder<ProfileCubit, ProfileState>(
                       builder: (context, profileState) {

@@ -184,46 +184,49 @@ class _ProfilePageMobileState extends State<ProfilePageMobile> {
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                           SizedBox(height: 2),
-                          Row(
-                            spacing: 12,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                onPressed: () async {
-                                  if (await Vibration.hasVibrator()) {
-                                    await Vibration.vibrate(
-                                      duration: 32,
-                                      sharpness: 250,
-                                    );
-                                  }
-                                  if (!context.mounted) return;
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              spacing: 12,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  onPressed: () async {
+                                    if (await Vibration.hasVibrator()) {
+                                      await Vibration.vibrate(
+                                        duration: 32,
+                                        sharpness: 250,
+                                      );
+                                    }
+                                    if (!context.mounted) return;
 
-                                  _showQrCode();
-                                },
-                                icon: Icon(Clarity.qr_code_line),
-                              ),
-                              FilledButton.icon(
-                                icon: Icon(Clarity.id_badge_line),
-                                onPressed: () async {
-                                  if (await Vibration.hasVibrator()) {
-                                    await Vibration.vibrate(
-                                      duration: 32,
-                                      sharpness: 250,
-                                    );
-                                  }
-                                  if (!context.mounted) return;
+                                    _showQrCode();
+                                  },
+                                  icon: Icon(Clarity.qr_code_line),
+                                ),
+                                FilledButton.icon(
+                                  icon: Icon(Clarity.id_badge_line),
+                                  onPressed: () async {
+                                    if (await Vibration.hasVibrator()) {
+                                      await Vibration.vibrate(
+                                        duration: 32,
+                                        sharpness: 250,
+                                      );
+                                    }
+                                    if (!context.mounted) return;
 
-                                  context.pushNamed("memberships");
-                                },
-                                label: Text("Show digital school ID"),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  context.pushNamed("profile-update");
-                                },
-                                icon: Icon(Clarity.pencil_line),
-                              ),
-                            ],
+                                    context.pushNamed("memberships");
+                                  },
+                                  label: Text("Show digital school ID"),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    context.pushNamed("profile-update");
+                                  },
+                                  icon: Icon(Clarity.pencil_line),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

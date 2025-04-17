@@ -4,7 +4,6 @@ import 'package:academia/features/features.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
@@ -105,84 +104,91 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                           : MultiSliver(
                               children: [
                                 SliverToBoxAdapter(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Card(
-                                        color: Colors.teal,
-                                        child: Container(
-                                          padding: EdgeInsets.all(12),
-                                          child: Column(
-                                            spacing: 12,
-                                            children: [
-                                              Icon(Clarity.indent_line),
-                                              Text(
-                                                state.userExams.length
-                                                    .toString(),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headlineMedium,
-                                              ),
-                                              Text("Total Exams")
-                                            ],
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Card(
+                                          color: Colors.teal,
+                                          child: Container(
+                                            padding: EdgeInsets.all(12),
+                                            child: Column(
+                                              spacing: 12,
+                                              children: [
+                                                Icon(Clarity.indent_line),
+                                                Text(
+                                                  state.userExams.length
+                                                      .toString(),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headlineMedium,
+                                                ),
+                                                Text("Total Exams")
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Card(
-                                        color: Colors.orange,
-                                        child: Container(
-                                          padding: EdgeInsets.all(12),
-                                          child: Column(
-                                            spacing: 12,
-                                            children: [
-                                              Icon(Clarity.calendar_line),
-                                              Text(
-                                                state.userExams
-                                                    .where((exam) =>
-                                                        exam.examDate.year ==
-                                                            DateTime.now()
-                                                                .year &&
-                                                        exam.examDate.month ==
-                                                            DateTime.now()
-                                                                .month &&
-                                                        exam.examDate.day ==
-                                                            DateTime.now().day)
-                                                    .length
-                                                    .toString(),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headlineMedium,
-                                              ),
-                                              Text("Exams today")
-                                            ],
+                                        Card(
+                                          color: Colors.orange,
+                                          child: Container(
+                                            padding: EdgeInsets.all(12),
+                                            child: Column(
+                                              spacing: 12,
+                                              children: [
+                                                Icon(Clarity.calendar_line),
+                                                Text(
+                                                  state.userExams
+                                                      .where((exam) =>
+                                                          exam.examDate.year ==
+                                                              DateTime.now()
+                                                                  .year &&
+                                                          exam.examDate.month ==
+                                                              DateTime.now()
+                                                                  .month &&
+                                                          exam.examDate.day ==
+                                                              DateTime.now()
+                                                                  .day)
+                                                      .length
+                                                      .toString(),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headlineMedium,
+                                                ),
+                                                Text("Exams today")
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Card(
-                                        color: Colors.cyan,
-                                        child: Container(
-                                          padding: EdgeInsets.all(12),
-                                          child: Column(
-                                            spacing: 12,
-                                            children: [
-                                              Icon(Clarity.checkbox_list_line),
-                                              Text(
-                                                state.userExams
-                                                    .where((exam) =>
-                                                        exam.examDate.isBefore(
-                                                            DateTime.now()))
-                                                    .length
-                                                    .toString(),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headlineMedium,
-                                              ),
-                                              Text("Exams Done")
-                                            ],
+                                        Card(
+                                          color: Colors.cyan,
+                                          child: Container(
+                                            padding: EdgeInsets.all(12),
+                                            child: Column(
+                                              spacing: 12,
+                                              children: [
+                                                Icon(
+                                                    Clarity.checkbox_list_line),
+                                                Text(
+                                                  state.userExams
+                                                      .where((exam) => exam
+                                                          .examDate
+                                                          .isBefore(
+                                                              DateTime.now()))
+                                                      .length
+                                                      .toString(),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headlineMedium,
+                                                ),
+                                                Text("Exams Done")
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 SliverPadding(

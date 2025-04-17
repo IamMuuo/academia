@@ -58,7 +58,11 @@ class _RegisterPageState extends State<RegisterPage> {
     dob = DateFormat("dd/MM/yyyy").parse(details['dateofbirth']!);
     gender = details['gender'] == 'male' ? Gender.male : Gender.female;
     password = details["password"]!;
-    imageBytes = base64Decode(details['profile']!);
+    try {
+      imageBytes = base64Decode(details['profile']!);
+    } catch (e) {
+      imageBytes = Uint8List(0);
+    }
   }
 
   @override
@@ -200,12 +204,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       SizedBox(height: 8),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Wrap(
                         children: [
                           SizedBox(
-                            width: 180,
+                            width: MediaQuery.of(context).size.width,
                             child: TextFormField(
                               enabled: false,
                               controller: _admissionController,
@@ -232,7 +234,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                           SizedBox(
-                            width: 180,
+                            width: MediaQuery.of(context).size.width,
                             child: TextFormField(
                               controller: _usernameController,
                               textAlign: TextAlign.center,
@@ -260,6 +262,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ],
                       ),
+                      SizedBox(height: 8),
                       TextFormField(
                         controller: _fullNamesController,
                         enabled: false,
@@ -364,6 +367,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           return null;
                         },
                         autovalidateMode: AutovalidateMode.onUnfocus,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintText: "Your Address",
                           label: const Text("Address"),

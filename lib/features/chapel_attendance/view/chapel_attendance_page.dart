@@ -99,20 +99,6 @@ class _ChapelAttendancePageState extends State<ChapelAttendancePage>
     int daysToAdd = (DateTime.tuesday - now.weekday + 7) % 7;
     daysToAdd = daysToAdd == 0 ? 7 : daysToAdd;
     return now.add(Duration(days: daysToAdd));
-
-    //DateTime now = DateTime.now().copyWith(hour: 0, minute: 0, second: 0);
-    //int daysToAdd = (DateTime.tuesday - now.weekday + 7) % 7;
-    //daysToAdd = daysToAdd == 0 ? 7 : daysToAdd;
-    //final nextTuesday = now.add(Duration(days: daysToAdd));
-    //
-    //return DateTime(
-    //  nextTuesday.year,
-    //  nextTuesday.month,
-    //  nextTuesday.day,
-    //  10,
-    //  0,
-    //  0,
-    //);
   }
 
   @override
@@ -124,8 +110,6 @@ class _ChapelAttendancePageState extends State<ChapelAttendancePage>
     // Start listening to the barcode events.
     _subscription = controller.barcodes.listen(_handleBarCode);
 
-    // Finally, start the scanner itself.
-    unawaited(controller.start());
   }
 
   @override

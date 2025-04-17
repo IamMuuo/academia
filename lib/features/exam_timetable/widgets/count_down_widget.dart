@@ -36,16 +36,19 @@ class _ExamCountDownWidgetState extends State<ExamCountDownWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        padding: EdgeInsets.all(22),
-        child: TimerCountdown(
-          timeTextStyle: Theme.of(context).textTheme.headlineSmall,
-          endTime: upcomingExam?.examDate ?? DateTime.now(),
-          onEnd: () {},
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: EdgeInsets.all(22),
+          child: TimerCountdown(
+            timeTextStyle: Theme.of(context).textTheme.headlineSmall,
+            endTime: upcomingExam?.examDate ?? DateTime.now(),
+            onEnd: () {},
+          ),
         ),
       ),
     ]);
