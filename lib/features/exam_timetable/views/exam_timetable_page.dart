@@ -194,8 +194,12 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                                 SliverPadding(
                                   padding: EdgeInsets.all(12),
                                   sliver: SliverPinnedHeader(
-                                    child: ExamCountDownWidget(
-                                      exams: state.userExams,
+                                    child: Container(
+                                      color:
+                                          Theme.of(context).colorScheme.surface,
+                                      child: ExamCountDownWidget(
+                                        exams: state.userExams,
+                                      ),
                                     ),
                                   ),
                                 ),

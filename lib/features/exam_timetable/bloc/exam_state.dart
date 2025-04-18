@@ -18,5 +18,8 @@ final class ExamStateLoaded extends ExamState {
   ExamStateLoaded({
     required this.userExams,
     required this.fetchedExams,
-  });
+  }) {
+    userExams.sort((a, b) => a.examDate.compareTo(b.examDate));
+    fetchedExams.sort((a, b) => a.examDate.compareTo(b.examDate));
+  }
 }

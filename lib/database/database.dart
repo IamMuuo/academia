@@ -9,6 +9,7 @@ import 'package:drift/native.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:logger/logger.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 
@@ -59,8 +60,27 @@ class AppDatabase extends _$AppDatabase {
   // These are described in the getting started guide: https://drift.simonbinder.eu/getting-started/#open
   AppDatabase() : super(_openConnection());
 
+  final Logger _logger = Logger();
+
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 4;
+
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(onCreate: (Migrator m) async {
+      await m.createAll();
+    }, onUpgrade: (Migrator m, int from, int to) async {
+      _logger.i("Migrating from version $from to version $to");
+      if (to > from) {
+        m.createAll();
+        _logger.i("Migrated from version $from to version $to");
+      }
+    }, beforeOpen: (details) async {
+      _logger.i(
+        "Openning cache db version ${details.versionNow} initial version ${details.versionBefore}",
+      );
+    });
+  }
 
   static QueryExecutor _openConnection() {
     // driftDatabase from package:drift_flutter stores the database in
