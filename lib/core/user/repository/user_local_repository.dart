@@ -46,13 +46,10 @@ final class UserLocalRepository {
   /// encountered or a boolean [true] incase it was a success
   Future<Either<String, bool>> deleteUserFromCache(UserData userData) async {
     try {
-      final ok = await _localDb.delete(_localDb.user).delete(userData);
-      if (ok != 0) {
-        return right(true);
+      for (var table in _localDb.allTables) {
+        await table.delete().go();
       }
-      return left(
-        "The specified user was not deleted because they do not exist",
-      );
+      return right(true);
     } catch (e) {
       return left(
         "Failed to delete user from cache with error description ${e.toString()}",
