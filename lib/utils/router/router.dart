@@ -87,11 +87,6 @@ class AcademiaRouter {
         builder: (context, state) => const DefaultRoute(),
       ),
       GoRoute(
-        path: "/in-app-update",
-        name: "in-app-update",
-        builder: (context, state) => const InAppUpdatePage(),
-      ),
-      GoRoute(
         path: "/chapel-attendance",
         name: "chapel-attendance",
         builder: (context, state) => const ChapelAttendancePage(),

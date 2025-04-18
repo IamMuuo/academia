@@ -33,8 +33,15 @@ class InAppUpdateCubit extends Cubit<InAppUpdateState> {
           "package name": updateInfo.packageName,
           "package outdated in days": updateInfo.clientVersionStalenessDays,
         });
-        AcademiaRouter.router.goNamed("in-app-update");
         emit(InAppUpdateAvailable(updateInfo: updateInfo));
+        if ((updateInfo.clientVersionStalenessDays ?? 0) >= 1) {
+          await InAppUpdate.performImmediateUpdate();
+        } else {
+          final res = await InAppUpdate.startFlexibleUpdate();
+          if (res == AppUpdateResult.success) {
+            await InAppUpdate.completeFlexibleUpdate();
+          }
+        }
       } else {
         _logger.i("No updates available at the moment");
         emit(InAppUpdateNoUpdate());
