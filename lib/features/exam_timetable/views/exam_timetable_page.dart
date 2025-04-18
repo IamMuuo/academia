@@ -103,12 +103,14 @@ class _ExamTimeTablePageState extends State<ExamTimeTablePage> {
                             )
                           : MultiSliver(
                               children: [
-                                SliverToBoxAdapter(
+                                Center(
                                   child: SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Card(
                                           color: Colors.teal,
