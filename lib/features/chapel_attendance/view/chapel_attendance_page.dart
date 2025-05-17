@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:academia/database/database.dart';
 import 'package:academia/features/features.dart';
 import 'package:academia/utils/validator/validator.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -109,7 +108,6 @@ class _ChapelAttendancePageState extends State<ChapelAttendancePage>
 
     // Start listening to the barcode events.
     _subscription = controller.barcodes.listen(_handleBarCode);
-
   }
 
   @override
@@ -249,34 +247,11 @@ class _ChapelAttendancePageState extends State<ChapelAttendancePage>
           SliverAppBar(
             expandedHeight: 128,
             flexibleSpace: FlexibleSpaceBar(
-              background: Image.asset(
-                "assets/images/scan.jpg",
-                fit: BoxFit.cover,
-              ),
               title: Text("Chapel").animate(delay: 250.ms).fadeIn(
                     curve: Curves.easeInCubic,
                     duration: 1000.ms,
                   ),
             ),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  context.pushNamed("profile");
-                },
-                icon: BlocBuilder<AuthBloc, AuthState>(
-                  buildWhen: (stateA, stateB) {
-                    if (stateB is AuthenticatedState) return true;
-                    return false;
-                  },
-                  builder: (context, state) => CircleAvatar(
-                    backgroundImage: MemoryImage(
-                      (state as AuthenticatedState).user.picture ??
-                          Uint8List(0),
-                    ),
-                  ),
-                ),
-              ),
-            ],
           ),
           SliverPadding(
             padding: EdgeInsets.all(12),
@@ -284,10 +259,8 @@ class _ChapelAttendancePageState extends State<ChapelAttendancePage>
               //spacing: 12,
               children: [
                 Text(
-                  "Get started marking chapel attendance. Scan to continue",
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontFamily: GoogleFonts.lora().fontFamily,
-                      ),
+                  "Please scan a student's qr code to mark their chapel attendance",
+                  style: Theme.of(context).textTheme.bodySmall,
                 ).animate(delay: 1000.ms).fadeIn(
                       curve: Curves.bounceIn,
                       duration: 1500.ms,
@@ -330,16 +303,15 @@ class _ChapelAttendancePageState extends State<ChapelAttendancePage>
                     ),
                   ),
                 ),
-                SizedBox(height: 12),
-                FilledButton.icon(
-                  label: Text("Try with admission number"),
-                  onPressed: _showAdmissionInput,
-                  icon: Icon(Clarity.id_badge_solid),
-                ),
               ],
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _showAdmissionInput,
+        icon: Icon(Icons.keyboard),
+        label: Text("Try another way"),
       ),
     );
   }
