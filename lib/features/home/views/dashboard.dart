@@ -83,26 +83,26 @@ class _DashboardState extends State<Dashboard> {
                   ),
             ),
             actions: [
-              CircleAvatar(
-                backgroundColor: Colors.black,
-                child: IconButton(
-                  onPressed: () async {
-                    if (await Vibration.hasVibrator()) {
-                      await Vibration.vibrate(
-                        duration: 32,
-                        sharpness: 250,
-                      );
-                    }
-                    if (!context.mounted) return;
-
-                    context.pushNamed("memberships");
-                  },
-                  icon: Icon(
-                    Clarity.id_badge_line,
-                    color: Colors.white,
-                  ),
-                ),
-              ).animate().shake(duration: 2000.ms),
+              // CircleAvatar(
+              //   backgroundColor: Colors.black,
+              //   child: IconButton(
+              //     onPressed: () async {
+              //       if (await Vibration.hasVibrator()) {
+              //         await Vibration.vibrate(
+              //           duration: 32,
+              //           sharpness: 250,
+              //         );
+              //       }
+              //       if (!context.mounted) return;
+              //
+              //       context.pushNamed("memberships");
+              //     },
+              //     icon: Icon(
+              //       Clarity.id_badge_line,
+              //       color: Colors.white,
+              //     ),
+              //   ),
+              // ).animate().shake(duration: 2000.ms),
               IconButton(
                 onPressed: () {
                   context.goNamed("profile");

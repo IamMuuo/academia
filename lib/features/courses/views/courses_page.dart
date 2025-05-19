@@ -62,15 +62,16 @@ class _CoursesPageMobileState extends State<CoursesPage> {
                     if (state.courses.isEmpty) {
                       return SliverToBoxAdapter(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          // mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Lottie.asset(
-                              "assets/lotties/cat-error.json",
+                              "assets/lotties/cooking.json",
                               repeat: !kDebugMode,
                             ),
                             Text(
                               "We couldn't load your courses right now. Try pulling down to refresh, or check your connection and try again.",
-                              style: Theme.of(context).textTheme.titleLarge,
+                              style: Theme.of(context).textTheme.titleSmall,
+                              textAlign: TextAlign.center,
                             ),
                           ],
                         ),
