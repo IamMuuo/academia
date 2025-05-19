@@ -17,7 +17,8 @@ mixin DioErrorHandler {
       case DioExceptionType.unknown:
         try {
           final err = de.error as Response<dynamic>;
-          return left(err.data["message"] ?? err.statusMessage);
+          return left(
+              err.data["message"] ?? err.data["error"] ?? err.statusMessage);
         } catch (e) {
           return left(
             "An unexpected error occurred. Please try again later.",
@@ -26,10 +27,13 @@ mixin DioErrorHandler {
 
       case DioExceptionType.badResponse:
         return left(
-          de.response?.data["message"] ?? de.response?.statusMessage,
+          de.response?.data["message"] ??
+              de.response?.data["error"] ??
+              de.response?.statusMessage,
         );
       default:
         return left(de.response?.data["message"] ??
+            de.response?.data["error"] ??
             de.response?.statusMessage ??
             "An unexpected error occurred. Please try again later.");
     }

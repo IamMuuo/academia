@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 
 class AttendanceModel extends Table {
-  @JsonKey("studentID")
+  @JsonKey("student_id")
   TextColumn get studentID => text()();
   @JsonKey("date")
   DateTimeColumn get date => dateTime().withDefault(Constant(DateTime.now()))();

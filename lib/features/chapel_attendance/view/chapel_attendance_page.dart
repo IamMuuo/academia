@@ -59,6 +59,7 @@ class _ChapelAttendancePageState extends State<ChapelAttendancePage>
     }
     prevAdm = admno;
     stdAdm.clear();
+    setState(() {});
   }
 
   @override
@@ -123,121 +124,144 @@ class _ChapelAttendancePageState extends State<ChapelAttendancePage>
     await controller.dispose();
   }
 
-  void _showAdmissionInput() => showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        // final TextEditingController stdAdm = TextEditingController();
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.8,
-          padding: const EdgeInsets.only(
-            left: 16.0,
-            right: 16.0,
-            top: 42.0,
-            bottom: 16.0,
-          ),
-          child: BlocListener<AttendanceBloc, AttendanceState>(
-            listener: (context, state) {
-              if (state is AttendanceMarkedState) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message)),
-                );
-                return;
-              }
-            },
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: stdAdm,
-                    inputFormatters: [
-                      AdmnoDashFormatter(),
-                    ],
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          final today = DateTime.now();
-                          BlocProvider.of<AttendanceBloc>(context).add(
-                            AttendanceMarkingRequested(
-                              record: AttendanceModelData(
-                                studentID: stdAdm.text,
-                                date:
-                                    DateTime(today.year, today.month, today.day)
-                                        .toLocal(),
-                                checkIn: 'present',
-                                campus: 'athi river',
+  void _showAdmissionInput() {
+    stdAdm.clear();
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          // final TextEditingController stdAdm = TextEditingController();
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+            padding: const EdgeInsets.only(
+              left: 16.0,
+              right: 16.0,
+              top: 42.0,
+              bottom: 16.0,
+            ),
+            child: BlocListener<AttendanceBloc, AttendanceState>(
+              listener: (context, state) {
+                if (state is AttendanceMarkedState) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(state.message)),
+                  );
+                  return;
+                }
+              },
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: stdAdm,
+                      inputFormatters: [
+                        AdmnoDashFormatter(),
+                      ],
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            final today = DateTime.now();
+                            BlocProvider.of<AttendanceBloc>(context).add(
+                              AttendanceMarkingRequested(
+                                record: AttendanceModelData(
+                                  studentID: stdAdm.text,
+                                  date: DateTime(
+                                          today.year, today.month, today.day)
+                                      .toLocal(),
+                                  checkIn: 'present',
+                                  campus: 'athi river',
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                        icon: Icon(Clarity.check_line),
-                      ),
-                      hintText: "xx-xxxx",
-                      label: const Text("Student Admission Number"),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
+                            );
+                          },
+                          icon: Icon(Clarity.check_line),
+                        ),
+                        hintText: "xx-xxxx",
+                        label: const Text("Student Admission Number"),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
                       ),
                     ),
-                  ),
-                  BlocBuilder<AttendanceBloc, AttendanceState>(
-                    buildWhen: (statA, stateB) {
-                      if (stateB is AttendanceLoadingState ||
-                          stateB is AttendaceErrorState) {
-                        return true;
-                      }
-                      return false;
-                    },
-                    builder: (context, state) {
-                      if (state is AttendanceLoadingState) {
+                    BlocBuilder<AttendanceBloc, AttendanceState>(
+                      buildWhen: (statA, stateB) {
+                        if (stateB is AttendanceMarkedState) {
+                          stdAdm.clear();
+                          return true;
+                        }
+                        if (stateB is AttendanceLoadingState ||
+                            stateB is AttendaceErrorState) {
+                          return true;
+                        }
+                        return false;
+                      },
+                      builder: (context, state) {
+                        if (state is AttendanceLoadingState) {
+                          return Column(
+                            spacing: 12,
+                            children: [
+                              Lottie.asset(
+                                "assets/lotties/search.json",
+                                height: 200,
+                                width: 200,
+                              ),
+                            ],
+                          );
+                        }
+                        if (state is AttendanceMarkedState) {
+                          return Column(
+                            spacing: 12,
+                            children: [
+                              Lottie.asset(
+                                "assets/lotties/bunny.json",
+                                height: 200,
+                                width: 200,
+                              ),
+                              SizedBox(height: 22),
+                              Text(state.message),
+                            ],
+                          );
+                        }
+
+                        if (state is AttendaceErrorState) {
+                          return Column(
+                            spacing: 12,
+                            children: [
+                              Lottie.asset(
+                                "assets/lotties/cat-error.json",
+                                height: 200,
+                                width: 200,
+                              ),
+                              Text(
+                                state.error,
+                                style: Theme.of(context).textTheme.titleLarge,
+                              )
+                            ],
+                          );
+                        }
                         return Column(
                           spacing: 12,
                           children: [
                             Lottie.asset(
-                              "assets/lotties/search.json",
-                              height: 200,
-                              width: 200,
-                            ),
-                          ],
-                        );
-                      }
-                      if (state is AttendaceErrorState) {
-                        return Column(
-                          spacing: 12,
-                          children: [
-                            Lottie.asset(
-                              "assets/lotties/cat-error.json",
+                              "assets/lotties/bunny.json",
                               height: 200,
                               width: 200,
                             ),
                             Text(
-                              state.error,
+                              "Please provide a student admission number to continue",
                               style: Theme.of(context).textTheme.titleLarge,
                             )
                           ],
                         );
-                      }
-                      return Column(
-                        spacing: 12,
-                        children: [
-                          Lottie.asset(
-                            "assets/lotties/bunny.json",
-                            height: 200,
-                            width: 200,
-                          ),
-                          Text(
-                            "Please provide a student admission number to continue",
-                            style: Theme.of(context).textTheme.titleLarge,
-                          )
-                        ],
-                      );
-                    },
-                  ),
-                ],
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      });
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -28,7 +28,13 @@ final class AttendanceRemoteRepository with DioErrorHandler {
         return right(response.data["message"]);
       }
 
-      return left(response.data["message"] ?? response.statusMessage);
+      print(response);
+
+      return left(
+        // response.data["message"] ??
+            response.data["error"] ?? "Darn"
+            // response.statusMessage,
+      );
     } on DioException catch (de) {
       return handleDioError(de);
     } catch (e) {

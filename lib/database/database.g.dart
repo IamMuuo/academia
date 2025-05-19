@@ -130,7 +130,7 @@ class AttendanceModelData extends DataClass
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return AttendanceModelData(
-      studentID: serializer.fromJson<String>(json['studentID']),
+      studentID: serializer.fromJson<String>(json['student_id']),
       date: serializer.fromJson<DateTime>(json['date']),
       checkIn: serializer.fromJson<String>(json['check_in']),
       campus: serializer.fromJson<String>(json['campus']),
@@ -140,7 +140,7 @@ class AttendanceModelData extends DataClass
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'studentID': serializer.toJson<String>(studentID),
+      'student_id': serializer.toJson<String>(studentID),
       'date': serializer.toJson<DateTime>(date),
       'check_in': serializer.toJson<String>(checkIn),
       'campus': serializer.toJson<String>(campus),
