@@ -242,8 +242,38 @@ class _EssentialsPageState extends State<EssentialsPage> {
                       .withAlpha(100),
                   margin: EdgeInsets.only(bottom: 2),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(12),
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(12),
+                    ),
+                  ),
+                  child: ListTile(
+                    onTap: () async {
+                      context.pushNamed("refer-a-friend");
+                      if (await Vibration.hasVibrator()) {
+                        await Vibration.vibrate(
+                          duration: 32,
+                          sharpness: 250,
+                        );
+                      }
+                    },
+                    leading: Icon(Icons.person_add_outlined),
+                    title: Text("Add a friend"),
+                    subtitle: Text(
+                      "Add a friend to Academia to earn vibe points",
+                    ),
+                  ),
+                ),
+
+                Card(
+                  elevation: 0,
+                  color: Theme.of(context)
+                      .colorScheme
+                      .tertiaryContainer
+                      .withAlpha(100),
+                  margin: EdgeInsets.only(bottom: 2),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(12),
                     ),
                   ),
                   child: ListTile(

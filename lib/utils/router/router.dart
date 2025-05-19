@@ -82,6 +82,16 @@ class AcademiaRouter {
         builder: (context, state) => const MembershipPage(),
       ),
       GoRoute(
+        path: "/refer-a-friend",
+        name: "refer-a-friend",
+        builder: (context, state) => const AddAFriendPage(),
+      ),
+      GoRoute(
+        path: "/confirm-friends-details",
+        name: "confirm-friends-details",
+        builder: (context, state) => const ConfirmFriendsDetails(),
+      ),
+      GoRoute(
         path: "/",
         name: "/",
         builder: (context, state) => const DefaultRoute(),

@@ -25,6 +25,18 @@ final class SignupEventRequested extends AuthEvent {
   });
 }
 
+final class AddIsoulEvent extends AuthEvent {
+  UserData user;
+  UserCredentialData creds;
+  UserProfileData profile;
+  AddIsoulEvent({
+    required this.user,
+    required this.profile,
+    required this.creds,
+  });
+}
+
+
 final class LogoutRequested extends AuthEvent {
   UserData user;
 

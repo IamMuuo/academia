@@ -128,6 +128,23 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> {
       });
     });
 
+    on<AddIsoulEvent>((event, emit) async {
+      emit(AuthLoadingState());
+      final result = await _userRepository.completeRegistration(
+        event.user,
+        event.profile,
+        event.creds,
+      );
+
+      return result.fold((error) {
+        _logger.e(error, time: DateTime.now());
+        return emit(AuthErrorState(error: error));
+      }, (user) {
+        _userRepository.deleteUserFromCache(user);
+        add(AppLaunchDetected());
+      });
+    });
+
     on<LogoutRequested>((event, emit) async {
       emit(AuthLoadingState());
 

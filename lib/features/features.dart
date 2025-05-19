@@ -11,3 +11,4 @@ export 'fees/fees.dart';
 export 'performance_reports/performance_reports.dart';
 export 'gpa_calculator/gpa_calculator.dart';
 export 'exam_timetable/exam_timetable.dart';
+export 'referals/referals.dart';
