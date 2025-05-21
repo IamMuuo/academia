@@ -1,6 +1,7 @@
 import 'package:academia/config/config.dart';
 import 'package:academia/database/database.dart';
 import 'package:academia/features/features.dart';
+import 'package:academia/features/referals/bloc/referral_cubit.dart';
 import 'package:academia/utils/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
@@ -31,7 +32,8 @@ class Academia extends StatelessWidget {
         BlocProvider(create: (_) => ProfileCubit()),
         BlocProvider(create: (_) => AttendanceBloc()),
         BlocProvider(create: (_) => InAppUpdateCubit()),
-        BlocProvider(create: (_) => ExamBloc())
+        BlocProvider(create: (_) => ExamBloc()),
+        BlocProvider(create: (_) => ReferralCubit()),
       ],
       child: DynamicColorBuilder(
         builder: (lightscheme, darkscheme) => MaterialApp.router(

@@ -89,7 +89,9 @@ class AcademiaRouter {
       GoRoute(
         path: "/confirm-friends-details",
         name: "confirm-friends-details",
-        builder: (context, state) => const ConfirmFriendsDetails(),
+        builder: (context, state) => ConfirmFriendsDetails(
+          userDetails: (state.extra as Map),
+        ),
       ),
       GoRoute(
         path: "/",

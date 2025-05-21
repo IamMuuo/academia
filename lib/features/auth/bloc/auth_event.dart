@@ -14,6 +14,12 @@ final class RegistrationEventRequested extends AuthEvent {
   RegistrationEventRequested({required this.admno, required this.password});
 }
 
+final class IsoulRegistrationEvent extends AuthEvent {
+  final String admno, password;
+  IsoulRegistrationEvent({required this.admno, required this.password});
+}
+
+
 final class SignupEventRequested extends AuthEvent {
   UserData user;
   UserCredentialData creds;

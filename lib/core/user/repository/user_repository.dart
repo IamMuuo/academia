@@ -167,9 +167,32 @@ final class UserRepository {
     // authenticate with verisafe
   }
 
+  Future<Either<String, Map<String, String>>> fetchIsoulDetailsFromMagnet(
+      UserCredentialData credentials) async {
+    // Register a magnet singleton instance
+
+    final magnet = Magnet(credentials.admno!, credentials.password);
+
+    // authenticate with magnet
+    final magnetResult = await (magnet.login());
+    //Right(Object());
+    return magnetResult.fold((error) {
+      return left(error.toString());
+    }, (session) async {
+      // Fetch the user details
+      final detailsResult = await magnet.fetchUserDetails();
+      return detailsResult.fold((error) {
+        return left(error.toString());
+      }, (user) {
+        return right(user);
+      });
+    });
+  }
+
   Future<Either<String, Map<String, String>>> fetchUserDetailsFromMagnet(
       UserCredentialData credentials) async {
     // Register a magnet singleton instance
+    GetIt.instance.unregister(instanceName: "Magnet");
 
     final magnet = GetIt.instance.registerSingletonIfAbsent(
       () => Magnet(credentials.admno!, credentials.password),

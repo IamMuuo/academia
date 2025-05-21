@@ -81,6 +81,39 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     // Registration flow
 
+    on<IsoulRegistrationEvent>((event, emit) async {
+      if (event.password.trim().isEmpty || event.password.trim().length < 6) {
+        return emit(AuthErrorState(error: "Please enter a valid password"));
+      }
+      if (event.admno.trim().isEmpty) {
+        return emit(
+          AuthErrorState(error: "Please enter a valid admission number"),
+        );
+      }
+
+      emit(AuthLoadingState());
+      final result = await _userRepository.fetchIsoulDetailsFromMagnet(
+        UserCredentialData(
+            admno: event.admno.trim(),
+            username: '',
+            email: '',
+            password: event.password.trim()),
+      );
+
+      return result.fold((error) {
+        _logger.e(error, time: DateTime.now());
+        emit(AuthErrorState(error: error));
+        add(AppLaunchDetected());
+      }, (user) {
+        _logger.d(user);
+        // add user password to the dict
+        user['profile'] = user['profile']!.split(',').last;
+        user.addAll({'password': event.password});
+        _logger.d('user fetched');
+        return emit(NewAuthUserDetailsFetched(userDetails: user));
+      });
+    });
+
     on<RegistrationEventRequested>((event, emit) async {
       if (event.password.trim().isEmpty || event.password.trim().length < 6) {
         return emit(AuthErrorState(error: "Please enter a valid password"));
@@ -138,7 +171,9 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       return result.fold((error) {
         _logger.e(error, time: DateTime.now());
-        return emit(AuthErrorState(error: error));
+        emit(AuthErrorState(error: error));
+        add(AppLaunchDetected());
+        return;
       }, (user) {
         _userRepository.deleteUserFromCache(user);
         add(AppLaunchDetected());
