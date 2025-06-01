@@ -22,6 +22,7 @@ class _AddAFriendPageState extends State<AddAFriendPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   bool _showPassword = true;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -103,39 +104,36 @@ class _AddAFriendPageState extends State<AddAFriendPage> {
                 SizedBox(
                   height: 18,
                 ),
+                _isLoading
+                    ? Lottie.asset(
+                        "assets/lotties/fetching.json",
+                        height: 32,
+                      )
+                    : FilledButton(
+                        onPressed: () async {
+                          final userResponse = await context
+                              .read<ReferralCubit>()
+                              .fetchUserDetailsFromMagnet(
+                                _admissionController.text.trim(),
+                                _passwordController.text.trim(),
+                              );
 
-                BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-                  if (state is AuthLoadingState) {
-                    return Lottie.asset(
-                      "assets/lotties/fetching.json",
-                      height: 80,
-                    );
-                  }
-                  return FilledButton(
-                    onPressed: () async {
-                      final userResponse = await context
-                          .read<ReferralCubit>()
-                          .fetchUserDetailsFromMagnet(
-                            _admissionController.text.trim(),
-                            _passwordController.text.trim(),
+                          if (userResponse.isLeft()) {
+                            if (!context.mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content:
+                                    Text((userResponse as drift.Left).value)));
+                            return;
+                          }
+
+                          if (!context.mounted) return;
+                          context.pushNamed(
+                            "confirm-friends-details",
+                            extra: (userResponse as drift.Right).value,
                           );
-
-                      if (userResponse.isLeft()) {
-                        if (!context.mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text((userResponse as drift.Left).value)));
-                        return;
-                      }
-
-                      if (!context.mounted) return;
-                      context.pushNamed(
-                        "confirm-friends-details",
-                        extra: (userResponse as drift.Right).value,
-                      );
-                    },
-                    child: Text("Add an iSoul 🍎"),
-                  );
-                })
+                        },
+                        child: Text("Add an iSoul 🍎"),
+                      )
               ],
             ),
           )

@@ -188,7 +188,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         controller: _nationalIDController,
                         textAlign: TextAlign.center,
                         validator: (value) {
-                          if ((value?.length ?? 0) != 12) {
+                          if ((value?.length ?? 0) < 4) {
                             return "Please provide a valid National Identification NUmber";
                           }
                           return null;

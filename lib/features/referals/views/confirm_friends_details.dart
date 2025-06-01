@@ -34,6 +34,7 @@ class _ConfirmFriendsDetailsState extends State<ConfirmFriendsDetails> {
   bool accepted = false;
   DateTime? dob;
   Uint8List? imageBytes;
+  bool isLoading = false;
 
   // are required to complete the form
 
@@ -148,7 +149,7 @@ class _ConfirmFriendsDetailsState extends State<ConfirmFriendsDetails> {
                     controller: _nationalIDController,
                     textAlign: TextAlign.center,
                     validator: (value) {
-                      if ((value?.length ?? 0) < 8) {
+                      if ((value?.length ?? 0) < 4) {
                         return "Please provide a valid National Identification NUmber";
                       }
                       return null;
@@ -338,82 +339,97 @@ class _ConfirmFriendsDetailsState extends State<ConfirmFriendsDetails> {
                   SizedBox(height: 22),
                   SizedBox(
                     width: double.infinity,
-                    child: FilledButton(
-                      onPressed: () async {
-                        if (!_formState.currentState!.validate()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text(
-                              "Please ensure you complete the form to continue",
-                            )),
-                          );
-                          return;
-                        }
+                    child: isLoading
+                        ? Lottie.asset(
+                            "assets/lotties/fetching.json",
+                            height: 32,
+                          )
+                        : FilledButton(
+                            onPressed: () async {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              if (!_formState.currentState!.validate()) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                    "Please ensure you complete the form to continue",
+                                  )),
+                                );
+                                return;
+                              }
 
-                        // split full names from the names
-                        final nameparts = _fullNamesController.text.split(' ');
+                              // split full names from the names
+                              final nameparts =
+                                  _fullNamesController.text.split(' ');
 
-                        // perform signup
-                        final response =
-                            await context.read<ReferralCubit>().completeProfile(
-                                  UserData(
-                                      picture: imageBytes!,
-                                      id: '',
-                                      username: _usernameController.text.trim(),
-                                      firstname: nameparts.first,
-                                      othernames: nameparts.length > 1
-                                          ? nameparts
-                                              .sublist(nameparts.length - 2)
-                                              .join(' ')
-                                          : nameparts.join(' '),
-                                      email: _emailcontroller.text
-                                          .toLowerCase()
-                                          .trim(),
-                                      gender: gender == _Gender.male
-                                          ? "male"
-                                          : "female",
-                                      active: true,
+                              // perform signup
+                              final response = await context
+                                  .read<ReferralCubit>()
+                                  .completeProfile(
+                                    UserData(
+                                        picture: imageBytes!,
+                                        id: '',
+                                        username:
+                                            _usernameController.text.trim(),
+                                        firstname: nameparts.first,
+                                        othernames: nameparts.length > 1
+                                            ? nameparts
+                                                .sublist(nameparts.length - 2)
+                                                .join(' ')
+                                            : nameparts.join(' '),
+                                        email: _emailcontroller.text
+                                            .toLowerCase()
+                                            .trim(),
+                                        gender: gender == _Gender.male
+                                            ? "male"
+                                            : "female",
+                                        active: true,
+                                        createdAt: DateTime.now(),
+                                        modifiedAt: DateTime.now(),
+                                        nationalId:
+                                            _nationalIDController.text.trim()),
+                                    UserCredentialData(
+                                        admno: _admissionController.text,
+                                        username: _usernameController.text,
+                                        email: _emailcontroller.text,
+                                        password: password),
+                                    UserProfileData(
+                                      userId: '',
+                                      admissionNumber:
+                                          _admissionController.text.trim(),
+                                      vibePoints: 0,
+                                      lastSeen: DateTime.now(),
                                       createdAt: DateTime.now(),
                                       modifiedAt: DateTime.now(),
-                                      nationalId:
-                                          _nationalIDController.text.trim()),
-                                  UserCredentialData(
-                                      admno: _admissionController.text,
-                                      username: _usernameController.text,
-                                      email: _emailcontroller.text,
-                                      password: password),
-                                  UserProfileData(
-                                    userId: '',
-                                    admissionNumber:
-                                        _admissionController.text.trim(),
-                                    vibePoints: 0,
-                                    lastSeen: DateTime.now(),
-                                    createdAt: DateTime.now(),
-                                    modifiedAt: DateTime.now(),
-                                    campus: 'athi',
-                                    dateOfBirth: dob!,
+                                      campus: 'athi',
+                                      dateOfBirth: dob!,
+                                    ),
+                                  );
+                              setState(() {
+                                isLoading = false;
+                              });
+
+                              response.fold((error) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(error)),
+                                );
+                                return;
+                              }, (success) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        "Thank you for adding an Isoul you have been awarded 2 vibe points"),
                                   ),
                                 );
-
-                        response.fold((error) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(error)),
-                          );
-                          return;
-                        }, (success) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                  "Thank you for adding an Isoul you have been awarded 2 vibe points"),
-                            ),
-                          );
-                          return;
-                        });
-                      },
-                      child: Text(
-                          "Add ${_fullNamesController.text.split(' ').first}"),
-                    ),
+                                return;
+                              });
+                            },
+                            child: Text(
+                                "Add ${_fullNamesController.text.split(' ').first}"),
+                          ),
                   ),
+                  SizedBox(height: 22),
                 ],
               ),
             ),
