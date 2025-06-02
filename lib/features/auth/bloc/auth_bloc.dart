@@ -53,7 +53,7 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<AuthenticationRequested>((event, emit) async {
-      if (event.password.trim().isEmpty || event.password.trim().length < 6) {
+      if (event.password.trim().isEmpty || event.password.trim().length < 3) {
         return emit(AuthErrorState(error: "Please enter a valid password"));
       }
       if (event.admno.trim().isEmpty) {
@@ -82,7 +82,7 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // Registration flow
 
     on<IsoulRegistrationEvent>((event, emit) async {
-      if (event.password.trim().isEmpty || event.password.trim().length < 6) {
+      if (event.password.trim().isEmpty || event.password.trim().length < 3) {
         return emit(AuthErrorState(error: "Please enter a valid password"));
       }
       if (event.admno.trim().isEmpty) {
@@ -115,7 +115,7 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<RegistrationEventRequested>((event, emit) async {
-      if (event.password.trim().isEmpty || event.password.trim().length < 6) {
+      if (event.password.trim().isEmpty || event.password.trim().length < 3) {
         return emit(AuthErrorState(error: "Please enter a valid password"));
       }
       if (event.admno.trim().isEmpty) {
