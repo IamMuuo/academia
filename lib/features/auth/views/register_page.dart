@@ -268,7 +268,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         enabled: false,
                         textAlign: TextAlign.center,
                         validator: (value) {
-                          if ((value?.length ?? 0) < 10) {
+                          if ((value?.length ?? 0) < 3) {
                             return "Please provide your full name";
                           }
                           return null;
