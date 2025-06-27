@@ -123,6 +123,37 @@ class _DashboardState extends State<Dashboard> {
             ],
           ),
 
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(4),
+              child: Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                color: Colors.green[400],
+                child: Padding(
+                  padding: EdgeInsets.all(4),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 4,
+                    children: [
+                      Text(
+                        "New app migration coming soon",
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      Text(
+                        "In the coming days, we’ll be migrating users to a brand-new app packed with exciting new features that you've all been requesting.\nKeep an eye out for our beta invitation—you’ll get the chance to test the new app early and share your feedback!",
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ).animate().fadeIn(
+                  curve: Curves.easeIn,
+                ),
+          ),
+
           SliverPadding(
             padding: EdgeInsets.all(12),
             sliver: CourseDashboardWidget(),
