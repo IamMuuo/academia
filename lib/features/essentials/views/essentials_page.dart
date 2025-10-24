@@ -26,7 +26,7 @@ class _EssentialsPageState extends State<EssentialsPage> {
             expandedHeight: 250,
             flexibleSpace: FlexibleSpaceBar(
               background: Image.asset(
-                "assets/icons/academia_ghibli.png",
+                "assets/images/trick-or-treat.jpg",
                 fit: BoxFit.cover,
               ),
               title: Text(

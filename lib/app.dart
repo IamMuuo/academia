@@ -40,13 +40,15 @@ class Academia extends StatelessWidget {
           title: flavor.flavor.toString(),
           routerConfig: AcademiaRouter.router,
           theme: ThemeData(
-            colorScheme: lightscheme,
+            colorSchemeSeed: Colors.orange,
+            brightness: Brightness.dark,
             useMaterial3: true,
             fontFamily: GoogleFonts.inter().fontFamily,
           ),
           darkTheme: ThemeData(
             brightness: Brightness.dark,
-            colorScheme: darkscheme,
+            useMaterial3: true,
+            colorSchemeSeed: Colors.orange,
             fontFamily: GoogleFonts.inter().fontFamily,
           ),
         ),

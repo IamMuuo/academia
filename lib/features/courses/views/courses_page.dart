@@ -38,7 +38,7 @@ class _CoursesPageMobileState extends State<CoursesPage> {
               snap: true,
               flexibleSpace: FlexibleSpaceBar(
                 background: Image.asset(
-                  "assets/images/read.jpg",
+                  "assets/images/ware-wolf.jpg",
                   fit: BoxFit.cover,
                 ),
                 title: Text("Courses"),

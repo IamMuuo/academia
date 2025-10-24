@@ -70,17 +70,18 @@ class _DashboardState extends State<Dashboard> {
                   return SizedBox();
                 }),
             expandedHeight: 250,
+            title: Text("Academia"),
             flexibleSpace: FlexibleSpaceBar(
               background: Image.asset(
-                "assets/images/diversity.jpg",
+                "assets/images/happy-haloween.jpg",
                 fit: BoxFit.cover,
               ),
-              title: Text("Academia").animate(delay: 250.ms).moveY(
-                    curve: Curves.easeInCubic,
-                    duration: 1000.ms,
-                    begin: -20,
-                    end: 0,
-                  ),
+              // title: Text("Academia").animate(delay: 250.ms).moveY(
+              //       curve: Curves.easeInCubic,
+              //       duration: 1000.ms,
+              //       begin: -20,
+              //       end: 0,
+              //     ),
             ),
             actions: [
               // CircleAvatar(
@@ -139,12 +140,13 @@ class _DashboardState extends State<Dashboard> {
                     spacing: 4,
                     children: [
                       Text(
-                        "New app migration coming soon",
+                        "The rollout and migration is here.",
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       Text(
-                        "In the coming days, we’ll be migrating users to a brand-new app packed with exciting new features that you've all been requesting.\nKeep an eye out for our beta invitation—you’ll get the chance to test the new app early and share your feedback!",
-                      )
+                          "The new app packed with amazing features is already in live testing. "
+                          "Missed the first wave? No problem!"
+                          "Keep an eye on your inbox, as you'll absolutely be joining the test group before the month is out!")
                     ],
                   ),
                 ),
