@@ -35,7 +35,7 @@ if (keystorePropertiesFile.exists()) {
 android {
 
     namespace = "com.dita.academia"
-    compileSdk = 35
+    compileSdk = 36
     ndkVersion = "27.0.12077973"
 
 
@@ -53,9 +53,9 @@ android {
     defaultConfig {
         applicationId = "com.dita.academia"
         minSdk = 28
-        targetSdk = 35
-        versionCode = 29
-        versionName = "2025.6.27+0"
+        targetSdk = 36
+        versionCode = 30
+        versionName = "2025.10.24+0"
     }
    //
     signingConfigs {
